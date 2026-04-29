@@ -53,8 +53,13 @@ class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
         senderDisplayName: event.senderDisplayName,
         text: event.text,
       );
-      // Stream will update messages; just clear sending flag
-      emit(current.copyWith(isSending: false));
+      // Use the live state — the stream may have already delivered the new
+      // message while sendMessage was in flight, so we must not revert to
+      // the pre-send snapshot (current). Just clear the isSending flag.
+      final latest = state;
+      if (latest is GameChatLoaded) {
+        emit(latest.copyWith(isSending: false));
+      }
     } on GameException catch (e) {
       emit(current.copyWith(isSending: false));
       // Don't emit error — just restore state (snackbar handled in widget)
