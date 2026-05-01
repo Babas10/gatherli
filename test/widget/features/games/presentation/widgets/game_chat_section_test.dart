@@ -119,12 +119,13 @@ void main() {
       expect(find.byIcon(Icons.send), findsOneWidget);
     });
 
-    testWidgets('shows players-only message for non-players', (tester) async {
+    testWidgets('shows join-to-view message for non-players instead of chat', (tester) async {
       final repo = _FakeGameRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo, isPlayer: false));
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsNothing);
-      expect(find.text('Only players can send messages'), findsOneWidget);
+      expect(find.text('You need to join the game to see the chat'), findsOneWidget);
+      expect(find.text('Only players can send messages'), findsNothing);
     });
 
     testWidgets('send button calls sendMessage on repository', (tester) async {

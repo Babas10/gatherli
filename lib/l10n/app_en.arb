@@ -2958,5 +2958,9 @@
   "chatPlayersOnly": "Only players can send messages",
   "@chatPlayersOnly": {
     "description": "Message shown to non-players instead of the chat input"
+  },
+  "chatJoinToView": "You need to join the game to see the chat",
+  "@chatJoinToView": {
+    "description": "Message shown to users who are not in the game and cannot see the chat"
   }
 }

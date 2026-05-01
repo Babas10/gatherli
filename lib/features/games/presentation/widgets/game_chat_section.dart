@@ -124,76 +124,79 @@ class _GameChatViewState extends State<_GameChatView> {
               ],
             ),
             const SizedBox(height: 12),
-            BlocConsumer<GameChatBloc, GameChatState>(
-              listener: (context, state) {
-                if (state is GameChatLoaded) {
-                  _scrollToBottom();
-                }
-              },
-              builder: (context, state) {
-                if (state is GameChatLoading || state is GameChatInitial) {
-                  return const SizedBox(
-                    height: 120,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-
-                final messages = state is GameChatLoaded
-                    ? state.messages
-                    : <ChatMessageModel>[];
-                final isSending =
-                    state is GameChatLoaded ? state.isSending : false;
-
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 240,
-                      child: messages.isEmpty
-                          ? Center(
-                              child: Text(
-                                l10n.chatEmpty,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.textMuted,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          : ListView.builder(
-                              controller: _scrollController,
-                              itemCount: messages.length,
-                              itemBuilder: (context, index) => _MessageBubble(
-                                message: messages[index],
-                                isCurrentUser:
-                                    messages[index].senderId ==
-                                    widget.currentUserId,
-                              ),
-                            ),
+            if (!widget.isPlayer)
+              SizedBox(
+                height: 80,
+                child: Center(
+                  child: Text(
+                    l10n.chatJoinToView,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textMuted,
+                      fontStyle: FontStyle.italic,
                     ),
-                    const SizedBox(height: 8),
-                    if (widget.isPlayer)
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            else
+              BlocConsumer<GameChatBloc, GameChatState>(
+                listener: (context, state) {
+                  if (state is GameChatLoaded) {
+                    _scrollToBottom();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is GameChatLoading || state is GameChatInitial) {
+                    return const SizedBox(
+                      height: 120,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  final messages = state is GameChatLoaded
+                      ? state.messages
+                      : <ChatMessageModel>[];
+                  final isSending =
+                      state is GameChatLoaded ? state.isSending : false;
+
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 240,
+                        child: messages.isEmpty
+                            ? Center(
+                                child: Text(
+                                  l10n.chatEmpty,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.textMuted,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            : ListView.builder(
+                                controller: _scrollController,
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) => _MessageBubble(
+                                  message: messages[index],
+                                  isCurrentUser:
+                                      messages[index].senderId ==
+                                      widget.currentUserId,
+                                ),
+                              ),
+                      ),
+                      const SizedBox(height: 8),
                       _ChatInput(
                         controller: _textController,
                         isSending: isSending,
                         onSend: () => _sendMessage(context),
                         hint: l10n.chatInputHint,
-                      )
-                    else
-                      Text(
-                        l10n.chatPlayersOnly,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        textAlign: TextAlign.center,
                       ),
-                  ],
-                );
-              },
-            ),
+                    ],
+                  );
+                },
+              ),
           ],
         ),
       ),

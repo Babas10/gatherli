@@ -3769,6 +3769,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only players can send messages'**
   String get chatPlayersOnly;
+
+  /// Message shown to users who are not in the game and cannot see the chat
+  ///
+  /// In en, this message translates to:
+  /// **'You need to join the game to see the chat'**
+  String get chatJoinToView;
 }
 
 class _AppLocalizationsDelegate
