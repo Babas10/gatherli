@@ -715,5 +715,7 @@
   "chatEmpty": "Noch keine Nachrichten. Sei der Erste!",
   "@chatEmpty": {},
   "chatPlayersOnly": "Nur Spieler können Nachrichten senden",
-  "@chatPlayersOnly": {}
+  "@chatPlayersOnly": {},
+  "chatJoinToView": "Du musst dem Spiel beitreten, um den Chat zu sehen",
+  "@chatJoinToView": {}
 }

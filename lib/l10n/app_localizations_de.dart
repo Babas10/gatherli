@@ -2064,4 +2064,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get chatPlayersOnly => 'Nur Spieler können Nachrichten senden';
+
+  @override
+  String get chatJoinToView =>
+      'Du musst dem Spiel beitreten, um den Chat zu sehen';
 }

@@ -715,5 +715,7 @@
   "chatEmpty": "Nessun messaggio ancora. Sii il primo a dire qualcosa!",
   "@chatEmpty": {},
   "chatPlayersOnly": "Solo i giocatori possono inviare messaggi",
-  "@chatPlayersOnly": {}
+  "@chatPlayersOnly": {},
+  "chatJoinToView": "Devi unirti alla partita per vedere la chat",
+  "@chatJoinToView": {}
 }
