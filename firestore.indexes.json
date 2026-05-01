@@ -189,6 +189,24 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "accountStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "emailVerifiedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "gracePeriodExpiresAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "eloRating",
           "order": "DESCENDING"
         },
