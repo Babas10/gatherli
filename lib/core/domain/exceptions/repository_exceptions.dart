@@ -99,3 +99,14 @@ class GameInvitationException implements Exception {
   @override
   String toString() => message;
 }
+
+/// Exception thrown by ChampionshipRepository operations (Epic 30 — Story 30.1).
+class ChampionshipException implements Exception {
+  final String message;
+  final String? code;
+
+  ChampionshipException(this.message, {this.code});
+
+  @override
+  String toString() => message;
+}
