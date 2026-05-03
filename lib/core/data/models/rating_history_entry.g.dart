@@ -16,9 +16,7 @@ _$RatingHistoryEntryImpl _$$RatingHistoryEntryImplFromJson(
   ratingChange: (json['ratingChange'] as num).toDouble(),
   opponentTeam: json['opponentTeam'] as String,
   won: json['won'] as bool,
-  timestamp: const RequiredTimestampConverter().fromJson(
-    json['timestamp'] as Object,
-  ),
+  timestamp: const TimestampConverter().fromJson(json['timestamp'] as Object),
 );
 
 Map<String, dynamic> _$$RatingHistoryEntryImplToJson(
@@ -31,5 +29,5 @@ Map<String, dynamic> _$$RatingHistoryEntryImplToJson(
   'ratingChange': instance.ratingChange,
   'opponentTeam': instance.opponentTeam,
   'won': instance.won,
-  'timestamp': const RequiredTimestampConverter().toJson(instance.timestamp),
+  'timestamp': const TimestampConverter().toJson(instance.timestamp),
 };

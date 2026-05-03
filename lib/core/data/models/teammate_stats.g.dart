@@ -20,7 +20,9 @@ _$TeammateStatsImpl _$$TeammateStatsImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => RecentGameResult.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      lastUpdated: const TimestampConverter().fromJson(json['lastUpdated']),
+      lastUpdated: const NullableTimestampConverter().fromJson(
+        json['lastUpdated'],
+      ),
     );
 
 Map<String, dynamic> _$$TeammateStatsImplToJson(_$TeammateStatsImpl instance) =>
@@ -33,7 +35,9 @@ Map<String, dynamic> _$$TeammateStatsImplToJson(_$TeammateStatsImpl instance) =>
       'pointsAllowed': instance.pointsAllowed,
       'eloChange': instance.eloChange,
       'recentGames': instance.recentGames,
-      'lastUpdated': const TimestampConverter().toJson(instance.lastUpdated),
+      'lastUpdated': const NullableTimestampConverter().toJson(
+        instance.lastUpdated,
+      ),
     };
 
 _$RecentGameResultImpl _$$RecentGameResultImplFromJson(
@@ -44,9 +48,7 @@ _$RecentGameResultImpl _$$RecentGameResultImplFromJson(
   pointsScored: (json['pointsScored'] as num).toInt(),
   pointsAllowed: (json['pointsAllowed'] as num).toInt(),
   eloChange: (json['eloChange'] as num).toDouble(),
-  timestamp: const RequiredTimestampConverter().fromJson(
-    json['timestamp'] as Object,
-  ),
+  timestamp: const TimestampConverter().fromJson(json['timestamp'] as Object),
 );
 
 Map<String, dynamic> _$$RecentGameResultImplToJson(
@@ -57,5 +59,5 @@ Map<String, dynamic> _$$RecentGameResultImplToJson(
   'pointsScored': instance.pointsScored,
   'pointsAllowed': instance.pointsAllowed,
   'eloChange': instance.eloChange,
-  'timestamp': const RequiredTimestampConverter().toJson(instance.timestamp),
+  'timestamp': const TimestampConverter().toJson(instance.timestamp),
 };

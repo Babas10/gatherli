@@ -1,6 +1,7 @@
 // Tests FriendshipModel business logic, JSON serialization/deserialization, and entity conversion
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/friendship_model.dart';
 import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 
@@ -381,7 +382,7 @@ void main() {
       });
 
       test('returns null for null input', () {
-        const converter = TimestampConverter();
+        const converter = NullableTimestampConverter();
 
         final result = converter.fromJson(null);
 
@@ -398,7 +399,7 @@ void main() {
       });
 
       test('returns null when converting null DateTime', () {
-        const converter = TimestampConverter();
+        const converter = NullableTimestampConverter();
 
         final result = converter.toJson(null);
 

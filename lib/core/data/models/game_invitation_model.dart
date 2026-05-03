@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:play_with_me/core/data/models/game_model.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'game_invitation_model.freezed.dart';
 part 'game_invitation_model.g.dart';
@@ -30,9 +30,9 @@ class GameInvitationModel with _$GameInvitationModel {
     required String inviterId,
     @Default(GameInvitationStatus.pending) GameInvitationStatus status,
     @TimestampConverter() required DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     // Optional: when the invitation expires (set to game scheduledAt by CF)
-    @TimestampConverter() DateTime? expiresAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
   }) = _GameInvitationModel;
 
   const GameInvitationModel._();

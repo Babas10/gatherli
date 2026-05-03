@@ -24,9 +24,9 @@ mixin _$GroupInviteLinkModel {
   String get id => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
-  @RequiredTimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
   @TimestampConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  @NullableTimestampConverter()
   DateTime? get expiresAt => throw _privateConstructorUsedError;
   bool get revoked => throw _privateConstructorUsedError;
   int? get usageLimit => throw _privateConstructorUsedError;
@@ -55,8 +55,8 @@ abstract class $GroupInviteLinkModelCopyWith<$Res> {
     String id,
     String token,
     String createdBy,
-    @RequiredTimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? expiresAt,
+    @TimestampConverter() DateTime createdAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
     bool revoked,
     int? usageLimit,
     int usageCount,
@@ -155,8 +155,8 @@ abstract class _$$GroupInviteLinkModelImplCopyWith<$Res>
     String id,
     String token,
     String createdBy,
-    @RequiredTimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? expiresAt,
+    @TimestampConverter() DateTime createdAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
     bool revoked,
     int? usageLimit,
     int usageCount,
@@ -244,8 +244,8 @@ class _$GroupInviteLinkModelImpl extends _GroupInviteLinkModel {
     required this.id,
     required this.token,
     required this.createdBy,
-    @RequiredTimestampConverter() required this.createdAt,
-    @TimestampConverter() this.expiresAt,
+    @TimestampConverter() required this.createdAt,
+    @NullableTimestampConverter() this.expiresAt,
     this.revoked = false,
     this.usageLimit,
     this.usageCount = 0,
@@ -263,10 +263,10 @@ class _$GroupInviteLinkModelImpl extends _GroupInviteLinkModel {
   @override
   final String createdBy;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? expiresAt;
   @override
   @JsonKey()
@@ -349,8 +349,8 @@ abstract class _GroupInviteLinkModel extends GroupInviteLinkModel {
     required final String id,
     required final String token,
     required final String createdBy,
-    @RequiredTimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? expiresAt,
+    @TimestampConverter() required final DateTime createdAt,
+    @NullableTimestampConverter() final DateTime? expiresAt,
     final bool revoked,
     final int? usageLimit,
     final int usageCount,
@@ -369,10 +369,10 @@ abstract class _GroupInviteLinkModel extends GroupInviteLinkModel {
   @override
   String get createdBy;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get expiresAt;
   @override
   bool get revoked;

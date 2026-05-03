@@ -10,7 +10,7 @@ _$TrainingSessionParticipantModelImpl
 _$$TrainingSessionParticipantModelImplFromJson(Map<String, dynamic> json) =>
     _$TrainingSessionParticipantModelImpl(
       userId: json['userId'] as String,
-      joinedAt: DateTime.parse(json['joinedAt'] as String),
+      joinedAt: const TimestampConverter().fromJson(json['joinedAt'] as Object),
       status:
           $enumDecodeNullable(_$ParticipantStatusEnumMap, json['status']) ??
           ParticipantStatus.joined,
@@ -20,7 +20,7 @@ Map<String, dynamic> _$$TrainingSessionParticipantModelImplToJson(
   _$TrainingSessionParticipantModelImpl instance,
 ) => <String, dynamic>{
   'userId': instance.userId,
-  'joinedAt': instance.joinedAt.toIso8601String(),
+  'joinedAt': const TimestampConverter().toJson(instance.joinedAt),
   'status': _$ParticipantStatusEnumMap[instance.status]!,
 };
 

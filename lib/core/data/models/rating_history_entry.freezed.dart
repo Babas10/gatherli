@@ -43,7 +43,7 @@ mixin _$RatingHistoryEntry {
   bool get won => throw _privateConstructorUsedError;
 
   /// When this rating update was recorded
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Serializes this RatingHistoryEntry to a JSON map.
@@ -71,7 +71,7 @@ abstract class $RatingHistoryEntryCopyWith<$Res> {
     double ratingChange,
     String opponentTeam,
     bool won,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -156,7 +156,7 @@ abstract class _$$RatingHistoryEntryImplCopyWith<$Res>
     double ratingChange,
     String opponentTeam,
     bool won,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -233,7 +233,7 @@ class _$RatingHistoryEntryImpl extends _RatingHistoryEntry {
     required this.ratingChange,
     required this.opponentTeam,
     required this.won,
-    @RequiredTimestampConverter() required this.timestamp,
+    @TimestampConverter() required this.timestamp,
   }) : super._();
 
   factory _$RatingHistoryEntryImpl.fromJson(Map<String, dynamic> json) =>
@@ -269,7 +269,7 @@ class _$RatingHistoryEntryImpl extends _RatingHistoryEntry {
 
   /// When this rating update was recorded
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime timestamp;
 
   @override
@@ -337,7 +337,7 @@ abstract class _RatingHistoryEntry extends RatingHistoryEntry {
     required final double ratingChange,
     required final String opponentTeam,
     required final bool won,
-    @RequiredTimestampConverter() required final DateTime timestamp,
+    @TimestampConverter() required final DateTime timestamp,
   }) = _$RatingHistoryEntryImpl;
   const _RatingHistoryEntry._() : super._();
 
@@ -374,7 +374,7 @@ abstract class _RatingHistoryEntry extends RatingHistoryEntry {
 
   /// When this rating update was recorded
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp;
 
   /// Create a copy of RatingHistoryEntry

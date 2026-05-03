@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/training_feedback_model.dart';
 
 void main() {
@@ -429,16 +430,21 @@ void main() {
       expect(result.day, equals(15));
     });
 
-    test('fromJson throws for invalid format', () {
-      expect(() => converter.fromJson(12345), throwsA(isA<ArgumentError>()));
+    test('fromJson parses int (milliseconds) to DateTime', () {
+      final millis = DateTime(2024, 1, 15).millisecondsSinceEpoch;
+      final result = converter.fromJson(millis);
+
+      expect(result.year, equals(2024));
+      expect(result.month, equals(1));
+      expect(result.day, equals(15));
     });
 
-    test('toJson returns ISO string', () {
+    test('toJson returns Firestore Timestamp', () {
       final dateTime = DateTime(2024, 1, 15, 10, 30);
       final result = converter.toJson(dateTime);
 
-      expect(result, isA<String>());
-      expect(result, contains('2024-01-15'));
+      expect(result, isA<Timestamp>());
+      expect((result as Timestamp).toDate(), dateTime);
     });
   });
 }

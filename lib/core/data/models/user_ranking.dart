@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'user_model.dart'; // For RequiredTimestampConverter
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'user_ranking.freezed.dart';
 part 'user_ranking.g.dart';
@@ -26,7 +26,7 @@ class UserRanking with _$UserRanking {
     int? totalFriends,
 
     /// When this ranking was calculated
-    @RequiredTimestampConverter() required DateTime calculatedAt,
+    @TimestampConverter() required DateTime calculatedAt,
   }) = _UserRanking;
 
   const UserRanking._();

@@ -46,7 +46,7 @@ mixin _$TeammateStats {
   List<RecentGameResult> get recentGames => throw _privateConstructorUsedError;
 
   /// When these stats were last updated
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastUpdated => throw _privateConstructorUsedError;
 
   /// Serializes this TeammateStats to a JSON map.
@@ -75,7 +75,7 @@ abstract class $TeammateStatsCopyWith<$Res> {
     int pointsAllowed,
     double eloChange,
     List<RecentGameResult> recentGames,
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   });
 }
 
@@ -166,7 +166,7 @@ abstract class _$$TeammateStatsImplCopyWith<$Res>
     int pointsAllowed,
     double eloChange,
     List<RecentGameResult> recentGames,
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   });
 }
 
@@ -249,7 +249,7 @@ class _$TeammateStatsImpl extends _TeammateStats {
     this.pointsAllowed = 0,
     this.eloChange = 0.0,
     final List<RecentGameResult> recentGames = const [],
-    @TimestampConverter() this.lastUpdated,
+    @NullableTimestampConverter() this.lastUpdated,
   }) : _recentGames = recentGames,
        super._();
 
@@ -301,7 +301,7 @@ class _$TeammateStatsImpl extends _TeammateStats {
 
   /// When these stats were last updated
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? lastUpdated;
 
   @override
@@ -374,7 +374,7 @@ abstract class _TeammateStats extends TeammateStats {
     final int pointsAllowed,
     final double eloChange,
     final List<RecentGameResult> recentGames,
-    @TimestampConverter() final DateTime? lastUpdated,
+    @NullableTimestampConverter() final DateTime? lastUpdated,
   }) = _$TeammateStatsImpl;
   const _TeammateStats._() : super._();
 
@@ -415,7 +415,7 @@ abstract class _TeammateStats extends TeammateStats {
 
   /// When these stats were last updated
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastUpdated;
 
   /// Create a copy of TeammateStats
@@ -448,7 +448,7 @@ mixin _$RecentGameResult {
   double get eloChange => throw _privateConstructorUsedError;
 
   /// When the game was played
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Serializes this RecentGameResult to a JSON map.
@@ -474,7 +474,7 @@ abstract class $RecentGameResultCopyWith<$Res> {
     int pointsScored,
     int pointsAllowed,
     double eloChange,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -547,7 +547,7 @@ abstract class _$$RecentGameResultImplCopyWith<$Res>
     int pointsScored,
     int pointsAllowed,
     double eloChange,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -612,7 +612,7 @@ class _$RecentGameResultImpl extends _RecentGameResult {
     required this.pointsScored,
     required this.pointsAllowed,
     required this.eloChange,
-    @RequiredTimestampConverter() required this.timestamp,
+    @TimestampConverter() required this.timestamp,
   }) : super._();
 
   factory _$RecentGameResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -640,7 +640,7 @@ class _$RecentGameResultImpl extends _RecentGameResult {
 
   /// When the game was played
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime timestamp;
 
   @override
@@ -701,7 +701,7 @@ abstract class _RecentGameResult extends RecentGameResult {
     required final int pointsScored,
     required final int pointsAllowed,
     required final double eloChange,
-    @RequiredTimestampConverter() required final DateTime timestamp,
+    @TimestampConverter() required final DateTime timestamp,
   }) = _$RecentGameResultImpl;
   const _RecentGameResult._() : super._();
 
@@ -730,7 +730,7 @@ abstract class _RecentGameResult extends RecentGameResult {
 
   /// When the game was played
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp;
 
   /// Create a copy of RecentGameResult

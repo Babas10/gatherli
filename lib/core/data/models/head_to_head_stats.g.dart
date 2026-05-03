@@ -27,7 +27,7 @@ _$HeadToHeadStatsImpl _$$HeadToHeadStatsImplFromJson(
           ?.map((e) => HeadToHeadGameResult.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  lastUpdated: const TimestampConverter().fromJson(json['lastUpdated']),
+  lastUpdated: const NullableTimestampConverter().fromJson(json['lastUpdated']),
 );
 
 Map<String, dynamic> _$$HeadToHeadStatsImplToJson(
@@ -47,7 +47,9 @@ Map<String, dynamic> _$$HeadToHeadStatsImplToJson(
   'largestVictoryMargin': instance.largestVictoryMargin,
   'largestDefeatMargin': instance.largestDefeatMargin,
   'recentMatchups': instance.recentMatchups,
-  'lastUpdated': const TimestampConverter().toJson(instance.lastUpdated),
+  'lastUpdated': const NullableTimestampConverter().toJson(
+    instance.lastUpdated,
+  ),
 };
 
 _$HeadToHeadGameResultImpl _$$HeadToHeadGameResultImplFromJson(
@@ -60,9 +62,7 @@ _$HeadToHeadGameResultImpl _$$HeadToHeadGameResultImplFromJson(
   eloChange: (json['eloChange'] as num).toDouble(),
   partnerId: json['partnerId'] as String?,
   opponentPartnerId: json['opponentPartnerId'] as String?,
-  timestamp: const RequiredTimestampConverter().fromJson(
-    json['timestamp'] as Object,
-  ),
+  timestamp: const TimestampConverter().fromJson(json['timestamp'] as Object),
 );
 
 Map<String, dynamic> _$$HeadToHeadGameResultImplToJson(
@@ -75,5 +75,5 @@ Map<String, dynamic> _$$HeadToHeadGameResultImplToJson(
   'eloChange': instance.eloChange,
   'partnerId': instance.partnerId,
   'opponentPartnerId': instance.opponentPartnerId,
-  'timestamp': const RequiredTimestampConverter().toJson(instance.timestamp),
+  'timestamp': const TimestampConverter().toJson(instance.timestamp),
 };

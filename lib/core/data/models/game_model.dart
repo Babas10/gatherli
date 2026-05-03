@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 part 'game_model.freezed.dart';
 part 'game_model.g.dart';
 
@@ -13,10 +15,10 @@ class GameModel with _$GameModel {
     required String groupId,
     required String createdBy,
     @TimestampConverter() required DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     @TimestampConverter() required DateTime scheduledAt,
-    @TimestampConverter() DateTime? startedAt,
-    @TimestampConverter() DateTime? endedAt,
+    @NullableTimestampConverter() DateTime? startedAt,
+    @NullableTimestampConverter() DateTime? endedAt,
     required GameLocation location,
     @Default(GameStatus.scheduled) GameStatus status,
     @Default(4) int maxPlayers,
@@ -52,7 +54,7 @@ class GameModel with _$GameModel {
     // NOTE: Must be nullable (no default) so Cloud Function can detect unprocessed games
     Map<String, dynamic>? eloUpdates,
     // Timestamp when the game result was entered and completed
-    @TimestampConverter() DateTime? completedAt,
+    @NullableTimestampConverter() DateTime? completedAt,
     // Weather considerations
     @Default(true) bool weatherDependent,
     String? weatherNotes,
@@ -69,68 +71,13 @@ class GameModel with _$GameModel {
   /// Factory constructor for creating from Firestore DocumentSnapshot
   factory GameModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-
-    // Convert Firestore Timestamps to DateTime strings for JSON deserialization
-    final jsonData = Map<String, dynamic>.from(data);
-
-    if (data['createdAt'] is Timestamp) {
-      jsonData['createdAt'] = (data['createdAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['scheduledAt'] is Timestamp) {
-      jsonData['scheduledAt'] = (data['scheduledAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['updatedAt'] is Timestamp) {
-      jsonData['updatedAt'] = (data['updatedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['startedAt'] is Timestamp) {
-      jsonData['startedAt'] = (data['startedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['endedAt'] is Timestamp) {
-      jsonData['endedAt'] = (data['endedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['completedAt'] is Timestamp) {
-      jsonData['completedAt'] = (data['completedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-
-    return GameModel.fromJson({...jsonData, 'id': doc.id});
+    return GameModel.fromJson({...data, 'id': doc.id});
   }
 
   /// Convert to Firestore-compatible map (excludes id since it's the document ID)
   Map<String, dynamic> toFirestore() {
     final json = toJson();
     json.remove('id'); // Remove id as it's the document ID
-
-    // Convert DateTime fields to Firestore Timestamps
-    if (json['createdAt'] is String) {
-      json['createdAt'] = Timestamp.fromDate(createdAt);
-    }
-    if (json['scheduledAt'] is String) {
-      json['scheduledAt'] = Timestamp.fromDate(scheduledAt);
-    }
-    if (updatedAt != null && json['updatedAt'] is String) {
-      json['updatedAt'] = Timestamp.fromDate(updatedAt!);
-    }
-    if (startedAt != null && json['startedAt'] is String) {
-      json['startedAt'] = Timestamp.fromDate(startedAt!);
-    }
-    if (endedAt != null && json['endedAt'] is String) {
-      json['endedAt'] = Timestamp.fromDate(endedAt!);
-    }
-    if (completedAt != null && json['completedAt'] is String) {
-      json['completedAt'] = Timestamp.fromDate(completedAt!);
-    }
 
     // Ensure nested objects are properly serialized
     if (json['location'] is GameLocation) {
@@ -725,25 +672,6 @@ enum GameGenderType {
   mix,
 }
 
-/// Custom converter for Firestore Timestamp to DateTime
-class TimestampConverter implements JsonConverter<DateTime?, Object?> {
-  const TimestampConverter();
-
-  @override
-  DateTime? fromJson(Object? json) {
-    if (json == null) return null;
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    return null;
-  }
-
-  @override
-  Object? toJson(DateTime? object) {
-    if (object == null) return null;
-    return Timestamp.fromDate(object);
-  }
-}
 
 /// Custom converter for List&lt;SetScore&gt; to handle proper JSON serialization
 class SetScoreListConverter

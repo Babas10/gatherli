@@ -16,7 +16,9 @@ _$TrainingFeedbackModelImpl _$$TrainingFeedbackModelImplFromJson(
   coachingClarity: (json['coachingClarity'] as num).toInt(),
   comment: json['comment'] as String?,
   participantHash: json['participantHash'] as String,
-  submittedAt: const TimestampConverter().fromJson(json['submittedAt']),
+  submittedAt: const TimestampConverter().fromJson(
+    json['submittedAt'] as Object,
+  ),
 );
 
 Map<String, dynamic> _$$TrainingFeedbackModelImplToJson(

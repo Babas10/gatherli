@@ -25,7 +25,7 @@ mixin _$BestEloRecord {
   double get elo => throw _privateConstructorUsedError;
 
   /// The date when this ELO was achieved
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get date => throw _privateConstructorUsedError;
 
   /// Reference to the game that resulted in this rating
@@ -48,11 +48,7 @@ abstract class $BestEloRecordCopyWith<$Res> {
     $Res Function(BestEloRecord) then,
   ) = _$BestEloRecordCopyWithImpl<$Res, BestEloRecord>;
   @useResult
-  $Res call({
-    double elo,
-    @RequiredTimestampConverter() DateTime date,
-    String gameId,
-  });
+  $Res call({double elo, @TimestampConverter() DateTime date, String gameId});
 }
 
 /// @nodoc
@@ -99,11 +95,7 @@ abstract class _$$BestEloRecordImplCopyWith<$Res>
   ) = __$$BestEloRecordImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    double elo,
-    @RequiredTimestampConverter() DateTime date,
-    String gameId,
-  });
+  $Res call({double elo, @TimestampConverter() DateTime date, String gameId});
 }
 
 /// @nodoc
@@ -144,7 +136,7 @@ class __$$BestEloRecordImplCopyWithImpl<$Res>
 class _$BestEloRecordImpl implements _BestEloRecord {
   const _$BestEloRecordImpl({
     required this.elo,
-    @RequiredTimestampConverter() required this.date,
+    @TimestampConverter() required this.date,
     required this.gameId,
   });
 
@@ -157,7 +149,7 @@ class _$BestEloRecordImpl implements _BestEloRecord {
 
   /// The date when this ELO was achieved
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime date;
 
   /// Reference to the game that resulted in this rating
@@ -200,7 +192,7 @@ class _$BestEloRecordImpl implements _BestEloRecord {
 abstract class _BestEloRecord implements BestEloRecord {
   const factory _BestEloRecord({
     required final double elo,
-    @RequiredTimestampConverter() required final DateTime date,
+    @TimestampConverter() required final DateTime date,
     required final String gameId,
   }) = _$BestEloRecordImpl;
 
@@ -213,7 +205,7 @@ abstract class _BestEloRecord implements BestEloRecord {
 
   /// The date when this ELO was achieved
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get date;
 
   /// Reference to the game that resulted in this rating

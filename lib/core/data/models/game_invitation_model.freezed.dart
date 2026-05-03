@@ -29,9 +29,9 @@ mixin _$GameInvitationModel {
   GameInvitationStatus get status => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError; // Optional: when the invitation expires (set to game scheduledAt by CF)
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get expiresAt => throw _privateConstructorUsedError;
 
   /// Serializes this GameInvitationModel to a JSON map.
@@ -59,8 +59,8 @@ abstract class $GameInvitationModelCopyWith<$Res> {
     String inviterId,
     GameInvitationStatus status,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? expiresAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
   });
 }
 
@@ -150,8 +150,8 @@ abstract class _$$GameInvitationModelImplCopyWith<$Res>
     String inviterId,
     GameInvitationStatus status,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? expiresAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
   });
 }
 
@@ -233,8 +233,8 @@ class _$GameInvitationModelImpl extends _GameInvitationModel {
     required this.inviterId,
     this.status = GameInvitationStatus.pending,
     @TimestampConverter() required this.createdAt,
-    @TimestampConverter() this.updatedAt,
-    @TimestampConverter() this.expiresAt,
+    @NullableTimestampConverter() this.updatedAt,
+    @NullableTimestampConverter() this.expiresAt,
   }) : super._();
 
   factory _$GameInvitationModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -257,11 +257,11 @@ class _$GameInvitationModelImpl extends _GameInvitationModel {
   @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? updatedAt;
   // Optional: when the invitation expires (set to game scheduledAt by CF)
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? expiresAt;
 
   @override
@@ -331,8 +331,8 @@ abstract class _GameInvitationModel extends GameInvitationModel {
     required final String inviterId,
     final GameInvitationStatus status,
     @TimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
-    @TimestampConverter() final DateTime? expiresAt,
+    @NullableTimestampConverter() final DateTime? updatedAt,
+    @NullableTimestampConverter() final DateTime? expiresAt,
   }) = _$GameInvitationModelImpl;
   const _GameInvitationModel._() : super._();
 
@@ -355,10 +355,10 @@ abstract class _GameInvitationModel extends GameInvitationModel {
   @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt; // Optional: when the invitation expires (set to game scheduledAt by CF)
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get expiresAt;
 
   /// Create a copy of GameInvitationModel

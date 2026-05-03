@@ -1,6 +1,7 @@
 // Tests all UserModel business logic methods and JSON serialization/deserialization
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/entities/account_status.dart';
 
@@ -500,7 +501,7 @@ void main() {
       });
 
       test('returns null for null input', () {
-        const converter = TimestampConverter();
+        const converter = NullableTimestampConverter();
 
         final result = converter.fromJson(null);
 
@@ -517,7 +518,7 @@ void main() {
       });
 
       test('returns null when converting null DateTime', () {
-        const converter = TimestampConverter();
+        const converter = NullableTimestampConverter();
 
         final result = converter.toJson(null);
 

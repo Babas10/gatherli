@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'game_model.dart'; // For TimestampConverter
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'training_session_participant_model.freezed.dart';
 part 'training_session_participant_model.g.dart';

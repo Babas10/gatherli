@@ -13,8 +13,8 @@ _$FriendshipModelImpl _$$FriendshipModelImplFromJson(
   initiatorId: json['initiatorId'] as String,
   recipientId: json['recipientId'] as String,
   status: $enumDecode(_$FriendshipStatusEnumMap, json['status']),
-  createdAt: const RequiredTimestampConverter().fromJson(json['createdAt']),
-  updatedAt: const RequiredTimestampConverter().fromJson(json['updatedAt']),
+  createdAt: const TimestampConverter().fromJson(json['createdAt'] as Object),
+  updatedAt: const TimestampConverter().fromJson(json['updatedAt'] as Object),
   initiatorName: json['initiatorName'] as String,
   recipientName: json['recipientName'] as String,
 );
@@ -26,8 +26,8 @@ Map<String, dynamic> _$$FriendshipModelImplToJson(
   'initiatorId': instance.initiatorId,
   'recipientId': instance.recipientId,
   'status': _$FriendshipStatusEnumMap[instance.status]!,
-  'createdAt': const RequiredTimestampConverter().toJson(instance.createdAt),
-  'updatedAt': const RequiredTimestampConverter().toJson(instance.updatedAt),
+  'createdAt': const TimestampConverter().toJson(instance.createdAt),
+  'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
   'initiatorName': instance.initiatorName,
   'recipientName': instance.recipientName,
 };

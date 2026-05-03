@@ -37,7 +37,7 @@ mixin _$UserRanking {
   int? get totalFriends => throw _privateConstructorUsedError;
 
   /// When this ranking was calculated
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get calculatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this UserRanking to a JSON map.
@@ -63,7 +63,7 @@ abstract class $UserRankingCopyWith<$Res> {
     double percentile,
     int? friendsRank,
     int? totalFriends,
-    @RequiredTimestampConverter() DateTime calculatedAt,
+    @TimestampConverter() DateTime calculatedAt,
   });
 }
 
@@ -136,7 +136,7 @@ abstract class _$$UserRankingImplCopyWith<$Res>
     double percentile,
     int? friendsRank,
     int? totalFriends,
-    @RequiredTimestampConverter() DateTime calculatedAt,
+    @TimestampConverter() DateTime calculatedAt,
   });
 }
 
@@ -201,7 +201,7 @@ class _$UserRankingImpl extends _UserRanking {
     required this.percentile,
     this.friendsRank,
     this.totalFriends,
-    @RequiredTimestampConverter() required this.calculatedAt,
+    @TimestampConverter() required this.calculatedAt,
   }) : super._();
 
   factory _$UserRankingImpl.fromJson(Map<String, dynamic> json) =>
@@ -229,7 +229,7 @@ class _$UserRankingImpl extends _UserRanking {
 
   /// When this ranking was calculated
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime calculatedAt;
 
   @override
@@ -289,7 +289,7 @@ abstract class _UserRanking extends UserRanking {
     required final double percentile,
     final int? friendsRank,
     final int? totalFriends,
-    @RequiredTimestampConverter() required final DateTime calculatedAt,
+    @TimestampConverter() required final DateTime calculatedAt,
   }) = _$UserRankingImpl;
   const _UserRanking._() : super._();
 
@@ -318,7 +318,7 @@ abstract class _UserRanking extends UserRanking {
 
   /// When this ranking was calculated
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get calculatedAt;
 
   /// Create a copy of UserRanking

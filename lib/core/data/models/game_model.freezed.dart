@@ -28,13 +28,13 @@ mixin _$GameModel {
   String get createdBy => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get scheduledAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get startedAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get endedAt => throw _privateConstructorUsedError;
   GameLocation get location => throw _privateConstructorUsedError;
   GameStatus get status => throw _privateConstructorUsedError;
@@ -71,7 +71,7 @@ mixin _$GameModel {
   // NOTE: Must be nullable (no default) so Cloud Function can detect unprocessed games
   Map<String, dynamic>? get eloUpdates =>
       throw _privateConstructorUsedError; // Timestamp when the game result was entered and completed
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get completedAt => throw _privateConstructorUsedError; // Weather considerations
   bool get weatherDependent => throw _privateConstructorUsedError;
   String? get weatherNotes =>
@@ -101,10 +101,10 @@ abstract class $GameModelCopyWith<$Res> {
     String groupId,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     @TimestampConverter() DateTime scheduledAt,
-    @TimestampConverter() DateTime? startedAt,
-    @TimestampConverter() DateTime? endedAt,
+    @NullableTimestampConverter() DateTime? startedAt,
+    @NullableTimestampConverter() DateTime? endedAt,
     GameLocation location,
     GameStatus status,
     int maxPlayers,
@@ -128,7 +128,7 @@ abstract class $GameModelCopyWith<$Res> {
     List<String> confirmedBy,
     bool eloCalculated,
     Map<String, dynamic>? eloUpdates,
-    @TimestampConverter() DateTime? completedAt,
+    @NullableTimestampConverter() DateTime? completedAt,
     bool weatherDependent,
     String? weatherNotes,
     GameGenderType? gameGenderType,
@@ -402,10 +402,10 @@ abstract class _$$GameModelImplCopyWith<$Res>
     String groupId,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     @TimestampConverter() DateTime scheduledAt,
-    @TimestampConverter() DateTime? startedAt,
-    @TimestampConverter() DateTime? endedAt,
+    @NullableTimestampConverter() DateTime? startedAt,
+    @NullableTimestampConverter() DateTime? endedAt,
     GameLocation location,
     GameStatus status,
     int maxPlayers,
@@ -429,7 +429,7 @@ abstract class _$$GameModelImplCopyWith<$Res>
     List<String> confirmedBy,
     bool eloCalculated,
     Map<String, dynamic>? eloUpdates,
-    @TimestampConverter() DateTime? completedAt,
+    @NullableTimestampConverter() DateTime? completedAt,
     bool weatherDependent,
     String? weatherNotes,
     GameGenderType? gameGenderType,
@@ -660,10 +660,10 @@ class _$GameModelImpl extends _GameModel {
     required this.groupId,
     required this.createdBy,
     @TimestampConverter() required this.createdAt,
-    @TimestampConverter() this.updatedAt,
+    @NullableTimestampConverter() this.updatedAt,
     @TimestampConverter() required this.scheduledAt,
-    @TimestampConverter() this.startedAt,
-    @TimestampConverter() this.endedAt,
+    @NullableTimestampConverter() this.startedAt,
+    @NullableTimestampConverter() this.endedAt,
     required this.location,
     this.status = GameStatus.scheduled,
     this.maxPlayers = 4,
@@ -687,7 +687,7 @@ class _$GameModelImpl extends _GameModel {
     final List<String> confirmedBy = const [],
     this.eloCalculated = false,
     final Map<String, dynamic>? eloUpdates,
-    @TimestampConverter() this.completedAt,
+    @NullableTimestampConverter() this.completedAt,
     this.weatherDependent = true,
     this.weatherNotes,
     this.gameGenderType,
@@ -716,16 +716,16 @@ class _$GameModelImpl extends _GameModel {
   @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? updatedAt;
   @override
   @TimestampConverter()
   final DateTime scheduledAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? startedAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? endedAt;
   @override
   final GameLocation location;
@@ -840,7 +840,7 @@ class _$GameModelImpl extends _GameModel {
 
   // Timestamp when the game result was entered and completed
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? completedAt;
   // Weather considerations
   @override
@@ -1005,10 +1005,10 @@ abstract class _GameModel extends GameModel {
     required final String groupId,
     required final String createdBy,
     @TimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
+    @NullableTimestampConverter() final DateTime? updatedAt,
     @TimestampConverter() required final DateTime scheduledAt,
-    @TimestampConverter() final DateTime? startedAt,
-    @TimestampConverter() final DateTime? endedAt,
+    @NullableTimestampConverter() final DateTime? startedAt,
+    @NullableTimestampConverter() final DateTime? endedAt,
     required final GameLocation location,
     final GameStatus status,
     final int maxPlayers,
@@ -1032,7 +1032,7 @@ abstract class _GameModel extends GameModel {
     final List<String> confirmedBy,
     final bool eloCalculated,
     final Map<String, dynamic>? eloUpdates,
-    @TimestampConverter() final DateTime? completedAt,
+    @NullableTimestampConverter() final DateTime? completedAt,
     final bool weatherDependent,
     final String? weatherNotes,
     final GameGenderType? gameGenderType,
@@ -1056,16 +1056,16 @@ abstract class _GameModel extends GameModel {
   @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt;
   @override
   @TimestampConverter()
   DateTime get scheduledAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get startedAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get endedAt;
   @override
   GameLocation get location;
@@ -1116,7 +1116,7 @@ abstract class _GameModel extends GameModel {
   @override
   Map<String, dynamic>? get eloUpdates; // Timestamp when the game result was entered and completed
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get completedAt; // Weather considerations
   @override
   bool get weatherDependent;

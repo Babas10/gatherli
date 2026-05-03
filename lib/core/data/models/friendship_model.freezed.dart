@@ -25,9 +25,9 @@ mixin _$FriendshipModel {
   String get initiatorId => throw _privateConstructorUsedError;
   String get recipientId => throw _privateConstructorUsedError;
   FriendshipStatus get status => throw _privateConstructorUsedError;
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get updatedAt => throw _privateConstructorUsedError;
   String get initiatorName => throw _privateConstructorUsedError;
   String get recipientName => throw _privateConstructorUsedError;
@@ -54,8 +54,8 @@ abstract class $FriendshipModelCopyWith<$Res> {
     String initiatorId,
     String recipientId,
     FriendshipStatus status,
-    @RequiredTimestampConverter() DateTime createdAt,
-    @RequiredTimestampConverter() DateTime updatedAt,
+    @TimestampConverter() DateTime createdAt,
+    @TimestampConverter() DateTime updatedAt,
     String initiatorName,
     String recipientName,
   });
@@ -139,8 +139,8 @@ abstract class _$$FriendshipModelImplCopyWith<$Res>
     String initiatorId,
     String recipientId,
     FriendshipStatus status,
-    @RequiredTimestampConverter() DateTime createdAt,
-    @RequiredTimestampConverter() DateTime updatedAt,
+    @TimestampConverter() DateTime createdAt,
+    @TimestampConverter() DateTime updatedAt,
     String initiatorName,
     String recipientName,
   });
@@ -216,8 +216,8 @@ class _$FriendshipModelImpl extends _FriendshipModel {
     required this.initiatorId,
     required this.recipientId,
     required this.status,
-    @RequiredTimestampConverter() required this.createdAt,
-    @RequiredTimestampConverter() required this.updatedAt,
+    @TimestampConverter() required this.createdAt,
+    @TimestampConverter() required this.updatedAt,
     required this.initiatorName,
     required this.recipientName,
   }) : super._();
@@ -234,10 +234,10 @@ class _$FriendshipModelImpl extends _FriendshipModel {
   @override
   final FriendshipStatus status;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime createdAt;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime updatedAt;
   @override
   final String initiatorName;
@@ -307,8 +307,8 @@ abstract class _FriendshipModel extends FriendshipModel {
     required final String initiatorId,
     required final String recipientId,
     required final FriendshipStatus status,
-    @RequiredTimestampConverter() required final DateTime createdAt,
-    @RequiredTimestampConverter() required final DateTime updatedAt,
+    @TimestampConverter() required final DateTime createdAt,
+    @TimestampConverter() required final DateTime updatedAt,
     required final String initiatorName,
     required final String recipientName,
   }) = _$FriendshipModelImpl;
@@ -326,10 +326,10 @@ abstract class _FriendshipModel extends FriendshipModel {
   @override
   FriendshipStatus get status;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get createdAt;
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get updatedAt;
   @override
   String get initiatorName;

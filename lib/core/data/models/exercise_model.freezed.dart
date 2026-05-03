@@ -29,7 +29,7 @@ mixin _$ExerciseModel {
   int? get durationMinutes => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ExerciseModel to a JSON map.
@@ -55,7 +55,7 @@ abstract class $ExerciseModelCopyWith<$Res> {
     String? description,
     int? durationMinutes,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
   });
 }
 
@@ -128,7 +128,7 @@ abstract class _$$ExerciseModelImplCopyWith<$Res>
     String? description,
     int? durationMinutes,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
   });
 }
 
@@ -193,7 +193,7 @@ class _$ExerciseModelImpl extends _ExerciseModel {
     this.description,
     this.durationMinutes,
     @TimestampConverter() required this.createdAt,
-    @TimestampConverter() this.updatedAt,
+    @NullableTimestampConverter() this.updatedAt,
   }) : super._();
 
   factory _$ExerciseModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -213,7 +213,7 @@ class _$ExerciseModelImpl extends _ExerciseModel {
   @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? updatedAt;
 
   @override
@@ -271,7 +271,7 @@ abstract class _ExerciseModel extends ExerciseModel {
     final String? description,
     final int? durationMinutes,
     @TimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
+    @NullableTimestampConverter() final DateTime? updatedAt,
   }) = _$ExerciseModelImpl;
   const _ExerciseModel._() : super._();
 
@@ -292,7 +292,7 @@ abstract class _ExerciseModel extends ExerciseModel {
   @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt;
 
   /// Create a copy of ExerciseModel

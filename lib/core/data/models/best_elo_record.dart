@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'user_model.dart'; // For RequiredTimestampConverter
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'best_elo_record.freezed.dart';
 part 'best_elo_record.g.dart';
@@ -14,7 +14,7 @@ class BestEloRecord with _$BestEloRecord {
     required double elo,
 
     /// The date when this ELO was achieved
-    @RequiredTimestampConverter() required DateTime date,
+    @TimestampConverter() required DateTime date,
 
     /// Reference to the game that resulted in this rating
     required String gameId,

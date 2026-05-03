@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 part 'invitation_model.freezed.dart';
 part 'invitation_model.g.dart';
 
@@ -65,22 +67,3 @@ class InvitationModel with _$InvitationModel {
   }
 }
 
-/// Converter for Firestore Timestamp to DateTime
-class TimestampConverter implements JsonConverter<DateTime, Object> {
-  const TimestampConverter();
-
-  @override
-  DateTime fromJson(Object json) {
-    if (json is Timestamp) {
-      return json.toDate();
-    } else if (json is int) {
-      return DateTime.fromMillisecondsSinceEpoch(json);
-    } else if (json is String) {
-      return DateTime.parse(json);
-    }
-    throw Exception('Unknown type for timestamp: ${json.runtimeType}');
-  }
-
-  @override
-  Object toJson(DateTime object) => Timestamp.fromDate(object);
-}

@@ -1,6 +1,7 @@
 // Tests InvitationModel serialization, status methods, and TimestampConverter.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/invitation_model.dart';
 
 void main() {
@@ -732,40 +733,40 @@ void main() {
         expect(result, testDate);
       });
 
-      test('throws exception for unknown type', () {
+      test('throws ArgumentError for unknown type', () {
         expect(
           () => converter.fromJson(12.34),
           throwsA(
-            isA<Exception>().having(
+            isA<ArgumentError>().having(
               (e) => e.toString(),
               'message',
-              contains('Unknown type for timestamp'),
+              contains('TimestampConverter: unsupported type'),
             ),
           ),
         );
       });
 
-      test('throws exception for list type', () {
+      test('throws ArgumentError for list type', () {
         expect(
           () => converter.fromJson([1, 2, 3]),
           throwsA(
-            isA<Exception>().having(
+            isA<ArgumentError>().having(
               (e) => e.toString(),
               'message',
-              contains('Unknown type for timestamp'),
+              contains('TimestampConverter: unsupported type'),
             ),
           ),
         );
       });
 
-      test('throws exception for map type', () {
+      test('throws ArgumentError for map type', () {
         expect(
           () => converter.fromJson({'key': 'value'}),
           throwsA(
-            isA<Exception>().having(
+            isA<ArgumentError>().having(
               (e) => e.toString(),
               'message',
-              contains('Unknown type for timestamp'),
+              contains('TimestampConverter: unsupported type'),
             ),
           ),
         );

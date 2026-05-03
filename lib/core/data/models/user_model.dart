@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Story 302.7
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/domain/entities/account_status.dart';
 
 part 'user_model.freezed.dart';
@@ -14,14 +15,14 @@ class UserModel with _$UserModel {
     String? displayName,
     String? photoUrl,
     @Default(false) bool isEmailVerified,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? lastSignInAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? createdAt,
+    @NullableTimestampConverter() DateTime? lastSignInAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     // Account status fields (Story 17.8.2)
-    @TimestampConverter() DateTime? emailVerifiedAt,
+    @NullableTimestampConverter() DateTime? emailVerifiedAt,
     @Default(AccountStatus.pendingVerification) AccountStatus accountStatus,
-    @TimestampConverter() DateTime? gracePeriodExpiresAt,
-    @TimestampConverter() DateTime? deletionScheduledAt,
+    @NullableTimestampConverter() DateTime? gracePeriodExpiresAt,
+    @NullableTimestampConverter() DateTime? deletionScheduledAt,
     // Extended fields for full user profile
     String? firstName,
     String? lastName,
@@ -34,7 +35,7 @@ class UserModel with _$UserModel {
     // Social graph cache fields (Story 11.6)
     @Default([]) List<String> friendIds,
     @Default(0) int friendCount,
-    @TimestampConverter() DateTime? friendsLastUpdated,
+    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     // User preferences
     @Default(true) bool notificationsEnabled,
     @Default(true) bool emailNotifications,
@@ -50,15 +51,15 @@ class UserModel with _$UserModel {
     @Default(0) int totalScore,
     @Default(0) int currentStreak,
     @Default([]) List<String> recentGameIds,
-    @TimestampConverter() DateTime? lastGameDate,
+    @NullableTimestampConverter() DateTime? lastGameDate,
     @Default({}) Map<String, dynamic> teammateStats,
     // Gender profile (Story 26.1)
     UserGender? gender,
     // ELO Rating fields (Story 14.5.3)
     @Default(1200.0) double eloRating,
-    @TimestampConverter() DateTime? eloLastUpdated,
+    @NullableTimestampConverter() DateTime? eloLastUpdated,
     @Default(1200.0) double eloPeak,
-    @TimestampConverter() DateTime? eloPeakDate,
+    @NullableTimestampConverter() DateTime? eloPeakDate,
     @Default(0) int eloGamesPlayed,
     // Nemesis/Rival tracking (Story 301.8)
     NemesisRecord? nemesis,
@@ -331,43 +332,6 @@ enum UserPrivacyLevel {
   private,
 }
 
-/// Custom converter for Firestore Timestamp to DateTime (nullable)
-class TimestampConverter implements JsonConverter<DateTime?, Object?> {
-  const TimestampConverter();
-
-  @override
-  DateTime? fromJson(Object? json) {
-    if (json == null) return null;
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    return null;
-  }
-
-  @override
-  Object? toJson(DateTime? object) {
-    if (object == null) return null;
-    return Timestamp.fromDate(object);
-  }
-}
-
-/// Custom converter for Firestore Timestamp to DateTime (required/non-nullable)
-class RequiredTimestampConverter implements JsonConverter<DateTime, Object> {
-  const RequiredTimestampConverter();
-
-  @override
-  DateTime fromJson(Object json) {
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    throw ArgumentError('Cannot convert $json to DateTime');
-  }
-
-  @override
-  Object toJson(DateTime object) {
-    return Timestamp.fromDate(object);
-  }
-}
 
 /// Nemesis record tracking the opponent a player has lost to most often.
 /// This record is automatically updated by Cloud Functions after each game.
@@ -430,9 +394,7 @@ class BestWinRecord with _$BestWinRecord {
     required double eloGained,
 
     /// Date when this win occurred
-    // ignore: invalid_annotation_target
-    @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
-    required DateTime date,
+    @TimestampConverter() required DateTime date,
 
     /// Game title or description for display
     required String gameTitle,
@@ -458,18 +420,6 @@ class BestWinRecord with _$BestWinRecord {
   String get teamEloString => opponentTeamElo.toStringAsFixed(0);
 }
 
-// Helper functions for BestWinRecord date field
-DateTime _dateFromJson(dynamic value) {
-  final result = const TimestampConverter().fromJson(value);
-  if (result == null) {
-    throw ArgumentError('BestWinRecord date cannot be null');
-  }
-  return result;
-}
-
-dynamic _dateToJson(DateTime date) {
-  return const TimestampConverter().toJson(date);
-}
 
 /// Point statistics tracking average point differential per set.
 /// Separates winning sets from losing sets to show dominance vs competitiveness.

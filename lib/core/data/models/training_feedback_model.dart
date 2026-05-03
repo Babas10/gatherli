@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 part 'training_feedback_model.freezed.dart';
 part 'training_feedback_model.g.dart';
 
@@ -44,18 +46,8 @@ class TrainingFeedbackModel with _$TrainingFeedbackModel {
     String trainingSessionId,
   ) {
     final data = doc.data() as Map<String, dynamic>;
-
-    // Convert Firestore Timestamps to DateTime strings for JSON deserialization
-    final jsonData = Map<String, dynamic>.from(data);
-
-    if (data['submittedAt'] is Timestamp) {
-      jsonData['submittedAt'] = (data['submittedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-
     return TrainingFeedbackModel.fromJson({
-      ...jsonData,
+      ...data,
       'id': doc.id,
       'trainingSessionId': trainingSessionId,
     });
@@ -65,15 +57,7 @@ class TrainingFeedbackModel with _$TrainingFeedbackModel {
   Map<String, dynamic> toFirestore() {
     final json = toJson();
     json.remove('id'); // Remove id as it's the document ID
-    json.remove(
-      'trainingSessionId',
-    ); // Remove trainingSessionId as it's in the path
-
-    // Convert DateTime fields to Firestore Timestamps
-    if (json['submittedAt'] is String) {
-      json['submittedAt'] = Timestamp.fromDate(submittedAt);
-    }
-
+    json.remove('trainingSessionId'); // Remove trainingSessionId as it's in the path
     return json;
   }
 
@@ -112,23 +96,3 @@ class TrainingFeedbackModel with _$TrainingFeedbackModel {
       (exercisesQuality + trainingIntensity + coachingClarity) / 3;
 }
 
-/// Timestamp converter for Freezed models
-class TimestampConverter implements JsonConverter<DateTime, dynamic> {
-  const TimestampConverter();
-
-  @override
-  DateTime fromJson(dynamic value) {
-    if (value is Timestamp) {
-      return value.toDate();
-    } else if (value is String) {
-      return DateTime.parse(value);
-    } else {
-      throw ArgumentError('Invalid timestamp format: $value');
-    }
-  }
-
-  @override
-  dynamic toJson(DateTime dateTime) {
-    return dateTime.toIso8601String();
-  }
-}

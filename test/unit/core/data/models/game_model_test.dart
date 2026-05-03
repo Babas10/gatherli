@@ -1,6 +1,7 @@
 // Tests GameModel serialization and business logic methods
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 
 void main() {
@@ -1525,23 +1526,18 @@ void main() {
   });
 
   group('TimestampConverter', () {
-    const converter = TimestampConverter();
-
-    test('fromJson handles null', () {
-      expect(converter.fromJson(null), isNull);
-    });
-
     test('fromJson handles Timestamp', () {
+      const converter = TimestampConverter();
       final now = DateTime.now();
       final timestamp = Timestamp.fromDate(now);
 
       final result = converter.fromJson(timestamp);
 
-      expect(result, isNotNull);
-      expect(result!.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
+      expect(result.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
     });
 
     test('fromJson handles String', () {
+      const converter = TimestampConverter();
       final now = DateTime.now();
 
       final result = converter.fromJson(now.toIso8601String());
@@ -1550,24 +1546,33 @@ void main() {
     });
 
     test('fromJson handles int (milliseconds)', () {
+      const converter = TimestampConverter();
       final now = DateTime.now();
 
       final result = converter.fromJson(now.millisecondsSinceEpoch);
 
-      expect(result, isNotNull);
-      expect(result!.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
-    });
-
-    test('toJson returns null for null', () {
-      expect(converter.toJson(null), isNull);
+      expect(result.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
     });
 
     test('toJson returns Timestamp for DateTime', () {
+      const converter = TimestampConverter();
       final now = DateTime.now();
 
       final result = converter.toJson(now);
 
       expect(result, isA<Timestamp>());
+    });
+  });
+
+  group('NullableTimestampConverter', () {
+    test('fromJson handles null', () {
+      const converter = NullableTimestampConverter();
+      expect(converter.fromJson(null), isNull);
+    });
+
+    test('toJson returns null for null', () {
+      const converter = NullableTimestampConverter();
+      expect(converter.toJson(null), isNull);
     });
   });
 

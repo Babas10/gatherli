@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:play_with_me/core/data/models/user_model.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'head_to_head_stats.freezed.dart';
 part 'head_to_head_stats.g.dart';
@@ -53,7 +53,7 @@ class HeadToHeadStats with _$HeadToHeadStats {
     @Default([]) List<HeadToHeadGameResult> recentMatchups,
 
     /// When these stats were last updated
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   }) = _HeadToHeadStats;
 
   const HeadToHeadStats._();
@@ -183,7 +183,7 @@ class HeadToHeadGameResult with _$HeadToHeadGameResult {
     String? opponentPartnerId,
 
     /// When the game was played
-    @RequiredTimestampConverter() required DateTime timestamp,
+    @TimestampConverter() required DateTime timestamp,
   }) = _HeadToHeadGameResult;
 
   const HeadToHeadGameResult._();
