@@ -52,8 +52,8 @@ void main() {
         expect(json['name'], 'Serving Practice');
         expect(json['description'], 'Practice serving techniques');
         expect(json['durationMinutes'], 30);
-        expect(json['createdAt'], testExercise.createdAt.toIso8601String());
-        expect(json['updatedAt'], testExercise.updatedAt?.toIso8601String());
+        expect(json['createdAt'], isA<Timestamp>());
+        expect(json['updatedAt'], isA<Timestamp>());
       });
 
       test('fromJson deserializes correctly', () {
@@ -116,7 +116,7 @@ void main() {
         final exercise = testExercise.copyWith(updatedAt: null);
         final firestoreData = exercise.toFirestore();
 
-        expect(firestoreData.containsKey('updatedAt'), isFalse);
+        expect(firestoreData['updatedAt'], isNull);
       });
     });
 

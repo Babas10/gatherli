@@ -35,7 +35,7 @@ mixin _$TrainingSessionModel {
   String get createdBy => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError; // Recurrence support (Story 15.2)
   RecurrenceRuleModel? get recurrenceRule =>
       throw _privateConstructorUsedError; // Parent session ID (for recurring session instances)
@@ -49,7 +49,7 @@ mixin _$TrainingSessionModel {
   String? get notes =>
       throw _privateConstructorUsedError; // Cancellation tracking (Story 15.14)
   String? get cancelledBy => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get cancelledAt => throw _privateConstructorUsedError;
 
   /// Serializes this TrainingSessionModel to a JSON map.
@@ -81,14 +81,14 @@ abstract class $TrainingSessionModelCopyWith<$Res> {
     int maxParticipants,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     RecurrenceRuleModel? recurrenceRule,
     String? parentSessionId,
     TrainingStatus status,
     List<String> participantIds,
     String? notes,
     String? cancelledBy,
-    @TimestampConverter() DateTime? cancelledAt,
+    @NullableTimestampConverter() DateTime? cancelledAt,
   });
 
   $GameLocationCopyWith<$Res> get location;
@@ -262,14 +262,14 @@ abstract class _$$TrainingSessionModelImplCopyWith<$Res>
     int maxParticipants,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     RecurrenceRuleModel? recurrenceRule,
     String? parentSessionId,
     TrainingStatus status,
     List<String> participantIds,
     String? notes,
     String? cancelledBy,
-    @TimestampConverter() DateTime? cancelledAt,
+    @NullableTimestampConverter() DateTime? cancelledAt,
   });
 
   @override
@@ -410,14 +410,14 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
     required this.maxParticipants,
     required this.createdBy,
     @TimestampConverter() required this.createdAt,
-    @TimestampConverter() this.updatedAt,
+    @NullableTimestampConverter() this.updatedAt,
     this.recurrenceRule,
     this.parentSessionId,
     this.status = TrainingStatus.scheduled,
     final List<String> participantIds = const [],
     this.notes,
     this.cancelledBy,
-    @TimestampConverter() this.cancelledAt,
+    @NullableTimestampConverter() this.cancelledAt,
   }) : _participantIds = participantIds,
        super._();
 
@@ -450,7 +450,7 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
   @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? updatedAt;
   // Recurrence support (Story 15.2)
   @override
@@ -481,7 +481,7 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
   @override
   final String? cancelledBy;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? cancelledAt;
 
   @override
@@ -586,14 +586,14 @@ abstract class _TrainingSessionModel extends TrainingSessionModel {
     required final int maxParticipants,
     required final String createdBy,
     @TimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
+    @NullableTimestampConverter() final DateTime? updatedAt,
     final RecurrenceRuleModel? recurrenceRule,
     final String? parentSessionId,
     final TrainingStatus status,
     final List<String> participantIds,
     final String? notes,
     final String? cancelledBy,
-    @TimestampConverter() final DateTime? cancelledAt,
+    @NullableTimestampConverter() final DateTime? cancelledAt,
   }) = _$TrainingSessionModelImpl;
   const _TrainingSessionModel._() : super._();
 
@@ -626,7 +626,7 @@ abstract class _TrainingSessionModel extends TrainingSessionModel {
   @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt; // Recurrence support (Story 15.2)
   @override
   RecurrenceRuleModel? get recurrenceRule; // Parent session ID (for recurring session instances)
@@ -642,7 +642,7 @@ abstract class _TrainingSessionModel extends TrainingSessionModel {
   @override
   String? get cancelledBy;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get cancelledAt;
 
   /// Create a copy of TrainingSessionModel

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:play_with_me/core/data/models/friendship_model.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'group_invite_link_model.freezed.dart';
 part 'group_invite_link_model.g.dart';
@@ -17,8 +17,8 @@ class GroupInviteLinkModel with _$GroupInviteLinkModel {
     required String id,
     required String token,
     required String createdBy,
-    @RequiredTimestampConverter() required DateTime createdAt,
-    @TimestampConverter() DateTime? expiresAt,
+    @TimestampConverter() required DateTime createdAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
     @Default(false) bool revoked,
     int? usageLimit,
     @Default(0) int usageCount,

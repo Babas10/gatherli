@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:play_with_me/core/data/models/user_model.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'teammate_stats.freezed.dart';
 part 'teammate_stats.g.dart';
@@ -34,7 +34,7 @@ class TeammateStats with _$TeammateStats {
     @Default([]) List<RecentGameResult> recentGames,
 
     /// When these stats were last updated
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   }) = _TeammateStats;
 
   const TeammateStats._();
@@ -139,7 +139,7 @@ class RecentGameResult with _$RecentGameResult {
     required double eloChange,
 
     /// When the game was played
-    @RequiredTimestampConverter() required DateTime timestamp,
+    @TimestampConverter() required DateTime timestamp,
   }) = _RecentGameResult;
 
   const RecentGameResult._();

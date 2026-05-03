@@ -14,8 +14,8 @@ _$GroupModelImpl _$$GroupModelImplFromJson(
   description: json['description'] as String?,
   photoUrl: json['photoUrl'] as String?,
   createdBy: json['createdBy'] as String,
-  createdAt: _timestampFromJson(json['createdAt']),
-  updatedAt: _timestampFromJsonNullable(json['updatedAt']),
+  createdAt: const TimestampConverter().fromJson(json['createdAt'] as Object),
+  updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
   memberIds:
       (json['memberIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
@@ -36,31 +36,36 @@ _$GroupModelImpl _$$GroupModelImplFromJson(
       json['allowMembersToInviteOthers'] as bool? ?? true,
   notifyMembersOfNewGames: json['notifyMembersOfNewGames'] as bool? ?? true,
   totalGamesPlayed: (json['totalGamesPlayed'] as num?)?.toInt() ?? 0,
-  lastActivity: _timestampFromJsonNullable(json['lastActivity']),
+  lastActivity: const NullableTimestampConverter().fromJson(
+    json['lastActivity'],
+  ),
 );
 
-Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'description': instance.description,
-      'photoUrl': instance.photoUrl,
-      'createdBy': instance.createdBy,
-      'createdAt': _timestampToJson(instance.createdAt),
-      'updatedAt': _timestampToJsonNullable(instance.updatedAt),
-      'memberIds': instance.memberIds,
-      'adminIds': instance.adminIds,
-      'gameIds': instance.gameIds,
-      'privacy': _$GroupPrivacyEnumMap[instance.privacy]!,
-      'requiresApproval': instance.requiresApproval,
-      'maxMembers': instance.maxMembers,
-      'location': instance.location,
-      'allowMembersToCreateGames': instance.allowMembersToCreateGames,
-      'allowMembersToInviteOthers': instance.allowMembersToInviteOthers,
-      'notifyMembersOfNewGames': instance.notifyMembersOfNewGames,
-      'totalGamesPlayed': instance.totalGamesPlayed,
-      'lastActivity': _timestampToJsonNullable(instance.lastActivity),
-    };
+Map<String, dynamic> _$$GroupModelImplToJson(
+  _$GroupModelImpl instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'description': instance.description,
+  'photoUrl': instance.photoUrl,
+  'createdBy': instance.createdBy,
+  'createdAt': const TimestampConverter().toJson(instance.createdAt),
+  'updatedAt': const NullableTimestampConverter().toJson(instance.updatedAt),
+  'memberIds': instance.memberIds,
+  'adminIds': instance.adminIds,
+  'gameIds': instance.gameIds,
+  'privacy': _$GroupPrivacyEnumMap[instance.privacy]!,
+  'requiresApproval': instance.requiresApproval,
+  'maxMembers': instance.maxMembers,
+  'location': instance.location,
+  'allowMembersToCreateGames': instance.allowMembersToCreateGames,
+  'allowMembersToInviteOthers': instance.allowMembersToInviteOthers,
+  'notifyMembersOfNewGames': instance.notifyMembersOfNewGames,
+  'totalGamesPlayed': instance.totalGamesPlayed,
+  'lastActivity': const NullableTimestampConverter().toJson(
+    instance.lastActivity,
+  ),
+};
 
 const _$GroupPrivacyEnumMap = {
   GroupPrivacy.public: 'public',

@@ -26,18 +26,18 @@ mixin _$UserModel {
   String? get displayName => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
   bool get isEmailVerified => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastSignInAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError; // Account status fields (Story 17.8.2)
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get emailVerifiedAt => throw _privateConstructorUsedError;
   AccountStatus get accountStatus => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get gracePeriodExpiresAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get deletionScheduledAt => throw _privateConstructorUsedError; // Extended fields for full user profile
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ mixin _$UserModel {
       throw _privateConstructorUsedError; // Social graph cache fields (Story 11.6)
   List<String> get friendIds => throw _privateConstructorUsedError;
   int get friendCount => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get friendsLastUpdated => throw _privateConstructorUsedError; // User preferences
   bool get notificationsEnabled => throw _privateConstructorUsedError;
   bool get emailNotifications => throw _privateConstructorUsedError;
@@ -65,17 +65,17 @@ mixin _$UserModel {
   int get totalScore => throw _privateConstructorUsedError;
   int get currentStreak => throw _privateConstructorUsedError;
   List<String> get recentGameIds => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastGameDate => throw _privateConstructorUsedError;
   Map<String, dynamic> get teammateStats =>
       throw _privateConstructorUsedError; // Gender profile (Story 26.1)
   UserGender? get gender =>
       throw _privateConstructorUsedError; // ELO Rating fields (Story 14.5.3)
   double get eloRating => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get eloLastUpdated => throw _privateConstructorUsedError;
   double get eloPeak => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get eloPeakDate => throw _privateConstructorUsedError;
   int get eloGamesPlayed =>
       throw _privateConstructorUsedError; // Nemesis/Rival tracking (Story 301.8)
@@ -108,13 +108,13 @@ abstract class $UserModelCopyWith<$Res> {
     String? displayName,
     String? photoUrl,
     bool isEmailVerified,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? lastSignInAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? emailVerifiedAt,
+    @NullableTimestampConverter() DateTime? createdAt,
+    @NullableTimestampConverter() DateTime? lastSignInAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? emailVerifiedAt,
     AccountStatus accountStatus,
-    @TimestampConverter() DateTime? gracePeriodExpiresAt,
-    @TimestampConverter() DateTime? deletionScheduledAt,
+    @NullableTimestampConverter() DateTime? gracePeriodExpiresAt,
+    @NullableTimestampConverter() DateTime? deletionScheduledAt,
     String? firstName,
     String? lastName,
     String? phoneNumber,
@@ -125,7 +125,7 @@ abstract class $UserModelCopyWith<$Res> {
     List<String> gameIds,
     List<String> friendIds,
     int friendCount,
-    @TimestampConverter() DateTime? friendsLastUpdated,
+    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     bool notificationsEnabled,
     bool emailNotifications,
     bool pushNotifications,
@@ -138,13 +138,13 @@ abstract class $UserModelCopyWith<$Res> {
     int totalScore,
     int currentStreak,
     List<String> recentGameIds,
-    @TimestampConverter() DateTime? lastGameDate,
+    @NullableTimestampConverter() DateTime? lastGameDate,
     Map<String, dynamic> teammateStats,
     UserGender? gender,
     double eloRating,
-    @TimestampConverter() DateTime? eloLastUpdated,
+    @NullableTimestampConverter() DateTime? eloLastUpdated,
     double eloPeak,
-    @TimestampConverter() DateTime? eloPeakDate,
+    @NullableTimestampConverter() DateTime? eloPeakDate,
     int eloGamesPlayed,
     NemesisRecord? nemesis,
     BestWinRecord? bestWin,
@@ -488,13 +488,13 @@ abstract class _$$UserModelImplCopyWith<$Res>
     String? displayName,
     String? photoUrl,
     bool isEmailVerified,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? lastSignInAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? emailVerifiedAt,
+    @NullableTimestampConverter() DateTime? createdAt,
+    @NullableTimestampConverter() DateTime? lastSignInAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? emailVerifiedAt,
     AccountStatus accountStatus,
-    @TimestampConverter() DateTime? gracePeriodExpiresAt,
-    @TimestampConverter() DateTime? deletionScheduledAt,
+    @NullableTimestampConverter() DateTime? gracePeriodExpiresAt,
+    @NullableTimestampConverter() DateTime? deletionScheduledAt,
     String? firstName,
     String? lastName,
     String? phoneNumber,
@@ -505,7 +505,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
     List<String> gameIds,
     List<String> friendIds,
     int friendCount,
-    @TimestampConverter() DateTime? friendsLastUpdated,
+    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     bool notificationsEnabled,
     bool emailNotifications,
     bool pushNotifications,
@@ -518,13 +518,13 @@ abstract class _$$UserModelImplCopyWith<$Res>
     int totalScore,
     int currentStreak,
     List<String> recentGameIds,
-    @TimestampConverter() DateTime? lastGameDate,
+    @NullableTimestampConverter() DateTime? lastGameDate,
     Map<String, dynamic> teammateStats,
     UserGender? gender,
     double eloRating,
-    @TimestampConverter() DateTime? eloLastUpdated,
+    @NullableTimestampConverter() DateTime? eloLastUpdated,
     double eloPeak,
-    @TimestampConverter() DateTime? eloPeakDate,
+    @NullableTimestampConverter() DateTime? eloPeakDate,
     int eloGamesPlayed,
     NemesisRecord? nemesis,
     BestWinRecord? bestWin,
@@ -808,13 +808,13 @@ class _$UserModelImpl extends _UserModel {
     this.displayName,
     this.photoUrl,
     this.isEmailVerified = false,
-    @TimestampConverter() this.createdAt,
-    @TimestampConverter() this.lastSignInAt,
-    @TimestampConverter() this.updatedAt,
-    @TimestampConverter() this.emailVerifiedAt,
+    @NullableTimestampConverter() this.createdAt,
+    @NullableTimestampConverter() this.lastSignInAt,
+    @NullableTimestampConverter() this.updatedAt,
+    @NullableTimestampConverter() this.emailVerifiedAt,
     this.accountStatus = AccountStatus.pendingVerification,
-    @TimestampConverter() this.gracePeriodExpiresAt,
-    @TimestampConverter() this.deletionScheduledAt,
+    @NullableTimestampConverter() this.gracePeriodExpiresAt,
+    @NullableTimestampConverter() this.deletionScheduledAt,
     this.firstName,
     this.lastName,
     this.phoneNumber,
@@ -825,7 +825,7 @@ class _$UserModelImpl extends _UserModel {
     final List<String> gameIds = const [],
     final List<String> friendIds = const [],
     this.friendCount = 0,
-    @TimestampConverter() this.friendsLastUpdated,
+    @NullableTimestampConverter() this.friendsLastUpdated,
     this.notificationsEnabled = true,
     this.emailNotifications = true,
     this.pushNotifications = true,
@@ -838,13 +838,13 @@ class _$UserModelImpl extends _UserModel {
     this.totalScore = 0,
     this.currentStreak = 0,
     final List<String> recentGameIds = const [],
-    @TimestampConverter() this.lastGameDate,
+    @NullableTimestampConverter() this.lastGameDate,
     final Map<String, dynamic> teammateStats = const {},
     this.gender,
     this.eloRating = 1200.0,
-    @TimestampConverter() this.eloLastUpdated,
+    @NullableTimestampConverter() this.eloLastUpdated,
     this.eloPeak = 1200.0,
-    @TimestampConverter() this.eloPeakDate,
+    @NullableTimestampConverter() this.eloPeakDate,
     this.eloGamesPlayed = 0,
     this.nemesis,
     this.bestWin,
@@ -872,26 +872,26 @@ class _$UserModelImpl extends _UserModel {
   @JsonKey()
   final bool isEmailVerified;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? lastSignInAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? updatedAt;
   // Account status fields (Story 17.8.2)
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? emailVerifiedAt;
   @override
   @JsonKey()
   final AccountStatus accountStatus;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? gracePeriodExpiresAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? deletionScheduledAt;
   // Extended fields for full user profile
   @override
@@ -939,7 +939,7 @@ class _$UserModelImpl extends _UserModel {
   @JsonKey()
   final int friendCount;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? friendsLastUpdated;
   // User preferences
   @override
@@ -987,7 +987,7 @@ class _$UserModelImpl extends _UserModel {
   }
 
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? lastGameDate;
   final Map<String, dynamic> _teammateStats;
   @override
@@ -1006,13 +1006,13 @@ class _$UserModelImpl extends _UserModel {
   @JsonKey()
   final double eloRating;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? eloLastUpdated;
   @override
   @JsonKey()
   final double eloPeak;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? eloPeakDate;
   @override
   @JsonKey()
@@ -1207,13 +1207,13 @@ abstract class _UserModel extends UserModel {
     final String? displayName,
     final String? photoUrl,
     final bool isEmailVerified,
-    @TimestampConverter() final DateTime? createdAt,
-    @TimestampConverter() final DateTime? lastSignInAt,
-    @TimestampConverter() final DateTime? updatedAt,
-    @TimestampConverter() final DateTime? emailVerifiedAt,
+    @NullableTimestampConverter() final DateTime? createdAt,
+    @NullableTimestampConverter() final DateTime? lastSignInAt,
+    @NullableTimestampConverter() final DateTime? updatedAt,
+    @NullableTimestampConverter() final DateTime? emailVerifiedAt,
     final AccountStatus accountStatus,
-    @TimestampConverter() final DateTime? gracePeriodExpiresAt,
-    @TimestampConverter() final DateTime? deletionScheduledAt,
+    @NullableTimestampConverter() final DateTime? gracePeriodExpiresAt,
+    @NullableTimestampConverter() final DateTime? deletionScheduledAt,
     final String? firstName,
     final String? lastName,
     final String? phoneNumber,
@@ -1224,7 +1224,7 @@ abstract class _UserModel extends UserModel {
     final List<String> gameIds,
     final List<String> friendIds,
     final int friendCount,
-    @TimestampConverter() final DateTime? friendsLastUpdated,
+    @NullableTimestampConverter() final DateTime? friendsLastUpdated,
     final bool notificationsEnabled,
     final bool emailNotifications,
     final bool pushNotifications,
@@ -1237,13 +1237,13 @@ abstract class _UserModel extends UserModel {
     final int totalScore,
     final int currentStreak,
     final List<String> recentGameIds,
-    @TimestampConverter() final DateTime? lastGameDate,
+    @NullableTimestampConverter() final DateTime? lastGameDate,
     final Map<String, dynamic> teammateStats,
     final UserGender? gender,
     final double eloRating,
-    @TimestampConverter() final DateTime? eloLastUpdated,
+    @NullableTimestampConverter() final DateTime? eloLastUpdated,
     final double eloPeak,
-    @TimestampConverter() final DateTime? eloPeakDate,
+    @NullableTimestampConverter() final DateTime? eloPeakDate,
     final int eloGamesPlayed,
     final NemesisRecord? nemesis,
     final BestWinRecord? bestWin,
@@ -1266,24 +1266,24 @@ abstract class _UserModel extends UserModel {
   @override
   bool get isEmailVerified;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastSignInAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get updatedAt; // Account status fields (Story 17.8.2)
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get emailVerifiedAt;
   @override
   AccountStatus get accountStatus;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get gracePeriodExpiresAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get deletionScheduledAt; // Extended fields for full user profile
   @override
   String? get firstName;
@@ -1306,7 +1306,7 @@ abstract class _UserModel extends UserModel {
   @override
   int get friendCount;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get friendsLastUpdated; // User preferences
   @override
   bool get notificationsEnabled;
@@ -1333,7 +1333,7 @@ abstract class _UserModel extends UserModel {
   @override
   List<String> get recentGameIds;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastGameDate;
   @override
   Map<String, dynamic> get teammateStats; // Gender profile (Story 26.1)
@@ -1342,12 +1342,12 @@ abstract class _UserModel extends UserModel {
   @override
   double get eloRating;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get eloLastUpdated;
   @override
   double get eloPeak;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get eloPeakDate;
   @override
   int get eloGamesPlayed; // Nemesis/Rival tracking (Story 301.8)
@@ -1697,8 +1697,7 @@ mixin _$BestWinRecord {
   double get eloGained => throw _privateConstructorUsedError;
 
   /// Date when this win occurred
-  // ignore: invalid_annotation_target
-  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
+  @TimestampConverter()
   DateTime get date => throw _privateConstructorUsedError;
 
   /// Game title or description for display
@@ -1731,7 +1730,7 @@ abstract class $BestWinRecordCopyWith<$Res> {
     double opponentTeamElo,
     double opponentTeamAvgElo,
     double eloGained,
-    @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson) DateTime date,
+    @TimestampConverter() DateTime date,
     String gameTitle,
     String? opponentNames,
   });
@@ -1810,7 +1809,7 @@ abstract class _$$BestWinRecordImplCopyWith<$Res>
     double opponentTeamElo,
     double opponentTeamAvgElo,
     double eloGained,
-    @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson) DateTime date,
+    @TimestampConverter() DateTime date,
     String gameTitle,
     String? opponentNames,
   });
@@ -1881,7 +1880,7 @@ class _$BestWinRecordImpl extends _BestWinRecord {
     required this.opponentTeamElo,
     required this.opponentTeamAvgElo,
     required this.eloGained,
-    @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson) required this.date,
+    @TimestampConverter() required this.date,
     required this.gameTitle,
     this.opponentNames,
   }) : super._();
@@ -1906,9 +1905,8 @@ class _$BestWinRecordImpl extends _BestWinRecord {
   final double eloGained;
 
   /// Date when this win occurred
-  // ignore: invalid_annotation_target
   @override
-  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
+  @TimestampConverter()
   final DateTime date;
 
   /// Game title or description for display
@@ -1978,8 +1976,7 @@ abstract class _BestWinRecord extends BestWinRecord {
     required final double opponentTeamElo,
     required final double opponentTeamAvgElo,
     required final double eloGained,
-    @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
-    required final DateTime date,
+    @TimestampConverter() required final DateTime date,
     required final String gameTitle,
     final String? opponentNames,
   }) = _$BestWinRecordImpl;
@@ -2005,9 +2002,8 @@ abstract class _BestWinRecord extends BestWinRecord {
   double get eloGained;
 
   /// Date when this win occurred
-  // ignore: invalid_annotation_target
   @override
-  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
+  @TimestampConverter()
   DateTime get date;
 
   /// Game title or description for display

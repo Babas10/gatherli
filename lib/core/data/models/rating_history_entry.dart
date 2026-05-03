@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'user_model.dart'; // For RequiredTimestampConverter
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
 part 'rating_history_entry.freezed.dart';
 part 'rating_history_entry.g.dart';
@@ -33,7 +33,7 @@ class RatingHistoryEntry with _$RatingHistoryEntry {
     required bool won,
 
     /// When this rating update was recorded
-    @RequiredTimestampConverter() required DateTime timestamp,
+    @TimestampConverter() required DateTime timestamp,
   }) = _RatingHistoryEntry;
 
   const RatingHistoryEntry._();

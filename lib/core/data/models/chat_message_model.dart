@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 part 'chat_message_model.freezed.dart';
 part 'chat_message_model.g.dart';
 
@@ -33,18 +35,3 @@ class ChatMessageModel with _$ChatMessageModel {
   }
 }
 
-/// Custom converter for Firestore Timestamp to DateTime
-class TimestampConverter implements JsonConverter<DateTime, Object> {
-  const TimestampConverter();
-
-  @override
-  DateTime fromJson(Object json) {
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    throw Exception('Unknown type for timestamp: ${json.runtimeType}');
-  }
-
-  @override
-  Object toJson(DateTime object) => Timestamp.fromDate(object);
-}

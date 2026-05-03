@@ -1,6 +1,7 @@
 // Tests all GroupModel business logic methods and JSON serialization/deserialization
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
 
 void main() {
@@ -430,8 +431,8 @@ void main() {
       });
     });
 
-    group('TimestampConverter', () {
-      const converter = TimestampConverter();
+    group('NullableTimestampConverter', () {
+      const converter = NullableTimestampConverter();
 
       test('converts Timestamp to DateTime', () {
         final timestamp = Timestamp.fromDate(DateTime(2024, 1, 1));

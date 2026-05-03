@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 part 'exercise_model.freezed.dart';
 part 'exercise_model.g.dart';
 
@@ -17,7 +19,7 @@ class ExerciseModel with _$ExerciseModel {
     /// Duration in minutes (optional)
     int? durationMinutes,
     @TimestampConverter() required DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
   }) = _ExerciseModel;
 
   const ExerciseModel._();
@@ -28,39 +30,13 @@ class ExerciseModel with _$ExerciseModel {
   /// Factory constructor for creating from Firestore DocumentSnapshot
   factory ExerciseModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-
-    // Convert Firestore Timestamps to DateTime strings for JSON deserialization
-    final jsonData = Map<String, dynamic>.from(data);
-
-    if (data['createdAt'] is Timestamp) {
-      jsonData['createdAt'] = (data['createdAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['updatedAt'] is Timestamp) {
-      jsonData['updatedAt'] = (data['updatedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-
-    return ExerciseModel.fromJson({...jsonData, 'id': doc.id});
+    return ExerciseModel.fromJson({...data, 'id': doc.id});
   }
 
   /// Convert to Firestore-compatible map (excludes id since it's the document ID)
   Map<String, dynamic> toFirestore() {
     final json = toJson();
     json.remove('id'); // Remove id as it's the document ID
-
-    // Convert DateTime fields to Firestore Timestamps
-    if (json['createdAt'] is String) {
-      json['createdAt'] = Timestamp.fromDate(createdAt);
-    }
-    if (updatedAt != null && json['updatedAt'] is String) {
-      json['updatedAt'] = Timestamp.fromDate(updatedAt!);
-    } else {
-      json.remove('updatedAt'); // Remove null updatedAt from Firestore data
-    }
-
     return json;
   }
 
@@ -113,13 +89,3 @@ class ExerciseModel with _$ExerciseModel {
       (durationMinutes! > 0 && durationMinutes! <= 300); // Max 5 hours
 }
 
-/// Custom converter for DateTime to/from JSON
-class TimestampConverter implements JsonConverter<DateTime, String> {
-  const TimestampConverter();
-
-  @override
-  DateTime fromJson(String json) => DateTime.parse(json);
-
-  @override
-  String toJson(DateTime object) => object.toIso8601String();
-}

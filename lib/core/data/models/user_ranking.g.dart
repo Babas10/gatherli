@@ -13,7 +13,7 @@ _$UserRankingImpl _$$UserRankingImplFromJson(Map<String, dynamic> json) =>
       percentile: (json['percentile'] as num).toDouble(),
       friendsRank: (json['friendsRank'] as num?)?.toInt(),
       totalFriends: (json['totalFriends'] as num?)?.toInt(),
-      calculatedAt: const RequiredTimestampConverter().fromJson(
+      calculatedAt: const TimestampConverter().fromJson(
         json['calculatedAt'] as Object,
       ),
     );
@@ -25,7 +25,5 @@ Map<String, dynamic> _$$UserRankingImplToJson(_$UserRankingImpl instance) =>
       'percentile': instance.percentile,
       'friendsRank': instance.friendsRank,
       'totalFriends': instance.totalFriends,
-      'calculatedAt': const RequiredTimestampConverter().toJson(
-        instance.calculatedAt,
-      ),
+      'calculatedAt': const TimestampConverter().toJson(instance.calculatedAt),
     };

@@ -14,17 +14,21 @@ _$UserModelImpl _$$UserModelImplFromJson(
   displayName: json['displayName'] as String?,
   photoUrl: json['photoUrl'] as String?,
   isEmailVerified: json['isEmailVerified'] as bool? ?? false,
-  createdAt: const TimestampConverter().fromJson(json['createdAt']),
-  lastSignInAt: const TimestampConverter().fromJson(json['lastSignInAt']),
-  updatedAt: const TimestampConverter().fromJson(json['updatedAt']),
-  emailVerifiedAt: const TimestampConverter().fromJson(json['emailVerifiedAt']),
+  createdAt: const NullableTimestampConverter().fromJson(json['createdAt']),
+  lastSignInAt: const NullableTimestampConverter().fromJson(
+    json['lastSignInAt'],
+  ),
+  updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
+  emailVerifiedAt: const NullableTimestampConverter().fromJson(
+    json['emailVerifiedAt'],
+  ),
   accountStatus:
       $enumDecodeNullable(_$AccountStatusEnumMap, json['accountStatus']) ??
       AccountStatus.pendingVerification,
-  gracePeriodExpiresAt: const TimestampConverter().fromJson(
+  gracePeriodExpiresAt: const NullableTimestampConverter().fromJson(
     json['gracePeriodExpiresAt'],
   ),
-  deletionScheduledAt: const TimestampConverter().fromJson(
+  deletionScheduledAt: const NullableTimestampConverter().fromJson(
     json['deletionScheduledAt'],
   ),
   firstName: json['firstName'] as String?,
@@ -45,7 +49,7 @@ _$UserModelImpl _$$UserModelImplFromJson(
       (json['friendIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
   friendCount: (json['friendCount'] as num?)?.toInt() ?? 0,
-  friendsLastUpdated: const TimestampConverter().fromJson(
+  friendsLastUpdated: const NullableTimestampConverter().fromJson(
     json['friendsLastUpdated'],
   ),
   notificationsEnabled: json['notificationsEnabled'] as bool? ?? true,
@@ -66,13 +70,17 @@ _$UserModelImpl _$$UserModelImplFromJson(
           ?.map((e) => e as String)
           .toList() ??
       const [],
-  lastGameDate: const TimestampConverter().fromJson(json['lastGameDate']),
+  lastGameDate: const NullableTimestampConverter().fromJson(
+    json['lastGameDate'],
+  ),
   teammateStats: json['teammateStats'] as Map<String, dynamic>? ?? const {},
   gender: $enumDecodeNullable(_$UserGenderEnumMap, json['gender']),
   eloRating: (json['eloRating'] as num?)?.toDouble() ?? 1200.0,
-  eloLastUpdated: const TimestampConverter().fromJson(json['eloLastUpdated']),
+  eloLastUpdated: const NullableTimestampConverter().fromJson(
+    json['eloLastUpdated'],
+  ),
   eloPeak: (json['eloPeak'] as num?)?.toDouble() ?? 1200.0,
-  eloPeakDate: const TimestampConverter().fromJson(json['eloPeakDate']),
+  eloPeakDate: const NullableTimestampConverter().fromJson(json['eloPeakDate']),
   eloGamesPlayed: (json['eloGamesPlayed'] as num?)?.toInt() ?? 0,
   nemesis: json['nemesis'] == null
       ? null
@@ -96,17 +104,19 @@ Map<String, dynamic> _$$UserModelImplToJson(
   'displayName': instance.displayName,
   'photoUrl': instance.photoUrl,
   'isEmailVerified': instance.isEmailVerified,
-  'createdAt': const TimestampConverter().toJson(instance.createdAt),
-  'lastSignInAt': const TimestampConverter().toJson(instance.lastSignInAt),
-  'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
-  'emailVerifiedAt': const TimestampConverter().toJson(
+  'createdAt': const NullableTimestampConverter().toJson(instance.createdAt),
+  'lastSignInAt': const NullableTimestampConverter().toJson(
+    instance.lastSignInAt,
+  ),
+  'updatedAt': const NullableTimestampConverter().toJson(instance.updatedAt),
+  'emailVerifiedAt': const NullableTimestampConverter().toJson(
     instance.emailVerifiedAt,
   ),
   'accountStatus': _$AccountStatusEnumMap[instance.accountStatus]!,
-  'gracePeriodExpiresAt': const TimestampConverter().toJson(
+  'gracePeriodExpiresAt': const NullableTimestampConverter().toJson(
     instance.gracePeriodExpiresAt,
   ),
-  'deletionScheduledAt': const TimestampConverter().toJson(
+  'deletionScheduledAt': const NullableTimestampConverter().toJson(
     instance.deletionScheduledAt,
   ),
   'firstName': instance.firstName,
@@ -119,7 +129,7 @@ Map<String, dynamic> _$$UserModelImplToJson(
   'gameIds': instance.gameIds,
   'friendIds': instance.friendIds,
   'friendCount': instance.friendCount,
-  'friendsLastUpdated': const TimestampConverter().toJson(
+  'friendsLastUpdated': const NullableTimestampConverter().toJson(
     instance.friendsLastUpdated,
   ),
   'notificationsEnabled': instance.notificationsEnabled,
@@ -134,13 +144,19 @@ Map<String, dynamic> _$$UserModelImplToJson(
   'totalScore': instance.totalScore,
   'currentStreak': instance.currentStreak,
   'recentGameIds': instance.recentGameIds,
-  'lastGameDate': const TimestampConverter().toJson(instance.lastGameDate),
+  'lastGameDate': const NullableTimestampConverter().toJson(
+    instance.lastGameDate,
+  ),
   'teammateStats': instance.teammateStats,
   'gender': _$UserGenderEnumMap[instance.gender],
   'eloRating': instance.eloRating,
-  'eloLastUpdated': const TimestampConverter().toJson(instance.eloLastUpdated),
+  'eloLastUpdated': const NullableTimestampConverter().toJson(
+    instance.eloLastUpdated,
+  ),
   'eloPeak': instance.eloPeak,
-  'eloPeakDate': const TimestampConverter().toJson(instance.eloPeakDate),
+  'eloPeakDate': const NullableTimestampConverter().toJson(
+    instance.eloPeakDate,
+  ),
   'eloGamesPlayed': instance.eloGamesPlayed,
   'nemesis': instance.nemesis,
   'bestWin': instance.bestWin,
@@ -193,7 +209,7 @@ _$BestWinRecordImpl _$$BestWinRecordImplFromJson(Map<String, dynamic> json) =>
       opponentTeamElo: (json['opponentTeamElo'] as num).toDouble(),
       opponentTeamAvgElo: (json['opponentTeamAvgElo'] as num).toDouble(),
       eloGained: (json['eloGained'] as num).toDouble(),
-      date: _dateFromJson(json['date']),
+      date: const TimestampConverter().fromJson(json['date'] as Object),
       gameTitle: json['gameTitle'] as String,
       opponentNames: json['opponentNames'] as String?,
     );
@@ -204,7 +220,7 @@ Map<String, dynamic> _$$BestWinRecordImplToJson(_$BestWinRecordImpl instance) =>
       'opponentTeamElo': instance.opponentTeamElo,
       'opponentTeamAvgElo': instance.opponentTeamAvgElo,
       'eloGained': instance.eloGained,
-      'date': _dateToJson(instance.date),
+      'date': const TimestampConverter().toJson(instance.date),
       'gameTitle': instance.gameTitle,
       'opponentNames': instance.opponentNames,
     };

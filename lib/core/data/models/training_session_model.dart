@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
+
 import 'game_model.dart'; // For GameLocation reuse
 import 'recurrence_rule_model.dart';
 
@@ -24,7 +26,7 @@ class TrainingSessionModel with _$TrainingSessionModel {
     required int maxParticipants,
     required String createdBy,
     @TimestampConverter() required DateTime createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    @NullableTimestampConverter() DateTime? updatedAt,
     // Recurrence support (Story 15.2)
     RecurrenceRuleModel? recurrenceRule,
     // Parent session ID (for recurring session instances)
@@ -38,7 +40,7 @@ class TrainingSessionModel with _$TrainingSessionModel {
     String? notes,
     // Cancellation tracking (Story 15.14)
     String? cancelledBy,
-    @TimestampConverter() DateTime? cancelledAt,
+    @NullableTimestampConverter() DateTime? cancelledAt,
   }) = _TrainingSessionModel;
 
   const TrainingSessionModel._();
@@ -49,37 +51,7 @@ class TrainingSessionModel with _$TrainingSessionModel {
   /// Factory constructor for creating from Firestore DocumentSnapshot
   factory TrainingSessionModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-
-    // Convert Firestore Timestamps to DateTime strings for JSON deserialization
-    final jsonData = Map<String, dynamic>.from(data);
-
-    if (data['createdAt'] is Timestamp) {
-      jsonData['createdAt'] = (data['createdAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['startTime'] is Timestamp) {
-      jsonData['startTime'] = (data['startTime'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['endTime'] is Timestamp) {
-      jsonData['endTime'] = (data['endTime'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['updatedAt'] is Timestamp) {
-      jsonData['updatedAt'] = (data['updatedAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-    if (data['cancelledAt'] is Timestamp) {
-      jsonData['cancelledAt'] = (data['cancelledAt'] as Timestamp)
-          .toDate()
-          .toIso8601String();
-    }
-
-    return TrainingSessionModel.fromJson({...jsonData, 'id': doc.id});
+    return TrainingSessionModel.fromJson({...data, 'id': doc.id});
   }
 
   /// Convert to Firestore-compatible map (excludes id since it's the document ID)

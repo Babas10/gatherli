@@ -65,7 +65,7 @@ mixin _$HeadToHeadStats {
       throw _privateConstructorUsedError;
 
   /// When these stats were last updated
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastUpdated => throw _privateConstructorUsedError;
 
   /// Serializes this HeadToHeadStats to a JSON map.
@@ -100,7 +100,7 @@ abstract class $HeadToHeadStatsCopyWith<$Res> {
     int largestVictoryMargin,
     int largestDefeatMargin,
     List<HeadToHeadGameResult> recentMatchups,
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   });
 }
 
@@ -227,7 +227,7 @@ abstract class _$$HeadToHeadStatsImplCopyWith<$Res>
     int largestVictoryMargin,
     int largestDefeatMargin,
     List<HeadToHeadGameResult> recentMatchups,
-    @TimestampConverter() DateTime? lastUpdated,
+    @NullableTimestampConverter() DateTime? lastUpdated,
   });
 }
 
@@ -346,7 +346,7 @@ class _$HeadToHeadStatsImpl extends _HeadToHeadStats {
     this.largestVictoryMargin = 0,
     this.largestDefeatMargin = 0,
     final List<HeadToHeadGameResult> recentMatchups = const [],
-    @TimestampConverter() this.lastUpdated,
+    @NullableTimestampConverter() this.lastUpdated,
   }) : _recentMatchups = recentMatchups,
        super._();
 
@@ -424,7 +424,7 @@ class _$HeadToHeadStatsImpl extends _HeadToHeadStats {
 
   /// When these stats were last updated
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? lastUpdated;
 
   @override
@@ -524,7 +524,7 @@ abstract class _HeadToHeadStats extends HeadToHeadStats {
     final int largestVictoryMargin,
     final int largestDefeatMargin,
     final List<HeadToHeadGameResult> recentMatchups,
-    @TimestampConverter() final DateTime? lastUpdated,
+    @NullableTimestampConverter() final DateTime? lastUpdated,
   }) = _$HeadToHeadStatsImpl;
   const _HeadToHeadStats._() : super._();
 
@@ -589,7 +589,7 @@ abstract class _HeadToHeadStats extends HeadToHeadStats {
 
   /// When these stats were last updated
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get lastUpdated;
 
   /// Create a copy of HeadToHeadStats
@@ -628,7 +628,7 @@ mixin _$HeadToHeadGameResult {
   String? get opponentPartnerId => throw _privateConstructorUsedError;
 
   /// When the game was played
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Serializes this HeadToHeadGameResult to a JSON map.
@@ -656,7 +656,7 @@ abstract class $HeadToHeadGameResultCopyWith<$Res> {
     double eloChange,
     String? partnerId,
     String? opponentPartnerId,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -744,7 +744,7 @@ abstract class _$$HeadToHeadGameResultImplCopyWith<$Res>
     double eloChange,
     String? partnerId,
     String? opponentPartnerId,
-    @RequiredTimestampConverter() DateTime timestamp,
+    @TimestampConverter() DateTime timestamp,
   });
 }
 
@@ -821,7 +821,7 @@ class _$HeadToHeadGameResultImpl extends _HeadToHeadGameResult {
     required this.eloChange,
     this.partnerId,
     this.opponentPartnerId,
-    @RequiredTimestampConverter() required this.timestamp,
+    @TimestampConverter() required this.timestamp,
   }) : super._();
 
   factory _$HeadToHeadGameResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -857,7 +857,7 @@ class _$HeadToHeadGameResultImpl extends _HeadToHeadGameResult {
 
   /// When the game was played
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   final DateTime timestamp;
 
   @override
@@ -927,7 +927,7 @@ abstract class _HeadToHeadGameResult extends HeadToHeadGameResult {
     required final double eloChange,
     final String? partnerId,
     final String? opponentPartnerId,
-    @RequiredTimestampConverter() required final DateTime timestamp,
+    @TimestampConverter() required final DateTime timestamp,
   }) = _$HeadToHeadGameResultImpl;
   const _HeadToHeadGameResult._() : super._();
 
@@ -964,7 +964,7 @@ abstract class _HeadToHeadGameResult extends HeadToHeadGameResult {
 
   /// When the game was played
   @override
-  @RequiredTimestampConverter()
+  @TimestampConverter()
   DateTime get timestamp;
 
   /// Create a copy of HeadToHeadGameResult

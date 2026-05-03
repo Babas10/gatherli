@@ -17,9 +17,9 @@ _$GameInvitationModelImpl _$$GameInvitationModelImplFromJson(
   status:
       $enumDecodeNullable(_$GameInvitationStatusEnumMap, json['status']) ??
       GameInvitationStatus.pending,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: const TimestampConverter().fromJson(json['updatedAt']),
-  expiresAt: const TimestampConverter().fromJson(json['expiresAt']),
+  createdAt: const TimestampConverter().fromJson(json['createdAt'] as Object),
+  updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
+  expiresAt: const NullableTimestampConverter().fromJson(json['expiresAt']),
 );
 
 Map<String, dynamic> _$$GameInvitationModelImplToJson(
@@ -31,9 +31,9 @@ Map<String, dynamic> _$$GameInvitationModelImplToJson(
   'inviteeId': instance.inviteeId,
   'inviterId': instance.inviterId,
   'status': _$GameInvitationStatusEnumMap[instance.status]!,
-  'createdAt': instance.createdAt.toIso8601String(),
-  'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
-  'expiresAt': const TimestampConverter().toJson(instance.expiresAt),
+  'createdAt': const TimestampConverter().toJson(instance.createdAt),
+  'updatedAt': const NullableTimestampConverter().toJson(instance.updatedAt),
+  'expiresAt': const NullableTimestampConverter().toJson(instance.expiresAt),
 };
 
 const _$GameInvitationStatusEnumMap = {

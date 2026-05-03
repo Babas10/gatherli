@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 
 part 'friendship_model.freezed.dart';
@@ -18,8 +19,8 @@ class FriendshipModel with _$FriendshipModel {
     required String initiatorId,
     required String recipientId,
     required FriendshipStatus status,
-    @RequiredTimestampConverter() required DateTime createdAt,
-    @RequiredTimestampConverter() required DateTime updatedAt,
+    @TimestampConverter() required DateTime createdAt,
+    @TimestampConverter() required DateTime updatedAt,
     required String initiatorName,
     required String recipientName,
   }) = _FriendshipModel;
@@ -142,41 +143,3 @@ class FriendshipModel with _$FriendshipModel {
   }
 }
 
-/// Custom converter for Firestore Timestamp to DateTime (for nullable DateTime)
-class TimestampConverter implements JsonConverter<DateTime?, Object?> {
-  const TimestampConverter();
-
-  @override
-  DateTime? fromJson(Object? json) {
-    if (json == null) return null;
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    return null;
-  }
-
-  @override
-  Object? toJson(DateTime? object) {
-    if (object == null) return null;
-    return Timestamp.fromDate(object);
-  }
-}
-
-/// Custom converter for Firestore Timestamp to DateTime (for required DateTime)
-class RequiredTimestampConverter implements JsonConverter<DateTime, Object?> {
-  const RequiredTimestampConverter();
-
-  @override
-  DateTime fromJson(Object? json) {
-    if (json == null) throw ArgumentError('DateTime cannot be null');
-    if (json is Timestamp) return json.toDate();
-    if (json is String) return DateTime.parse(json);
-    if (json is int) return DateTime.fromMillisecondsSinceEpoch(json);
-    throw ArgumentError('Invalid DateTime format: $json');
-  }
-
-  @override
-  Object toJson(DateTime object) {
-    return Timestamp.fromDate(object);
-  }
-}
