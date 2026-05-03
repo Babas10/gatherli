@@ -22,9 +22,6 @@ _$GroupModelImpl _$$GroupModelImplFromJson(
   adminIds:
       (json['adminIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
-  gameIds:
-      (json['gameIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-      const [],
   privacy:
       $enumDecodeNullable(_$GroupPrivacyEnumMap, json['privacy']) ??
       GroupPrivacy.private,
@@ -53,7 +50,6 @@ Map<String, dynamic> _$$GroupModelImplToJson(
   'updatedAt': const NullableTimestampConverter().toJson(instance.updatedAt),
   'memberIds': instance.memberIds,
   'adminIds': instance.adminIds,
-  'gameIds': instance.gameIds,
   'privacy': _$GroupPrivacyEnumMap[instance.privacy]!,
   'requiresApproval': instance.requiresApproval,
   'maxMembers': instance.maxMembers,

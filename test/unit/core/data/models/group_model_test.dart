@@ -48,7 +48,6 @@ void main() {
           updatedAt: DateTime(2024, 1, 2),
           memberIds: const ['user-1', 'user-2'],
           adminIds: const ['user-1'],
-          gameIds: const ['game-1'],
           privacy: GroupPrivacy.public,
           requiresApproval: true,
           maxMembers: 30,
@@ -337,30 +336,6 @@ void main() {
         final updated = testGroup.demoteFromAdmin('user-123');
 
         expect(updated.adminIds, contains('user-123'));
-      });
-
-      test('addGame adds game successfully', () {
-        final updated = testGroup.addGame('game-1');
-
-        expect(updated.gameIds, contains('game-1'));
-        expect(updated.totalGamesPlayed, 1);
-        expect(updated.updatedAt, isNotNull);
-      });
-
-      test('addGame does not add duplicate game', () {
-        final group = testGroup.copyWith(gameIds: ['game-1']);
-        final updated = group.addGame('game-1');
-
-        expect(updated.gameIds.length, 1);
-      });
-
-      test('removeGame removes game successfully', () {
-        final group = testGroup.copyWith(gameIds: ['game-1', 'game-2']);
-        final updated = group.removeGame('game-1');
-
-        expect(updated.gameIds, isNot(contains('game-1')));
-        expect(updated.gameIds.length, 1);
-        expect(updated.updatedAt, isNotNull);
       });
 
       test('updateActivity updates lastActivity timestamp', () {

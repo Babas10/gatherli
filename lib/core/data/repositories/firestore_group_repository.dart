@@ -344,44 +344,6 @@ class FirestoreGroupRepository implements GroupRepository {
   }
 
   @override
-  Future<void> addGame(String groupId, String gameId) async {
-    try {
-      final currentGroup = await getGroupById(groupId);
-      if (currentGroup == null) {
-        throw GroupException('Group not found', code: 'not-found');
-      }
-
-      final updatedGroup = currentGroup.addGame(gameId);
-
-      await _firestore
-          .collection(_collection)
-          .doc(groupId)
-          .set(updatedGroup.toFirestore(), SetOptions(merge: true));
-    } catch (e) {
-      throw GroupException('Failed to add game: $e');
-    }
-  }
-
-  @override
-  Future<void> removeGame(String groupId, String gameId) async {
-    try {
-      final currentGroup = await getGroupById(groupId);
-      if (currentGroup == null) {
-        throw GroupException('Group not found', code: 'not-found');
-      }
-
-      final updatedGroup = currentGroup.removeGame(gameId);
-
-      await _firestore
-          .collection(_collection)
-          .doc(groupId)
-          .set(updatedGroup.toFirestore(), SetOptions(merge: true));
-    } catch (e) {
-      throw GroupException('Failed to remove game: $e');
-    }
-  }
-
-  @override
   Future<void> updateActivity(String groupId) async {
     try {
       final currentGroup = await getGroupById(groupId);

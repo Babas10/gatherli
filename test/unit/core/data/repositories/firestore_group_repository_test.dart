@@ -610,56 +610,6 @@ void main() {
       });
     });
 
-    group('addGame', () {
-      test('adds game to group', () async {
-        final testGroup = GroupModel(
-          id: '',
-          name: 'Test Group',
-          createdBy: 'user-123',
-          createdAt: DateTime(2024, 1, 1),
-        );
-        final groupId = await repository.createGroup(testGroup);
-
-        await repository.addGame(groupId, 'game-123');
-
-        final updatedGroup = await repository.getGroupById(groupId);
-        expect(updatedGroup!.gameIds, contains('game-123'));
-      });
-
-      test('throws exception when group does not exist', () async {
-        await expectLater(
-          repository.addGame('non-existent-id', 'game-123'),
-          throwsA(isA<GroupException>()),
-        );
-      });
-    });
-
-    group('removeGame', () {
-      test('removes game from group', () async {
-        final testGroup = GroupModel(
-          id: '',
-          name: 'Test Group',
-          createdBy: 'user-123',
-          createdAt: DateTime(2024, 1, 1),
-          gameIds: const ['game-123', 'game-456'],
-        );
-        final groupId = await repository.createGroup(testGroup);
-
-        await repository.removeGame(groupId, 'game-123');
-
-        final updatedGroup = await repository.getGroupById(groupId);
-        expect(updatedGroup!.gameIds, isNot(contains('game-123')));
-        expect(updatedGroup.gameIds, contains('game-456'));
-      });
-
-      test('throws exception when group does not exist', () async {
-        await expectLater(
-          repository.removeGame('non-existent-id', 'game-123'),
-          throwsA(isA<GroupException>()),
-        );
-      });
-    });
-
     group('updateActivity', () {
       test('updates lastActivity timestamp', () async {
         final testGroup = GroupModel(
@@ -927,7 +877,6 @@ void main() {
           createdAt: DateTime(2024, 1, 1),
           memberIds: const ['user-123', 'user-456', 'user-789'],
           adminIds: const ['user-123', 'user-456'],
-          gameIds: const ['game-1', 'game-2', 'game-3'],
           totalGamesPlayed: 3,
         );
         final groupId = await repository.createGroup(testGroup);
