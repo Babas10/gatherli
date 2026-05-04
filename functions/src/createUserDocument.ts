@@ -64,10 +64,6 @@ export const createUserDocument = functions.region('europe-west6').auth.user().o
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
 
-      // Social graph (initialized empty)
-      friendIds: [],
-      groupIds: [],
-
       // Stats
       eloRating: 1200,
       gamesPlayed: 0,
@@ -80,7 +76,7 @@ export const createUserDocument = functions.region('europe-west6').auth.user().o
     // Idempotency / race-condition guard: the doc may already exist when
     // updateUserNames (called during onboarding) wins the race against this trigger.
     // In that case the doc is typically incomplete (missing eloRating, accountStatus,
-    // createdAt, groupIds, etc.). We backfill every canonical field that is absent
+    // createdAt, etc.). We backfill every canonical field that is absent
     // or null rather than returning early, so the schema is always complete.
     const existingDoc = await userRef.get();
     if (existingDoc.exists) {

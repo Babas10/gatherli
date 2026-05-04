@@ -1013,8 +1013,7 @@ export const getFriendshipRequests = functions.region('europe-west6').https.onCa
  *
  * This function:
  * 1. Detects when a friendship status changes to "accepted"
- * 2. Updates both users' cached friendIds arrays
- * 3. Increments both users' friendCount
+ * 2. Increments both users' friendCount
  * 4. Updates friendsLastUpdated timestamp
  *
  * Performance: Uses batched writes to minimize Firestore operations
@@ -1043,7 +1042,6 @@ export const onFriendRequestAccepted = functions.region('europe-west6').firestor
         // Update initiator's cache
         const initiatorRef = db.collection("users").doc(initiatorId);
         batch.update(initiatorRef, {
-          friendIds: admin.firestore.FieldValue.arrayUnion(recipientId),
           friendCount: admin.firestore.FieldValue.increment(1),
           friendsLastUpdated: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -1052,7 +1050,6 @@ export const onFriendRequestAccepted = functions.region('europe-west6').firestor
         // Update recipient's cache
         const recipientRef = db.collection("users").doc(recipientId);
         batch.update(recipientRef, {
-          friendIds: admin.firestore.FieldValue.arrayUnion(initiatorId),
           friendCount: admin.firestore.FieldValue.increment(1),
           friendsLastUpdated: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -1084,8 +1081,7 @@ export const onFriendRequestAccepted = functions.region('europe-west6').firestor
  *
  * This function:
  * 1. Detects when a friendship document is deleted
- * 2. Removes each user's ID from the other's cached friendIds array
- * 3. Decrements both users' friendCount
+ * 2. Decrements both users' friendCount
  * 4. Updates friendsLastUpdated timestamp
  *
  * Performance: Uses batched writes to minimize Firestore operations
@@ -1113,7 +1109,6 @@ export const onFriendRemoved = functions.region('europe-west6').firestore
         // Update initiator's cache
         const initiatorRef = db.collection("users").doc(initiatorId);
         batch.update(initiatorRef, {
-          friendIds: admin.firestore.FieldValue.arrayRemove(recipientId),
           friendCount: admin.firestore.FieldValue.increment(-1),
           friendsLastUpdated: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -1122,7 +1117,6 @@ export const onFriendRemoved = functions.region('europe-west6').firestore
         // Update recipient's cache
         const recipientRef = db.collection("users").doc(recipientId);
         batch.update(recipientRef, {
-          friendIds: admin.firestore.FieldValue.arrayRemove(initiatorId),
           friendCount: admin.firestore.FieldValue.increment(-1),
           friendsLastUpdated: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -1392,7 +1386,7 @@ export const getFriendships = functions.region('europe-west6').https.onCall(getF
  * Validates bidirectional friendship by querying for accepted friendships
  * in either direction (A→B or B→A).
  *
- * Performance: Uses cached friendIds from Story 11.6 for O(1) lookup
+ * Performance: Queries the friendships collection directly (two parallel queries).
  *
  * @param userAId - First user's ID
  * @param userBId - Second user's ID
@@ -1405,18 +1399,23 @@ export async function checkFriendship(
   try {
     const db = admin.firestore();
 
-    // Story 11.6: Use cached friendIds for fast lookup
-    const userADoc = await db.collection("users").doc(userAId).get();
+    // Query friendships collection in both directions in parallel
+    const [q1, q2] = await Promise.all([
+      db.collection("friendships")
+        .where("initiatorId", "==", userAId)
+        .where("recipientId", "==", userBId)
+        .where("status", "==", "accepted")
+        .limit(1)
+        .get(),
+      db.collection("friendships")
+        .where("initiatorId", "==", userBId)
+        .where("recipientId", "==", userAId)
+        .where("status", "==", "accepted")
+        .limit(1)
+        .get(),
+    ]);
 
-    if (!userADoc.exists) {
-      return false;
-    }
-
-    const userData = userADoc.data();
-    const friendIds = userData?.friendIds || [];
-
-    // Check if userB is in userA's cached friendIds
-    return friendIds.includes(userBId);
+    return !q1.empty || !q2.empty;
   } catch (error) {
     functions.logger.error("Error checking friendship", {
       userAId,
@@ -1486,7 +1485,6 @@ export async function verifyFriendshipHandler(
   });
 
   // Use existing checkFriendship helper from Story 11.4
-  // which leverages cached friendIds from Story 11.6 for O(1) performance
   // Note: checkFriendship is designed to fail closed (return false on error)
   const areFriends = await checkFriendship(initiatorId, recipientId);
 
@@ -1516,14 +1514,8 @@ export const verifyFriendship = functions.region('europe-west6').https.onCall(
  * Cloud Function handler for batch checking friendships
  * Story 11.17: Performance optimization for validating multiple friendships
  *
- * This function optimizes friendship validation when checking multiple users
- * at once (e.g., when inviting multiple friends to a group). It reduces
- * Firestore reads from N queries to 1 query by using the cached friendIds array.
- *
- * Performance:
- * - Before: N individual checks = N Firestore reads
- * - After: 1 batch check = 1 Firestore read
- * - Savings: (N-1)/N reduction in reads (e.g., 90% for 10 users)
+ * This function checks friendship status for multiple users by querying
+ * the friendships collection in parallel.
  *
  * @param data - Request containing array of user IDs to check
  * @param context - Firebase callable context with auth info
@@ -1568,24 +1560,14 @@ export async function batchCheckFriendshipHandler(
       count: data.userIds.length,
     });
 
-    const db = admin.firestore();
-
-    // 3. Single read: Get current user's cached friendIds (Story 11.6)
-    const userDoc = await db.collection("users").doc(currentUserId).get();
-
-    if (!userDoc.exists) {
-      throw new functions.https.HttpsError("not-found", "User not found");
-    }
-
-    const userData = userDoc.data()!;
-    const friendIds = new Set(userData.friendIds || []);
-
-    // 4. Build response: O(N) where N = userIds.length
+    // 3. Check each user's friendship via the friendships collection in parallel
     const friendships: {[key: string]: boolean} = {};
 
-    for (const userId of data.userIds) {
-      friendships[userId] = friendIds.has(userId);
-    }
+    await Promise.all(
+      data.userIds.map(async (userId) => {
+        friendships[userId] = await checkFriendship(currentUserId, userId);
+      })
+    );
 
     const friendsCount = Object.values(friendships).filter(Boolean).length;
 

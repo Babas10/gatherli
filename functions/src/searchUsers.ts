@@ -65,21 +65,28 @@ export async function searchUsersHandler(
   const db = admin.firestore();
 
   try {
-    // Get current user's friendIds to filter out existing friends
-    const currentUserDoc = await db.collection("users").doc(currentUserId).get();
-    const friendIds = currentUserDoc.data()?.friendIds || [];
+    // Get accepted friend IDs and pending request IDs in parallel
+    const [acceptedFriendships1, acceptedFriendships2, pendingFriendships] = await Promise.all([
+      db.collection("friendships")
+        .where("initiatorId", "==", currentUserId)
+        .where("status", "==", "accepted")
+        .get(),
+      db.collection("friendships")
+        .where("recipientId", "==", currentUserId)
+        .where("status", "==", "accepted")
+        .get(),
+      db.collection("friendships")
+        .where("status", "==", "pending")
+        .get(),
+    ]);
 
-    // Get pending friend requests to filter them out
+    const friendIds = new Set<string>();
+    acceptedFriendships1.docs.forEach(doc => friendIds.add(doc.data().recipientId));
+    acceptedFriendships2.docs.forEach(doc => friendIds.add(doc.data().initiatorId));
+
     const pendingRequestIds = new Set<string>();
-
-    const pendingQuery = await db
-      .collection("friendships")
-      .where("status", "==", "pending")
-      .get();
-
-    for (const doc of pendingQuery.docs) {
+    for (const doc of pendingFriendships.docs) {
       const data = doc.data();
-      // If current user is involved in this pending request, add the other user
       if (data.initiatorId === currentUserId) {
         pendingRequestIds.add(data.recipientId);
       } else if (data.recipientId === currentUserId) {
@@ -106,7 +113,7 @@ export async function searchUsersHandler(
       }
 
       // Skip if already friends
-      if (friendIds.includes(userId)) {
+      if (friendIds.has(userId)) {
         continue;
       }
 

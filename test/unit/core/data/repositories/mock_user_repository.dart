@@ -167,38 +167,6 @@ class MockUserRepository implements UserRepository {
   }
 
   @override
-  Future<void> joinGroup(String uid, String groupId) async {
-    final user = _users[uid];
-    if (user == null) throw Exception('User not found');
-
-    final updatedUser = user.joinGroup(groupId);
-    _users[uid] = updatedUser;
-  }
-
-  @override
-  Future<void> leaveGroup(String uid, String groupId) async {
-    final user = _users[uid];
-    if (user == null) throw Exception('User not found');
-
-    final updatedUser = user.leaveGroup(groupId);
-    _users[uid] = updatedUser;
-  }
-
-  @override
-  Future<void> addGameParticipation(
-    String uid,
-    String gameId, {
-    bool won = false,
-    int score = 0,
-  }) async {
-    final user = _users[uid];
-    if (user == null) throw Exception('User not found');
-
-    final updatedUser = user.addGame(gameId, won: won, score: score);
-    _users[uid] = updatedUser;
-  }
-
-  @override
   Future<List<UserModel>> searchUsers(String query, {int limit = 20}) async {
     final queryLower = query.toLowerCase();
     return _users.values
@@ -213,9 +181,7 @@ class MockUserRepository implements UserRepository {
 
   @override
   Future<List<UserModel>> getUsersInGroup(String groupId) async {
-    return _users.values
-        .where((user) => user.groupIds.contains(groupId))
-        .toList();
+    return _users.values.toList();
   }
 
   @override
@@ -324,8 +290,6 @@ class TestUserData {
     phoneNumber: '+1234567890',
     location: 'Test City',
     bio: 'Test user bio',
-    groupIds: ['group1', 'group2'],
-    gameIds: ['game1', 'game2'],
     gamesPlayed: 10,
     gamesWon: 7,
     totalScore: 150,
@@ -353,8 +317,6 @@ class TestUserData {
     updatedAt: DateTime.now(),
     firstName: 'Another',
     lastName: 'User',
-    groupIds: ['group1'],
-    gameIds: ['game1'],
     gamesPlayed: 5,
     gamesWon: 2,
     totalScore: 75,

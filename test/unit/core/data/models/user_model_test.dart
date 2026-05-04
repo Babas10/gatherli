@@ -27,8 +27,6 @@ void main() {
         dateOfBirth: DateTime(1990, 1, 1),
         location: 'Test City',
         bio: 'Test bio',
-        groupIds: ['group1', 'group2'],
-        gameIds: ['game1', 'game2'],
         notificationsEnabled: true,
         emailNotifications: true,
         pushNotifications: false,
@@ -68,8 +66,6 @@ void main() {
         expect(user.accountStatus, AccountStatus.pendingVerification);
         expect(user.gracePeriodExpiresAt, null);
         expect(user.deletionScheduledAt, null);
-        expect(user.groupIds, []);
-        expect(user.gameIds, []);
         expect(user.notificationsEnabled, true);
         expect(user.emailNotifications, true);
         expect(user.pushNotifications, true);
@@ -120,8 +116,6 @@ void main() {
         expect(json['phoneNumber'], '+1234567890');
         expect(json['location'], 'Test City');
         expect(json['bio'], 'Test bio');
-        expect(json['groupIds'], ['group1', 'group2']);
-        expect(json['gameIds'], ['game1', 'game2']);
         expect(json['notificationsEnabled'], true);
         expect(json['emailNotifications'], true);
         expect(json['pushNotifications'], false);
@@ -149,8 +143,6 @@ void main() {
           'dateOfBirth': testDate.toIso8601String(),
           'location': 'Test City',
           'bio': 'Test bio',
-          'groupIds': ['group1', 'group2'],
-          'gameIds': ['game1', 'game2'],
           'notificationsEnabled': true,
           'emailNotifications': true,
           'pushNotifications': false,
@@ -177,8 +169,6 @@ void main() {
         expect(user.phoneNumber, '+1234567890');
         expect(user.location, 'Test City');
         expect(user.bio, 'Test bio');
-        expect(user.groupIds, ['group1', 'group2']);
-        expect(user.gameIds, ['game1', 'game2']);
         expect(user.notificationsEnabled, true);
         expect(user.emailNotifications, true);
         expect(user.pushNotifications, false);
@@ -412,56 +402,6 @@ void main() {
         expect(updatedUser.showPhoneNumber, true);
       });
 
-      test('joinGroup adds group to groupIds', () {
-        final updatedUser = testUser.joinGroup('group3');
-
-        expect(updatedUser.groupIds, ['group1', 'group2', 'group3']);
-      });
-
-      test('joinGroup does not add duplicate group', () {
-        final updatedUser = testUser.joinGroup('group1');
-
-        expect(updatedUser.groupIds, ['group1', 'group2']);
-      });
-
-      test('leaveGroup removes group from groupIds', () {
-        final updatedUser = testUser.leaveGroup('group1');
-
-        expect(updatedUser.groupIds, ['group2']);
-      });
-
-      test('leaveGroup does nothing when group not in list', () {
-        final updatedUser = testUser.leaveGroup('nonexistent');
-
-        expect(updatedUser.groupIds, ['group1', 'group2']);
-      });
-
-      test('addGame updates game stats correctly', () {
-        final updatedUser = testUser.addGame('game3', won: true, score: 25);
-
-        expect(updatedUser.gameIds, ['game1', 'game2', 'game3']);
-        expect(updatedUser.gamesPlayed, 11);
-        expect(updatedUser.gamesWon, 8);
-        expect(updatedUser.totalScore, 175);
-      });
-
-      test('addGame with loss updates stats correctly', () {
-        final updatedUser = testUser.addGame('game3', won: false, score: 15);
-
-        expect(updatedUser.gameIds, ['game1', 'game2', 'game3']);
-        expect(updatedUser.gamesPlayed, 11);
-        expect(updatedUser.gamesWon, 7); // No change in wins
-        expect(updatedUser.totalScore, 165);
-      });
-
-      test('addGame does not add duplicate game', () {
-        final updatedUser = testUser.addGame('game1', won: true, score: 20);
-
-        expect(updatedUser.gameIds, ['game1', 'game2']);
-        expect(updatedUser.gamesPlayed, 11); // Still increments
-        expect(updatedUser.gamesWon, 8);
-        expect(updatedUser.totalScore, 170);
-      });
     });
 
     group('Privacy level enum', () {
@@ -524,155 +464,6 @@ void main() {
 
         expect(result, null);
       });
-    });
-
-    // Story 11.6: Tests for friend cache methods
-    group('Friend cache methods (Story 11.6)', () {
-      test('addFriend adds friend to friendIds and increments count', () {
-        final user = testUser.copyWith(friendIds: [], friendCount: 0);
-        final updatedUser = user.addFriend('friend1');
-
-        expect(updatedUser.friendIds, ['friend1']);
-        expect(updatedUser.friendCount, 1);
-        expect(updatedUser.friendsLastUpdated, isNotNull);
-      });
-
-      test('addFriend does not add duplicate friend', () {
-        final user = testUser.copyWith(friendIds: ['friend1'], friendCount: 1);
-        final updatedUser = user.addFriend('friend1');
-
-        expect(updatedUser.friendIds, ['friend1']);
-        expect(updatedUser.friendCount, 1);
-        expect(updatedUser, equals(user));
-      });
-
-      test('addFriend updates friendsLastUpdated timestamp', () {
-        final user = testUser.copyWith(
-          friendIds: [],
-          friendCount: 0,
-          friendsLastUpdated: DateTime(2023, 1, 1),
-        );
-
-        final updatedUser = user.addFriend('friend1');
-
-        expect(updatedUser.friendsLastUpdated, isNotNull);
-        expect(
-          updatedUser.friendsLastUpdated!.isAfter(DateTime(2023, 1, 1)),
-          true,
-        );
-      });
-
-      test(
-        'removeFriend removes friend from friendIds and decrements count',
-        () {
-          final user = testUser.copyWith(
-            friendIds: ['friend1', 'friend2'],
-            friendCount: 2,
-          );
-          final updatedUser = user.removeFriend('friend1');
-
-          expect(updatedUser.friendIds, ['friend2']);
-          expect(updatedUser.friendCount, 1);
-          expect(updatedUser.friendsLastUpdated, isNotNull);
-        },
-      );
-
-      test('removeFriend does nothing when friend not in list', () {
-        final user = testUser.copyWith(friendIds: ['friend1'], friendCount: 1);
-        final updatedUser = user.removeFriend('friend2');
-
-        expect(updatedUser.friendIds, ['friend1']);
-        expect(updatedUser.friendCount, 1);
-        expect(updatedUser, equals(user));
-      });
-
-      test('removeFriend does not go below zero count', () {
-        final user = testUser.copyWith(
-          friendIds: ['friend1'],
-          friendCount: 0, // Manually set to 0 (inconsistent state)
-        );
-        final updatedUser = user.removeFriend('friend1');
-
-        expect(updatedUser.friendIds, isEmpty);
-        expect(updatedUser.friendCount, 0);
-      });
-
-      test('removeFriend updates friendsLastUpdated timestamp', () {
-        final user = testUser.copyWith(
-          friendIds: ['friend1'],
-          friendCount: 1,
-          friendsLastUpdated: DateTime(2023, 1, 1),
-        );
-
-        final updatedUser = user.removeFriend('friend1');
-
-        expect(updatedUser.friendsLastUpdated, isNotNull);
-        expect(
-          updatedUser.friendsLastUpdated!.isAfter(DateTime(2023, 1, 1)),
-          true,
-        );
-      });
-
-      test('isFriend returns true when userId is in friendIds', () {
-        final user = testUser.copyWith(
-          friendIds: ['friend1', 'friend2', 'friend3'],
-        );
-
-        expect(user.isFriend('friend1'), true);
-        expect(user.isFriend('friend2'), true);
-        expect(user.isFriend('friend3'), true);
-      });
-
-      test('isFriend returns false when userId is not in friendIds', () {
-        final user = testUser.copyWith(friendIds: ['friend1', 'friend2']);
-
-        expect(user.isFriend('friend3'), false);
-        expect(user.isFriend('nonexistent'), false);
-      });
-
-      test(
-        'needsFriendCacheRefresh returns true when friendsLastUpdated is null',
-        () {
-          final user = testUser.copyWith(friendsLastUpdated: null);
-
-          expect(user.needsFriendCacheRefresh, true);
-        },
-      );
-
-      test('needsFriendCacheRefresh returns false when cache is fresh', () {
-        final user = testUser.copyWith(
-          friendsLastUpdated: DateTime.now().subtract(const Duration(hours: 1)),
-        );
-
-        expect(user.needsFriendCacheRefresh, false);
-      });
-
-      test(
-        'needsFriendCacheRefresh returns true when cache is stale (>24 hours)',
-        () {
-          final user = testUser.copyWith(
-            friendsLastUpdated: DateTime.now().subtract(
-              const Duration(hours: 25),
-            ),
-          );
-
-          expect(user.needsFriendCacheRefresh, true);
-        },
-      );
-
-      test(
-        'needsFriendCacheRefresh returns false when exactly 24 hours old',
-        () {
-          final user = testUser.copyWith(
-            friendsLastUpdated: DateTime.now().subtract(
-              const Duration(hours: 24),
-            ),
-          );
-
-          // Should be false because we check for > 24 hours
-          expect(user.needsFriendCacheRefresh, false);
-        },
-      );
     });
 
     // Story 14.5.3: Tests for ELO rating fields
@@ -839,7 +630,6 @@ void main() {
 
         expect(user.gamesLost, 0);
         expect(user.currentStreak, 0);
-        expect(user.recentGameIds, []);
         expect(user.lastGameDate, null);
         expect(user.teammateStats, {});
       });
@@ -880,7 +670,6 @@ void main() {
         final user = testUser.copyWith(
           gamesLost: 3,
           currentStreak: 5,
-          recentGameIds: ['game1', 'game2', 'game3'],
           lastGameDate: lastGame,
           teammateStats: {
             'player1': {'gamesPlayed': 10, 'gamesWon': 7},
@@ -892,7 +681,6 @@ void main() {
 
         expect(json['gamesLost'], 3);
         expect(json['currentStreak'], 5);
-        expect(json['recentGameIds'], ['game1', 'game2', 'game3']);
         expect(json['lastGameDate'], isA<Timestamp>());
         expect(json['teammateStats'], {
           'player1': {'gamesPlayed': 10, 'gamesWon': 7},
@@ -908,7 +696,6 @@ void main() {
           'isEmailVerified': true,
           'gamesLost': 2,
           'currentStreak': -2,
-          'recentGameIds': ['game5', 'game4', 'game3'],
           'lastGameDate': Timestamp.fromDate(lastGame),
           'teammateStats': {
             'teammate1': {'gamesPlayed': 8, 'gamesWon': 6},
@@ -919,7 +706,6 @@ void main() {
 
         expect(user.gamesLost, 2);
         expect(user.currentStreak, -2);
-        expect(user.recentGameIds, ['game5', 'game4', 'game3']);
         expect(user.lastGameDate, lastGame);
         expect(user.teammateStats, {
           'teammate1': {'gamesPlayed': 8, 'gamesWon': 6},
@@ -944,7 +730,6 @@ void main() {
           expect(user.gamesWon, 3);
           expect(user.gamesLost, 0);
           expect(user.currentStreak, 0);
-          expect(user.recentGameIds, []);
           expect(user.lastGameDate, null);
           expect(user.teammateStats, {});
         },
@@ -955,7 +740,6 @@ void main() {
         final user = testUser.copyWith(
           gamesLost: 4,
           currentStreak: 3,
-          recentGameIds: ['g1', 'g2'],
           lastGameDate: lastGame,
           teammateStats: {
             'p1': {'gamesPlayed': 2, 'gamesWon': 1},
@@ -966,7 +750,6 @@ void main() {
 
         expect(firestoreData['gamesLost'], 4);
         expect(firestoreData['currentStreak'], 3);
-        expect(firestoreData['recentGameIds'], ['g1', 'g2']);
         expect(firestoreData['lastGameDate'], isA<Timestamp>());
         expect(firestoreData['teammateStats'], {
           'p1': {'gamesPlayed': 2, 'gamesWon': 1},
@@ -982,7 +765,6 @@ void main() {
           'isEmailVerified': true,
           'gamesLost': 6,
           'currentStreak': -1,
-          'recentGameIds': ['game-a', 'game-b', 'game-c'],
           'lastGameDate': Timestamp.fromDate(lastGame),
           'teammateStats': {
             'mate1': {'gamesPlayed': 15, 'gamesWon': 10},
@@ -996,7 +778,6 @@ void main() {
         expect(user.uid, 'stats-test-uid');
         expect(user.gamesLost, 6);
         expect(user.currentStreak, -1);
-        expect(user.recentGameIds, ['game-a', 'game-b', 'game-c']);
         expect(user.lastGameDate, lastGame);
         expect(user.teammateStats, {
           'mate1': {'gamesPlayed': 15, 'gamesWon': 10},
@@ -1009,7 +790,6 @@ void main() {
         final updatedUser = testUser.copyWith(
           gamesLost: 5,
           currentStreak: 7,
-          recentGameIds: ['new-g1', 'new-g2'],
           lastGameDate: newDate,
           teammateStats: {
             'new-mate': {'gamesPlayed': 1, 'gamesWon': 1},
@@ -1018,7 +798,6 @@ void main() {
 
         expect(updatedUser.gamesLost, 5);
         expect(updatedUser.currentStreak, 7);
-        expect(updatedUser.recentGameIds, ['new-g1', 'new-g2']);
         expect(updatedUser.lastGameDate, newDate);
         expect(updatedUser.teammateStats, {
           'new-mate': {'gamesPlayed': 1, 'gamesWon': 1},

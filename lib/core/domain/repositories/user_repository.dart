@@ -57,20 +57,6 @@ abstract class UserRepository {
     bool? showPhoneNumber,
   });
 
-  /// Join a group
-  Future<void> joinGroup(String uid, String groupId);
-
-  /// Leave a group
-  Future<void> leaveGroup(String uid, String groupId);
-
-  /// Add game participation
-  Future<void> addGameParticipation(
-    String uid,
-    String gameId, {
-    bool won = false,
-    int score = 0,
-  });
-
   /// Search users by display name or email
   Future<List<UserModel>> searchUsers(String query, {int limit = 20});
 

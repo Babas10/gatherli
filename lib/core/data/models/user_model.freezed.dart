@@ -44,14 +44,9 @@ mixin _$UserModel {
   String? get phoneNumber => throw _privateConstructorUsedError;
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
   String? get location => throw _privateConstructorUsedError;
-  String? get bio => throw _privateConstructorUsedError;
-  List<String> get groupIds => throw _privateConstructorUsedError;
-  List<String> get gameIds =>
+  String? get bio =>
       throw _privateConstructorUsedError; // Social graph cache fields (Story 11.6)
-  List<String> get friendIds => throw _privateConstructorUsedError;
-  int get friendCount => throw _privateConstructorUsedError;
-  @NullableTimestampConverter()
-  DateTime? get friendsLastUpdated => throw _privateConstructorUsedError; // User preferences
+  int get friendCount => throw _privateConstructorUsedError; // User preferences
   bool get notificationsEnabled => throw _privateConstructorUsedError;
   bool get emailNotifications => throw _privateConstructorUsedError;
   bool get pushNotifications =>
@@ -64,7 +59,6 @@ mixin _$UserModel {
   int get gamesLost => throw _privateConstructorUsedError;
   int get totalScore => throw _privateConstructorUsedError;
   int get currentStreak => throw _privateConstructorUsedError;
-  List<String> get recentGameIds => throw _privateConstructorUsedError;
   @NullableTimestampConverter()
   DateTime? get lastGameDate => throw _privateConstructorUsedError;
   Map<String, dynamic> get teammateStats =>
@@ -121,11 +115,7 @@ abstract class $UserModelCopyWith<$Res> {
     DateTime? dateOfBirth,
     String? location,
     String? bio,
-    List<String> groupIds,
-    List<String> gameIds,
-    List<String> friendIds,
     int friendCount,
-    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     bool notificationsEnabled,
     bool emailNotifications,
     bool pushNotifications,
@@ -137,7 +127,6 @@ abstract class $UserModelCopyWith<$Res> {
     int gamesLost,
     int totalScore,
     int currentStreak,
-    List<String> recentGameIds,
     @NullableTimestampConverter() DateTime? lastGameDate,
     Map<String, dynamic> teammateStats,
     UserGender? gender,
@@ -191,11 +180,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? dateOfBirth = freezed,
     Object? location = freezed,
     Object? bio = freezed,
-    Object? groupIds = null,
-    Object? gameIds = null,
-    Object? friendIds = null,
     Object? friendCount = null,
-    Object? friendsLastUpdated = freezed,
     Object? notificationsEnabled = null,
     Object? emailNotifications = null,
     Object? pushNotifications = null,
@@ -207,7 +192,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? gamesLost = null,
     Object? totalScore = null,
     Object? currentStreak = null,
-    Object? recentGameIds = null,
     Object? lastGameDate = freezed,
     Object? teammateStats = null,
     Object? gender = freezed,
@@ -295,26 +279,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
                 ? _value.bio
                 : bio // ignore: cast_nullable_to_non_nullable
                       as String?,
-            groupIds: null == groupIds
-                ? _value.groupIds
-                : groupIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            gameIds: null == gameIds
-                ? _value.gameIds
-                : gameIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            friendIds: null == friendIds
-                ? _value.friendIds
-                : friendIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
             friendCount: null == friendCount
                 ? _value.friendCount
                 : friendCount // ignore: cast_nullable_to_non_nullable
                       as int,
-            friendsLastUpdated: freezed == friendsLastUpdated
-                ? _value.friendsLastUpdated
-                : friendsLastUpdated // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
             notificationsEnabled: null == notificationsEnabled
                 ? _value.notificationsEnabled
                 : notificationsEnabled // ignore: cast_nullable_to_non_nullable
@@ -359,10 +327,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
                 ? _value.currentStreak
                 : currentStreak // ignore: cast_nullable_to_non_nullable
                       as int,
-            recentGameIds: null == recentGameIds
-                ? _value.recentGameIds
-                : recentGameIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
             lastGameDate: freezed == lastGameDate
                 ? _value.lastGameDate
                 : lastGameDate // ignore: cast_nullable_to_non_nullable
@@ -501,11 +465,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
     DateTime? dateOfBirth,
     String? location,
     String? bio,
-    List<String> groupIds,
-    List<String> gameIds,
-    List<String> friendIds,
     int friendCount,
-    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     bool notificationsEnabled,
     bool emailNotifications,
     bool pushNotifications,
@@ -517,7 +477,6 @@ abstract class _$$UserModelImplCopyWith<$Res>
     int gamesLost,
     int totalScore,
     int currentStreak,
-    List<String> recentGameIds,
     @NullableTimestampConverter() DateTime? lastGameDate,
     Map<String, dynamic> teammateStats,
     UserGender? gender,
@@ -574,11 +533,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? dateOfBirth = freezed,
     Object? location = freezed,
     Object? bio = freezed,
-    Object? groupIds = null,
-    Object? gameIds = null,
-    Object? friendIds = null,
     Object? friendCount = null,
-    Object? friendsLastUpdated = freezed,
     Object? notificationsEnabled = null,
     Object? emailNotifications = null,
     Object? pushNotifications = null,
@@ -590,7 +545,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? gamesLost = null,
     Object? totalScore = null,
     Object? currentStreak = null,
-    Object? recentGameIds = null,
     Object? lastGameDate = freezed,
     Object? teammateStats = null,
     Object? gender = freezed,
@@ -678,26 +632,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
             ? _value.bio
             : bio // ignore: cast_nullable_to_non_nullable
                   as String?,
-        groupIds: null == groupIds
-            ? _value._groupIds
-            : groupIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        gameIds: null == gameIds
-            ? _value._gameIds
-            : gameIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        friendIds: null == friendIds
-            ? _value._friendIds
-            : friendIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
         friendCount: null == friendCount
             ? _value.friendCount
             : friendCount // ignore: cast_nullable_to_non_nullable
                   as int,
-        friendsLastUpdated: freezed == friendsLastUpdated
-            ? _value.friendsLastUpdated
-            : friendsLastUpdated // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
         notificationsEnabled: null == notificationsEnabled
             ? _value.notificationsEnabled
             : notificationsEnabled // ignore: cast_nullable_to_non_nullable
@@ -742,10 +680,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
             ? _value.currentStreak
             : currentStreak // ignore: cast_nullable_to_non_nullable
                   as int,
-        recentGameIds: null == recentGameIds
-            ? _value._recentGameIds
-            : recentGameIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
         lastGameDate: freezed == lastGameDate
             ? _value.lastGameDate
             : lastGameDate // ignore: cast_nullable_to_non_nullable
@@ -821,11 +755,7 @@ class _$UserModelImpl extends _UserModel {
     this.dateOfBirth,
     this.location,
     this.bio,
-    final List<String> groupIds = const [],
-    final List<String> gameIds = const [],
-    final List<String> friendIds = const [],
     this.friendCount = 0,
-    @NullableTimestampConverter() this.friendsLastUpdated,
     this.notificationsEnabled = true,
     this.emailNotifications = true,
     this.pushNotifications = true,
@@ -837,7 +767,6 @@ class _$UserModelImpl extends _UserModel {
     this.gamesLost = 0,
     this.totalScore = 0,
     this.currentStreak = 0,
-    final List<String> recentGameIds = const [],
     @NullableTimestampConverter() this.lastGameDate,
     final Map<String, dynamic> teammateStats = const {},
     this.gender,
@@ -850,11 +779,7 @@ class _$UserModelImpl extends _UserModel {
     this.bestWin,
     this.pointStats,
     this.roleBasedStats,
-  }) : _groupIds = groupIds,
-       _gameIds = gameIds,
-       _friendIds = friendIds,
-       _recentGameIds = recentGameIds,
-       _teammateStats = teammateStats,
+  }) : _teammateStats = teammateStats,
        super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -906,41 +831,10 @@ class _$UserModelImpl extends _UserModel {
   final String? location;
   @override
   final String? bio;
-  final List<String> _groupIds;
-  @override
-  @JsonKey()
-  List<String> get groupIds {
-    if (_groupIds is EqualUnmodifiableListView) return _groupIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_groupIds);
-  }
-
-  final List<String> _gameIds;
-  @override
-  @JsonKey()
-  List<String> get gameIds {
-    if (_gameIds is EqualUnmodifiableListView) return _gameIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_gameIds);
-  }
-
   // Social graph cache fields (Story 11.6)
-  final List<String> _friendIds;
-  // Social graph cache fields (Story 11.6)
-  @override
-  @JsonKey()
-  List<String> get friendIds {
-    if (_friendIds is EqualUnmodifiableListView) return _friendIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_friendIds);
-  }
-
   @override
   @JsonKey()
   final int friendCount;
-  @override
-  @NullableTimestampConverter()
-  final DateTime? friendsLastUpdated;
   // User preferences
   @override
   @JsonKey()
@@ -977,15 +871,6 @@ class _$UserModelImpl extends _UserModel {
   @override
   @JsonKey()
   final int currentStreak;
-  final List<String> _recentGameIds;
-  @override
-  @JsonKey()
-  List<String> get recentGameIds {
-    if (_recentGameIds is EqualUnmodifiableListView) return _recentGameIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_recentGameIds);
-  }
-
   @override
   @NullableTimestampConverter()
   final DateTime? lastGameDate;
@@ -1032,7 +917,7 @@ class _$UserModelImpl extends _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, isEmailVerified: $isEmailVerified, createdAt: $createdAt, lastSignInAt: $lastSignInAt, updatedAt: $updatedAt, emailVerifiedAt: $emailVerifiedAt, accountStatus: $accountStatus, gracePeriodExpiresAt: $gracePeriodExpiresAt, deletionScheduledAt: $deletionScheduledAt, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, location: $location, bio: $bio, groupIds: $groupIds, gameIds: $gameIds, friendIds: $friendIds, friendCount: $friendCount, friendsLastUpdated: $friendsLastUpdated, notificationsEnabled: $notificationsEnabled, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, privacyLevel: $privacyLevel, showEmail: $showEmail, showPhoneNumber: $showPhoneNumber, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, totalScore: $totalScore, currentStreak: $currentStreak, recentGameIds: $recentGameIds, lastGameDate: $lastGameDate, teammateStats: $teammateStats, gender: $gender, eloRating: $eloRating, eloLastUpdated: $eloLastUpdated, eloPeak: $eloPeak, eloPeakDate: $eloPeakDate, eloGamesPlayed: $eloGamesPlayed, nemesis: $nemesis, bestWin: $bestWin, pointStats: $pointStats, roleBasedStats: $roleBasedStats)';
+    return 'UserModel(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, isEmailVerified: $isEmailVerified, createdAt: $createdAt, lastSignInAt: $lastSignInAt, updatedAt: $updatedAt, emailVerifiedAt: $emailVerifiedAt, accountStatus: $accountStatus, gracePeriodExpiresAt: $gracePeriodExpiresAt, deletionScheduledAt: $deletionScheduledAt, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, location: $location, bio: $bio, friendCount: $friendCount, notificationsEnabled: $notificationsEnabled, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, privacyLevel: $privacyLevel, showEmail: $showEmail, showPhoneNumber: $showPhoneNumber, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, totalScore: $totalScore, currentStreak: $currentStreak, lastGameDate: $lastGameDate, teammateStats: $teammateStats, gender: $gender, eloRating: $eloRating, eloLastUpdated: $eloLastUpdated, eloPeak: $eloPeak, eloPeakDate: $eloPeakDate, eloGamesPlayed: $eloGamesPlayed, nemesis: $nemesis, bestWin: $bestWin, pointStats: $pointStats, roleBasedStats: $roleBasedStats)';
   }
 
   @override
@@ -1073,16 +958,8 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.bio, bio) || other.bio == bio) &&
-            const DeepCollectionEquality().equals(other._groupIds, _groupIds) &&
-            const DeepCollectionEquality().equals(other._gameIds, _gameIds) &&
-            const DeepCollectionEquality().equals(
-              other._friendIds,
-              _friendIds,
-            ) &&
             (identical(other.friendCount, friendCount) ||
                 other.friendCount == friendCount) &&
-            (identical(other.friendsLastUpdated, friendsLastUpdated) ||
-                other.friendsLastUpdated == friendsLastUpdated) &&
             (identical(other.notificationsEnabled, notificationsEnabled) ||
                 other.notificationsEnabled == notificationsEnabled) &&
             (identical(other.emailNotifications, emailNotifications) ||
@@ -1105,10 +982,6 @@ class _$UserModelImpl extends _UserModel {
                 other.totalScore == totalScore) &&
             (identical(other.currentStreak, currentStreak) ||
                 other.currentStreak == currentStreak) &&
-            const DeepCollectionEquality().equals(
-              other._recentGameIds,
-              _recentGameIds,
-            ) &&
             (identical(other.lastGameDate, lastGameDate) ||
                 other.lastGameDate == lastGameDate) &&
             const DeepCollectionEquality().equals(
@@ -1155,11 +1028,7 @@ class _$UserModelImpl extends _UserModel {
     dateOfBirth,
     location,
     bio,
-    const DeepCollectionEquality().hash(_groupIds),
-    const DeepCollectionEquality().hash(_gameIds),
-    const DeepCollectionEquality().hash(_friendIds),
     friendCount,
-    friendsLastUpdated,
     notificationsEnabled,
     emailNotifications,
     pushNotifications,
@@ -1171,7 +1040,6 @@ class _$UserModelImpl extends _UserModel {
     gamesLost,
     totalScore,
     currentStreak,
-    const DeepCollectionEquality().hash(_recentGameIds),
     lastGameDate,
     const DeepCollectionEquality().hash(_teammateStats),
     gender,
@@ -1220,11 +1088,7 @@ abstract class _UserModel extends UserModel {
     final DateTime? dateOfBirth,
     final String? location,
     final String? bio,
-    final List<String> groupIds,
-    final List<String> gameIds,
-    final List<String> friendIds,
     final int friendCount,
-    @NullableTimestampConverter() final DateTime? friendsLastUpdated,
     final bool notificationsEnabled,
     final bool emailNotifications,
     final bool pushNotifications,
@@ -1236,7 +1100,6 @@ abstract class _UserModel extends UserModel {
     final int gamesLost,
     final int totalScore,
     final int currentStreak,
-    final List<String> recentGameIds,
     @NullableTimestampConverter() final DateTime? lastGameDate,
     final Map<String, dynamic> teammateStats,
     final UserGender? gender,
@@ -1296,18 +1159,9 @@ abstract class _UserModel extends UserModel {
   @override
   String? get location;
   @override
-  String? get bio;
+  String? get bio; // Social graph cache fields (Story 11.6)
   @override
-  List<String> get groupIds;
-  @override
-  List<String> get gameIds; // Social graph cache fields (Story 11.6)
-  @override
-  List<String> get friendIds;
-  @override
-  int get friendCount;
-  @override
-  @NullableTimestampConverter()
-  DateTime? get friendsLastUpdated; // User preferences
+  int get friendCount; // User preferences
   @override
   bool get notificationsEnabled;
   @override
@@ -1330,8 +1184,6 @@ abstract class _UserModel extends UserModel {
   int get totalScore;
   @override
   int get currentStreak;
-  @override
-  List<String> get recentGameIds;
   @override
   @NullableTimestampConverter()
   DateTime? get lastGameDate;

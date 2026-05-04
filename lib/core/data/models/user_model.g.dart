@@ -39,19 +39,7 @@ _$UserModelImpl _$$UserModelImplFromJson(
       : DateTime.parse(json['dateOfBirth'] as String),
   location: json['location'] as String?,
   bio: json['bio'] as String?,
-  groupIds:
-      (json['groupIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-      const [],
-  gameIds:
-      (json['gameIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-      const [],
-  friendIds:
-      (json['friendIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-      const [],
   friendCount: (json['friendCount'] as num?)?.toInt() ?? 0,
-  friendsLastUpdated: const NullableTimestampConverter().fromJson(
-    json['friendsLastUpdated'],
-  ),
   notificationsEnabled: json['notificationsEnabled'] as bool? ?? true,
   emailNotifications: json['emailNotifications'] as bool? ?? true,
   pushNotifications: json['pushNotifications'] as bool? ?? true,
@@ -65,11 +53,6 @@ _$UserModelImpl _$$UserModelImplFromJson(
   gamesLost: (json['gamesLost'] as num?)?.toInt() ?? 0,
   totalScore: (json['totalScore'] as num?)?.toInt() ?? 0,
   currentStreak: (json['currentStreak'] as num?)?.toInt() ?? 0,
-  recentGameIds:
-      (json['recentGameIds'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
   lastGameDate: const NullableTimestampConverter().fromJson(
     json['lastGameDate'],
   ),
@@ -125,13 +108,7 @@ Map<String, dynamic> _$$UserModelImplToJson(
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
   'location': instance.location,
   'bio': instance.bio,
-  'groupIds': instance.groupIds,
-  'gameIds': instance.gameIds,
-  'friendIds': instance.friendIds,
   'friendCount': instance.friendCount,
-  'friendsLastUpdated': const NullableTimestampConverter().toJson(
-    instance.friendsLastUpdated,
-  ),
   'notificationsEnabled': instance.notificationsEnabled,
   'emailNotifications': instance.emailNotifications,
   'pushNotifications': instance.pushNotifications,
@@ -143,7 +120,6 @@ Map<String, dynamic> _$$UserModelImplToJson(
   'gamesLost': instance.gamesLost,
   'totalScore': instance.totalScore,
   'currentStreak': instance.currentStreak,
-  'recentGameIds': instance.recentGameIds,
   'lastGameDate': const NullableTimestampConverter().toJson(
     instance.lastGameDate,
   ),

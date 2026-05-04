@@ -192,8 +192,8 @@ class FirestoreUserRepository implements UserRepository {
     UserGender? gender,
   }) async {
     try {
-      // Use targeted update to avoid touching protected fields (friendIds,
-      // friendCount, createdAt) which are blocked by Firestore security rules.
+      // Use targeted update to avoid touching protected fields (friendCount,
+      // createdAt) which are blocked by Firestore security rules.
       final updates = <String, dynamic>{
         'updatedAt': FieldValue.serverTimestamp(),
       };
@@ -269,56 +269,6 @@ class FirestoreUserRepository implements UserRepository {
       await createOrUpdateUser(updatedUser);
     } catch (e) {
       throw UserException('Failed to update user privacy: $e');
-    }
-  }
-
-  @override
-  Future<void> joinGroup(String uid, String groupId) async {
-    try {
-      final currentUser = await getUserById(uid);
-      if (currentUser == null) {
-        throw UserException('User not found', code: 'not-found');
-      }
-
-      final updatedUser = currentUser.joinGroup(groupId);
-      await createOrUpdateUser(updatedUser);
-    } catch (e) {
-      throw UserException('Failed to join group: $e');
-    }
-  }
-
-  @override
-  Future<void> leaveGroup(String uid, String groupId) async {
-    try {
-      final currentUser = await getUserById(uid);
-      if (currentUser == null) {
-        throw UserException('User not found', code: 'not-found');
-      }
-
-      final updatedUser = currentUser.leaveGroup(groupId);
-      await createOrUpdateUser(updatedUser);
-    } catch (e) {
-      throw UserException('Failed to leave group: $e');
-    }
-  }
-
-  @override
-  Future<void> addGameParticipation(
-    String uid,
-    String gameId, {
-    bool won = false,
-    int score = 0,
-  }) async {
-    try {
-      final currentUser = await getUserById(uid);
-      if (currentUser == null) {
-        throw UserException('User not found', code: 'not-found');
-      }
-
-      final updatedUser = currentUser.addGame(gameId, won: won, score: score);
-      await createOrUpdateUser(updatedUser);
-    } catch (e) {
-      throw UserException('Failed to add game participation: $e');
     }
   }
 

@@ -121,26 +121,6 @@ void main() {
       );
     });
 
-    group('JoinGroup', () {
-      final updatedUser = UserModel(
-        uid: 'test-uid',
-        email: 'test@example.com',
-        isEmailVerified: true,
-        groupIds: ['group-1'],
-      );
-
-      blocTest<UserBloc, UserState>(
-        'emits UserUpdated when join group succeeds',
-        build: () {
-          mockUserRepository.addUser(updatedUser);
-          return userBloc;
-        },
-        act: (bloc) =>
-            bloc.add(const JoinGroup(uid: 'test-uid', groupId: 'group-1')),
-        expect: () => [const UserLoading(), isA<UserUpdated>()],
-      );
-    });
-
     group('SearchUsers', () {
       final users = [
         UserModel(
