@@ -188,26 +188,6 @@ class MockGroupRepository implements GroupRepository {
   }
 
   @override
-  Future<void> addGame(String groupId, String gameId) async {
-    final group = _groups[groupId];
-    if (group == null) throw Exception('Group not found');
-
-    final updatedGroup = group.addGame(gameId);
-    _groups[groupId] = updatedGroup;
-    _emitGroupsForUser();
-  }
-
-  @override
-  Future<void> removeGame(String groupId, String gameId) async {
-    final group = _groups[groupId];
-    if (group == null) throw Exception('Group not found');
-
-    final updatedGroup = group.removeGame(gameId);
-    _groups[groupId] = updatedGroup;
-    _emitGroupsForUser();
-  }
-
-  @override
   Future<void> updateActivity(String groupId) async {
     final group = _groups[groupId];
     if (group == null) throw Exception('Group not found');
@@ -294,7 +274,6 @@ class TestGroupData {
     updatedAt: DateTime.now(),
     memberIds: ['test-uid-123', 'user-uid-789'],
     adminIds: ['test-uid-123'],
-    gameIds: ['game1', 'game2'],
     privacy: GroupPrivacy.public,
     requiresApproval: false,
     maxMembers: 20,
@@ -316,7 +295,7 @@ class TestGroupData {
     updatedAt: DateTime.now(),
     memberIds: ['test-uid-123'],
     adminIds: ['test-uid-123'],
-    gameIds: [],
+
     privacy: GroupPrivacy.private,
     requiresApproval: true,
     maxMembers: 10,
@@ -338,7 +317,7 @@ class TestGroupData {
     updatedAt: DateTime.now(),
     memberIds: ['test-uid-123', 'user-uid-789'],
     adminIds: ['test-uid-123'],
-    gameIds: [],
+
     privacy: GroupPrivacy.public,
     requiresApproval: false,
     maxMembers: 2, // Already at capacity

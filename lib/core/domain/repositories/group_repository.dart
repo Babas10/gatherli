@@ -51,12 +51,6 @@ abstract class GroupRepository {
   /// Demote admin to regular member
   Future<void> demoteFromAdmin(String groupId, String userId);
 
-  /// Add game to group
-  Future<void> addGame(String groupId, String gameId);
-
-  /// Remove game from group
-  Future<void> removeGame(String groupId, String gameId);
-
   /// Update group activity timestamp
   Future<void> updateActivity(String groupId);
 

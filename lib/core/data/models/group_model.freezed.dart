@@ -32,7 +32,6 @@ mixin _$GroupModel {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   List<String> get memberIds => throw _privateConstructorUsedError;
   List<String> get adminIds => throw _privateConstructorUsedError;
-  List<String> get gameIds => throw _privateConstructorUsedError;
   GroupPrivacy get privacy => throw _privateConstructorUsedError;
   bool get requiresApproval => throw _privateConstructorUsedError;
   int get maxMembers => throw _privateConstructorUsedError;
@@ -72,7 +71,6 @@ abstract class $GroupModelCopyWith<$Res> {
     @NullableTimestampConverter() DateTime? updatedAt,
     List<String> memberIds,
     List<String> adminIds,
-    List<String> gameIds,
     GroupPrivacy privacy,
     bool requiresApproval,
     int maxMembers,
@@ -109,7 +107,6 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
     Object? updatedAt = freezed,
     Object? memberIds = null,
     Object? adminIds = null,
-    Object? gameIds = null,
     Object? privacy = null,
     Object? requiresApproval = null,
     Object? maxMembers = null,
@@ -157,10 +154,6 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
             adminIds: null == adminIds
                 ? _value.adminIds
                 : adminIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            gameIds: null == gameIds
-                ? _value.gameIds
-                : gameIds // ignore: cast_nullable_to_non_nullable
                       as List<String>,
             privacy: null == privacy
                 ? _value.privacy
@@ -223,7 +216,6 @@ abstract class _$$GroupModelImplCopyWith<$Res>
     @NullableTimestampConverter() DateTime? updatedAt,
     List<String> memberIds,
     List<String> adminIds,
-    List<String> gameIds,
     GroupPrivacy privacy,
     bool requiresApproval,
     int maxMembers,
@@ -259,7 +251,6 @@ class __$$GroupModelImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? memberIds = null,
     Object? adminIds = null,
-    Object? gameIds = null,
     Object? privacy = null,
     Object? requiresApproval = null,
     Object? maxMembers = null,
@@ -307,10 +298,6 @@ class __$$GroupModelImplCopyWithImpl<$Res>
         adminIds: null == adminIds
             ? _value._adminIds
             : adminIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        gameIds: null == gameIds
-            ? _value._gameIds
-            : gameIds // ignore: cast_nullable_to_non_nullable
                   as List<String>,
         privacy: null == privacy
             ? _value.privacy
@@ -366,7 +353,6 @@ class _$GroupModelImpl extends _GroupModel {
     @NullableTimestampConverter() this.updatedAt,
     final List<String> memberIds = const [],
     final List<String> adminIds = const [],
-    final List<String> gameIds = const [],
     this.privacy = GroupPrivacy.private,
     this.requiresApproval = false,
     this.maxMembers = 20,
@@ -378,7 +364,6 @@ class _$GroupModelImpl extends _GroupModel {
     @NullableTimestampConverter() this.lastActivity,
   }) : _memberIds = memberIds,
        _adminIds = adminIds,
-       _gameIds = gameIds,
        super._();
 
   factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -418,15 +403,6 @@ class _$GroupModelImpl extends _GroupModel {
     return EqualUnmodifiableListView(_adminIds);
   }
 
-  final List<String> _gameIds;
-  @override
-  @JsonKey()
-  List<String> get gameIds {
-    if (_gameIds is EqualUnmodifiableListView) return _gameIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_gameIds);
-  }
-
   @override
   @JsonKey()
   final GroupPrivacy privacy;
@@ -458,7 +434,7 @@ class _$GroupModelImpl extends _GroupModel {
 
   @override
   String toString() {
-    return 'GroupModel(id: $id, name: $name, description: $description, photoUrl: $photoUrl, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, memberIds: $memberIds, adminIds: $adminIds, gameIds: $gameIds, privacy: $privacy, requiresApproval: $requiresApproval, maxMembers: $maxMembers, location: $location, allowMembersToCreateGames: $allowMembersToCreateGames, allowMembersToInviteOthers: $allowMembersToInviteOthers, notifyMembersOfNewGames: $notifyMembersOfNewGames, totalGamesPlayed: $totalGamesPlayed, lastActivity: $lastActivity)';
+    return 'GroupModel(id: $id, name: $name, description: $description, photoUrl: $photoUrl, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, memberIds: $memberIds, adminIds: $adminIds, privacy: $privacy, requiresApproval: $requiresApproval, maxMembers: $maxMembers, location: $location, allowMembersToCreateGames: $allowMembersToCreateGames, allowMembersToInviteOthers: $allowMembersToInviteOthers, notifyMembersOfNewGames: $notifyMembersOfNewGames, totalGamesPlayed: $totalGamesPlayed, lastActivity: $lastActivity)';
   }
 
   @override
@@ -483,7 +459,6 @@ class _$GroupModelImpl extends _GroupModel {
               _memberIds,
             ) &&
             const DeepCollectionEquality().equals(other._adminIds, _adminIds) &&
-            const DeepCollectionEquality().equals(other._gameIds, _gameIds) &&
             (identical(other.privacy, privacy) || other.privacy == privacy) &&
             (identical(other.requiresApproval, requiresApproval) ||
                 other.requiresApproval == requiresApproval) &&
@@ -515,7 +490,7 @@ class _$GroupModelImpl extends _GroupModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hashAll([
+  int get hashCode => Object.hash(
     runtimeType,
     id,
     name,
@@ -526,7 +501,6 @@ class _$GroupModelImpl extends _GroupModel {
     updatedAt,
     const DeepCollectionEquality().hash(_memberIds),
     const DeepCollectionEquality().hash(_adminIds),
-    const DeepCollectionEquality().hash(_gameIds),
     privacy,
     requiresApproval,
     maxMembers,
@@ -536,7 +510,7 @@ class _$GroupModelImpl extends _GroupModel {
     notifyMembersOfNewGames,
     totalGamesPlayed,
     lastActivity,
-  ]);
+  );
 
   /// Create a copy of GroupModel
   /// with the given fields replaced by the non-null parameter values.
@@ -563,7 +537,6 @@ abstract class _GroupModel extends GroupModel {
     @NullableTimestampConverter() final DateTime? updatedAt,
     final List<String> memberIds,
     final List<String> adminIds,
-    final List<String> gameIds,
     final GroupPrivacy privacy,
     final bool requiresApproval,
     final int maxMembers,
@@ -599,8 +572,6 @@ abstract class _GroupModel extends GroupModel {
   List<String> get memberIds;
   @override
   List<String> get adminIds;
-  @override
-  List<String> get gameIds;
   @override
   GroupPrivacy get privacy;
   @override

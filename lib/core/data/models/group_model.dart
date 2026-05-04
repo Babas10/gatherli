@@ -18,7 +18,6 @@ class GroupModel with _$GroupModel {
     @NullableTimestampConverter() DateTime? updatedAt,
     @Default([]) List<String> memberIds,
     @Default([]) List<String> adminIds,
-    @Default([]) List<String> gameIds,
     @Default(GroupPrivacy.private) GroupPrivacy privacy,
     @Default(false) bool requiresApproval,
     @Default(20) int maxMembers,
@@ -172,26 +171,6 @@ class GroupModel with _$GroupModel {
     }
     return copyWith(
       adminIds: adminIds.where((id) => id != userId).toList(),
-      updatedAt: DateTime.now(),
-      lastActivity: DateTime.now(),
-    );
-  }
-
-  /// Add a game to the group
-  GroupModel addGame(String gameId) {
-    if (gameIds.contains(gameId)) return this;
-    return copyWith(
-      gameIds: [...gameIds, gameId],
-      totalGamesPlayed: totalGamesPlayed + 1,
-      updatedAt: DateTime.now(),
-      lastActivity: DateTime.now(),
-    );
-  }
-
-  /// Remove a game from the group
-  GroupModel removeGame(String gameId) {
-    return copyWith(
-      gameIds: gameIds.where((id) => id != gameId).toList(),
       updatedAt: DateTime.now(),
       lastActivity: DateTime.now(),
     );
