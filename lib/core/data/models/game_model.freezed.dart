@@ -26,7 +26,7 @@ mixin _$GameModel {
   String? get description =>
       throw _privateConstructorUsedError; // Nullable since Story 31.4: group games set this; pickup games leave it null.
   String? get groupId => throw _privateConstructorUsedError;
-  GameContextType get contextType => throw _privateConstructorUsedError;
+  ActivityContextType get contextType => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -101,7 +101,7 @@ abstract class $GameModelCopyWith<$Res> {
     String title,
     String? description,
     String? groupId,
-    GameContextType contextType,
+    ActivityContextType contextType,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
     @NullableTimestampConverter() DateTime? updatedAt,
@@ -217,7 +217,7 @@ class _$GameModelCopyWithImpl<$Res, $Val extends GameModel>
             contextType: null == contextType
                 ? _value.contextType
                 : contextType // ignore: cast_nullable_to_non_nullable
-                      as GameContextType,
+                      as ActivityContextType,
             createdBy: null == createdBy
                 ? _value.createdBy
                 : createdBy // ignore: cast_nullable_to_non_nullable
@@ -408,7 +408,7 @@ abstract class _$$GameModelImplCopyWith<$Res>
     String title,
     String? description,
     String? groupId,
-    GameContextType contextType,
+    ActivityContextType contextType,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
     @NullableTimestampConverter() DateTime? updatedAt,
@@ -526,7 +526,7 @@ class __$$GameModelImplCopyWithImpl<$Res>
         contextType: null == contextType
             ? _value.contextType
             : contextType // ignore: cast_nullable_to_non_nullable
-                  as GameContextType,
+                  as ActivityContextType,
         createdBy: null == createdBy
             ? _value.createdBy
             : createdBy // ignore: cast_nullable_to_non_nullable
@@ -672,7 +672,7 @@ class _$GameModelImpl extends _GameModel {
     required this.title,
     this.description,
     this.groupId,
-    this.contextType = GameContextType.group,
+    this.contextType = ActivityContextType.group,
     required this.createdBy,
     @TimestampConverter() required this.createdAt,
     @NullableTimestampConverter() this.updatedAt,
@@ -728,7 +728,7 @@ class _$GameModelImpl extends _GameModel {
   final String? groupId;
   @override
   @JsonKey()
-  final GameContextType contextType;
+  final ActivityContextType contextType;
   @override
   final String createdBy;
   @override
@@ -1025,7 +1025,7 @@ abstract class _GameModel extends GameModel {
     required final String title,
     final String? description,
     final String? groupId,
-    final GameContextType contextType,
+    final ActivityContextType contextType,
     required final String createdBy,
     @TimestampConverter() required final DateTime createdAt,
     @NullableTimestampConverter() final DateTime? updatedAt,
@@ -1074,7 +1074,7 @@ abstract class _GameModel extends GameModel {
   @override
   String? get groupId;
   @override
-  GameContextType get contextType;
+  ActivityContextType get contextType;
   @override
   String get createdBy;
   @override

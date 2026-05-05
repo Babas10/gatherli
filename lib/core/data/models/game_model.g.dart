@@ -14,8 +14,8 @@ _$GameModelImpl _$$GameModelImplFromJson(
   description: json['description'] as String?,
   groupId: json['groupId'] as String?,
   contextType:
-      $enumDecodeNullable(_$GameContextTypeEnumMap, json['contextType']) ??
-      GameContextType.group,
+      $enumDecodeNullable(_$ActivityContextTypeEnumMap, json['contextType']) ??
+      ActivityContextType.group,
   createdBy: json['createdBy'] as String,
   createdAt: const TimestampConverter().fromJson(json['createdAt'] as Object),
   updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
@@ -89,7 +89,7 @@ Map<String, dynamic> _$$GameModelImplToJson(
   'title': instance.title,
   'description': instance.description,
   'groupId': instance.groupId,
-  'contextType': _$GameContextTypeEnumMap[instance.contextType]!,
+  'contextType': _$ActivityContextTypeEnumMap[instance.contextType]!,
   'createdBy': instance.createdBy,
   'createdAt': const TimestampConverter().toJson(instance.createdAt),
   'updatedAt': const NullableTimestampConverter().toJson(instance.updatedAt),
@@ -127,10 +127,10 @@ Map<String, dynamic> _$$GameModelImplToJson(
   'gameGenderType': _$GameGenderTypeEnumMap[instance.gameGenderType],
 };
 
-const _$GameContextTypeEnumMap = {
-  GameContextType.group: 'group',
-  GameContextType.pickup: 'pickup',
-  GameContextType.championship: 'championship',
+const _$ActivityContextTypeEnumMap = {
+  ActivityContextType.group: 'group',
+  ActivityContextType.pickup: 'pickup',
+  ActivityContextType.championship: 'championship',
 };
 
 const _$GameStatusEnumMap = {
