@@ -12,7 +12,9 @@ class GameModel with _$GameModel {
     required String id,
     required String title,
     String? description,
-    required String groupId,
+    // Nullable since Story 31.4: group games set this; pickup games leave it null.
+    String? groupId,
+    @Default(GameContextType.group) GameContextType contextType,
     required String createdBy,
     @TimestampConverter() required DateTime createdAt,
     @NullableTimestampConverter() DateTime? updatedAt,
@@ -612,6 +614,19 @@ class GameResult with _$GameResult {
     final wins = gamesWon;
     return '${wins['teamA']}-${wins['teamB']}';
   }
+}
+
+/// Describes the context in which a game was created (Story 31.4).
+/// - [group]: tied to a specific group (existing behaviour, groupId is set)
+/// - [pickup]: standalone game between friends, not tied to any group (groupId is null)
+/// - [championship]: tied to a championship match from Epic 30 (groupId may be set)
+enum GameContextType {
+  @JsonValue('group')
+  group,
+  @JsonValue('pickup')
+  pickup,
+  @JsonValue('championship')
+  championship,
 }
 
 enum GameStatus {

@@ -29,8 +29,8 @@ class GroupActivityItem with _$GroupActivityItem {
   String get title =>
       when(game: (game) => game.title, training: (session) => session.title);
 
-  /// Get the group ID
-  String get groupId => when(
+  /// Get the group ID. Null for pickup games (Story 31.4).
+  String? get groupId => when(
     game: (game) => game.groupId,
     training: (session) => session.groupId,
   );
