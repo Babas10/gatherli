@@ -204,14 +204,12 @@ export async function processGameEloUpdates(gameId: string, gameData: any): Prom
 
         const currentPeak = data.eloPeak || originalRating;
         const currentStreak = data.currentStreak || 0;
-        const recentGameIds = data.recentGameIds || [];
 
         const newPeak = Math.max(currentPeak, finalRating);
         const shouldUpdatePeak = finalRating > currentPeak;
         const newPeakDate = shouldUpdatePeak ? now : (data.eloPeakDate || null);
 
         const newStreak = calculateNewStreak(currentStreak, won);
-        const newRecentGames = [gameId, ...recentGameIds].slice(0, 10);
 
         // Calculate best win tracking (Story 301.6)
         let bestWinUpdate: any = undefined;
@@ -258,7 +256,6 @@ export async function processGameEloUpdates(gameId: string, gameData: any): Prom
           gamesWon: won ? admin.firestore.FieldValue.increment(individualGames.length) : admin.firestore.FieldValue.increment(0),
           gamesLost: won ? admin.firestore.FieldValue.increment(0) : admin.firestore.FieldValue.increment(individualGames.length),
           currentStreak: newStreak,
-          recentGameIds: newRecentGames,
           lastGameDate: now,
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         };

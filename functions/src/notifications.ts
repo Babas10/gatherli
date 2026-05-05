@@ -1188,19 +1188,17 @@ export const onFriendRequestAccepted = functions.region('europe-west6').firestor
         recipientData?.displayName ||
         "Someone";
 
-      // Update both users' friendIds cache and friendCount
+      // Update both users' friendCount
       const db = admin.firestore();
       await db.runTransaction(async (transaction) => {
         const initiatorRef = db.collection("users").doc(initiatorId);
         const recipientRef = db.collection("users").doc(recipientId);
 
         transaction.update(initiatorRef, {
-          friendIds: admin.firestore.FieldValue.arrayUnion(recipientId),
           friendCount: admin.firestore.FieldValue.increment(1),
         });
 
         transaction.update(recipientRef, {
-          friendIds: admin.firestore.FieldValue.arrayUnion(initiatorId),
           friendCount: admin.firestore.FieldValue.increment(1),
         });
       });
@@ -1346,7 +1344,7 @@ export const onFriendRemoved = functions.region('europe-west6').firestore
     });
 
     try {
-      // Update both users' friendIds cache and friendCount
+      // Update both users' friendCount
       const db = admin.firestore();
       await db.runTransaction(async (transaction) => {
         const initiatorRef = db.collection("users").doc(initiatorId);
@@ -1358,14 +1356,12 @@ export const onFriendRemoved = functions.region('europe-west6').firestore
 
         if (initiatorDoc.exists) {
           transaction.update(initiatorRef, {
-            friendIds: admin.firestore.FieldValue.arrayRemove(recipientId),
             friendCount: admin.firestore.FieldValue.increment(-1),
           });
         }
 
         if (recipientDoc.exists) {
           transaction.update(recipientRef, {
-            friendIds: admin.firestore.FieldValue.arrayRemove(initiatorId),
             friendCount: admin.firestore.FieldValue.increment(-1),
           });
         }

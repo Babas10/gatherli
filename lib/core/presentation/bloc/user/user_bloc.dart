@@ -16,8 +16,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UpdateUserProfile>(_onUpdateUserProfile);
     on<UpdateUserPreferences>(_onUpdateUserPreferences);
     on<UpdateUserPrivacy>(_onUpdateUserPrivacy);
-    on<JoinGroup>(_onJoinGroup);
-    on<LeaveGroup>(_onLeaveGroup);
     on<SearchUsers>(_onSearchUsers);
     on<DeleteUser>(_onDeleteUser);
   }
@@ -200,54 +198,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         UserError(
           message: 'Failed to update privacy settings: ${e.toString()}',
           errorCode: 'UPDATE_PRIVACY_ERROR',
-        ),
-      );
-    }
-  }
-
-  Future<void> _onJoinGroup(JoinGroup event, Emitter<UserState> emit) async {
-    try {
-      emit(const UserLoading());
-
-      await _userRepository.joinGroup(event.uid, event.groupId);
-
-      final updatedUser = await _userRepository.getUserById(event.uid);
-      if (updatedUser != null) {
-        emit(
-          UserUpdated(user: updatedUser, message: 'Successfully joined group'),
-        );
-      } else {
-        emit(const UserOperationSuccess(message: 'Successfully joined group'));
-      }
-    } catch (e) {
-      emit(
-        UserError(
-          message: 'Failed to join group: ${e.toString()}',
-          errorCode: 'JOIN_GROUP_ERROR',
-        ),
-      );
-    }
-  }
-
-  Future<void> _onLeaveGroup(LeaveGroup event, Emitter<UserState> emit) async {
-    try {
-      emit(const UserLoading());
-
-      await _userRepository.leaveGroup(event.uid, event.groupId);
-
-      final updatedUser = await _userRepository.getUserById(event.uid);
-      if (updatedUser != null) {
-        emit(
-          UserUpdated(user: updatedUser, message: 'Successfully left group'),
-        );
-      } else {
-        emit(const UserOperationSuccess(message: 'Successfully left group'));
-      }
-    } catch (e) {
-      emit(
-        UserError(
-          message: 'Failed to leave group: ${e.toString()}',
-          errorCode: 'LEAVE_GROUP_ERROR',
         ),
       );
     }

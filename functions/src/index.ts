@@ -56,7 +56,7 @@ export {
 } from "./friendships";
 
 // Export friendship cache update triggers (Firestore triggers)
-// Note: These are different from notification triggers - they update cached friendIds
+// Note: These are different from notification triggers - they update friendCount
 export {
   onFriendRequestAccepted as onFriendshipCacheUpdate,
   onFriendRemoved as onFriendshipCacheRemove,
@@ -138,4 +138,7 @@ export {onGameCompletedDeleteChatMessages} from "./deleteChatMessages";
 
 // Story 31.2: One-time migration — remove deprecated gameIds array from group documents
 export {migrateRemoveGroupGameIds} from "./migrateRemoveGroupGameIds";
+
+// Story 31.3: One-time migration — remove deprecated unbounded arrays from user documents
+export {migrateRemoveUserArrays} from "./migrateRemoveUserArrays";
 

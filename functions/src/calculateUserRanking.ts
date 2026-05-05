@@ -101,26 +101,41 @@ export async function calculateUserRankingHandler(
       percentile,
     });
 
-    // 6. Calculate friends rank (if user has friends)
+    // 6. Calculate friends rank by querying friendships collection
     let friendsRank: number | null = null;
     let totalFriends: number | null = null;
 
-    const friendIds = (userData.friendIds || []) as string[];
+    const [friendshipsAsInitiator, friendshipsAsRecipient] = await Promise.all([
+      db.collection("friendships")
+        .where("initiatorId", "==", userId)
+        .where("status", "==", "accepted")
+        .get(),
+      db.collection("friendships")
+        .where("recipientId", "==", userId)
+        .where("status", "==", "accepted")
+        .get(),
+    ]);
 
-    if (friendIds.length > 0) {
+    const friendIds = new Set<string>();
+    friendshipsAsInitiator.docs.forEach(doc => friendIds.add(doc.data().recipientId));
+    friendshipsAsRecipient.docs.forEach(doc => friendIds.add(doc.data().initiatorId));
+
+    if (friendIds.size > 0) {
       functions.logger.info("Calculating friends ranking", {
         userId,
-        friendCount: friendIds.length,
+        friendCount: friendIds.size,
       });
 
       // Handle Firestore 'in' query limit of 10 items
       const friendsWithHigherElo: number[] = [];
       const friendsWithElo: number[] = [];
 
+      const friendIdsArray = Array.from(friendIds);
+
       // Build all batch queries and execute in parallel
       const batchQueries = [];
-      for (let i = 0; i < friendIds.length; i += 10) {
-        const batch = friendIds.slice(i, i + 10);
+      for (let i = 0; i < friendIdsArray.length; i += 10) {
+        const batch = friendIdsArray.slice(i, i + 10);
         batchQueries.push(
           db.collection("users")
             .where(admin.firestore.FieldPath.documentId(), "in", batch)

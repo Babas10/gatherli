@@ -91,26 +91,6 @@ class UpdateUserPrivacy extends UserEvent {
   List<Object?> get props => [uid, privacyLevel, showEmail, showPhoneNumber];
 }
 
-class JoinGroup extends UserEvent {
-  final String uid;
-  final String groupId;
-
-  const JoinGroup({required this.uid, required this.groupId});
-
-  @override
-  List<Object?> get props => [uid, groupId];
-}
-
-class LeaveGroup extends UserEvent {
-  final String uid;
-  final String groupId;
-
-  const LeaveGroup({required this.uid, required this.groupId});
-
-  @override
-  List<Object?> get props => [uid, groupId];
-}
-
 class SearchUsers extends UserEvent {
   final String query;
   final int limit;

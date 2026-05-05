@@ -30,12 +30,8 @@ class UserModel with _$UserModel {
     DateTime? dateOfBirth,
     String? location,
     String? bio,
-    @Default([]) List<String> groupIds,
-    @Default([]) List<String> gameIds,
     // Social graph cache fields (Story 11.6)
-    @Default([]) List<String> friendIds,
     @Default(0) int friendCount,
-    @NullableTimestampConverter() DateTime? friendsLastUpdated,
     // User preferences
     @Default(true) bool notificationsEnabled,
     @Default(true) bool emailNotifications,
@@ -50,7 +46,6 @@ class UserModel with _$UserModel {
     @Default(0) int gamesLost,
     @Default(0) int totalScore,
     @Default(0) int currentStreak,
-    @Default([]) List<String> recentGameIds,
     @NullableTimestampConverter() DateTime? lastGameDate,
     @Default({}) Map<String, dynamic> teammateStats,
     // Gender profile (Story 26.1)
@@ -245,71 +240,6 @@ class UserModel with _$UserModel {
     );
   }
 
-  /// Join a group
-  UserModel joinGroup(String groupId) {
-    if (groupIds.contains(groupId)) return this;
-    return copyWith(
-      groupIds: [...groupIds, groupId],
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  /// Leave a group
-  UserModel leaveGroup(String groupId) {
-    return copyWith(
-      groupIds: groupIds.where((id) => id != groupId).toList(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  /// Add game participation
-  UserModel addGame(String gameId, {bool won = false, int score = 0}) {
-    final newGameIds = gameIds.contains(gameId)
-        ? gameIds
-        : [...gameIds, gameId];
-    return copyWith(
-      gameIds: newGameIds,
-      gamesPlayed: gamesPlayed + 1,
-      gamesWon: won ? gamesWon + 1 : gamesWon,
-      totalScore: totalScore + score,
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  /// Add friend to cache (Story 11.6)
-  UserModel addFriend(String friendId) {
-    if (friendIds.contains(friendId)) return this;
-    return copyWith(
-      friendIds: [...friendIds, friendId],
-      friendCount: friendCount + 1,
-      friendsLastUpdated: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  /// Remove friend from cache (Story 11.6)
-  UserModel removeFriend(String friendId) {
-    if (!friendIds.contains(friendId)) return this;
-    return copyWith(
-      friendIds: friendIds.where((id) => id != friendId).toList(),
-      friendCount: friendCount > 0 ? friendCount - 1 : 0,
-      friendsLastUpdated: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
-  /// Check if user is a friend (Story 11.6)
-  bool isFriend(String userId) => friendIds.contains(userId);
-
-  /// Check if friend cache needs refresh (Story 11.6)
-  /// Cache is considered stale after 24 hours
-  bool get needsFriendCacheRefresh {
-    if (friendsLastUpdated == null) return true;
-    final hoursSinceUpdate = DateTime.now()
-        .difference(friendsLastUpdated!)
-        .inHours;
-    return hoursSinceUpdate > 24;
-  }
 }
 
 /// Gender identity used to classify games and route ELO updates (Story 26.1).
