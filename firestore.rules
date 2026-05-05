@@ -270,88 +270,74 @@ service cloud.firestore {
     // Training Sessions (Epic 15)
     // ============================================
 
-    // Training Sessions: Group members can participate, creators can manage
-    // ARCHITECTURE: Training sessions are in Games layer, validate via group membership only
-    // SECURITY: Creation goes through Cloud Function for server-side validation
+    // Training Sessions: Group members or participants can read, creators can manage.
+    // groupId is nullable since Story 31.5 (standalone sessions have no group).
+    // isGameGroupMember() safely returns false when groupId is null.
+    // SECURITY: Creation goes through Cloud Function for server-side validation.
     match /trainingSessions/{sessionId} {
-      // Individual session reads allowed for members (used by session details page)
+      // Individual session reads allowed for:
+      //  - group members when session has a groupId
+      //  - existing participants (for standalone sessions)
       allow get: if isAuthenticated() &&
-                    request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds;
+                    (isGameGroupMember(resource.data.groupId) ||
+                     request.auth.uid in resource.data.participantIds);
 
-      // List/query operations allowed for group members
-      // Each document is checked individually - user must be member of the session's group
-      // Story 15.2: This also supports querying recurring session instances via parentSessionId
-      // since each instance inherits the same groupId as the parent session
+      // List/query operations: group members OR participants.
+      // Story 15.2: Also supports recurring session instance queries via parentSessionId.
       allow list: if isAuthenticated() &&
-                     request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds;
+                     (isGameGroupMember(resource.data.groupId) ||
+                      request.auth.uid in resource.data.participantIds);
 
-      // CRITICAL: Training session creation is Cloud Functions ONLY
-      // Use createTrainingSession callable function for server-side validation
-      // This keeps rules minimal and validation logic centralized
+      // CRITICAL: Training session creation is Cloud Functions ONLY.
+      // Use createTrainingSession callable function for server-side validation.
       allow create: if false;
 
-      // Training session updates allowed for creator or group members (for joining/leaving, completion)
-      // Note: Only group members can join (validated in repository layer)
+      // Updates allowed for creator or group members (when groupId set) or participants.
       allow update: if isAuthenticated() &&
                        (request.auth.uid == resource.data.createdBy ||
-                        request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds);
+                        isGameGroupMember(resource.data.groupId) ||
+                        request.auth.uid in resource.data.participantIds);
 
-      // Only creator can delete training sessions
+      // Only creator can delete training sessions.
       allow delete: if isAuthenticated() &&
                        request.auth.uid == resource.data.createdBy;
 
-      // Story 15.3: Participants subcollection rules
-      // Participants are managed via Cloud Functions (joinTrainingSession, leaveTrainingSession)
-      // for atomic operations and race condition protection
+      // Story 15.3: Participants subcollection rules.
+      // Participants are managed via Cloud Functions (joinTrainingSession, leaveTrainingSession).
       match /participants/{userId} {
-        // Read participants: group members only
+        // Read participants: group members or existing participants.
         allow get, list: if isAuthenticated() &&
-                            request.auth.uid in get(/databases/$(database)/documents/groups/$(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId)).data.memberIds;
+                            (isGameGroupMember(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId) ||
+                             request.auth.uid in get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.participantIds);
 
-        // CRITICAL: Join/leave via Cloud Functions ONLY
-        // Use joinTrainingSession and leaveTrainingSession callable functions
-        // This enforces atomic operations and prevents race conditions when checking capacity
+        // CRITICAL: Join/leave via Cloud Functions ONLY.
         allow create, update, delete: if false;
       }
 
-      // Story 15.7: Exercises subcollection rules
-      // Exercises define drills/activities for the training session
-      // Only editable before session starts
+      // Story 15.7: Exercises subcollection rules.
       match /exercises/{exerciseId} {
-        // Read exercises: group members only
+        // Read exercises: group members or participants.
         allow get, list: if isAuthenticated() &&
-                            request.auth.uid in get(/databases/$(database)/documents/groups/$(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId)).data.memberIds;
+                            (isGameGroupMember(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId) ||
+                             request.auth.uid in get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.participantIds);
 
-        // Create/update exercises: only creator and only before session starts
-        // Session creator can add exercises until session start time
+        // Create/update/delete exercises: only creator, only before session starts.
         allow create, update: if isAuthenticated() &&
                                  request.auth.uid == get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.createdBy &&
-                                 // Session hasn't started yet (startTime is in the future)
                                  get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.startTime > request.time;
 
-        // Delete exercises: only creator and only before session starts
         allow delete: if isAuthenticated() &&
                          request.auth.uid == get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.createdBy &&
-                         // Session hasn't started yet
                          get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.startTime > request.time;
       }
 
-      // Story 15.8: Anonymous Feedback subcollection rules
-      // Feedback is submitted anonymously by participants after training sessions
-      // Aggregated feedback is visible to session creator only
+      // Story 15.8: Anonymous Feedback subcollection rules.
       match /feedback/{feedbackId} {
-        // Read feedback: only session creator can read (for aggregated view)
-        // IMPORTANT: Individual feedback items are anonymous - no user IDs exposed
-        // Creator sees aggregated stats via repository layer
+        // Read feedback: only session creator.
         allow get, list: if isAuthenticated() &&
                             request.auth.uid == get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.createdBy;
 
-        // CRITICAL: Feedback submission is Cloud Functions ONLY
-        // Use submitTrainingFeedback callable function for:
-        // - Participant validation (user was in participantIds)
-        // - Duplicate prevention (via participant hash)
-        // - Anonymity enforcement (hash instead of user ID)
-        // - Session timing validation (only after endTime)
+        // CRITICAL: Feedback submission is Cloud Functions ONLY.
         allow create, update, delete: if false;
       }
     }

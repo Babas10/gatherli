@@ -18,7 +18,7 @@ interface RecurrenceRule {
 }
 
 interface CreateTrainingSessionRequest {
-  groupId: string;
+  groupId?: string; // Optional since Story 31.5: null = standalone session
   title: string;
   description?: string;
   locationName: string;
@@ -191,11 +191,11 @@ export const createTrainingSession = functions
       // 2. Input Validation
       // ========================================
 
-      // Validate required fields
-      if (!data.groupId || !data.title || !data.locationName || !data.startTime || !data.endTime) {
+      // Validate required fields (groupId is optional since Story 31.5)
+      if (!data.title || !data.locationName || !data.startTime || !data.endTime) {
         throw new functions.https.HttpsError(
           "invalid-argument",
-          "Missing required fields: groupId, title, locationName, startTime, endTime"
+          "Missing required fields: title, locationName, startTime, endTime"
         );
       }
 
@@ -244,30 +244,31 @@ export const createTrainingSession = functions
       }
 
       // ========================================
-      // 3. Group Membership Validation
+      // 3. Group Membership Validation (group sessions only)
       // ========================================
 
-      // CRITICAL: Validate group exists and user is a member
-      // This enforces the architecture rule: Training Sessions → Groups only
-      const groupData = await getGroupData(data.groupId);
+      // Standalone sessions (groupId absent) skip group validation.
+      if (data.groupId) {
+        const groupData = await getGroupData(data.groupId);
 
-      if (!groupData) {
-        functions.logger.warn("Group not found", {userId, groupId: data.groupId});
-        throw new functions.https.HttpsError(
-          "not-found",
-          "The selected group does not exist"
-        );
-      }
+        if (!groupData) {
+          functions.logger.warn("Group not found", {userId, groupId: data.groupId});
+          throw new functions.https.HttpsError(
+            "not-found",
+            "The selected group does not exist"
+          );
+        }
 
-      if (!groupData.memberIds.includes(userId)) {
-        functions.logger.warn("User not a member of group", {
-          userId,
-          groupId: data.groupId,
-        });
-        throw new functions.https.HttpsError(
-          "permission-denied",
-          "You must be a member of the group to create a training session"
-        );
+        if (!groupData.memberIds.includes(userId)) {
+          functions.logger.warn("User not a member of group", {
+            userId,
+            groupId: data.groupId,
+          });
+          throw new functions.https.HttpsError(
+            "permission-denied",
+            "You must be a member of the group to create a training session"
+          );
+        }
       }
 
       // ========================================

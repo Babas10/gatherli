@@ -10,7 +10,10 @@ _$TrainingSessionModelImpl _$$TrainingSessionModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$TrainingSessionModelImpl(
   id: json['id'] as String,
-  groupId: json['groupId'] as String,
+  groupId: json['groupId'] as String?,
+  contextType:
+      $enumDecodeNullable(_$ActivityContextTypeEnumMap, json['contextType']) ??
+      ActivityContextType.group,
   title: json['title'] as String,
   description: json['description'] as String?,
   location: GameLocation.fromJson(json['location'] as Map<String, dynamic>),
@@ -45,6 +48,7 @@ Map<String, dynamic> _$$TrainingSessionModelImplToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'groupId': instance.groupId,
+  'contextType': _$ActivityContextTypeEnumMap[instance.contextType]!,
   'title': instance.title,
   'description': instance.description,
   'location': instance.location,
@@ -64,6 +68,12 @@ Map<String, dynamic> _$$TrainingSessionModelImplToJson(
   'cancelledAt': const NullableTimestampConverter().toJson(
     instance.cancelledAt,
   ),
+};
+
+const _$ActivityContextTypeEnumMap = {
+  ActivityContextType.group: 'group',
+  ActivityContextType.pickup: 'pickup',
+  ActivityContextType.championship: 'championship',
 };
 
 const _$TrainingStatusEnumMap = {

@@ -21,8 +21,10 @@ TrainingSessionModel _$TrainingSessionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TrainingSessionModel {
-  String get id => throw _privateConstructorUsedError;
-  String get groupId => throw _privateConstructorUsedError;
+  String get id =>
+      throw _privateConstructorUsedError; // Nullable since Story 31.5: group sessions set this; standalone sessions leave it null.
+  String? get groupId => throw _privateConstructorUsedError;
+  ActivityContextType get contextType => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   GameLocation get location => throw _privateConstructorUsedError;
@@ -71,7 +73,8 @@ abstract class $TrainingSessionModelCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String groupId,
+    String? groupId,
+    ActivityContextType contextType,
     String title,
     String? description,
     GameLocation location,
@@ -114,7 +117,8 @@ class _$TrainingSessionModelCopyWithImpl<
   @override
   $Res call({
     Object? id = null,
-    Object? groupId = null,
+    Object? groupId = freezed,
+    Object? contextType = null,
     Object? title = null,
     Object? description = freezed,
     Object? location = null,
@@ -139,10 +143,14 @@ class _$TrainingSessionModelCopyWithImpl<
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                       as String,
-            groupId: null == groupId
+            groupId: freezed == groupId
                 ? _value.groupId
                 : groupId // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
+            contextType: null == contextType
+                ? _value.contextType
+                : contextType // ignore: cast_nullable_to_non_nullable
+                      as ActivityContextType,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -252,7 +260,8 @@ abstract class _$$TrainingSessionModelImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String groupId,
+    String? groupId,
+    ActivityContextType contextType,
     String title,
     String? description,
     GameLocation location,
@@ -293,7 +302,8 @@ class __$$TrainingSessionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? groupId = null,
+    Object? groupId = freezed,
+    Object? contextType = null,
     Object? title = null,
     Object? description = freezed,
     Object? location = null,
@@ -318,10 +328,14 @@ class __$$TrainingSessionModelImplCopyWithImpl<$Res>
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
                   as String,
-        groupId: null == groupId
+        groupId: freezed == groupId
             ? _value.groupId
             : groupId // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
+        contextType: null == contextType
+            ? _value.contextType
+            : contextType // ignore: cast_nullable_to_non_nullable
+                  as ActivityContextType,
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
@@ -400,7 +414,8 @@ class __$$TrainingSessionModelImplCopyWithImpl<$Res>
 class _$TrainingSessionModelImpl extends _TrainingSessionModel {
   const _$TrainingSessionModelImpl({
     required this.id,
-    required this.groupId,
+    this.groupId,
+    this.contextType = ActivityContextType.group,
     required this.title,
     this.description,
     required this.location,
@@ -426,8 +441,12 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
 
   @override
   final String id;
+  // Nullable since Story 31.5: group sessions set this; standalone sessions leave it null.
   @override
-  final String groupId;
+  final String? groupId;
+  @override
+  @JsonKey()
+  final ActivityContextType contextType;
   @override
   final String title;
   @override
@@ -486,7 +505,7 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
 
   @override
   String toString() {
-    return 'TrainingSessionModel(id: $id, groupId: $groupId, title: $title, description: $description, location: $location, startTime: $startTime, endTime: $endTime, minParticipants: $minParticipants, maxParticipants: $maxParticipants, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, recurrenceRule: $recurrenceRule, parentSessionId: $parentSessionId, status: $status, participantIds: $participantIds, notes: $notes, cancelledBy: $cancelledBy, cancelledAt: $cancelledAt)';
+    return 'TrainingSessionModel(id: $id, groupId: $groupId, contextType: $contextType, title: $title, description: $description, location: $location, startTime: $startTime, endTime: $endTime, minParticipants: $minParticipants, maxParticipants: $maxParticipants, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, recurrenceRule: $recurrenceRule, parentSessionId: $parentSessionId, status: $status, participantIds: $participantIds, notes: $notes, cancelledBy: $cancelledBy, cancelledAt: $cancelledAt)';
   }
 
   @override
@@ -496,6 +515,8 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
             other is _$TrainingSessionModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.contextType, contextType) ||
+                other.contextType == contextType) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -536,6 +557,7 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
     runtimeType,
     id,
     groupId,
+    contextType,
     title,
     description,
     location,
@@ -576,7 +598,8 @@ class _$TrainingSessionModelImpl extends _TrainingSessionModel {
 abstract class _TrainingSessionModel extends TrainingSessionModel {
   const factory _TrainingSessionModel({
     required final String id,
-    required final String groupId,
+    final String? groupId,
+    final ActivityContextType contextType,
     required final String title,
     final String? description,
     required final GameLocation location,
@@ -601,9 +624,11 @@ abstract class _TrainingSessionModel extends TrainingSessionModel {
       _$TrainingSessionModelImpl.fromJson;
 
   @override
-  String get id;
+  String get id; // Nullable since Story 31.5: group sessions set this; standalone sessions leave it null.
   @override
-  String get groupId;
+  String? get groupId;
+  @override
+  ActivityContextType get contextType;
   @override
   String get title;
   @override

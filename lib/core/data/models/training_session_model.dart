@@ -3,20 +3,24 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:play_with_me/core/data/converters/timestamp_converter.dart';
 
+import 'activity_context_type.dart';
 import 'game_model.dart'; // For GameLocation reuse
 import 'recurrence_rule_model.dart';
 
 part 'training_session_model.freezed.dart';
 part 'training_session_model.g.dart';
 
-/// Represents a training session within a group
-/// Training sessions are practice events that do not affect ELO ratings
-/// They are bound to groups and participants are resolved via group membership only
+/// Represents a training session.
+/// Training sessions are practice events that do not affect ELO ratings.
+/// Since Story 31.5, groupId is nullable: group sessions set it, standalone
+/// practice sessions (pickup/championship) leave it null.
 @freezed
 class TrainingSessionModel with _$TrainingSessionModel {
   const factory TrainingSessionModel({
     required String id,
-    required String groupId,
+    // Nullable since Story 31.5: group sessions set this; standalone sessions leave it null.
+    String? groupId,
+    @Default(ActivityContextType.group) ActivityContextType contextType,
     required String title,
     String? description,
     required GameLocation location,
