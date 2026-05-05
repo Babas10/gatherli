@@ -95,8 +95,6 @@ const COMPLETE_EXISTING_DOC = {
   deletionScheduledAt: null,
   createdAt: "MOCK_TIMESTAMP",
   updatedAt: "MOCK_TIMESTAMP",
-  friendIds: [],
-  groupIds: [],
   eloRating: 1200,
   gamesPlayed: 0,
   gamesWon: 0,
@@ -165,8 +163,6 @@ describe("createUserDocument", () => {
       expect(data.gamesLost).toBe(0);
       expect(data.eloGamesPlayed).toBe(0);
       expect(data.eloPeak).toBe(1200);
-      expect(data.friendIds).toEqual([]);
-      expect(data.groupIds).toEqual([]);
       expect(data.accountStatus).toBe("pendingVerification");
     });
 
@@ -228,8 +224,6 @@ describe("createUserDocument", () => {
         gamesLost: 0,
         eloGamesPlayed: 0,
         eloPeak: 1200,
-        friendIds: [],
-        groupIds: [],
       });
       expect(patch).toHaveProperty("gracePeriodExpiresAt");
       expect(patch).toHaveProperty("createdAt");

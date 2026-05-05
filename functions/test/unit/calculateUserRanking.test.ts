@@ -73,19 +73,26 @@ describe("calculateUserRankingHandler", () => {
   });
 
   it("returns correct global rank and percentile with no friends", async () => {
-    // User doc
+    // User doc — no friendIds field (removed in Story 31.3)
     mockDb.doc.mockReturnValue({
       get: jest.fn().mockResolvedValue({
         exists: true,
-        data: () => ({eloRating: 1700, eloGamesPlayed: 5, friendIds: []}),
+        data: () => ({eloRating: 1700, eloGamesPlayed: 5}),
       }),
     });
 
-    // Collection calls: higherEloCount → count=2, totalUsers → count=10
-    let collectionCallCount = 0;
-    mockDb.collection.mockImplementation(() => {
-      collectionCallCount++;
-      const count = collectionCallCount === 1 ? 2 : 10;
+    // users count queries: higherEloCount=2, totalUsers=10
+    // friendships queries: empty (no friends)
+    let usersCallCount = 0;
+    mockDb.collection.mockImplementation((collectionName: string) => {
+      if (collectionName === "friendships") {
+        const chain: any = {where: jest.fn(), get: jest.fn().mockResolvedValue({docs: [], empty: true})};
+        chain.where.mockReturnValue(chain);
+        return chain;
+      }
+      // "users" collection — count queries
+      usersCallCount++;
+      const count = usersCallCount === 1 ? 2 : 10;
       const get = jest.fn().mockResolvedValue({data: () => ({count})});
       const countFn = jest.fn().mockReturnValue({get});
       const where2 = jest.fn().mockReturnValue({count: countFn});
@@ -106,17 +113,23 @@ describe("calculateUserRankingHandler", () => {
   });
 
   it("fires both count() queries in parallel (both collections called before either resolves)", async () => {
-    const collectionsCalled: number[] = [];
+    const usersCountCallTimes: number[] = [];
 
     mockDb.doc.mockReturnValue({
       get: jest.fn().mockResolvedValue({
         exists: true,
-        data: () => ({eloRating: 1600, eloGamesPlayed: 3, friendIds: []}),
+        data: () => ({eloRating: 1600, eloGamesPlayed: 3}),
       }),
     });
 
-    mockDb.collection.mockImplementation(() => {
-      collectionsCalled.push(Date.now());
+    mockDb.collection.mockImplementation((collectionName: string) => {
+      if (collectionName === "friendships") {
+        const chain: any = {where: jest.fn(), get: jest.fn().mockResolvedValue({docs: [], empty: true})};
+        chain.where.mockReturnValue(chain);
+        return chain;
+      }
+      // Track when users count queries are initiated
+      usersCountCallTimes.push(Date.now());
       const get = jest.fn().mockResolvedValue({data: () => ({count: 0})});
       const countFn = jest.fn().mockReturnValue({get});
       const where2 = jest.fn().mockReturnValue({count: countFn});
@@ -126,27 +139,47 @@ describe("calculateUserRankingHandler", () => {
 
     await calculateUserRankingHandler({}, {auth: {uid: "user-123"}} as any);
 
-    // Both count queries must have been initiated
-    expect(collectionsCalled).toHaveLength(2);
+    // Both global count queries (higherEloCount + totalUsers) must have been initiated
+    expect(usersCountCallTimes).toHaveLength(2);
   });
 
   it("calculates friends rank correctly", async () => {
     const friendIds = ["friend-1", "friend-2", "friend-3"];
 
+    // User doc — no friendIds field (removed in Story 31.3)
     mockDb.doc.mockReturnValue({
       get: jest.fn().mockResolvedValue({
         exists: true,
-        data: () => ({eloRating: 1700, eloGamesPlayed: 5, friendIds}),
+        data: () => ({eloRating: 1700, eloGamesPlayed: 5}),
       }),
     });
 
-    // Global count queries
-    let collectionCallCount = 0;
-    mockDb.collection.mockImplementation(() => {
-      collectionCallCount++;
-      if (collectionCallCount <= 2) {
-        // higherEloCount=1, totalUsers=5
-        const count = collectionCallCount === 1 ? 1 : 5;
+    let usersCallCount = 0;
+    let friendshipsCallCount = 0;
+    mockDb.collection.mockImplementation((collectionName: string) => {
+      if (collectionName === "friendships") {
+        friendshipsCallCount++;
+        const chain: any = {where: jest.fn()};
+        chain.where.mockReturnValue(chain);
+        if (friendshipsCallCount === 1) {
+          // initiator direction — return friend docs
+          chain.get = jest.fn().mockResolvedValue({
+            docs: friendIds.map((id) => ({
+              data: () => ({recipientId: id, initiatorId: "user-123", status: "accepted"}),
+            })),
+            empty: false,
+          });
+        } else {
+          // recipient direction — no additional friends
+          chain.get = jest.fn().mockResolvedValue({docs: [], empty: true});
+        }
+        return chain;
+      }
+      // "users" collection
+      usersCallCount++;
+      if (usersCallCount <= 2) {
+        // Global count queries: higherEloCount=1, totalUsers=5
+        const count = usersCallCount === 1 ? 1 : 5;
         const get = jest.fn().mockResolvedValue({data: () => ({count})});
         const countFn = jest.fn().mockReturnValue({get});
         const where2 = jest.fn().mockReturnValue({count: countFn});
