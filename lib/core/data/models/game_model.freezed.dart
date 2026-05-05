@@ -23,8 +23,10 @@ GameModel _$GameModelFromJson(Map<String, dynamic> json) {
 mixin _$GameModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  String get groupId => throw _privateConstructorUsedError;
+  String? get description =>
+      throw _privateConstructorUsedError; // Nullable since Story 31.4: group games set this; pickup games leave it null.
+  String? get groupId => throw _privateConstructorUsedError;
+  GameContextType get contextType => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -98,7 +100,8 @@ abstract class $GameModelCopyWith<$Res> {
     String id,
     String title,
     String? description,
-    String groupId,
+    String? groupId,
+    GameContextType contextType,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
     @NullableTimestampConverter() DateTime? updatedAt,
@@ -157,7 +160,8 @@ class _$GameModelCopyWithImpl<$Res, $Val extends GameModel>
     Object? id = null,
     Object? title = null,
     Object? description = freezed,
-    Object? groupId = null,
+    Object? groupId = freezed,
+    Object? contextType = null,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
@@ -206,10 +210,14 @@ class _$GameModelCopyWithImpl<$Res, $Val extends GameModel>
                 ? _value.description
                 : description // ignore: cast_nullable_to_non_nullable
                       as String?,
-            groupId: null == groupId
+            groupId: freezed == groupId
                 ? _value.groupId
                 : groupId // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
+            contextType: null == contextType
+                ? _value.contextType
+                : contextType // ignore: cast_nullable_to_non_nullable
+                      as GameContextType,
             createdBy: null == createdBy
                 ? _value.createdBy
                 : createdBy // ignore: cast_nullable_to_non_nullable
@@ -399,7 +407,8 @@ abstract class _$$GameModelImplCopyWith<$Res>
     String id,
     String title,
     String? description,
-    String groupId,
+    String? groupId,
+    GameContextType contextType,
     String createdBy,
     @TimestampConverter() DateTime createdAt,
     @NullableTimestampConverter() DateTime? updatedAt,
@@ -460,7 +469,8 @@ class __$$GameModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = freezed,
-    Object? groupId = null,
+    Object? groupId = freezed,
+    Object? contextType = null,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
@@ -509,10 +519,14 @@ class __$$GameModelImplCopyWithImpl<$Res>
             ? _value.description
             : description // ignore: cast_nullable_to_non_nullable
                   as String?,
-        groupId: null == groupId
+        groupId: freezed == groupId
             ? _value.groupId
             : groupId // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
+        contextType: null == contextType
+            ? _value.contextType
+            : contextType // ignore: cast_nullable_to_non_nullable
+                  as GameContextType,
         createdBy: null == createdBy
             ? _value.createdBy
             : createdBy // ignore: cast_nullable_to_non_nullable
@@ -657,7 +671,8 @@ class _$GameModelImpl extends _GameModel {
     required this.id,
     required this.title,
     this.description,
-    required this.groupId,
+    this.groupId,
+    this.contextType = GameContextType.group,
     required this.createdBy,
     @TimestampConverter() required this.createdAt,
     @NullableTimestampConverter() this.updatedAt,
@@ -708,8 +723,12 @@ class _$GameModelImpl extends _GameModel {
   final String title;
   @override
   final String? description;
+  // Nullable since Story 31.4: group games set this; pickup games leave it null.
   @override
-  final String groupId;
+  final String? groupId;
+  @override
+  @JsonKey()
+  final GameContextType contextType;
   @override
   final String createdBy;
   @override
@@ -855,7 +874,7 @@ class _$GameModelImpl extends _GameModel {
 
   @override
   String toString() {
-    return 'GameModel(id: $id, title: $title, description: $description, groupId: $groupId, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, scheduledAt: $scheduledAt, startedAt: $startedAt, endedAt: $endedAt, location: $location, status: $status, maxPlayers: $maxPlayers, minPlayers: $minPlayers, playerIds: $playerIds, waitlistIds: $waitlistIds, allowWaitlist: $allowWaitlist, allowPlayerInvites: $allowPlayerInvites, visibility: $visibility, notes: $notes, equipment: $equipment, estimatedDuration: $estimatedDuration, courtInfo: $courtInfo, gameType: $gameType, skillLevel: $skillLevel, scores: $scores, winnerId: $winnerId, teams: $teams, result: $result, resultSubmittedBy: $resultSubmittedBy, confirmedBy: $confirmedBy, eloCalculated: $eloCalculated, eloUpdates: $eloUpdates, completedAt: $completedAt, weatherDependent: $weatherDependent, weatherNotes: $weatherNotes, gameGenderType: $gameGenderType)';
+    return 'GameModel(id: $id, title: $title, description: $description, groupId: $groupId, contextType: $contextType, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt, scheduledAt: $scheduledAt, startedAt: $startedAt, endedAt: $endedAt, location: $location, status: $status, maxPlayers: $maxPlayers, minPlayers: $minPlayers, playerIds: $playerIds, waitlistIds: $waitlistIds, allowWaitlist: $allowWaitlist, allowPlayerInvites: $allowPlayerInvites, visibility: $visibility, notes: $notes, equipment: $equipment, estimatedDuration: $estimatedDuration, courtInfo: $courtInfo, gameType: $gameType, skillLevel: $skillLevel, scores: $scores, winnerId: $winnerId, teams: $teams, result: $result, resultSubmittedBy: $resultSubmittedBy, confirmedBy: $confirmedBy, eloCalculated: $eloCalculated, eloUpdates: $eloUpdates, completedAt: $completedAt, weatherDependent: $weatherDependent, weatherNotes: $weatherNotes, gameGenderType: $gameGenderType)';
   }
 
   @override
@@ -868,6 +887,8 @@ class _$GameModelImpl extends _GameModel {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.contextType, contextType) ||
+                other.contextType == contextType) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.createdAt, createdAt) ||
@@ -948,6 +969,7 @@ class _$GameModelImpl extends _GameModel {
     title,
     description,
     groupId,
+    contextType,
     createdBy,
     createdAt,
     updatedAt,
@@ -1002,7 +1024,8 @@ abstract class _GameModel extends GameModel {
     required final String id,
     required final String title,
     final String? description,
-    required final String groupId,
+    final String? groupId,
+    final GameContextType contextType,
     required final String createdBy,
     @TimestampConverter() required final DateTime createdAt,
     @NullableTimestampConverter() final DateTime? updatedAt,
@@ -1047,9 +1070,11 @@ abstract class _GameModel extends GameModel {
   @override
   String get title;
   @override
-  String? get description;
+  String? get description; // Nullable since Story 31.4: group games set this; pickup games leave it null.
   @override
-  String get groupId;
+  String? get groupId;
+  @override
+  GameContextType get contextType;
   @override
   String get createdBy;
   @override

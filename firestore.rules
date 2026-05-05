@@ -17,6 +17,13 @@ service cloud.firestore {
              request.auth.uid in get(/databases/$(database)/documents/groups/$(groupId)).data.adminIds;
     }
 
+    /// Check if user is a member of the specified group.
+    /// Always returns false when groupId is null (pickup games — Story 31.4).
+    function isGameGroupMember(groupId) {
+      return groupId != null &&
+             request.auth.uid in get(/databases/$(database)/documents/groups/$(groupId)).data.memberIds;
+    }
+
     // ============================================
     // User Documents
     // ============================================
@@ -188,36 +195,40 @@ service cloud.firestore {
     // Games
     // ============================================
 
-    // Games: Group members can read, creators can manage
+    // Games: Group members can read, creators can manage.
+    // groupId is nullable since Story 31.4 (pickup games have no group).
+    // isGameGroupMember() safely returns false when groupId is null.
     match /games/{gameId} {
       // Individual game reads allowed for:
       //  - players already in the game (playerIds)
-      //  - group members (via group membership)
+      //  - group members when game has a groupId
       //  - pending invitees (pendingInviteeIds, managed by CFs — allows reading before accepting)
       allow get: if isAuthenticated() &&
                     (request.auth.uid in resource.data.playerIds ||
-                     request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds ||
+                     isGameGroupMember(resource.data.groupId) ||
                      ('pendingInviteeIds' in resource.data && request.auth.uid in resource.data.pendingInviteeIds));
 
       // List/query operations allowed for group members OR players in the game.
       // Supports getMyGames() query (playerIds array-contains uid) for guest players.
       allow list: if isAuthenticated() &&
                      (request.auth.uid in resource.data.playerIds ||
-                      request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds ||
+                      isGameGroupMember(resource.data.groupId) ||
                       ('pendingInviteeIds' in resource.data && request.auth.uid in resource.data.pendingInviteeIds));
 
-      // Game creation allowed for authenticated users
+      // Game creation allowed for authenticated users.
+      // Group games: creator must be a group member.
+      // Pickup games (groupId null): any authenticated user can create.
       allow create: if isAuthenticated() &&
                        request.auth.uid == request.resource.data.createdBy &&
-                       // Verify user is a member of the group they're creating a game for
-                       request.auth.uid in get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.memberIds;
+                       (request.resource.data.groupId == null ||
+                        request.auth.uid in get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.memberIds);
 
-      // Game updates allowed for creator, group members, or existing players
+      // Game updates allowed for creator, group members (when groupId set), or existing players
       // (playerIds covers guest players invited from another group — Story 28.11).
       // Special validation for result confirmation (Story 14.11)
       allow update: if isAuthenticated() &&
                        (request.auth.uid == resource.data.createdBy ||
-                        request.auth.uid in get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.memberIds ||
+                        isGameGroupMember(resource.data.groupId) ||
                         request.auth.uid in resource.data.playerIds) &&
                        // CRITICAL: Result confirmation security validation
                        (
