@@ -2,16 +2,16 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'game_chat_event.dart';
 import 'game_chat_state.dart';
 
 class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
-  final GameRepository _gameRepository;
+  final MessageRepository _messageRepository;
   StreamSubscription<dynamic>? _messagesSubscription;
 
-  GameChatBloc({required GameRepository gameRepository})
-      : _gameRepository = gameRepository,
+  GameChatBloc({required MessageRepository messageRepository})
+      : _messageRepository = messageRepository,
         super(const GameChatInitial()) {
     on<LoadGameChat>(_onLoadGameChat);
     on<GameChatMessagesUpdated>(_onMessagesUpdated);
@@ -24,10 +24,12 @@ class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
   ) async {
     emit(const GameChatLoading());
     await _messagesSubscription?.cancel();
-    _messagesSubscription = _gameRepository.getMessages(event.gameId).listen(
-      (messages) => add(GameChatMessagesUpdated(messages: messages)),
-      onError: (_) => add(const GameChatMessagesUpdated(messages: [])),
-    );
+    _messagesSubscription = _messageRepository
+        .getMessages(contextPath: event.contextPath)
+        .listen(
+          (messages) => add(GameChatMessagesUpdated(messages: messages)),
+          onError: (_) => add(const GameChatMessagesUpdated(messages: [])),
+        );
   }
 
   void _onMessagesUpdated(
@@ -47,8 +49,8 @@ class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
     final current = state as GameChatLoaded;
     emit(current.copyWith(isSending: true));
     try {
-      await _gameRepository.sendMessage(
-        gameId: event.gameId,
+      await _messageRepository.sendMessage(
+        contextPath: event.contextPath,
         senderId: event.senderId,
         senderDisplayName: event.senderDisplayName,
         text: event.text,
@@ -60,7 +62,7 @@ class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
       if (latest is GameChatLoaded) {
         emit(latest.copyWith(isSending: false));
       }
-    } on GameException catch (e) {
+    } on MessageException catch (e) {
       emit(current.copyWith(isSending: false));
       // Don't emit error — just restore state (snackbar handled in widget)
       addError(Exception(e.message));

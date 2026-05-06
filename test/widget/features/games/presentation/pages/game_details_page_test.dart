@@ -10,7 +10,9 @@ import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/data/models/chat_message_model.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
@@ -30,6 +32,21 @@ class MockInvitationBloc extends Mock implements InvitationBloc {}
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
 class MockInvitationRepository extends Mock implements InvitationRepository {}
+
+class _FakeMessageRepository implements MessageRepository {
+  @override
+  Stream<List<ChatMessageModel>> getMessages({required String contextPath}) =>
+      Stream.value([]);
+
+  @override
+  Future<void> sendMessage({
+    required String contextPath,
+    required String senderId,
+    required String senderDisplayName,
+    required String text,
+    String? teamId,
+  }) async {}
+}
 
 void main() {
   late MockGameRepository mockGameRepository;
@@ -59,6 +76,7 @@ void main() {
     sl.registerLazySingleton<FirebaseAnalytics>(() => mockAnalytics);
     sl.registerLazySingleton<GameRepository>(() => mockGameRepository);
     sl.registerLazySingleton<InvitationRepository>(() => MockInvitationRepository());
+    sl.registerLazySingleton<MessageRepository>(() => _FakeMessageRepository());
     when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
     when(
       () => mockInvitationBloc.stream,

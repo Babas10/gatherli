@@ -14,6 +14,7 @@ _$ChatMessageModelImpl _$$ChatMessageModelImplFromJson(
   senderDisplayName: json['senderDisplayName'] as String,
   text: json['text'] as String,
   sentAt: const TimestampConverter().fromJson(json['sentAt'] as Object),
+  teamId: json['teamId'] as String?,
 );
 
 Map<String, dynamic> _$$ChatMessageModelImplToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$$ChatMessageModelImplToJson(
   'senderDisplayName': instance.senderDisplayName,
   'text': instance.text,
   'sentAt': const TimestampConverter().toJson(instance.sentAt),
+  'teamId': instance.teamId,
 };

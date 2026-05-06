@@ -14,6 +14,7 @@ class ChatMessageModel with _$ChatMessageModel {
     required String senderDisplayName,
     required String text,
     @TimestampConverter() required DateTime sentAt,
+    String? teamId,
   }) = _ChatMessageModel;
 
   const ChatMessageModel._();

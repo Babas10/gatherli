@@ -99,3 +99,14 @@ class GameInvitationException implements Exception {
   @override
   String toString() => message;
 }
+
+/// Exception thrown by MessageRepository operations (Story 31.7).
+class MessageException implements Exception {
+  final String message;
+  final String? code;
+
+  MessageException(this.message, {this.code});
+
+  @override
+  String toString() => message;
+}

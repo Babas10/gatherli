@@ -9,7 +9,9 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/data/models/chat_message_model.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_event.dart';
@@ -34,6 +36,21 @@ class MockInvitationBloc extends MockBloc<InvitationEvent, InvitationState>
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
 class MockInvitationRepository extends Mock implements InvitationRepository {}
+
+class _FakeMessageRepository implements MessageRepository {
+  @override
+  Stream<List<ChatMessageModel>> getMessages({required String contextPath}) =>
+      Stream.value([]);
+
+  @override
+  Future<void> sendMessage({
+    required String contextPath,
+    required String senderId,
+    required String senderDisplayName,
+    required String text,
+    String? teamId,
+  }) async {}
+}
 
 void main() {
   late MockGameRepository mockGameRepository;
@@ -88,6 +105,11 @@ void main() {
       sl.unregister<InvitationRepository>();
     }
     sl.registerSingleton<InvitationRepository>(MockInvitationRepository());
+
+    if (sl.isRegistered<MessageRepository>()) {
+      sl.unregister<MessageRepository>();
+    }
+    sl.registerSingleton<MessageRepository>(_FakeMessageRepository());
   });
 
   tearDown(() {

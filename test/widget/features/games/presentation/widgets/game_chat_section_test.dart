@@ -3,45 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
-import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_chat_section.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 // Minimal fake repository for widget tests — no streams, no Firebase.
-class _FakeGameRepository implements GameRepository {
+class _FakeMessageRepository implements MessageRepository {
   final List<ChatMessageModel> messages;
   final List<Map<String, String>> sentMessages = [];
 
-  _FakeGameRepository({this.messages = const []});
+  _FakeMessageRepository({this.messages = const []});
 
   @override
-  Stream<List<ChatMessageModel>> getMessages(String gameId) =>
+  Stream<List<ChatMessageModel>> getMessages({required String contextPath}) =>
       Stream.value(messages);
 
   @override
   Future<void> sendMessage({
-    required String gameId,
+    required String contextPath,
     required String senderId,
     required String senderDisplayName,
     required String text,
+    String? teamId,
   }) async {
     sentMessages.add({
-      'gameId': gameId,
+      'contextPath': contextPath,
       'senderId': senderId,
       'senderDisplayName': senderDisplayName,
       'text': text,
     });
   }
-
-  // All other methods throw UnimplementedError — they are not used by GameChatSection.
-  @override
-  dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError(
-        '${invocation.memberName} is not implemented in _FakeGameRepository',
-      );
 }
 
 Widget _buildWidget({
-  required _FakeGameRepository repo,
+  required _FakeMessageRepository repo,
   bool isPlayer = true,
 }) {
   return MaterialApp(
@@ -59,7 +54,7 @@ Widget _buildWidget({
           currentUserId: 'current-user',
           currentUserDisplayName: 'Alice',
           isPlayer: isPlayer,
-          gameRepository: repo,
+          messageRepository: repo,
         ),
       ),
     ),
@@ -85,7 +80,7 @@ void main() {
 
   group('GameChatSection', () {
     testWidgets('shows empty message when no messages', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
       expect(
@@ -95,7 +90,7 @@ void main() {
     });
 
     testWidgets('renders other user messages', (tester) async {
-      final repo = _FakeGameRepository(messages: [messageFromOther]);
+      final repo = _FakeMessageRepository(messages: [messageFromOther]);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
       expect(find.text('Hello team!'), findsOneWidget);
@@ -103,7 +98,7 @@ void main() {
     });
 
     testWidgets('renders own messages without sender name', (tester) async {
-      final repo = _FakeGameRepository(messages: [messageFromSelf]);
+      final repo = _FakeMessageRepository(messages: [messageFromSelf]);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
       expect(find.text('Ready to play!'), findsOneWidget);
@@ -112,7 +107,7 @@ void main() {
     });
 
     testWidgets('shows input field for players', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo, isPlayer: true));
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsOneWidget);
@@ -120,7 +115,7 @@ void main() {
     });
 
     testWidgets('shows join-to-view message for non-players instead of chat', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo, isPlayer: false));
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsNothing);
@@ -129,7 +124,7 @@ void main() {
     });
 
     testWidgets('send button calls sendMessage on repository', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
 
@@ -140,20 +135,20 @@ void main() {
 
       expect(repo.sentMessages, hasLength(1));
       expect(repo.sentMessages.first['text'], 'Hello!');
-      expect(repo.sentMessages.first['gameId'], 'game-1');
+      expect(repo.sentMessages.first['contextPath'], 'games/game-1');
       expect(repo.sentMessages.first['senderId'], 'current-user');
       expect(repo.sentMessages.first['senderDisplayName'], 'Alice');
     });
 
     testWidgets('shows chat section title', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
       expect(find.text('Chat'), findsOneWidget);
     });
 
     testWidgets('clears text field after sending', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
 
@@ -167,7 +162,7 @@ void main() {
     });
 
     testWidgets('does not send empty message', (tester) async {
-      final repo = _FakeGameRepository(messages: []);
+      final repo = _FakeMessageRepository(messages: []);
       await tester.pumpWidget(_buildWidget(repo: repo));
       await tester.pumpAndSettle();
 
