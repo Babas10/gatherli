@@ -150,12 +150,9 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
           _invitationRepository != null) {
         try {
           for (final friendId in event.friendIdsToInvite!) {
-            await _invitationRepository.sendInvitation(
+            await _invitationRepository.sendGroupInvitation(
               groupId: groupId,
-              groupName: createdGroup.name,
               invitedUserId: friendId,
-              invitedBy: createdGroup.createdBy,
-              inviterName: '', // Will be filled by backend from user document
             );
           }
         } catch (inviteError) {

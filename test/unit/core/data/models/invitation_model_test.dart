@@ -687,14 +687,15 @@ void main() {
   });
 
   group('InvitationStatus', () {
-    test('has three values', () {
-      expect(InvitationStatus.values.length, 3);
+    test('has four values', () {
+      expect(InvitationStatus.values.length, 4);
     });
 
-    test('values are pending, accepted, declined', () {
+    test('values are pending, accepted, declined, expired', () {
       expect(InvitationStatus.values, contains(InvitationStatus.pending));
       expect(InvitationStatus.values, contains(InvitationStatus.accepted));
       expect(InvitationStatus.values, contains(InvitationStatus.declined));
+      expect(InvitationStatus.values, contains(InvitationStatus.expired));
     });
 
     test('pending has index 0', () {

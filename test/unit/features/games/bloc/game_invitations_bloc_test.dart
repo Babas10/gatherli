@@ -6,11 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/game_invitations_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 
 class MockGameInvitationsRepository extends Mock
-    implements GameInvitationsRepository {}
+    implements InvitationRepository {}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -121,7 +121,10 @@ void main() {
           () => mockRepo.getGameInvitations(),
         ).thenAnswer((_) async => [inv]);
         when(
-          () => mockRepo.acceptGameInvitation('inv-1'),
+          () => mockRepo.acceptInvitation(
+            userId: any(named: 'userId'),
+            invitationId: 'inv-1',
+          ),
         ).thenAnswer((_) async {});
         return GameInvitationsBloc(repository: mockRepo);
       },
@@ -143,7 +146,12 @@ void main() {
     blocTest<GameInvitationsBloc, GameInvitationsState>(
       'emits [InFlight, ActionError] and preserves list on GameInvitationException',
       build: () {
-        when(() => mockRepo.acceptGameInvitation('inv-1')).thenThrow(
+        when(
+          () => mockRepo.acceptInvitation(
+            userId: any(named: 'userId'),
+            invitationId: 'inv-1',
+          ),
+        ).thenThrow(
           GameInvitationException('game full', code: 'failed-precondition'),
         );
         return GameInvitationsBloc(repository: mockRepo);
@@ -166,7 +174,10 @@ void main() {
       'emits [InFlight, ActionSuccess(declined)] and removes invitation from list',
       build: () {
         when(
-          () => mockRepo.declineGameInvitation('inv-1'),
+          () => mockRepo.declineInvitation(
+            userId: any(named: 'userId'),
+            invitationId: 'inv-1',
+          ),
         ).thenAnswer((_) async {});
         return GameInvitationsBloc(repository: mockRepo);
       },

@@ -30,7 +30,7 @@ class InvitationTile extends StatelessWidget {
           children: [
             // Group name
             Text(
-              invitation.groupName,
+              invitation.groupName ?? invitation.gameTitle ?? '',
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),

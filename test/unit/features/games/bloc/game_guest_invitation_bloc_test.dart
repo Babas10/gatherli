@@ -4,13 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/game_guest_invitation_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_state.dart';
 
 class MockGameGuestInvitationRepository extends Mock
-    implements GameGuestInvitationRepository {}
+    implements InvitationRepository {}
 
 final _player = InvitablePlayerModel(
   uid: 'player-1',
@@ -99,9 +99,9 @@ void main() {
           () => mockRepo.getInvitablePlayers('game-1'),
         ).thenAnswer((_) async => [_player]);
         when(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-1',
+            invitedUserId: 'player-1',
           ),
         ).thenAnswer((_) async => 'inv-123');
         return GameGuestInvitationBloc(repository: mockRepo);
@@ -127,9 +127,9 @@ void main() {
           () => mockRepo.getInvitablePlayers('game-1'),
         ).thenAnswer((_) async => [_player]);
         when(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-1',
+            invitedUserId: 'player-1',
           ),
         ).thenThrow(
           GameInvitationException('Already exists', code: 'already-exists'),
@@ -161,9 +161,9 @@ void main() {
           () => mockRepo.getInvitablePlayers('game-1'),
         ).thenAnswer((_) async => [_player]);
         when(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-1',
+            invitedUserId: 'player-1',
           ),
         ).thenThrow(Exception('network'));
         return GameGuestInvitationBloc(repository: mockRepo);
@@ -198,9 +198,9 @@ void main() {
           () => mockRepo.getInvitablePlayers('game-1'),
         ).thenAnswer((_) async => [_player, player2]);
         when(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: any(named: 'inviteeId'),
+            invitedUserId: any(named: 'invitedUserId'),
           ),
         ).thenAnswer((_) async => 'inv-1');
         return GameGuestInvitationBloc(repository: mockRepo);
@@ -227,15 +227,15 @@ void main() {
       ],
       verify: (_) {
         verify(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-1',
+            invitedUserId: 'player-1',
           ),
         ).called(1);
         verify(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-2',
+            invitedUserId: 'player-2',
           ),
         ).called(1);
       },
@@ -248,9 +248,9 @@ void main() {
           () => mockRepo.getInvitablePlayers('game-1'),
         ).thenAnswer((_) async => [_player]);
         when(
-          () => mockRepo.inviteGuestPlayer(
+          () => mockRepo.sendGameInvitation(
             gameId: 'game-1',
-            inviteeId: 'player-1',
+            invitedUserId: 'player-1',
           ),
         ).thenThrow(
           GameInvitationException('Already invited', code: 'already-exists'),

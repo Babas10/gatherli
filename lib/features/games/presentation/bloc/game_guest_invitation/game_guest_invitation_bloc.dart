@@ -2,16 +2,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/game_guest_invitation_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 
 import 'game_guest_invitation_event.dart';
 import 'game_guest_invitation_state.dart';
 
 class GameGuestInvitationBloc
     extends Bloc<GameGuestInvitationEvent, GameGuestInvitationState> {
-  final GameGuestInvitationRepository _repository;
+  final InvitationRepository _repository;
 
-  GameGuestInvitationBloc({required GameGuestInvitationRepository repository})
+  GameGuestInvitationBloc({required InvitationRepository repository})
     : _repository = repository,
       super(const GameGuestInvitationInitial()) {
     on<LoadInvitablePlayers>(_onLoadInvitablePlayers);
@@ -74,9 +74,9 @@ class GameGuestInvitationBloc
 
     for (final player in groupPlayers) {
       try {
-        await _repository.inviteGuestPlayer(
+        await _repository.sendGameInvitation(
           gameId: event.gameId,
-          inviteeId: player.uid,
+          invitedUserId: player.uid,
         );
       } on GameInvitationException catch (e) {
         if (e.code == 'already-exists') continue;
@@ -107,9 +107,9 @@ class GameGuestInvitationBloc
           inviteeId: event.inviteeId,
         ),
       );
-      await _repository.inviteGuestPlayer(
+      await _repository.sendGameInvitation(
         gameId: event.gameId,
-        inviteeId: event.inviteeId,
+        invitedUserId: event.inviteeId,
       );
       emit(
         InvitePlayerSuccess(

@@ -40,10 +40,7 @@ void main() {
         act: (bloc) => bloc.add(
           const SendInvitation(
             groupId: 'group-123',
-            groupName: 'Test Group',
             invitedUserId: 'user-456',
-            invitedBy: 'user-123',
-            inviterName: 'John Doe',
           ),
         ),
         expect: () => [const InvitationLoading(), isA<InvitationSent>()],

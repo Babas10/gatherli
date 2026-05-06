@@ -11,8 +11,7 @@ import 'package:intl/intl.dart';
 
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
-import '../../../../core/domain/repositories/game_guest_invitation_repository.dart';
-import '../../../../core/domain/repositories/game_invitations_repository.dart';
+import '../../../../core/domain/repositories/invitation_repository.dart';
 import '../../../../core/domain/repositories/game_repository.dart';
 import '../../../../core/domain/repositories/user_repository.dart';
 import '../../../../core/data/models/game_model.dart';
@@ -38,8 +37,7 @@ class GameDetailsPage extends StatelessWidget {
 
   final GameRepository? gameRepository;
   final UserRepository? userRepository;
-  final GameGuestInvitationRepository? gameGuestInvitationRepository;
-  final GameInvitationsRepository? gameInvitationsRepository;
+  final InvitationRepository? invitationRepository;
 
   const GameDetailsPage({
     super.key,
@@ -47,8 +45,7 @@ class GameDetailsPage extends StatelessWidget {
     this.invitationId,
     this.gameRepository,
     this.userRepository,
-    this.gameGuestInvitationRepository,
-    this.gameInvitationsRepository,
+    this.invitationRepository,
   });
 
   @override
@@ -61,17 +58,12 @@ class GameDetailsPage extends StatelessWidget {
             userRepository: userRepository ?? sl<UserRepository>(),
             analytics: sl(),
             invitationsRepository:
-                gameInvitationsRepository ??
-                (sl.isRegistered<GameInvitationsRepository>()
-                    ? sl<GameInvitationsRepository>()
-                    : null),
+                invitationRepository ?? sl<InvitationRepository>(),
           )..add(LoadGameDetails(gameId: gameId)),
         ),
         BlocProvider(
           create: (_) => GameGuestInvitationBloc(
-            repository:
-                gameGuestInvitationRepository ??
-                sl<GameGuestInvitationRepository>(),
+            repository: invitationRepository ?? sl<InvitationRepository>(),
           ),
         ),
       ],

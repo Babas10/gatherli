@@ -1,7 +1,9 @@
 // Mock repository for InvitationRepository used in testing
 import 'dart:async';
 
+import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/core/data/models/invitation_model.dart';
+import 'package:play_with_me/core/data/models/invitable_player_model.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -9,7 +11,8 @@ class MockInvitationRepository implements InvitationRepository {
   // Use BehaviorSubject for synchronous, deterministic emissions
   final BehaviorSubject<List<InvitationModel>> _invitationsController =
       BehaviorSubject<List<InvitationModel>>.seeded([]);
-  final Map<String, Map<String, InvitationModel>> _invitationsByUser = {};
+  final Map<String, InvitationModel> _invitations = {};
+  int _idCounter = 0;
 
   MockInvitationRepository();
 
@@ -18,21 +21,21 @@ class MockInvitationRepository implements InvitationRepository {
 
   // Helper methods for testing
   void addInvitation(InvitationModel invitation) {
-    final userInvitations = _invitationsByUser[invitation.invitedUserId] ?? {};
-    userInvitations[invitation.id] = invitation;
-    _invitationsByUser[invitation.invitedUserId] = userInvitations;
-    _emitInvitationsForUser(invitation.invitedUserId);
+    _invitations[invitation.id] = invitation;
+    _emitPending(invitation.invitedUserId);
   }
 
   void clearInvitations() {
-    _invitationsByUser.clear();
+    _invitations.clear();
     _invitationsController.add([]);
   }
 
-  void _emitInvitationsForUser(String userId) {
+  void _emitPending(String userId) {
     if (!_invitationsController.isClosed) {
-      final invitations = _invitationsByUser[userId]?.values.toList() ?? [];
-      _invitationsController.add(invitations);
+      final pending = _invitations.values
+          .where((i) => i.invitedUserId == userId && i.isPending)
+          .toList();
+      _invitationsController.add(pending);
     }
   }
 
@@ -40,64 +43,93 @@ class MockInvitationRepository implements InvitationRepository {
     _invitationsController.close();
   }
 
-  List<InvitationModel> _getUserInvitations(String userId) {
-    return _invitationsByUser[userId]?.values.toList() ?? [];
-  }
+  List<InvitationModel> get allInvitations => _invitations.values.toList();
+
+  // ============================================================
+  // Group invitations
+  // ============================================================
 
   @override
-  Future<String> sendInvitation({
+  Future<String> sendGroupInvitation({
     required String groupId,
-    required String groupName,
     required String invitedUserId,
-    required String invitedBy,
-    required String inviterName,
   }) async {
-    final invitationId = 'invitation-${DateTime.now().millisecondsSinceEpoch}';
-    final invitation = InvitationModel(
+    final invitationId = 'invitation-${++_idCounter}';
+    addInvitation(InvitationModel(
       id: invitationId,
+      type: InvitationType.group,
       groupId: groupId,
-      groupName: groupName,
       invitedUserId: invitedUserId,
-      invitedBy: invitedBy,
-      inviterName: inviterName,
-      status: InvitationStatus.pending,
+      invitedBy: 'test-user',
+      inviterName: 'Test User',
       createdAt: DateTime.now(),
-    );
-
-    addInvitation(invitation);
+    ));
     return invitationId;
   }
 
   @override
-  Stream<List<InvitationModel>> getPendingInvitations(String userId) async* {
-    // Immediately yield the current value
-    yield _getUserInvitations(
-      userId,
-    ).where((inv) => inv.status == InvitationStatus.pending).toList();
+  Future<bool> hasPendingGroupInvitation({
+    required String userId,
+    required String groupId,
+  }) async {
+    return _invitations.values.any(
+      (inv) =>
+          inv.invitedUserId == userId &&
+          inv.groupId == groupId &&
+          inv.isPending,
+    );
+  }
 
-    // Then continue listening for future updates
+  // ============================================================
+  // Game invitations
+  // ============================================================
+
+  @override
+  Future<String> sendGameInvitation({
+    required String gameId,
+    required String invitedUserId,
+  }) async {
+    final invitationId = 'game-invitation-${++_idCounter}';
+    addInvitation(InvitationModel(
+      id: invitationId,
+      type: InvitationType.game,
+      gameId: gameId,
+      invitedUserId: invitedUserId,
+      invitedBy: 'test-user',
+      inviterName: 'Test User',
+      createdAt: DateTime.now(),
+    ));
+    return invitationId;
+  }
+
+  @override
+  Future<List<GameInvitationDetails>> getGameInvitations() async => [];
+
+  @override
+  Future<List<InvitablePlayerModel>> getInvitablePlayers(String gameId) async => [];
+
+  // ============================================================
+  // Shared
+  // ============================================================
+
+  @override
+  Stream<List<InvitationModel>> getPendingInvitations(String userId) async* {
+    yield _invitations.values
+        .where((i) => i.invitedUserId == userId && i.isPending)
+        .toList();
+
     yield* _invitationsController.stream.map(
-      (invitations) => invitations
-          .where(
-            (inv) =>
-                inv.invitedUserId == userId &&
-                inv.status == InvitationStatus.pending,
-          )
+      (list) => list
+          .where((i) => i.invitedUserId == userId && i.isPending)
           .toList(),
     );
   }
 
   @override
   Future<List<InvitationModel>> getInvitations(String userId) async {
-    return _getUserInvitations(userId);
-  }
-
-  @override
-  Future<InvitationModel?> getInvitationById({
-    required String userId,
-    required String invitationId,
-  }) async {
-    return _invitationsByUser[userId]?[invitationId];
+    return _invitations.values
+        .where((i) => i.invitedUserId == userId)
+        .toList();
   }
 
   @override
@@ -105,14 +137,10 @@ class MockInvitationRepository implements InvitationRepository {
     required String userId,
     required String invitationId,
   }) async {
-    final invitation = _invitationsByUser[userId]?[invitationId];
-    if (invitation == null) {
-      throw Exception('Invitation not found');
-    }
-
-    final updatedInvitation = invitation.accept();
-    _invitationsByUser[userId]![invitationId] = updatedInvitation;
-    _emitInvitationsForUser(userId);
+    final inv = _invitations[invitationId];
+    if (inv == null) throw Exception('Invitation not found');
+    _invitations[invitationId] = inv.accept();
+    _emitPending(userId);
   }
 
   @override
@@ -120,14 +148,10 @@ class MockInvitationRepository implements InvitationRepository {
     required String userId,
     required String invitationId,
   }) async {
-    final invitation = _invitationsByUser[userId]?[invitationId];
-    if (invitation == null) {
-      throw Exception('Invitation not found');
-    }
-
-    final updatedInvitation = invitation.decline();
-    _invitationsByUser[userId]![invitationId] = updatedInvitation;
-    _emitInvitationsForUser(userId);
+    final inv = _invitations[invitationId];
+    if (inv == null) throw Exception('Invitation not found');
+    _invitations[invitationId] = inv.decline();
+    _emitPending(userId);
   }
 
   @override
@@ -135,26 +159,8 @@ class MockInvitationRepository implements InvitationRepository {
     required String userId,
     required String invitationId,
   }) async {
-    _invitationsByUser[userId]?.remove(invitationId);
-    _emitInvitationsForUser(userId);
-  }
-
-  @override
-  Future<bool> hasPendingInvitation({
-    required String userId,
-    required String groupId,
-  }) async {
-    return _getUserInvitations(userId).any(
-      (inv) => inv.groupId == groupId && inv.status == InvitationStatus.pending,
-    );
-  }
-
-  @override
-  Future<List<InvitationModel>> getInvitationsSentByUser(String userId) async {
-    return _invitationsByUser.values
-        .expand((invitations) => invitations.values)
-        .where((inv) => inv.invitedBy == userId)
-        .toList();
+    _invitations.remove(invitationId);
+    _emitPending(userId);
   }
 
   @override

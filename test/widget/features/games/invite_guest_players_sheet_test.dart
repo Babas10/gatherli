@@ -7,14 +7,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
-import 'package:play_with_me/core/domain/repositories/game_guest_invitation_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_event.dart';
 import 'package:play_with_me/features/games/presentation/widgets/invite_guest_players_sheet.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class MockGameGuestInvitationRepository extends Mock
-    implements GameGuestInvitationRepository {}
+    implements InvitationRepository {}
 
 final _alice = InvitablePlayerModel(
   uid: 'alice',
@@ -172,9 +172,9 @@ void main() {
         () => mockRepo.getInvitablePlayers(any()),
       ).thenAnswer((_) async => [_alice]);
       when(
-        () => mockRepo.inviteGuestPlayer(
+        () => mockRepo.sendGameInvitation(
           gameId: any(named: 'gameId'),
-          inviteeId: any(named: 'inviteeId'),
+          invitedUserId: any(named: 'invitedUserId'),
         ),
       ).thenAnswer((_) async => 'inv-1');
       final bloc = GameGuestInvitationBloc(repository: mockRepo);
@@ -186,7 +186,10 @@ void main() {
       await tester.pumpAndSettle();
 
       verify(
-        () => mockRepo.inviteGuestPlayer(gameId: 'game-1', inviteeId: 'alice'),
+        () => mockRepo.sendGameInvitation(
+          gameId: 'game-1',
+          invitedUserId: 'alice',
+        ),
       ).called(1);
     });
 
@@ -195,9 +198,9 @@ void main() {
         () => mockRepo.getInvitablePlayers(any()),
       ).thenAnswer((_) async => [_alice, _carol]); // both in Beach Crew
       when(
-        () => mockRepo.inviteGuestPlayer(
+        () => mockRepo.sendGameInvitation(
           gameId: any(named: 'gameId'),
-          inviteeId: any(named: 'inviteeId'),
+          invitedUserId: any(named: 'invitedUserId'),
         ),
       ).thenAnswer((_) async => 'inv-1');
       final bloc = GameGuestInvitationBloc(repository: mockRepo);
@@ -210,10 +213,10 @@ void main() {
 
       // Both Alice and Carol should be invited
       verify(
-        () => mockRepo.inviteGuestPlayer(gameId: 'game-1', inviteeId: 'alice'),
+        () => mockRepo.sendGameInvitation(gameId: 'game-1', invitedUserId: 'alice'),
       ).called(1);
       verify(
-        () => mockRepo.inviteGuestPlayer(gameId: 'game-1', inviteeId: 'carol'),
+        () => mockRepo.sendGameInvitation(gameId: 'game-1', invitedUserId: 'carol'),
       ).called(1);
     });
 
@@ -222,9 +225,9 @@ void main() {
         () => mockRepo.getInvitablePlayers(any()),
       ).thenAnswer((_) async => [_alice]);
       when(
-        () => mockRepo.inviteGuestPlayer(
+        () => mockRepo.sendGameInvitation(
           gameId: any(named: 'gameId'),
-          inviteeId: any(named: 'inviteeId'),
+          invitedUserId: any(named: 'invitedUserId'),
         ),
       ).thenAnswer((_) async => 'inv-1');
       final bloc = GameGuestInvitationBloc(repository: mockRepo);
@@ -243,9 +246,9 @@ void main() {
         () => mockRepo.getInvitablePlayers(any()),
       ).thenAnswer((_) async => [_alice]);
       when(
-        () => mockRepo.inviteGuestPlayer(
+        () => mockRepo.sendGameInvitation(
           gameId: any(named: 'gameId'),
-          inviteeId: any(named: 'inviteeId'),
+          invitedUserId: any(named: 'invitedUserId'),
         ),
       ).thenAnswer((_) async => 'inv-1');
       final bloc = GameGuestInvitationBloc(repository: mockRepo);
@@ -279,9 +282,9 @@ void main() {
         () => mockRepo.getInvitablePlayers(any()),
       ).thenAnswer((_) async => [_alice, _bob]);
       when(
-        () => mockRepo.inviteGuestPlayer(
+        () => mockRepo.sendGameInvitation(
           gameId: any(named: 'gameId'),
-          inviteeId: any(named: 'inviteeId'),
+          invitedUserId: any(named: 'invitedUserId'),
         ),
       ).thenAnswer((_) => inviteCompleter.future);
       final bloc = GameGuestInvitationBloc(repository: mockRepo);

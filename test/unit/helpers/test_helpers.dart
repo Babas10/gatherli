@@ -23,7 +23,6 @@ import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dar
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
-import 'package:play_with_me/core/domain/repositories/game_invitations_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import '../features/auth/data/mock_auth_repository.dart';
@@ -54,10 +53,6 @@ class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 // Mock for GroupInviteLinkRepository
 class MockGroupInviteLinkRepository extends Mock
     implements GroupInviteLinkRepository {}
-
-// Mock for GameInvitationsRepository
-class MockGameInvitationsRepository extends Mock
-    implements GameInvitationsRepository {}
 
 // Fake for UserModel (required for mocktail's any() matcher)
 class FakeUserModel extends Fake implements UserModel {}
@@ -255,16 +250,9 @@ Future<void> initializeTestDependencies({
     () => AccountStatusBloc(authRepository: sl<AuthRepository>()),
   );
 
-  // Register GameInvitationsBloc with a mock repository (Story 28.10)
-  final mockGameInvitationsRepo = MockGameInvitationsRepository();
-  when(
-    () => mockGameInvitationsRepo.getGameInvitations(),
-  ).thenAnswer((_) async => []);
-  sl.registerLazySingleton<GameInvitationsRepository>(
-    () => mockGameInvitationsRepo,
-  );
+  // Register GameInvitationsBloc using the unified InvitationRepository (Story 31.6)
   sl.registerFactory<GameInvitationsBloc>(
-    () => GameInvitationsBloc(repository: sl<GameInvitationsRepository>()),
+    () => GameInvitationsBloc(repository: sl<InvitationRepository>()),
   );
 }
 
