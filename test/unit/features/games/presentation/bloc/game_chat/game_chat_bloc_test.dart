@@ -3,15 +3,17 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
-import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_state.dart';
 
-class MockGameRepository extends Mock implements GameRepository {}
+class MockMessageRepository extends Mock implements MessageRepository {}
 
 void main() {
-  late MockGameRepository mockGameRepository;
+  late MockMessageRepository mockMessageRepository;
+
+  const testContextPath = 'games/game-1';
 
   final testMessage = ChatMessageModel(
     id: 'msg-1',
@@ -26,7 +28,7 @@ void main() {
   });
 
   setUp(() {
-    mockGameRepository = MockGameRepository();
+    mockMessageRepository = MockMessageRepository();
   });
 
   group('GameChatBloc', () {
@@ -34,11 +36,15 @@ void main() {
       blocTest<GameChatBloc, GameChatState>(
         'emits [loading, loaded] with messages from stream',
         build: () {
-          when(() => mockGameRepository.getMessages('game-1'))
-              .thenAnswer((_) => Stream.value([testMessage]));
-          return GameChatBloc(gameRepository: mockGameRepository);
+          when(
+            () => mockMessageRepository.getMessages(
+              contextPath: testContextPath,
+            ),
+          ).thenAnswer((_) => Stream.value([testMessage]));
+          return GameChatBloc(messageRepository: mockMessageRepository);
         },
-        act: (bloc) => bloc.add(const LoadGameChat(gameId: 'game-1')),
+        act: (bloc) =>
+            bloc.add(const LoadGameChat(contextPath: testContextPath)),
         expect: () => [
           const GameChatLoading(),
           GameChatLoaded(messages: [testMessage]),
@@ -48,11 +54,15 @@ void main() {
       blocTest<GameChatBloc, GameChatState>(
         'emits [loading, loaded with empty list] on stream error',
         build: () {
-          when(() => mockGameRepository.getMessages('game-1'))
-              .thenAnswer((_) => Stream.error(Exception('error')));
-          return GameChatBloc(gameRepository: mockGameRepository);
+          when(
+            () => mockMessageRepository.getMessages(
+              contextPath: testContextPath,
+            ),
+          ).thenAnswer((_) => Stream.error(Exception('error')));
+          return GameChatBloc(messageRepository: mockMessageRepository);
         },
-        act: (bloc) => bloc.add(const LoadGameChat(gameId: 'game-1')),
+        act: (bloc) =>
+            bloc.add(const LoadGameChat(contextPath: testContextPath)),
         expect: () => [
           const GameChatLoading(),
           const GameChatLoaded(messages: []),
@@ -64,22 +74,26 @@ void main() {
       blocTest<GameChatBloc, GameChatState>(
         'sends message and clears isSending flag',
         build: () {
-          when(() => mockGameRepository.getMessages('game-1'))
-              .thenAnswer((_) => Stream.value([testMessage]));
           when(
-            () => mockGameRepository.sendMessage(
-              gameId: any(named: 'gameId'),
+            () => mockMessageRepository.getMessages(
+              contextPath: testContextPath,
+            ),
+          ).thenAnswer((_) => Stream.value([testMessage]));
+          when(
+            () => mockMessageRepository.sendMessage(
+              contextPath: any(named: 'contextPath'),
               senderId: any(named: 'senderId'),
               senderDisplayName: any(named: 'senderDisplayName'),
               text: any(named: 'text'),
+              teamId: any(named: 'teamId'),
             ),
           ).thenAnswer((_) async {});
-          return GameChatBloc(gameRepository: mockGameRepository);
+          return GameChatBloc(messageRepository: mockMessageRepository);
         },
         seed: () => GameChatLoaded(messages: [testMessage]),
         act: (bloc) => bloc.add(
           const SendChatMessage(
-            gameId: 'game-1',
+            contextPath: testContextPath,
             senderId: 'user-1',
             senderDisplayName: 'Alice',
             text: 'Hello!',
@@ -93,10 +107,10 @@ void main() {
 
       blocTest<GameChatBloc, GameChatState>(
         'does nothing when state is not loaded',
-        build: () => GameChatBloc(gameRepository: mockGameRepository),
+        build: () => GameChatBloc(messageRepository: mockMessageRepository),
         act: (bloc) => bloc.add(
           const SendChatMessage(
-            gameId: 'game-1',
+            contextPath: testContextPath,
             senderId: 'user-1',
             senderDisplayName: 'Alice',
             text: 'Hello!',

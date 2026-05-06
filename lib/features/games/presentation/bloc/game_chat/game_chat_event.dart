@@ -9,10 +9,10 @@ abstract class GameChatEvent extends Equatable {
 }
 
 class LoadGameChat extends GameChatEvent {
-  final String gameId;
-  const LoadGameChat({required this.gameId});
+  final String contextPath;
+  const LoadGameChat({required this.contextPath});
   @override
-  List<Object?> get props => [gameId];
+  List<Object?> get props => [contextPath];
 }
 
 class GameChatMessagesUpdated extends GameChatEvent {
@@ -23,16 +23,16 @@ class GameChatMessagesUpdated extends GameChatEvent {
 }
 
 class SendChatMessage extends GameChatEvent {
-  final String gameId;
+  final String contextPath;
   final String senderId;
   final String senderDisplayName;
   final String text;
   const SendChatMessage({
-    required this.gameId,
+    required this.contextPath,
     required this.senderId,
     required this.senderDisplayName,
     required this.text,
   });
   @override
-  List<Object?> get props => [gameId, senderId, senderDisplayName, text];
+  List<Object?> get props => [contextPath, senderId, senderDisplayName, text];
 }

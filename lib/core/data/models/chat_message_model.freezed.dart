@@ -27,6 +27,7 @@ mixin _$ChatMessageModel {
   String get text => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get sentAt => throw _privateConstructorUsedError;
+  String? get teamId => throw _privateConstructorUsedError;
 
   /// Serializes this ChatMessageModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $ChatMessageModelCopyWith<$Res> {
     String senderDisplayName,
     String text,
     @TimestampConverter() DateTime sentAt,
+    String? teamId,
   });
 }
 
@@ -74,6 +76,7 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     Object? senderDisplayName = null,
     Object? text = null,
     Object? sentAt = null,
+    Object? teamId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -97,6 +100,10 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
                 ? _value.sentAt
                 : sentAt // ignore: cast_nullable_to_non_nullable
                       as DateTime,
+            teamId: freezed == teamId
+                ? _value.teamId
+                : teamId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -118,6 +125,7 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
     String senderDisplayName,
     String text,
     @TimestampConverter() DateTime sentAt,
+    String? teamId,
   });
 }
 
@@ -140,6 +148,7 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
     Object? senderDisplayName = null,
     Object? text = null,
     Object? sentAt = null,
+    Object? teamId = freezed,
   }) {
     return _then(
       _$ChatMessageModelImpl(
@@ -163,6 +172,10 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
             ? _value.sentAt
             : sentAt // ignore: cast_nullable_to_non_nullable
                   as DateTime,
+        teamId: freezed == teamId
+            ? _value.teamId
+            : teamId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -177,6 +190,7 @@ class _$ChatMessageModelImpl extends _ChatMessageModel {
     required this.senderDisplayName,
     required this.text,
     @TimestampConverter() required this.sentAt,
+    this.teamId,
   }) : super._();
 
   factory _$ChatMessageModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -193,10 +207,12 @@ class _$ChatMessageModelImpl extends _ChatMessageModel {
   @override
   @TimestampConverter()
   final DateTime sentAt;
+  @override
+  final String? teamId;
 
   @override
   String toString() {
-    return 'ChatMessageModel(id: $id, senderId: $senderId, senderDisplayName: $senderDisplayName, text: $text, sentAt: $sentAt)';
+    return 'ChatMessageModel(id: $id, senderId: $senderId, senderDisplayName: $senderDisplayName, text: $text, sentAt: $sentAt, teamId: $teamId)';
   }
 
   @override
@@ -210,13 +226,21 @@ class _$ChatMessageModelImpl extends _ChatMessageModel {
             (identical(other.senderDisplayName, senderDisplayName) ||
                 other.senderDisplayName == senderDisplayName) &&
             (identical(other.text, text) || other.text == text) &&
-            (identical(other.sentAt, sentAt) || other.sentAt == sentAt));
+            (identical(other.sentAt, sentAt) || other.sentAt == sentAt) &&
+            (identical(other.teamId, teamId) || other.teamId == teamId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, senderId, senderDisplayName, text, sentAt);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    senderId,
+    senderDisplayName,
+    text,
+    sentAt,
+    teamId,
+  );
 
   /// Create a copy of ChatMessageModel
   /// with the given fields replaced by the non-null parameter values.
@@ -242,6 +266,7 @@ abstract class _ChatMessageModel extends ChatMessageModel {
     required final String senderDisplayName,
     required final String text,
     @TimestampConverter() required final DateTime sentAt,
+    final String? teamId,
   }) = _$ChatMessageModelImpl;
   const _ChatMessageModel._() : super._();
 
@@ -259,6 +284,8 @@ abstract class _ChatMessageModel extends ChatMessageModel {
   @override
   @TimestampConverter()
   DateTime get sentAt;
+  @override
+  String? get teamId;
 
   /// Create a copy of ChatMessageModel
   /// with the given fields replaced by the non-null parameter values.

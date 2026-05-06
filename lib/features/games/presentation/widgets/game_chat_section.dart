@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
-import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -16,7 +16,7 @@ class GameChatSection extends StatelessWidget {
   final String currentUserId;
   final String currentUserDisplayName;
   final bool isPlayer;
-  final GameRepository? gameRepository;
+  final MessageRepository? messageRepository;
 
   const GameChatSection({
     super.key,
@@ -24,17 +24,18 @@ class GameChatSection extends StatelessWidget {
     required this.currentUserId,
     required this.currentUserDisplayName,
     required this.isPlayer,
-    this.gameRepository,
+    this.messageRepository,
   });
 
   @override
   Widget build(BuildContext context) {
+    final contextPath = 'games/$gameId';
     return BlocProvider(
       create: (context) => GameChatBloc(
-        gameRepository: gameRepository ?? sl<GameRepository>(),
-      )..add(LoadGameChat(gameId: gameId)),
+        messageRepository: messageRepository ?? sl<MessageRepository>(),
+      )..add(LoadGameChat(contextPath: contextPath)),
       child: _GameChatView(
-        gameId: gameId,
+        contextPath: contextPath,
         currentUserId: currentUserId,
         currentUserDisplayName: currentUserDisplayName,
         isPlayer: isPlayer,
@@ -44,13 +45,13 @@ class GameChatSection extends StatelessWidget {
 }
 
 class _GameChatView extends StatefulWidget {
-  final String gameId;
+  final String contextPath;
   final String currentUserId;
   final String currentUserDisplayName;
   final bool isPlayer;
 
   const _GameChatView({
-    required this.gameId,
+    required this.contextPath,
     required this.currentUserId,
     required this.currentUserDisplayName,
     required this.isPlayer,
@@ -89,7 +90,7 @@ class _GameChatViewState extends State<_GameChatView> {
     _textController.clear();
     context.read<GameChatBloc>().add(
       SendChatMessage(
-        gameId: widget.gameId,
+        contextPath: widget.contextPath,
         senderId: widget.currentUserId,
         senderDisplayName: widget.currentUserDisplayName,
         text: text,

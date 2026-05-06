@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../data/models/chat_message_model.dart';
 import '../../data/models/game_model.dart';
 
 abstract class GameRepository {
@@ -189,16 +188,6 @@ abstract class GameRepository {
     DocumentSnapshot? lastDocument,
   });
 
-  /// Stream real-time messages for a game (ordered by sentAt ascending)
-  Stream<List<ChatMessageModel>> getMessages(String gameId);
-
-  /// Send a message to the game chat
-  Future<void> sendMessage({
-    required String gameId,
-    required String senderId,
-    required String senderDisplayName,
-    required String text,
-  });
 }
 
 /// Container for paginated game history results
