@@ -4,16 +4,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/game_invitations_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 
 part 'game_invitations_event.dart';
 part 'game_invitations_state.dart';
 
 class GameInvitationsBloc
     extends Bloc<GameInvitationsEvent, GameInvitationsState> {
-  final GameInvitationsRepository _repository;
+  final InvitationRepository _repository;
 
-  GameInvitationsBloc({required GameInvitationsRepository repository})
+  GameInvitationsBloc({required InvitationRepository repository})
     : _repository = repository,
       super(const GameInvitationsInitial()) {
     on<LoadGameInvitations>(_onLoadGameInvitations);
@@ -49,7 +49,7 @@ class GameInvitationsBloc
         (i) => i.invitationId == event.invitationId,
         orElse: () => current.first,
       );
-      await _repository.acceptGameInvitation(event.invitationId);
+      await _repository.acceptInvitation(userId: '', invitationId: event.invitationId);
       final updated = current
           .where((i) => i.invitationId != event.invitationId)
           .toList();
@@ -82,7 +82,7 @@ class GameInvitationsBloc
 
     emit(GameInvitationActionInFlight(current, event.invitationId));
     try {
-      await _repository.declineGameInvitation(event.invitationId);
+      await _repository.declineInvitation(userId: '', invitationId: event.invitationId);
       final updated = current
           .where((i) => i.invitationId != event.invitationId)
           .toList();

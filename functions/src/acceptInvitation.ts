@@ -1,3 +1,7 @@
+// Dual-aware acceptInvitation — Story 31.6
+// Tries the unified top-level `invitations/{id}` collection first; falls back
+// to the legacy `users/{userId}/invitations/{id}` subcollection for backward
+// compatibility with invitations created before the migration.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {checkFriendship} from "./friendships";
@@ -20,16 +24,11 @@ export interface AcceptInvitationResponse {
 
 /**
  * Handler function for accepting invitations (exported for testing)
- *
- * @param data - Request data containing invitationId
- * @param context - Firebase Functions context with auth information
- * @returns Promise resolving to AcceptInvitationResponse
  */
 export async function acceptInvitationHandler(
   data: AcceptInvitationRequest,
   context: functions.https.CallableContext
 ): Promise<AcceptInvitationResponse> {
-  // Ensure user is authenticated
   if (!context.auth) {
     throw new functions.https.HttpsError(
       "unauthenticated",
@@ -40,12 +39,8 @@ export async function acceptInvitationHandler(
   const userId = context.auth.uid;
   const {invitationId} = data;
 
-  functions.logger.info("Accepting invitation", {
-    userId,
-    invitationId,
-  });
+  functions.logger.info("[acceptInvitation] Start", {userId, invitationId});
 
-  // Validate required parameters
   if (!invitationId || typeof invitationId !== "string") {
     throw new functions.https.HttpsError(
       "invalid-argument",
@@ -56,192 +51,223 @@ export async function acceptInvitationHandler(
   const db = admin.firestore();
 
   try {
-    // Get the invitation
-    const invitationRef = db
-      .collection("users")
-      .doc(userId)
-      .collection("invitations")
-      .doc(invitationId);
+    // ── 1. Locate the invitation (new collection first, then legacy) ─────────
+    const topLevelRef = db.collection("invitations").doc(invitationId);
+    const topLevelDoc = await topLevelRef.get();
 
-    const invitationDoc = await invitationRef.get();
+    const isNewStyle = topLevelDoc.exists;
+    const invitationRef = isNewStyle
+      ? topLevelRef
+      : db.collection("users").doc(userId).collection("invitations").doc(invitationId);
 
-    functions.logger.debug("Invitation lookup result", {
+    const invitationDoc = isNewStyle ? topLevelDoc : await invitationRef.get();
+
+    functions.logger.debug("[acceptInvitation] Lookup", {
       userId,
       invitationId,
+      isNewStyle,
       exists: invitationDoc.exists,
     });
 
     if (!invitationDoc.exists) {
-      functions.logger.warn("Invitation not found", {
-        userId,
-        invitationId,
-      });
-      throw new functions.https.HttpsError(
-        "not-found",
-        "Invitation not found"
-      );
+      throw new functions.https.HttpsError("not-found", "Invitation not found");
     }
 
-    const invitationData = invitationDoc.data();
+    const invitationData = invitationDoc.data()!;
 
-    // Verify invitation is pending
-    if (invitationData?.status !== "pending") {
-      functions.logger.warn("Invitation is not pending", {
-        userId,
-        invitationId,
-        currentStatus: invitationData?.status,
-      });
+    // ── 2. Basic validations ─────────────────────────────────────────────────
+    if (invitationData.status !== "pending") {
       throw new functions.https.HttpsError(
         "failed-precondition",
         "Invitation is not pending"
       );
     }
 
-    // Verify invitation is for the authenticated user
     if (invitationData.invitedUserId !== userId) {
-      functions.logger.warn("Invitation ownership mismatch", {
-        userId,
-        invitationId,
-        invitedUserId: invitationData.invitedUserId,
-      });
       throw new functions.https.HttpsError(
         "permission-denied",
         "This invitation is not for you"
       );
     }
 
-    // Story 11.4: Always validate friendship (no backward compatibility)
-    const inviterId = invitationData.invitedBy;
-    const areFriends = await checkFriendship(inviterId, userId);
+    // ── 3. Type-dispatched acceptance ────────────────────────────────────────
+    const invType: string = invitationData.type ?? "group"; // old-style defaults to group
 
-    functions.logger.debug("Friendship validation result", {
-      userId,
-      inviterId,
-      areFriends,
-    });
-
-    if (!areFriends) {
-      functions.logger.warn("Non-friend attempting to accept invitation", {
+    if (invType === "game") {
+      return await acceptGameInvitation(
+        db,
         userId,
-        inviterId,
         invitationId,
-      });
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "You can only accept invitations from friends. Please add them as a friend first."
+        invitationRef,
+        invitationData
       );
     }
 
-    const groupId = invitationData.groupId;
-    const groupRef = db.collection("groups").doc(groupId);
-
-    // Verify group exists before proceeding
-    const groupDoc = await groupRef.get();
-    if (!groupDoc.exists) {
-      functions.logger.error("Group not found for invitation", {
-        userId,
-        invitationId,
-        groupId,
-      });
-      throw new functions.https.HttpsError(
-        "not-found",
-        "The group for this invitation no longer exists"
-      );
-    }
-
-    functions.logger.info("Proceeding to accept invitation", {
+    // Default: group invitation (covers both new-style type='group' and old-style)
+    return await acceptGroupInvitation(
+      db,
       userId,
       invitationId,
-      groupId,
-      groupName: invitationData.groupName,
-    });
-
-    // Use a transaction for atomic read-modify-write
-    // This prevents race conditions if multiple operations happen simultaneously
-    await db.runTransaction(async (transaction) => {
-      // Re-read invitation within transaction to ensure it's still pending
-      const currentInvitationDoc = await transaction.get(invitationRef);
-      const currentInvitationData = currentInvitationDoc.data();
-
-      if (!currentInvitationDoc.exists || currentInvitationData?.status !== "pending") {
-        throw new functions.https.HttpsError(
-          "failed-precondition",
-          "Invitation is no longer pending"
-        );
-      }
-
-      // Re-read group within transaction to ensure it still exists
-      const currentGroupDoc = await transaction.get(groupRef);
-      if (!currentGroupDoc.exists) {
-        throw new functions.https.HttpsError(
-          "not-found",
-          "Group no longer exists"
-        );
-      }
-
-      // Update invitation status
-      transaction.update(invitationRef, {
-        status: "accepted",
-        respondedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-
-      // Add user to group members
-      transaction.update(groupRef, {
-        memberIds: admin.firestore.FieldValue.arrayUnion(userId),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-        lastActivity: admin.firestore.FieldValue.serverTimestamp(),
-      });
-    });
-
-    functions.logger.info("Invitation accepted successfully", {
-      userId,
-      invitationId,
-      groupId,
-      groupName: invitationData.groupName,
-    });
-
-    return {
-      success: true,
-      groupId: groupId,
-      message: `Successfully joined ${invitationData.groupName}`,
-    };
+      invitationRef,
+      invitationData
+    );
   } catch (error) {
-    // Re-throw HttpsErrors as-is
-    if (error instanceof functions.https.HttpsError) {
-      throw error;
-    }
-
-    // Log unexpected errors
-    functions.logger.error("Error accepting invitation", {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error("[acceptInvitation] Unexpected error", {
       userId,
       invitationId,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
-
-    // Throw generic error for unexpected failures
-    throw new functions.https.HttpsError(
-      "internal",
-      "Failed to accept invitation"
-    );
+    throw new functions.https.HttpsError("internal", "Failed to accept invitation");
   }
 }
 
+// ── Group acceptance ──────────────────────────────────────────────────────────
+
+async function acceptGroupInvitation(
+  db: admin.firestore.Firestore,
+  userId: string,
+  invitationId: string,
+  invitationRef: admin.firestore.DocumentReference,
+  invitationData: admin.firestore.DocumentData
+): Promise<AcceptInvitationResponse> {
+  // Friendship re-validation (Story 11.4)
+  const inviterId = invitationData.invitedBy;
+  const areFriends = await checkFriendship(inviterId, userId);
+  if (!areFriends) {
+    functions.logger.warn("[acceptInvitation] Not friends", {userId, inviterId, invitationId});
+    throw new functions.https.HttpsError(
+      "permission-denied",
+      "You can only accept invitations from friends. Please add them as a friend first."
+    );
+  }
+
+  const groupId = invitationData.groupId;
+  const groupRef = db.collection("groups").doc(groupId);
+
+  const groupDoc = await groupRef.get();
+  if (!groupDoc.exists) {
+    throw new functions.https.HttpsError(
+      "not-found",
+      "The group for this invitation no longer exists"
+    );
+  }
+
+  await db.runTransaction(async (tx) => {
+    const currentInv = await tx.get(invitationRef);
+    if (!currentInv.exists || currentInv.data()?.status !== "pending") {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Invitation is no longer pending"
+      );
+    }
+    const currentGroup = await tx.get(groupRef);
+    if (!currentGroup.exists) {
+      throw new functions.https.HttpsError("not-found", "Group no longer exists");
+    }
+
+    tx.update(invitationRef, {
+      status: "accepted",
+      respondedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+    tx.update(groupRef, {
+      memberIds: admin.firestore.FieldValue.arrayUnion(userId),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      lastActivity: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  });
+
+  functions.logger.info("[acceptInvitation] Group invitation accepted", {
+    userId,
+    invitationId,
+    groupId,
+  });
+
+  return {
+    success: true,
+    groupId,
+    message: `Successfully joined ${invitationData.groupName ?? "the group"}`,
+  };
+}
+
+// ── Game acceptance ───────────────────────────────────────────────────────────
+
+async function acceptGameInvitation(
+  db: admin.firestore.Firestore,
+  userId: string,
+  invitationId: string,
+  invitationRef: admin.firestore.DocumentReference,
+  invitationData: admin.firestore.DocumentData
+): Promise<AcceptInvitationResponse> {
+  const gameId = invitationData.gameId;
+  const gameRef = db.collection("games").doc(gameId);
+
+  const gameDoc = await gameRef.get();
+  if (!gameDoc.exists) {
+    throw new functions.https.HttpsError(
+      "not-found",
+      "The game for this invitation no longer exists"
+    );
+  }
+
+  const game = gameDoc.data()!;
+
+  // Check game is still accepting players
+  if (game.status !== "scheduled") {
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "This game is no longer accepting players"
+    );
+  }
+
+  await db.runTransaction(async (tx) => {
+    const currentInv = await tx.get(invitationRef);
+    if (!currentInv.exists || currentInv.data()?.status !== "pending") {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Invitation is no longer pending"
+      );
+    }
+    const currentGame = await tx.get(gameRef);
+    if (!currentGame.exists) {
+      throw new functions.https.HttpsError("not-found", "Game no longer exists");
+    }
+
+    tx.update(invitationRef, {
+      status: "accepted",
+      respondedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+    tx.update(gameRef, {
+      playerIds: admin.firestore.FieldValue.arrayUnion(userId),
+      pendingInviteeIds: admin.firestore.FieldValue.arrayRemove(userId),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  });
+
+  functions.logger.info("[acceptInvitation] Game invitation accepted", {
+    userId,
+    invitationId,
+    gameId,
+  });
+
+  // groupId is used by the Flutter client to navigate; return the game's groupId
+  return {
+    success: true,
+    groupId: game.groupId ?? "",
+    message: "Successfully joined the game",
+  };
+}
+
 /**
- * Cloud Function to securely accept a group invitation.
+ * Cloud Function to securely accept a group or game invitation.
  *
- * This function handles the atomic operation of:
- * 1. Verifying the invitation exists and is pending
- * 2. Validating friendship between inviter and invitee (Story 11.4)
- * 3. Adding the user to the group's memberIds
- * 4. Updating the invitation status to 'accepted'
- * 5. Updating group metadata (updatedAt, lastActivity)
- *
- * Security:
- * - Requires authentication
- * - Uses Admin SDK to bypass security rules
- * - Validates invitation ownership
- * - Validates friendship (Story 11.4 - mandatory for all invitations)
- * - Atomic batch operation for data consistency
+ * Dual-aware: checks the unified `invitations` collection first, then falls
+ * back to the legacy `users/{userId}/invitations` subcollection.
+ * Dispatches on `type` field: 'group' → join group; 'game' → join game.
  */
-export const acceptInvitation = functions.region('europe-west6').https.onCall(acceptInvitationHandler);
+export const acceptInvitation = functions
+  .region("europe-west6")
+  .https.onCall(acceptInvitationHandler);

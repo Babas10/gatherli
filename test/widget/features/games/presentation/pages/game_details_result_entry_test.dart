@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_event.dart';
@@ -31,6 +32,8 @@ class MockInvitationBloc extends MockBloc<InvitationEvent, InvitationState>
     implements InvitationBloc {}
 
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
+
+class MockInvitationRepository extends Mock implements InvitationRepository {}
 
 void main() {
   late MockGameRepository mockGameRepository;
@@ -80,6 +83,11 @@ void main() {
       sl.unregister<FirebaseAnalytics>();
     }
     sl.registerSingleton<FirebaseAnalytics>(mockAnalytics);
+
+    if (sl.isRegistered<InvitationRepository>()) {
+      sl.unregister<InvitationRepository>();
+    }
+    sl.registerSingleton<InvitationRepository>(MockInvitationRepository());
   });
 
   tearDown(() {

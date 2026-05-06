@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
-import 'package:play_with_me/core/domain/repositories/game_invitations_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -15,7 +15,7 @@ import 'game_details_state.dart';
 class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
   final GameRepository _gameRepository;
   final UserRepository _userRepository;
-  final GameInvitationsRepository? _invitationsRepository;
+  final InvitationRepository? _invitationsRepository;
   final FirebaseAnalytics _analytics;
   StreamSubscription<dynamic>? _gameSubscription;
 
@@ -23,7 +23,7 @@ class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
     required GameRepository gameRepository,
     required UserRepository userRepository,
     required FirebaseAnalytics analytics,
-    GameInvitationsRepository? invitationsRepository,
+    InvitationRepository? invitationsRepository,
   }) : _gameRepository = gameRepository,
        _userRepository = userRepository,
        _invitationsRepository = invitationsRepository,
@@ -334,7 +334,7 @@ class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
         );
       }
 
-      await _invitationsRepository?.acceptGameInvitation(event.invitationId);
+      await _invitationsRepository?.acceptInvitation(userId: '', invitationId: event.invitationId);
 
       // Stream will automatically update state once Firestore reflects the change
     } on GameException catch (e) {

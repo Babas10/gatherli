@@ -6,27 +6,15 @@ abstract class InvitationEvent extends BaseBlocEvent {
 
 class SendInvitation extends InvitationEvent {
   final String groupId;
-  final String groupName;
   final String invitedUserId;
-  final String invitedBy;
-  final String inviterName;
 
   const SendInvitation({
     required this.groupId,
-    required this.groupName,
     required this.invitedUserId,
-    required this.invitedBy,
-    required this.inviterName,
   });
 
   @override
-  List<Object?> get props => [
-    groupId,
-    groupName,
-    invitedUserId,
-    invitedBy,
-    inviterName,
-  ];
+  List<Object?> get props => [groupId, invitedUserId];
 }
 
 class LoadPendingInvitations extends InvitationEvent {

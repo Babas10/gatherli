@@ -21,9 +21,7 @@ import 'package:play_with_me/core/domain/repositories/training_feedback_reposito
 import 'package:play_with_me/core/domain/repositories/image_storage_repository.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
-import 'package:play_with_me/core/domain/repositories/game_guest_invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
-import 'package:play_with_me/core/data/repositories/firestore_game_guest_invitation_repository.dart';
 import 'package:play_with_me/core/data/repositories/firestore_user_repository.dart';
 import 'package:play_with_me/core/data/repositories/firestore_group_repository.dart';
 import 'package:play_with_me/core/data/repositories/firestore_game_repository.dart';
@@ -69,8 +67,6 @@ import 'package:play_with_me/core/presentation/bloc/account_status/account_statu
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_bloc.dart';
-import 'package:play_with_me/core/domain/repositories/game_invitations_repository.dart';
-import 'package:play_with_me/core/data/repositories/firestore_game_invitations_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 
 final GetIt sl = GetIt.instance;
@@ -183,7 +179,7 @@ Future<void> initializeDependencies() async {
 
   if (!sl.isRegistered<InvitationRepository>()) {
     sl.registerLazySingleton<InvitationRepository>(
-      () => FirestoreInvitationRepository(groupRepository: sl()),
+      () => FirestoreInvitationRepository(),
     );
   }
 
@@ -206,12 +202,6 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<GroupInviteLinkRepository>()) {
     sl.registerLazySingleton<GroupInviteLinkRepository>(
       () => FirestoreGroupInviteLinkRepository(functions: sl()),
-    );
-  }
-
-  if (!sl.isRegistered<GameGuestInvitationRepository>()) {
-    sl.registerLazySingleton<GameGuestInvitationRepository>(
-      () => FirestoreGameGuestInvitationRepository(functions: sl()),
     );
   }
 
@@ -356,7 +346,7 @@ Future<void> initializeDependencies() async {
 
   if (!sl.isRegistered<GameGuestInvitationBloc>()) {
     sl.registerFactory<GameGuestInvitationBloc>(
-      () => GameGuestInvitationBloc(repository: sl()),
+      () => GameGuestInvitationBloc(repository: sl<InvitationRepository>()),
     );
   }
 
@@ -413,15 +403,9 @@ Future<void> initializeDependencies() async {
     );
   }
 
-  if (!sl.isRegistered<GameInvitationsRepository>()) {
-    sl.registerLazySingleton<GameInvitationsRepository>(
-      () => FirestoreGameInvitationsRepository(),
-    );
-  }
-
   if (!sl.isRegistered<GameInvitationsBloc>()) {
     sl.registerFactory<GameInvitationsBloc>(
-      () => GameInvitationsBloc(repository: sl()),
+      () => GameInvitationsBloc(repository: sl<InvitationRepository>()),
     );
   }
 

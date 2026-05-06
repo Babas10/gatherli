@@ -124,10 +124,9 @@ void main() {
           ),
         ),
         expect: () => [const GroupLoading(), isA<GroupCreated>()],
-        verify: (_) async {
+        verify: (_) {
           // Verify that invitations were sent to both friends
-          final sentInvitations = await mockInvitationRepository
-              .getInvitationsSentByUser('user-1');
+          final sentInvitations = mockInvitationRepository.allInvitations;
           expect(sentInvitations.length, 2);
           expect(sentInvitations.map((i) => i.invitedUserId).toSet(), {
             'friend-1',

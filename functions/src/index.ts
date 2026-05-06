@@ -142,3 +142,6 @@ export {migrateRemoveGroupGameIds} from "./migrateRemoveGroupGameIds";
 // Story 31.3: One-time migration — remove deprecated unbounded arrays from user documents
 export {migrateRemoveUserArrays} from "./migrateRemoveUserArrays";
 
+// Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
+export {sendInvitation} from "./sendInvitation";
+

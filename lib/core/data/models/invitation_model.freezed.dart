@@ -22,16 +22,25 @@ InvitationModel _$InvitationModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$InvitationModel {
   String get id => throw _privateConstructorUsedError;
-  String get groupId => throw _privateConstructorUsedError;
-  String get groupName => throw _privateConstructorUsedError;
+  InvitationType get type => throw _privateConstructorUsedError;
   String get invitedBy => throw _privateConstructorUsedError;
   String get inviterName => throw _privateConstructorUsedError;
   String get invitedUserId => throw _privateConstructorUsedError;
   InvitationStatus get status => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get respondedAt => throw _privateConstructorUsedError;
+  @NullableTimestampConverter()
+  DateTime? get expiresAt => throw _privateConstructorUsedError; // Group context (set when type == group)
+  String? get groupId => throw _privateConstructorUsedError;
+  String? get groupName =>
+      throw _privateConstructorUsedError; // Game context (set when type == game)
+  String? get gameId => throw _privateConstructorUsedError;
+  String? get gameTitle => throw _privateConstructorUsedError;
+  @NullableTimestampConverter()
+  DateTime? get gameScheduledAt => throw _privateConstructorUsedError;
+  String? get gameLocationName => throw _privateConstructorUsedError;
 
   /// Serializes this InvitationModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,14 +61,20 @@ abstract class $InvitationModelCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String groupId,
-    String groupName,
+    InvitationType type,
     String invitedBy,
     String inviterName,
     String invitedUserId,
     InvitationStatus status,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? respondedAt,
+    @NullableTimestampConverter() DateTime? respondedAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
+    String? groupId,
+    String? groupName,
+    String? gameId,
+    String? gameTitle,
+    @NullableTimestampConverter() DateTime? gameScheduledAt,
+    String? gameLocationName,
   });
 }
 
@@ -79,14 +94,20 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
   @override
   $Res call({
     Object? id = null,
-    Object? groupId = null,
-    Object? groupName = null,
+    Object? type = null,
     Object? invitedBy = null,
     Object? inviterName = null,
     Object? invitedUserId = null,
     Object? status = null,
     Object? createdAt = null,
     Object? respondedAt = freezed,
+    Object? expiresAt = freezed,
+    Object? groupId = freezed,
+    Object? groupName = freezed,
+    Object? gameId = freezed,
+    Object? gameTitle = freezed,
+    Object? gameScheduledAt = freezed,
+    Object? gameLocationName = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -94,14 +115,10 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                       as String,
-            groupId: null == groupId
-                ? _value.groupId
-                : groupId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            groupName: null == groupName
-                ? _value.groupName
-                : groupName // ignore: cast_nullable_to_non_nullable
-                      as String,
+            type: null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                      as InvitationType,
             invitedBy: null == invitedBy
                 ? _value.invitedBy
                 : invitedBy // ignore: cast_nullable_to_non_nullable
@@ -126,6 +143,34 @@ class _$InvitationModelCopyWithImpl<$Res, $Val extends InvitationModel>
                 ? _value.respondedAt
                 : respondedAt // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            expiresAt: freezed == expiresAt
+                ? _value.expiresAt
+                : expiresAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
+            groupId: freezed == groupId
+                ? _value.groupId
+                : groupId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            groupName: freezed == groupName
+                ? _value.groupName
+                : groupName // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            gameId: freezed == gameId
+                ? _value.gameId
+                : gameId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            gameTitle: freezed == gameTitle
+                ? _value.gameTitle
+                : gameTitle // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            gameScheduledAt: freezed == gameScheduledAt
+                ? _value.gameScheduledAt
+                : gameScheduledAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
+            gameLocationName: freezed == gameLocationName
+                ? _value.gameLocationName
+                : gameLocationName // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -143,14 +188,20 @@ abstract class _$$InvitationModelImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String groupId,
-    String groupName,
+    InvitationType type,
     String invitedBy,
     String inviterName,
     String invitedUserId,
     InvitationStatus status,
     @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime? respondedAt,
+    @NullableTimestampConverter() DateTime? respondedAt,
+    @NullableTimestampConverter() DateTime? expiresAt,
+    String? groupId,
+    String? groupName,
+    String? gameId,
+    String? gameTitle,
+    @NullableTimestampConverter() DateTime? gameScheduledAt,
+    String? gameLocationName,
   });
 }
 
@@ -169,14 +220,20 @@ class __$$InvitationModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? groupId = null,
-    Object? groupName = null,
+    Object? type = null,
     Object? invitedBy = null,
     Object? inviterName = null,
     Object? invitedUserId = null,
     Object? status = null,
     Object? createdAt = null,
     Object? respondedAt = freezed,
+    Object? expiresAt = freezed,
+    Object? groupId = freezed,
+    Object? groupName = freezed,
+    Object? gameId = freezed,
+    Object? gameTitle = freezed,
+    Object? gameScheduledAt = freezed,
+    Object? gameLocationName = freezed,
   }) {
     return _then(
       _$InvitationModelImpl(
@@ -184,14 +241,10 @@ class __$$InvitationModelImplCopyWithImpl<$Res>
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
                   as String,
-        groupId: null == groupId
-            ? _value.groupId
-            : groupId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        groupName: null == groupName
-            ? _value.groupName
-            : groupName // ignore: cast_nullable_to_non_nullable
-                  as String,
+        type: null == type
+            ? _value.type
+            : type // ignore: cast_nullable_to_non_nullable
+                  as InvitationType,
         invitedBy: null == invitedBy
             ? _value.invitedBy
             : invitedBy // ignore: cast_nullable_to_non_nullable
@@ -216,6 +269,34 @@ class __$$InvitationModelImplCopyWithImpl<$Res>
             ? _value.respondedAt
             : respondedAt // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        expiresAt: freezed == expiresAt
+            ? _value.expiresAt
+            : expiresAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
+        groupId: freezed == groupId
+            ? _value.groupId
+            : groupId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        groupName: freezed == groupName
+            ? _value.groupName
+            : groupName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        gameId: freezed == gameId
+            ? _value.gameId
+            : gameId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        gameTitle: freezed == gameTitle
+            ? _value.gameTitle
+            : gameTitle // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        gameScheduledAt: freezed == gameScheduledAt
+            ? _value.gameScheduledAt
+            : gameScheduledAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
+        gameLocationName: freezed == gameLocationName
+            ? _value.gameLocationName
+            : gameLocationName // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -226,14 +307,20 @@ class __$$InvitationModelImplCopyWithImpl<$Res>
 class _$InvitationModelImpl extends _InvitationModel {
   const _$InvitationModelImpl({
     required this.id,
-    required this.groupId,
-    required this.groupName,
+    this.type = InvitationType.group,
     required this.invitedBy,
     required this.inviterName,
     required this.invitedUserId,
     this.status = InvitationStatus.pending,
     @TimestampConverter() required this.createdAt,
-    @TimestampConverter() this.respondedAt,
+    @NullableTimestampConverter() this.respondedAt,
+    @NullableTimestampConverter() this.expiresAt,
+    this.groupId,
+    this.groupName,
+    this.gameId,
+    this.gameTitle,
+    @NullableTimestampConverter() this.gameScheduledAt,
+    this.gameLocationName,
   }) : super._();
 
   factory _$InvitationModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -242,9 +329,8 @@ class _$InvitationModelImpl extends _InvitationModel {
   @override
   final String id;
   @override
-  final String groupId;
-  @override
-  final String groupName;
+  @JsonKey()
+  final InvitationType type;
   @override
   final String invitedBy;
   @override
@@ -258,12 +344,30 @@ class _$InvitationModelImpl extends _InvitationModel {
   @TimestampConverter()
   final DateTime createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   final DateTime? respondedAt;
+  @override
+  @NullableTimestampConverter()
+  final DateTime? expiresAt;
+  // Group context (set when type == group)
+  @override
+  final String? groupId;
+  @override
+  final String? groupName;
+  // Game context (set when type == game)
+  @override
+  final String? gameId;
+  @override
+  final String? gameTitle;
+  @override
+  @NullableTimestampConverter()
+  final DateTime? gameScheduledAt;
+  @override
+  final String? gameLocationName;
 
   @override
   String toString() {
-    return 'InvitationModel(id: $id, groupId: $groupId, groupName: $groupName, invitedBy: $invitedBy, inviterName: $inviterName, invitedUserId: $invitedUserId, status: $status, createdAt: $createdAt, respondedAt: $respondedAt)';
+    return 'InvitationModel(id: $id, type: $type, invitedBy: $invitedBy, inviterName: $inviterName, invitedUserId: $invitedUserId, status: $status, createdAt: $createdAt, respondedAt: $respondedAt, expiresAt: $expiresAt, groupId: $groupId, groupName: $groupName, gameId: $gameId, gameTitle: $gameTitle, gameScheduledAt: $gameScheduledAt, gameLocationName: $gameLocationName)';
   }
 
   @override
@@ -272,9 +376,7 @@ class _$InvitationModelImpl extends _InvitationModel {
         (other.runtimeType == runtimeType &&
             other is _$InvitationModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.groupId, groupId) || other.groupId == groupId) &&
-            (identical(other.groupName, groupName) ||
-                other.groupName == groupName) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.invitedBy, invitedBy) ||
                 other.invitedBy == invitedBy) &&
             (identical(other.inviterName, inviterName) ||
@@ -285,7 +387,19 @@ class _$InvitationModelImpl extends _InvitationModel {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.respondedAt, respondedAt) ||
-                other.respondedAt == respondedAt));
+                other.respondedAt == respondedAt) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt) &&
+            (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.groupName, groupName) ||
+                other.groupName == groupName) &&
+            (identical(other.gameId, gameId) || other.gameId == gameId) &&
+            (identical(other.gameTitle, gameTitle) ||
+                other.gameTitle == gameTitle) &&
+            (identical(other.gameScheduledAt, gameScheduledAt) ||
+                other.gameScheduledAt == gameScheduledAt) &&
+            (identical(other.gameLocationName, gameLocationName) ||
+                other.gameLocationName == gameLocationName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -293,14 +407,20 @@ class _$InvitationModelImpl extends _InvitationModel {
   int get hashCode => Object.hash(
     runtimeType,
     id,
-    groupId,
-    groupName,
+    type,
     invitedBy,
     inviterName,
     invitedUserId,
     status,
     createdAt,
     respondedAt,
+    expiresAt,
+    groupId,
+    groupName,
+    gameId,
+    gameTitle,
+    gameScheduledAt,
+    gameLocationName,
   );
 
   /// Create a copy of InvitationModel
@@ -323,14 +443,20 @@ class _$InvitationModelImpl extends _InvitationModel {
 abstract class _InvitationModel extends InvitationModel {
   const factory _InvitationModel({
     required final String id,
-    required final String groupId,
-    required final String groupName,
+    final InvitationType type,
     required final String invitedBy,
     required final String inviterName,
     required final String invitedUserId,
     final InvitationStatus status,
     @TimestampConverter() required final DateTime createdAt,
-    @TimestampConverter() final DateTime? respondedAt,
+    @NullableTimestampConverter() final DateTime? respondedAt,
+    @NullableTimestampConverter() final DateTime? expiresAt,
+    final String? groupId,
+    final String? groupName,
+    final String? gameId,
+    final String? gameTitle,
+    @NullableTimestampConverter() final DateTime? gameScheduledAt,
+    final String? gameLocationName,
   }) = _$InvitationModelImpl;
   const _InvitationModel._() : super._();
 
@@ -340,9 +466,7 @@ abstract class _InvitationModel extends InvitationModel {
   @override
   String get id;
   @override
-  String get groupId;
-  @override
-  String get groupName;
+  InvitationType get type;
   @override
   String get invitedBy;
   @override
@@ -355,8 +479,24 @@ abstract class _InvitationModel extends InvitationModel {
   @TimestampConverter()
   DateTime get createdAt;
   @override
-  @TimestampConverter()
+  @NullableTimestampConverter()
   DateTime? get respondedAt;
+  @override
+  @NullableTimestampConverter()
+  DateTime? get expiresAt; // Group context (set when type == group)
+  @override
+  String? get groupId;
+  @override
+  String? get groupName; // Game context (set when type == game)
+  @override
+  String? get gameId;
+  @override
+  String? get gameTitle;
+  @override
+  @NullableTimestampConverter()
+  DateTime? get gameScheduledAt;
+  @override
+  String? get gameLocationName;
 
   /// Create a copy of InvitationModel
   /// with the given fields replaced by the non-null parameter values.

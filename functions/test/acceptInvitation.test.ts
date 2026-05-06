@@ -11,6 +11,7 @@ jest.mock("firebase-admin", () => {
   const mockFieldValue = {
     serverTimestamp: jest.fn(() => "MOCK_TIMESTAMP"),
     arrayUnion: jest.fn((...elements) => ({_type: "arrayUnion", elements})),
+    arrayRemove: jest.fn((...elements) => ({_type: "arrayRemove", elements})),
   };
 
   const mockFirestore = {
@@ -39,6 +40,15 @@ const mockFirestore = admin.firestore();
 
 // Get mock checkFriendship
 const {checkFriendship} = require("../src/friendships");
+
+// Helper: mock the top-level `invitations` collection to return {exists: false}
+// so tests that exercise the legacy subcollection path still work after the
+// dual-aware refactor (Story 31.6).
+function mockTopLevelNotFound() {
+  return jest.fn().mockReturnValue({
+    get: jest.fn().mockResolvedValue({exists: false}),
+  });
+}
 
 describe("acceptInvitation", () => {
   beforeEach(() => {
@@ -100,7 +110,7 @@ describe("acceptInvitation", () => {
       invitationId: "invitation123",
     };
 
-    // Mock invitation not found
+    // Mock invitation not found in subcollection either
     const mockGet = jest.fn().mockResolvedValue({
       exists: false,
     });
@@ -117,8 +127,9 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn().mockReturnValue({
-      doc: mockDoc2,
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      return {doc: mockDoc2};
     });
 
     await expect(
@@ -157,8 +168,9 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn().mockReturnValue({
-      doc: mockDoc2,
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      return {doc: mockDoc2};
     });
 
     await expect(
@@ -198,8 +210,9 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn().mockReturnValue({
-      doc: mockDoc2,
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      return {doc: mockDoc2};
     });
 
     await expect(
@@ -238,7 +251,7 @@ describe("acceptInvitation", () => {
     };
 
     // Mock collection/doc structure
-    const mockDoc = jest.fn((docId) => {
+    const mockDoc = jest.fn((docId: string) => {
       if (docId === "invitation123") {
         return mockInvitationRef;
       } else if (docId === "group456") {
@@ -255,12 +268,10 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn((collectionName) => {
-      if (collectionName === "users") {
-        return {doc: mockDoc2};
-      } else if (collectionName === "groups") {
-        return {doc: mockDoc};
-      }
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      if (collectionName === "users") return {doc: mockDoc2};
+      if (collectionName === "groups") return {doc: mockDoc};
       return {doc: jest.fn()};
     });
 
@@ -305,8 +316,7 @@ describe("acceptInvitation", () => {
 
     // Mock transaction operations
     const mockTransaction = {
-      get: jest.fn((ref) => {
-        // Return invitation or group doc based on which ref is passed
+      get: jest.fn((ref: any) => {
         if (ref === mockInvitationRef) {
           return Promise.resolve({
             exists: true,
@@ -332,12 +342,12 @@ describe("acceptInvitation", () => {
       update: jest.fn(),
     };
 
-    mockFirestore.runTransaction = jest.fn(async (callback) => {
+    mockFirestore.runTransaction = jest.fn(async (callback: any) => {
       return callback(mockTransaction);
     });
 
     // Mock collection/doc structure
-    const mockDoc = jest.fn((docId) => {
+    const mockDoc = jest.fn((docId: string) => {
       if (docId === "invitation123") {
         return mockInvitationRef;
       } else if (docId === "group456") {
@@ -354,12 +364,10 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn((collectionName) => {
-      if (collectionName === "users") {
-        return {doc: mockDoc2};
-      } else if (collectionName === "groups") {
-        return {doc: mockDoc};
-      }
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      if (collectionName === "users") return {doc: mockDoc2};
+      if (collectionName === "groups") return {doc: mockDoc};
       return {doc: jest.fn()};
     });
 
@@ -409,16 +417,13 @@ describe("acceptInvitation", () => {
       }),
     };
 
-    // Mock batch operations with failure
-    const mockBatch = {
-      update: jest.fn(),
-      commit: jest.fn().mockRejectedValue(new Error("Transaction failed")),
-    };
-
-    mockFirestore.batch = jest.fn().mockReturnValue(mockBatch);
+    // runTransaction throws to simulate failure
+    mockFirestore.runTransaction = jest.fn().mockRejectedValue(
+      new Error("Transaction failed")
+    );
 
     // Mock collection/doc structure
-    const mockDoc = jest.fn((docId) => {
+    const mockDoc = jest.fn((docId: string) => {
       if (docId === "invitation123") {
         return mockInvitationRef;
       } else if (docId === "group456") {
@@ -435,12 +440,10 @@ describe("acceptInvitation", () => {
       collection: mockCollection2,
     });
 
-    mockFirestore.collection = jest.fn((collectionName) => {
-      if (collectionName === "users") {
-        return {doc: mockDoc2};
-      } else if (collectionName === "groups") {
-        return {doc: mockDoc};
-      }
+    mockFirestore.collection = jest.fn((collectionName: string) => {
+      if (collectionName === "invitations") return {doc: mockTopLevelNotFound()};
+      if (collectionName === "users") return {doc: mockDoc2};
+      if (collectionName === "groups") return {doc: mockDoc};
       return {doc: jest.fn()};
     });
 

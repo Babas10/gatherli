@@ -96,12 +96,9 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
         }
 
         try {
-          await _invitationRepository.sendInvitation(
+          await _invitationRepository.sendGroupInvitation(
             groupId: widget.groupId,
-            groupName: widget.groupName,
             invitedUserId: friendId,
-            invitedBy: inviterUid,
-            inviterName: inviterName,
           );
           successCount++;
           _invitedUserIds.add(friendId);

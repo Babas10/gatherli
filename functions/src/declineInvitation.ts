@@ -1,3 +1,7 @@
+// Dual-aware declineInvitation — Story 31.6
+// Tries the unified top-level `invitations/{id}` collection first; falls back
+// to the legacy `users/{userId}/invitations/{id}` subcollection for backward
+// compatibility with invitations created before the migration.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
@@ -18,16 +22,11 @@ export interface DeclineInvitationResponse {
 
 /**
  * Handler function for declining invitations (exported for testing)
- *
- * @param data - Request data containing invitationId
- * @param context - Firebase Functions context with auth information
- * @returns Promise resolving to DeclineInvitationResponse
  */
 export async function declineInvitationHandler(
   data: DeclineInvitationRequest,
   context: functions.https.CallableContext
 ): Promise<DeclineInvitationResponse> {
-  // Ensure user is authenticated
   if (!context.auth) {
     throw new functions.https.HttpsError(
       "unauthenticated",
@@ -38,53 +37,49 @@ export async function declineInvitationHandler(
   const userId = context.auth.uid;
   const {invitationId} = data;
 
-  // Validate required parameters
   if (!invitationId || typeof invitationId !== "string") {
-    functions.logger.warn("Missing or invalid invitationId", {
-      userId,
-    });
+    functions.logger.warn("[declineInvitation] Missing invitationId", {userId});
     throw new functions.https.HttpsError(
       "invalid-argument",
       "invitationId is required and must be a string"
     );
   }
 
-  functions.logger.info("Declining invitation", {
-    userId,
-    invitationId,
-  });
+  functions.logger.info("[declineInvitation] Start", {userId, invitationId});
 
   const db = admin.firestore();
 
   try {
-    // Get the invitation
-    const invitationRef = db
-      .collection("users")
-      .doc(userId)
-      .collection("invitations")
-      .doc(invitationId);
+    // ── 1. Locate the invitation (new collection first, then legacy) ─────────
+    const topLevelRef = db.collection("invitations").doc(invitationId);
+    const topLevelDoc = await topLevelRef.get();
 
-    const invitationDoc = await invitationRef.get();
+    const isNewStyle = topLevelDoc.exists;
+    const invitationRef = isNewStyle
+      ? topLevelRef
+      : db.collection("users").doc(userId).collection("invitations").doc(invitationId);
+
+    const invitationDoc = isNewStyle ? topLevelDoc : await invitationRef.get();
+
+    functions.logger.debug("[declineInvitation] Lookup", {
+      userId,
+      invitationId,
+      isNewStyle,
+      exists: invitationDoc.exists,
+    });
 
     if (!invitationDoc.exists) {
-      functions.logger.warn("Invitation not found", {
-        userId,
-        invitationId,
-      });
-      throw new functions.https.HttpsError(
-        "not-found",
-        "Invitation not found"
-      );
+      throw new functions.https.HttpsError("not-found", "Invitation not found");
     }
 
-    const invitationData = invitationDoc.data();
+    const invitationData = invitationDoc.data()!;
 
-    // Verify invitation is pending
-    if (invitationData?.status !== "pending") {
-      functions.logger.warn("Invitation is not pending", {
+    // ── 2. Basic validations ─────────────────────────────────────────────────
+    if (invitationData.status !== "pending") {
+      functions.logger.warn("[declineInvitation] Not pending", {
         userId,
         invitationId,
-        currentStatus: invitationData?.status,
+        currentStatus: invitationData.status,
       });
       throw new functions.https.HttpsError(
         "failed-precondition",
@@ -92,9 +87,8 @@ export async function declineInvitationHandler(
       );
     }
 
-    // Verify invitation is for the authenticated user
     if (invitationData.invitedUserId !== userId) {
-      functions.logger.warn("Invitation ownership mismatch", {
+      functions.logger.warn("[declineInvitation] Ownership mismatch", {
         userId,
         invitationId,
         invitedUserId: invitationData.invitedUserId,
@@ -105,55 +99,66 @@ export async function declineInvitationHandler(
       );
     }
 
-    // Update invitation status
+    // ── 3. Update status ─────────────────────────────────────────────────────
+    const invType: string = invitationData.type ?? "group";
+
     await invitationRef.update({
       status: "declined",
       respondedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    functions.logger.info("Invitation declined successfully", {
+    // For game invitations, remove user from pendingInviteeIds on the game doc
+    if (invType === "game" && invitationData.gameId) {
+      try {
+        await db.collection("games").doc(invitationData.gameId).update({
+          pendingInviteeIds: admin.firestore.FieldValue.arrayRemove(userId),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (e) {
+        // Non-fatal: game may have already been deleted
+        functions.logger.warn("[declineInvitation] Could not update game pendingInviteeIds", {
+          userId,
+          gameId: invitationData.gameId,
+          error: e instanceof Error ? e.message : String(e),
+        });
+      }
+    }
+
+    functions.logger.info("[declineInvitation] Declined successfully", {
       userId,
       invitationId,
-      groupName: invitationData.groupName,
+      type: invType,
     });
+
+    const contextLabel =
+      invType === "game"
+        ? "game invitation"
+        : `invitation to ${invitationData.groupName ?? "the group"}`;
 
     return {
       success: true,
-      message: `Declined invitation to ${invitationData.groupName}`,
+      message: `Declined ${contextLabel}`,
     };
   } catch (error) {
-    // Re-throw HttpsErrors as-is
-    if (error instanceof functions.https.HttpsError) {
-      throw error;
-    }
-
-    // Log unexpected errors
-    functions.logger.error("Error declining invitation", {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error("[declineInvitation] Unexpected error", {
       userId,
       invitationId,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
-
-    // Throw generic error for unexpected failures
-    throw new functions.https.HttpsError(
-      "internal",
-      "Failed to decline invitation"
-    );
+    throw new functions.https.HttpsError("internal", "Failed to decline invitation");
   }
 }
 
 /**
- * Cloud Function to securely decline a group invitation.
+ * Cloud Function to securely decline a group or game invitation.
  *
- * This function handles:
- * 1. Verifying the invitation exists and is pending
- * 2. Updating the invitation status to 'declined'
- * 3. Setting the respondedAt timestamp
- *
- * Security:
- * - Requires authentication
- * - Uses Admin SDK to bypass security rules
- * - Validates invitation ownership
+ * Dual-aware: checks the unified `invitations` collection first, then falls
+ * back to the legacy `users/{userId}/invitations` subcollection.
+ * For game invitations, also removes the user from `pendingInviteeIds` on the game.
  */
-export const declineInvitation = functions.region('europe-west6').https.onCall(declineInvitationHandler);
+export const declineInvitation = functions
+  .region("europe-west6")
+  .https.onCall(declineInvitationHandler);

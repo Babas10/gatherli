@@ -28,12 +28,9 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
     try {
       emit(const InvitationLoading());
 
-      final invitationId = await _invitationRepository.sendInvitation(
+      final invitationId = await _invitationRepository.sendGroupInvitation(
         groupId: event.groupId,
-        groupName: event.groupName,
         invitedUserId: event.invitedUserId,
-        invitedBy: event.invitedBy,
-        inviterName: event.inviterName,
       );
 
       emit(InvitationSent(invitationId: invitationId));

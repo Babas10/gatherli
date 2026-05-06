@@ -368,6 +368,27 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // ============================================
+    // Unified Invitations (Story 31.6)
+    // ============================================
+    // Top-level collection for both group and game invitations.
+    // All writes go through Cloud Functions (sendInvitation, acceptInvitation,
+    // declineInvitation) via Admin SDK.
+    // READ POLICY: only the invitee or the inviter may read a document.
+    match /invitations/{invitationId} {
+      allow get: if isAuthenticated() &&
+                    (request.auth.uid == resource.data.invitedUserId ||
+                     request.auth.uid == resource.data.invitedBy);
+
+      // List queries must be scoped to the caller (invitee or inviter)
+      allow list: if isAuthenticated() &&
+                     (request.auth.uid == resource.data.invitedUserId ||
+                      request.auth.uid == resource.data.invitedBy);
+
+      // All writes are via Cloud Functions (Admin SDK bypasses these rules)
+      allow create, update, delete: if false;
+    }
+
     // Deny all other access
     match /{document=**} {
       allow read, write: if false;
