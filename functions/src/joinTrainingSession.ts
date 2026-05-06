@@ -27,7 +27,7 @@ async function getTrainingSessionData(
   db: admin.firestore.Firestore,
   sessionId: string
 ): Promise<{
-  groupId: string;
+  groupId: string | null;
   maxParticipants: number;
   status: string;
   startTime: admin.firestore.Timestamp;
@@ -40,7 +40,7 @@ async function getTrainingSessionData(
 
   const sessionData = sessionDoc.data()!;
   return {
-    groupId: sessionData.groupId,
+    groupId: sessionData.groupId ?? null,
     maxParticipants: sessionData.maxParticipants,
     status: sessionData.status || "scheduled",
     startTime: sessionData.startTime,
@@ -138,16 +138,19 @@ export const joinTrainingSession = functions.region('europe-west6').https.onCall
     }
 
     // ============================================================================
-    // 4. Group Membership Validation
+    // 4. Group Membership Validation (group sessions only)
     // ============================================================================
 
-    const isMember = await isGroupMember(db, sessionData.groupId, userId);
+    // Standalone sessions (groupId absent) skip group membership check.
+    if (sessionData.groupId) {
+      const isMember = await isGroupMember(db, sessionData.groupId, userId);
 
-    if (!isMember) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "You must be a member of the group to join this training session"
-      );
+      if (!isMember) {
+        throw new functions.https.HttpsError(
+          "permission-denied",
+          "You must be a member of the group to join this training session"
+        );
+      }
     }
 
     // ============================================================================

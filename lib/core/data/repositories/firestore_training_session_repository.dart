@@ -671,15 +671,18 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
         );
       }
 
-      // Validate user is a member of the group
-      final groupMembers = await _groupRepository.getGroupMembers(
-        currentSession.groupId,
-      );
-      if (!groupMembers.contains(userId)) {
-        throw TrainingSessionException(
-          'User is not a member of the group',
-          code: 'permission-denied',
+      // Validate user is a member of the group (group sessions only).
+      // Standalone sessions (groupId null) are open to any authenticated user.
+      if (currentSession.groupId != null) {
+        final groupMembers = await _groupRepository.getGroupMembers(
+          currentSession.groupId!,
         );
+        if (!groupMembers.contains(userId)) {
+          throw TrainingSessionException(
+            'User is not a member of the group',
+            code: 'permission-denied',
+          );
+        }
       }
 
       // Check if session is full
@@ -944,11 +947,13 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
       final session = await getTrainingSessionById(sessionId);
       if (session == null) return false;
 
-      // Check if user is a member of the group
-      final groupMembers = await _groupRepository.getGroupMembers(
-        session.groupId,
-      );
-      if (!groupMembers.contains(userId)) return false;
+      // Group membership check only applies when groupId is set.
+      if (session.groupId != null) {
+        final groupMembers = await _groupRepository.getGroupMembers(
+          session.groupId!,
+        );
+        if (!groupMembers.contains(userId)) return false;
+      }
 
       return session.canUserJoin(userId);
     } on TrainingSessionException {
