@@ -207,6 +207,7 @@ describe("onGameCreated Cloud Function", () => {
         data: () => ({
           title: "Game",
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -257,6 +258,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -324,6 +326,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -348,6 +351,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "nonexistent",
         }),
         id: "game123",
       };
@@ -378,6 +382,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -402,6 +407,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -487,6 +493,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };
@@ -533,6 +540,32 @@ describe("onGameCreated Cloud Function", () => {
     });
   });
 
+  describe("Pickup games", () => {
+    it("should skip group notifications for pickup games (null groupId)", async () => {
+      const snapshot = {
+        data: () => ({
+          createdBy: "creator123",
+          groupId: null,
+          contextType: "pickup",
+        }),
+        id: "game123",
+      };
+
+      const context = {
+        params: {gameId: "game123"},
+      };
+
+      const result = await onGameCreatedHandler(snapshot, context);
+
+      expect(result).toBeNull();
+      expect(mockMessaging.sendEachForMulticast).not.toHaveBeenCalled();
+      expect(functions.logger.info).toHaveBeenCalledWith(
+        "[onGameCreated] Pickup game — skipping group notifications",
+        expect.objectContaining({gameId: "game123"})
+      );
+    });
+  });
+
   describe("Error handling", () => {
     it("should handle errors gracefully and log them", async () => {
       mockDb.collection.mockImplementation(() => {
@@ -542,6 +575,7 @@ describe("onGameCreated Cloud Function", () => {
       const snapshot = {
         data: () => ({
           createdBy: "creator123",
+          groupId: "group123",
         }),
         id: "game123",
       };

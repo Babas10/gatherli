@@ -5,7 +5,7 @@ import '../../domain/entities/notification_preferences_entity.dart';
 part 'notification_event.freezed.dart';
 
 @freezed
-class NotificationEvent with _$NotificationEvent {
+abstract class NotificationEvent with _$NotificationEvent {
   const factory NotificationEvent.loadPreferences() = _LoadPreferences;
   const factory NotificationEvent.updatePreferences(
     NotificationPreferencesEntity preferences,

@@ -5,7 +5,7 @@ part 'locale_preferences_entity.freezed.dart';
 
 /// Entity representing user's locale and regional preferences
 @freezed
-class LocalePreferencesEntity with _$LocalePreferencesEntity {
+abstract class LocalePreferencesEntity with _$LocalePreferencesEntity {
   const factory LocalePreferencesEntity({
     required Locale locale,
     required String country,

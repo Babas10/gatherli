@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'avatar_upload_state.freezed.dart';
 
 @freezed
-class AvatarUploadState with _$AvatarUploadState {
+abstract class AvatarUploadState with _$AvatarUploadState {
   /// Initial state
   const factory AvatarUploadState.initial() = AvatarUploadInitial;
 

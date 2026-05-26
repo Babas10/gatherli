@@ -5,7 +5,7 @@ part 'firebase_project_info.g.dart';
 
 /// Firebase project information for tracking Story 0.2.1 completion
 @freezed
-class FirebaseProjectInfo with _$FirebaseProjectInfo {
+abstract class FirebaseProjectInfo with _$FirebaseProjectInfo {
   const factory FirebaseProjectInfo({
     required String environment,
     required String expectedProjectId,
@@ -21,7 +21,7 @@ class FirebaseProjectInfo with _$FirebaseProjectInfo {
 
 /// Status of Firebase project creation
 @freezed
-class FirebaseProjectTracker with _$FirebaseProjectTracker {
+abstract class FirebaseProjectTracker with _$FirebaseProjectTracker {
   const factory FirebaseProjectTracker({
     required String storyVersion,
     required DateTime trackedAt,

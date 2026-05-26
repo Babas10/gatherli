@@ -3775,6 +3775,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You need to join the game to see the chat'**
   String get chatJoinToView;
+
+  /// FAB tooltip and button label for creating a pickup game
+  ///
+  /// In en, this message translates to:
+  /// **'Create Pickup Game'**
+  String get createPickupGame;
+
+  /// Title for the pickup game creation page
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Game'**
+  String get pickupGame;
+
+  /// Step 1 title in pickup game creation flow
+  ///
+  /// In en, this message translates to:
+  /// **'Game Details'**
+  String get gameDetailsStep;
+
+  /// Step 2 title in pickup game creation flow
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Players'**
+  String get invitePlayersStep;
+
+  /// Subtitle on invite step
+  ///
+  /// In en, this message translates to:
+  /// **'Invite players from your community or groups'**
+  String get invitePlayersFromCommunity;
+
+  /// Empty state when no friends or group members exist
+  ///
+  /// In en, this message translates to:
+  /// **'No players available to invite'**
+  String get noUsersToInvite;
+
+  /// Button to skip the invitation step and just create the game
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipInvitations;
+
+  /// Button to create the pickup game and send invitations
+  ///
+  /// In en, this message translates to:
+  /// **'Create & Invite'**
+  String get createAndInvite;
+
+  /// Snackbar message when invitations are sent successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations sent!'**
+  String get invitationsSentSuccess;
+
+  /// Snackbar message when a pickup game is created
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup game created successfully!'**
+  String get pickupGameCreatedSuccess;
+
+  /// Section header for group members in the invitee picker
+  ///
+  /// In en, this message translates to:
+  /// **'Group Members'**
+  String get groupMembersSection;
+
+  /// Section header for friends in the invitee picker (pickup game)
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get friendsSection;
+
+  /// Selected invitees count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No players selected} =1{1 player selected} other{{count} players selected}}'**
+  String selectedCount(int count);
+
+  /// Next button in multi-step form
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 }
 
 class _AppLocalizationsDelegate

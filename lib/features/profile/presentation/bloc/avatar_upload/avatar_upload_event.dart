@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 part 'avatar_upload_event.freezed.dart';
 
 @freezed
-class AvatarUploadEvent with _$AvatarUploadEvent {
+abstract class AvatarUploadEvent with _$AvatarUploadEvent {
   /// Event to initialize the avatar upload bloc
   const factory AvatarUploadEvent.started() = AvatarUploadStarted;
 

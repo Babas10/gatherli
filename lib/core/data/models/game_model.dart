@@ -8,7 +8,7 @@ part 'game_model.freezed.dart';
 part 'game_model.g.dart';
 
 @freezed
-class GameModel with _$GameModel {
+abstract class GameModel with _$GameModel {
   const factory GameModel({
     required String id,
     required String title,
@@ -368,7 +368,7 @@ class GameModel with _$GameModel {
 }
 
 @freezed
-class GameTeams with _$GameTeams {
+abstract class GameTeams with _$GameTeams {
   const factory GameTeams({
     @Default([]) List<String> teamAPlayerIds,
     @Default([]) List<String> teamBPlayerIds,
@@ -407,7 +407,7 @@ class GameTeams with _$GameTeams {
 }
 
 @freezed
-class GameLocation with _$GameLocation {
+abstract class GameLocation with _$GameLocation {
   const factory GameLocation({
     required String name,
     String? address,
@@ -423,7 +423,7 @@ class GameLocation with _$GameLocation {
 }
 
 @freezed
-class GameScore with _$GameScore {
+abstract class GameScore with _$GameScore {
   const factory GameScore({
     required String playerId,
     required int score,
@@ -438,7 +438,7 @@ class GameScore with _$GameScore {
 
 /// Represents a single set in a volleyball game
 @freezed
-class SetScore with _$SetScore {
+abstract class SetScore with _$SetScore {
   const factory SetScore({
     required int teamAPoints,
     required int teamBPoints,
@@ -478,7 +478,7 @@ class SetScore with _$SetScore {
 /// Represents a single game played during a session
 /// Most commonly a single set (first to 21), but can be best-of format
 @freezed
-class IndividualGame with _$IndividualGame {
+abstract class IndividualGame with _$IndividualGame {
   const factory IndividualGame({
     required int gameNumber, // 1, 2, 3, etc. within the session
     @SetScoreListConverter() required List<SetScore> sets,
@@ -549,7 +549,7 @@ class IndividualGame with _$IndividualGame {
 /// Represents the complete result of a play session
 /// Contains all individual games played during the session
 @freezed
-class GameResult with _$GameResult {
+abstract class GameResult with _$GameResult {
   const factory GameResult({
     @IndividualGameListConverter() required List<IndividualGame> games,
     String? overallWinner, // 'teamA', 'teamB', or null for tie

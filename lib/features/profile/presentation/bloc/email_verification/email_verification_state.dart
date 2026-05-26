@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'email_verification_state.freezed.dart';
 
 @freezed
-class EmailVerificationState with _$EmailVerificationState {
+abstract class EmailVerificationState with _$EmailVerificationState {
   /// Initial state
   const factory EmailVerificationState.initial() = EmailVerificationInitial;
 

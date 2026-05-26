@@ -6,9 +6,9 @@ part of 'training_session_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TrainingSessionModelImpl _$$TrainingSessionModelImplFromJson(
+_TrainingSessionModel _$TrainingSessionModelFromJson(
   Map<String, dynamic> json,
-) => _$TrainingSessionModelImpl(
+) => _TrainingSessionModel(
   id: json['id'] as String,
   groupId: json['groupId'] as String?,
   contextType:
@@ -43,8 +43,8 @@ _$TrainingSessionModelImpl _$$TrainingSessionModelImplFromJson(
   cancelledAt: const NullableTimestampConverter().fromJson(json['cancelledAt']),
 );
 
-Map<String, dynamic> _$$TrainingSessionModelImplToJson(
-  _$TrainingSessionModelImpl instance,
+Map<String, dynamic> _$TrainingSessionModelToJson(
+  _TrainingSessionModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'groupId': instance.groupId,

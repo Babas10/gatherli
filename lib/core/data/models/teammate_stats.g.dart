@@ -6,8 +6,8 @@ part of 'teammate_stats.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TeammateStatsImpl _$$TeammateStatsImplFromJson(Map<String, dynamic> json) =>
-    _$TeammateStatsImpl(
+_TeammateStats _$TeammateStatsFromJson(Map<String, dynamic> json) =>
+    _TeammateStats(
       userId: json['userId'] as String,
       gamesPlayed: (json['gamesPlayed'] as num).toInt(),
       gamesWon: (json['gamesWon'] as num).toInt(),
@@ -25,7 +25,7 @@ _$TeammateStatsImpl _$$TeammateStatsImplFromJson(Map<String, dynamic> json) =>
       ),
     );
 
-Map<String, dynamic> _$$TeammateStatsImplToJson(_$TeammateStatsImpl instance) =>
+Map<String, dynamic> _$TeammateStatsToJson(_TeammateStats instance) =>
     <String, dynamic>{
       'userId': instance.userId,
       'gamesPlayed': instance.gamesPlayed,
@@ -40,24 +40,24 @@ Map<String, dynamic> _$$TeammateStatsImplToJson(_$TeammateStatsImpl instance) =>
       ),
     };
 
-_$RecentGameResultImpl _$$RecentGameResultImplFromJson(
-  Map<String, dynamic> json,
-) => _$RecentGameResultImpl(
-  gameId: json['gameId'] as String,
-  won: json['won'] as bool,
-  pointsScored: (json['pointsScored'] as num).toInt(),
-  pointsAllowed: (json['pointsAllowed'] as num).toInt(),
-  eloChange: (json['eloChange'] as num).toDouble(),
-  timestamp: const TimestampConverter().fromJson(json['timestamp'] as Object),
-);
+_RecentGameResult _$RecentGameResultFromJson(Map<String, dynamic> json) =>
+    _RecentGameResult(
+      gameId: json['gameId'] as String,
+      won: json['won'] as bool,
+      pointsScored: (json['pointsScored'] as num).toInt(),
+      pointsAllowed: (json['pointsAllowed'] as num).toInt(),
+      eloChange: (json['eloChange'] as num).toDouble(),
+      timestamp: const TimestampConverter().fromJson(
+        json['timestamp'] as Object,
+      ),
+    );
 
-Map<String, dynamic> _$$RecentGameResultImplToJson(
-  _$RecentGameResultImpl instance,
-) => <String, dynamic>{
-  'gameId': instance.gameId,
-  'won': instance.won,
-  'pointsScored': instance.pointsScored,
-  'pointsAllowed': instance.pointsAllowed,
-  'eloChange': instance.eloChange,
-  'timestamp': const TimestampConverter().toJson(instance.timestamp),
-};
+Map<String, dynamic> _$RecentGameResultToJson(_RecentGameResult instance) =>
+    <String, dynamic>{
+      'gameId': instance.gameId,
+      'won': instance.won,
+      'pointsScored': instance.pointsScored,
+      'pointsAllowed': instance.pointsAllowed,
+      'eloChange': instance.eloChange,
+      'timestamp': const TimestampConverter().toJson(instance.timestamp),
+    };

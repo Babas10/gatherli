@@ -215,13 +215,14 @@ service cloud.firestore {
                       isGameGroupMember(resource.data.groupId) ||
                       ('pendingInviteeIds' in resource.data && request.auth.uid in resource.data.pendingInviteeIds));
 
-      // Game creation allowed for authenticated users.
-      // Group games: creator must be a group member.
-      // Pickup games (groupId null): any authenticated user can create.
+      // Game creation:
+      // - Group games: direct write allowed; creator must be a group member.
+      // - Pickup games (contextType == 'pickup'): blocked here — must go through
+      //   the createPickupGame Cloud Function (Admin SDK bypasses these rules).
       allow create: if isAuthenticated() &&
                        request.auth.uid == request.resource.data.createdBy &&
-                       (request.resource.data.groupId == null ||
-                        request.auth.uid in get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.memberIds);
+                       request.resource.data.contextType != 'pickup' &&
+                       request.auth.uid in get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.memberIds;
 
       // Game updates allowed for creator, group members (when groupId set), or existing players
       // (playerIds covers guest players invited from another group — Story 28.11).

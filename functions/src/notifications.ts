@@ -317,13 +317,20 @@ export const onGameCreated = functions.region('europe-west6').firestore
   .onCreate(async (snapshot, context) => {
     const game = snapshot.data();
     const gameId = context.params.gameId;
-    const groupId = game.groupId; // Get groupId from game document
+    const groupId = game.groupId ?? null; // null for pickup games (Story 31.8)
 
     functions.logger.info("Game created, processing notifications", {
       groupId,
       gameId,
       createdBy: game.createdBy,
+      contextType: game.contextType,
     });
+
+    // Pickup games have no group — skip group notification logic entirely.
+    if (!groupId) {
+      functions.logger.info("[onGameCreated] Pickup game — skipping group notifications", { gameId });
+      return null;
+    }
 
     try {
       // Get group details

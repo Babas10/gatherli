@@ -6,9 +6,9 @@ part of 'training_feedback_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TrainingFeedbackModelImpl _$$TrainingFeedbackModelImplFromJson(
+_TrainingFeedbackModel _$TrainingFeedbackModelFromJson(
   Map<String, dynamic> json,
-) => _$TrainingFeedbackModelImpl(
+) => _TrainingFeedbackModel(
   id: json['id'] as String,
   trainingSessionId: json['trainingSessionId'] as String,
   exercisesQuality: (json['exercisesQuality'] as num).toInt(),
@@ -21,8 +21,8 @@ _$TrainingFeedbackModelImpl _$$TrainingFeedbackModelImplFromJson(
   ),
 );
 
-Map<String, dynamic> _$$TrainingFeedbackModelImplToJson(
-  _$TrainingFeedbackModelImpl instance,
+Map<String, dynamic> _$TrainingFeedbackModelToJson(
+  _TrainingFeedbackModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'trainingSessionId': instance.trainingSessionId,

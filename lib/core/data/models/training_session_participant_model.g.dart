@@ -6,18 +6,18 @@ part of 'training_session_participant_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TrainingSessionParticipantModelImpl
-_$$TrainingSessionParticipantModelImplFromJson(Map<String, dynamic> json) =>
-    _$TrainingSessionParticipantModelImpl(
-      userId: json['userId'] as String,
-      joinedAt: const TimestampConverter().fromJson(json['joinedAt'] as Object),
-      status:
-          $enumDecodeNullable(_$ParticipantStatusEnumMap, json['status']) ??
-          ParticipantStatus.joined,
-    );
+_TrainingSessionParticipantModel _$TrainingSessionParticipantModelFromJson(
+  Map<String, dynamic> json,
+) => _TrainingSessionParticipantModel(
+  userId: json['userId'] as String,
+  joinedAt: const TimestampConverter().fromJson(json['joinedAt'] as Object),
+  status:
+      $enumDecodeNullable(_$ParticipantStatusEnumMap, json['status']) ??
+      ParticipantStatus.joined,
+);
 
-Map<String, dynamic> _$$TrainingSessionParticipantModelImplToJson(
-  _$TrainingSessionParticipantModelImpl instance,
+Map<String, dynamic> _$TrainingSessionParticipantModelToJson(
+  _TrainingSessionParticipantModel instance,
 ) => <String, dynamic>{
   'userId': instance.userId,
   'joinedAt': const TimestampConverter().toJson(instance.joinedAt),

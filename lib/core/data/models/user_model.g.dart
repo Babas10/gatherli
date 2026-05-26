@@ -6,9 +6,7 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserModelImpl _$$UserModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$UserModelImpl(
+_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   uid: json['uid'] as String,
   email: json['email'] as String,
   displayName: json['displayName'] as String?,
@@ -79,8 +77,8 @@ _$UserModelImpl _$$UserModelImplFromJson(
       : RoleBasedStats.fromJson(json['roleBasedStats'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$$UserModelImplToJson(
-  _$UserModelImpl instance,
+Map<String, dynamic> _$UserModelToJson(
+  _UserModel instance,
 ) => <String, dynamic>{
   'uid': instance.uid,
   'email': instance.email,
@@ -159,8 +157,8 @@ const _$UserGenderEnumMap = {
   UserGender.none: 'none',
 };
 
-_$NemesisRecordImpl _$$NemesisRecordImplFromJson(Map<String, dynamic> json) =>
-    _$NemesisRecordImpl(
+_NemesisRecord _$NemesisRecordFromJson(Map<String, dynamic> json) =>
+    _NemesisRecord(
       opponentId: json['opponentId'] as String,
       opponentName: json['opponentName'] as String,
       gamesLost: (json['gamesLost'] as num).toInt(),
@@ -169,7 +167,7 @@ _$NemesisRecordImpl _$$NemesisRecordImplFromJson(Map<String, dynamic> json) =>
       winRate: (json['winRate'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$NemesisRecordImplToJson(_$NemesisRecordImpl instance) =>
+Map<String, dynamic> _$NemesisRecordToJson(_NemesisRecord instance) =>
     <String, dynamic>{
       'opponentId': instance.opponentId,
       'opponentName': instance.opponentName,
@@ -179,8 +177,8 @@ Map<String, dynamic> _$$NemesisRecordImplToJson(_$NemesisRecordImpl instance) =>
       'winRate': instance.winRate,
     };
 
-_$BestWinRecordImpl _$$BestWinRecordImplFromJson(Map<String, dynamic> json) =>
-    _$BestWinRecordImpl(
+_BestWinRecord _$BestWinRecordFromJson(Map<String, dynamic> json) =>
+    _BestWinRecord(
       gameId: json['gameId'] as String,
       opponentTeamElo: (json['opponentTeamElo'] as num).toDouble(),
       opponentTeamAvgElo: (json['opponentTeamAvgElo'] as num).toDouble(),
@@ -190,7 +188,7 @@ _$BestWinRecordImpl _$$BestWinRecordImplFromJson(Map<String, dynamic> json) =>
       opponentNames: json['opponentNames'] as String?,
     );
 
-Map<String, dynamic> _$$BestWinRecordImplToJson(_$BestWinRecordImpl instance) =>
+Map<String, dynamic> _$BestWinRecordToJson(_BestWinRecord instance) =>
     <String, dynamic>{
       'gameId': instance.gameId,
       'opponentTeamElo': instance.opponentTeamElo,
@@ -201,17 +199,15 @@ Map<String, dynamic> _$$BestWinRecordImplToJson(_$BestWinRecordImpl instance) =>
       'opponentNames': instance.opponentNames,
     };
 
-_$PointStatsImpl _$$PointStatsImplFromJson(Map<String, dynamic> json) =>
-    _$PointStatsImpl(
-      totalDiffInWinningSets:
-          (json['totalDiffInWinningSets'] as num?)?.toInt() ?? 0,
-      winningSetsCount: (json['winningSetsCount'] as num?)?.toInt() ?? 0,
-      totalDiffInLosingSets:
-          (json['totalDiffInLosingSets'] as num?)?.toInt() ?? 0,
-      losingSetsCount: (json['losingSetsCount'] as num?)?.toInt() ?? 0,
-    );
+_PointStats _$PointStatsFromJson(Map<String, dynamic> json) => _PointStats(
+  totalDiffInWinningSets:
+      (json['totalDiffInWinningSets'] as num?)?.toInt() ?? 0,
+  winningSetsCount: (json['winningSetsCount'] as num?)?.toInt() ?? 0,
+  totalDiffInLosingSets: (json['totalDiffInLosingSets'] as num?)?.toInt() ?? 0,
+  losingSetsCount: (json['losingSetsCount'] as num?)?.toInt() ?? 0,
+);
 
-Map<String, dynamic> _$$PointStatsImplToJson(_$PointStatsImpl instance) =>
+Map<String, dynamic> _$PointStatsToJson(_PointStats instance) =>
     <String, dynamic>{
       'totalDiffInWinningSets': instance.totalDiffInWinningSets,
       'winningSetsCount': instance.winningSetsCount,
@@ -219,22 +215,21 @@ Map<String, dynamic> _$$PointStatsImplToJson(_$PointStatsImpl instance) =>
       'losingSetsCount': instance.losingSetsCount,
     };
 
-_$RoleStatsImpl _$$RoleStatsImplFromJson(Map<String, dynamic> json) =>
-    _$RoleStatsImpl(
-      games: (json['games'] as num?)?.toInt() ?? 0,
-      wins: (json['wins'] as num?)?.toInt() ?? 0,
-      winRate: (json['winRate'] as num?)?.toDouble() ?? 0.0,
-    );
+_RoleStats _$RoleStatsFromJson(Map<String, dynamic> json) => _RoleStats(
+  games: (json['games'] as num?)?.toInt() ?? 0,
+  wins: (json['wins'] as num?)?.toInt() ?? 0,
+  winRate: (json['winRate'] as num?)?.toDouble() ?? 0.0,
+);
 
-Map<String, dynamic> _$$RoleStatsImplToJson(_$RoleStatsImpl instance) =>
+Map<String, dynamic> _$RoleStatsToJson(_RoleStats instance) =>
     <String, dynamic>{
       'games': instance.games,
       'wins': instance.wins,
       'winRate': instance.winRate,
     };
 
-_$RoleBasedStatsImpl _$$RoleBasedStatsImplFromJson(Map<String, dynamic> json) =>
-    _$RoleBasedStatsImpl(
+_RoleBasedStats _$RoleBasedStatsFromJson(Map<String, dynamic> json) =>
+    _RoleBasedStats(
       weakLink: json['weakLink'] == null
           ? const RoleStats()
           : RoleStats.fromJson(json['weakLink'] as Map<String, dynamic>),
@@ -246,10 +241,9 @@ _$RoleBasedStatsImpl _$$RoleBasedStatsImplFromJson(Map<String, dynamic> json) =>
           : RoleStats.fromJson(json['balanced'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$RoleBasedStatsImplToJson(
-  _$RoleBasedStatsImpl instance,
-) => <String, dynamic>{
-  'weakLink': instance.weakLink,
-  'carry': instance.carry,
-  'balanced': instance.balanced,
-};
+Map<String, dynamic> _$RoleBasedStatsToJson(_RoleBasedStats instance) =>
+    <String, dynamic>{
+      'weakLink': instance.weakLink,
+      'carry': instance.carry,
+      'balanced': instance.balanced,
+    };

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,347 +9,270 @@ part of 'friend_request_count_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$FriendRequestCountEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String userId) startListening,
-    required TResult Function() stopListening,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId)? startListening,
-    TResult? Function()? stopListening,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId)? startListening,
-    TResult Function()? stopListening,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountStartListening value)
-    startListening,
-    required TResult Function(FriendRequestCountStopListening value)
-    stopListening,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountStartListening value)? startListening,
-    TResult? Function(FriendRequestCountStopListening value)? stopListening,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountStartListening value)? startListening,
-    TResult Function(FriendRequestCountStopListening value)? stopListening,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'FriendRequestCountEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $FriendRequestCountEventCopyWith<$Res> {
-  factory $FriendRequestCountEventCopyWith(
-    FriendRequestCountEvent value,
-    $Res Function(FriendRequestCountEvent) then,
-  ) = _$FriendRequestCountEventCopyWithImpl<$Res, FriendRequestCountEvent>;
+class $FriendRequestCountEventCopyWith<$Res>  {
+$FriendRequestCountEventCopyWith(FriendRequestCountEvent _, $Res Function(FriendRequestCountEvent) __);
 }
 
-/// @nodoc
-class _$FriendRequestCountEventCopyWithImpl<
-  $Res,
-  $Val extends FriendRequestCountEvent
->
-    implements $FriendRequestCountEventCopyWith<$Res> {
-  _$FriendRequestCountEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [FriendRequestCountEvent].
+extension FriendRequestCountEventPatterns on FriendRequestCountEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of FriendRequestCountEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FriendRequestCountStartListening value)?  startListening,TResult Function( FriendRequestCountStopListening value)?  stopListening,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening() when startListening != null:
+return startListening(_that);case FriendRequestCountStopListening() when stopListening != null:
+return stopListening(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FriendRequestCountStartListening value)  startListening,required TResult Function( FriendRequestCountStopListening value)  stopListening,}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening():
+return startListening(_that);case FriendRequestCountStopListening():
+return stopListening(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FriendRequestCountStartListening value)?  startListening,TResult? Function( FriendRequestCountStopListening value)?  stopListening,}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening() when startListening != null:
+return startListening(_that);case FriendRequestCountStopListening() when stopListening != null:
+return stopListening(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String userId)?  startListening,TResult Function()?  stopListening,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening() when startListening != null:
+return startListening(_that.userId);case FriendRequestCountStopListening() when stopListening != null:
+return stopListening();case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String userId)  startListening,required TResult Function()  stopListening,}) {final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening():
+return startListening(_that.userId);case FriendRequestCountStopListening():
+return stopListening();case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String userId)?  startListening,TResult? Function()?  stopListening,}) {final _that = this;
+switch (_that) {
+case FriendRequestCountStartListening() when startListening != null:
+return startListening(_that.userId);case FriendRequestCountStopListening() when stopListening != null:
+return stopListening();case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$FriendRequestCountStartListeningImplCopyWith<$Res> {
-  factory _$$FriendRequestCountStartListeningImplCopyWith(
-    _$FriendRequestCountStartListeningImpl value,
-    $Res Function(_$FriendRequestCountStartListeningImpl) then,
-  ) = __$$FriendRequestCountStartListeningImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String userId});
-}
-
-/// @nodoc
-class __$$FriendRequestCountStartListeningImplCopyWithImpl<$Res>
-    extends
-        _$FriendRequestCountEventCopyWithImpl<
-          $Res,
-          _$FriendRequestCountStartListeningImpl
-        >
-    implements _$$FriendRequestCountStartListeningImplCopyWith<$Res> {
-  __$$FriendRequestCountStartListeningImplCopyWithImpl(
-    _$FriendRequestCountStartListeningImpl _value,
-    $Res Function(_$FriendRequestCountStartListeningImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of FriendRequestCountEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? userId = null}) {
-    return _then(
-      _$FriendRequestCountStartListeningImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$FriendRequestCountStartListeningImpl
-    implements FriendRequestCountStartListening {
-  const _$FriendRequestCountStartListeningImpl({required this.userId});
-
-  @override
-  final String userId;
-
-  @override
-  String toString() {
-    return 'FriendRequestCountEvent.startListening(userId: $userId)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendRequestCountStartListeningImpl &&
-            (identical(other.userId, userId) || other.userId == userId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, userId);
-
-  /// Create a copy of FriendRequestCountEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FriendRequestCountStartListeningImplCopyWith<
-    _$FriendRequestCountStartListeningImpl
-  >
-  get copyWith =>
-      __$$FriendRequestCountStartListeningImplCopyWithImpl<
-        _$FriendRequestCountStartListeningImpl
-      >(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String userId) startListening,
-    required TResult Function() stopListening,
-  }) {
-    return startListening(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId)? startListening,
-    TResult? Function()? stopListening,
-  }) {
-    return startListening?.call(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId)? startListening,
-    TResult Function()? stopListening,
-    required TResult orElse(),
-  }) {
-    if (startListening != null) {
-      return startListening(userId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountStartListening value)
-    startListening,
-    required TResult Function(FriendRequestCountStopListening value)
-    stopListening,
-  }) {
-    return startListening(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountStartListening value)? startListening,
-    TResult? Function(FriendRequestCountStopListening value)? stopListening,
-  }) {
-    return startListening?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountStartListening value)? startListening,
-    TResult Function(FriendRequestCountStopListening value)? stopListening,
-    required TResult orElse(),
-  }) {
-    if (startListening != null) {
-      return startListening(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FriendRequestCountStartListening
-    implements FriendRequestCountEvent {
-  const factory FriendRequestCountStartListening({
-    required final String userId,
-  }) = _$FriendRequestCountStartListeningImpl;
-
-  String get userId;
-
-  /// Create a copy of FriendRequestCountEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FriendRequestCountStartListeningImplCopyWith<
-    _$FriendRequestCountStartListeningImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$FriendRequestCountStopListeningImplCopyWith<$Res> {
-  factory _$$FriendRequestCountStopListeningImplCopyWith(
-    _$FriendRequestCountStopListeningImpl value,
-    $Res Function(_$FriendRequestCountStopListeningImpl) then,
-  ) = __$$FriendRequestCountStopListeningImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FriendRequestCountStopListeningImplCopyWithImpl<$Res>
-    extends
-        _$FriendRequestCountEventCopyWithImpl<
-          $Res,
-          _$FriendRequestCountStopListeningImpl
-        >
-    implements _$$FriendRequestCountStopListeningImplCopyWith<$Res> {
-  __$$FriendRequestCountStopListeningImplCopyWithImpl(
-    _$FriendRequestCountStopListeningImpl _value,
-    $Res Function(_$FriendRequestCountStopListeningImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of FriendRequestCountEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$FriendRequestCountStopListeningImpl
-    implements FriendRequestCountStopListening {
-  const _$FriendRequestCountStopListeningImpl();
 
-  @override
-  String toString() {
-    return 'FriendRequestCountEvent.stopListening()';
-  }
+class FriendRequestCountStartListening implements FriendRequestCountEvent {
+  const FriendRequestCountStartListening({required this.userId});
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendRequestCountStopListeningImpl);
-  }
+ final  String userId;
 
-  @override
-  int get hashCode => runtimeType.hashCode;
+/// Create a copy of FriendRequestCountEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FriendRequestCountStartListeningCopyWith<FriendRequestCountStartListening> get copyWith => _$FriendRequestCountStartListeningCopyWithImpl<FriendRequestCountStartListening>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String userId) startListening,
-    required TResult Function() stopListening,
-  }) {
-    return stopListening();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId)? startListening,
-    TResult? Function()? stopListening,
-  }) {
-    return stopListening?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId)? startListening,
-    TResult Function()? stopListening,
-    required TResult orElse(),
-  }) {
-    if (stopListening != null) {
-      return stopListening();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountStartListening value)
-    startListening,
-    required TResult Function(FriendRequestCountStopListening value)
-    stopListening,
-  }) {
-    return stopListening(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountStartListening value)? startListening,
-    TResult? Function(FriendRequestCountStopListening value)? stopListening,
-  }) {
-    return stopListening?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountStartListening value)? startListening,
-    TResult Function(FriendRequestCountStopListening value)? stopListening,
-    required TResult orElse(),
-  }) {
-    if (stopListening != null) {
-      return stopListening(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountStartListening&&(identical(other.userId, userId) || other.userId == userId));
 }
 
-abstract class FriendRequestCountStopListening
-    implements FriendRequestCountEvent {
-  const factory FriendRequestCountStopListening() =
-      _$FriendRequestCountStopListeningImpl;
+
+@override
+int get hashCode => Object.hash(runtimeType,userId);
+
+@override
+String toString() {
+  return 'FriendRequestCountEvent.startListening(userId: $userId)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class $FriendRequestCountStartListeningCopyWith<$Res> implements $FriendRequestCountEventCopyWith<$Res> {
+  factory $FriendRequestCountStartListeningCopyWith(FriendRequestCountStartListening value, $Res Function(FriendRequestCountStartListening) _then) = _$FriendRequestCountStartListeningCopyWithImpl;
+@useResult
+$Res call({
+ String userId
+});
+
+
+
+
+}
+/// @nodoc
+class _$FriendRequestCountStartListeningCopyWithImpl<$Res>
+    implements $FriendRequestCountStartListeningCopyWith<$Res> {
+  _$FriendRequestCountStartListeningCopyWithImpl(this._self, this._then);
+
+  final FriendRequestCountStartListening _self;
+  final $Res Function(FriendRequestCountStartListening) _then;
+
+/// Create a copy of FriendRequestCountEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
+  return _then(FriendRequestCountStartListening(
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class FriendRequestCountStopListening implements FriendRequestCountEvent {
+  const FriendRequestCountStopListening();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountStopListening);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'FriendRequestCountEvent.stopListening()';
+}
+
+
+}
+
+
+
+
+// dart format on

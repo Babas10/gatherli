@@ -5,7 +5,7 @@ import 'package:play_with_me/core/data/models/user_model.dart';
 part 'partner_detail_state.freezed.dart';
 
 @freezed
-class PartnerDetailState with _$PartnerDetailState {
+abstract class PartnerDetailState with _$PartnerDetailState {
   const factory PartnerDetailState.initial() = PartnerDetailInitial;
 
   const factory PartnerDetailState.loading() = PartnerDetailLoading;

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,1202 +9,494 @@ part of 'avatar_upload_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$AvatarUploadEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AvatarUploadEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $AvatarUploadEventCopyWith<$Res> {
-  factory $AvatarUploadEventCopyWith(
-    AvatarUploadEvent value,
-    $Res Function(AvatarUploadEvent) then,
-  ) = _$AvatarUploadEventCopyWithImpl<$Res, AvatarUploadEvent>;
+class $AvatarUploadEventCopyWith<$Res>  {
+$AvatarUploadEventCopyWith(AvatarUploadEvent _, $Res Function(AvatarUploadEvent) __);
 }
 
-/// @nodoc
-class _$AvatarUploadEventCopyWithImpl<$Res, $Val extends AvatarUploadEvent>
-    implements $AvatarUploadEventCopyWith<$Res> {
-  _$AvatarUploadEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [AvatarUploadEvent].
+extension AvatarUploadEventPatterns on AvatarUploadEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AvatarUploadStarted value)?  started,TResult Function( AvatarUploadImageSourceSelected value)?  imageSourceSelected,TResult Function( AvatarUploadImagePicked value)?  imagePicked,TResult Function( AvatarUploadUploadRequested value)?  uploadRequested,TResult Function( AvatarUploadUploadCancelled value)?  uploadCancelled,TResult Function( AvatarUploadDeleteRequested value)?  deleteRequested,TResult Function( AvatarUploadReset value)?  reset,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case AvatarUploadStarted() when started != null:
+return started(_that);case AvatarUploadImageSourceSelected() when imageSourceSelected != null:
+return imageSourceSelected(_that);case AvatarUploadImagePicked() when imagePicked != null:
+return imagePicked(_that);case AvatarUploadUploadRequested() when uploadRequested != null:
+return uploadRequested(_that);case AvatarUploadUploadCancelled() when uploadCancelled != null:
+return uploadCancelled(_that);case AvatarUploadDeleteRequested() when deleteRequested != null:
+return deleteRequested(_that);case AvatarUploadReset() when reset != null:
+return reset(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AvatarUploadStarted value)  started,required TResult Function( AvatarUploadImageSourceSelected value)  imageSourceSelected,required TResult Function( AvatarUploadImagePicked value)  imagePicked,required TResult Function( AvatarUploadUploadRequested value)  uploadRequested,required TResult Function( AvatarUploadUploadCancelled value)  uploadCancelled,required TResult Function( AvatarUploadDeleteRequested value)  deleteRequested,required TResult Function( AvatarUploadReset value)  reset,}){
+final _that = this;
+switch (_that) {
+case AvatarUploadStarted():
+return started(_that);case AvatarUploadImageSourceSelected():
+return imageSourceSelected(_that);case AvatarUploadImagePicked():
+return imagePicked(_that);case AvatarUploadUploadRequested():
+return uploadRequested(_that);case AvatarUploadUploadCancelled():
+return uploadCancelled(_that);case AvatarUploadDeleteRequested():
+return deleteRequested(_that);case AvatarUploadReset():
+return reset(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AvatarUploadStarted value)?  started,TResult? Function( AvatarUploadImageSourceSelected value)?  imageSourceSelected,TResult? Function( AvatarUploadImagePicked value)?  imagePicked,TResult? Function( AvatarUploadUploadRequested value)?  uploadRequested,TResult? Function( AvatarUploadUploadCancelled value)?  uploadCancelled,TResult? Function( AvatarUploadDeleteRequested value)?  deleteRequested,TResult? Function( AvatarUploadReset value)?  reset,}){
+final _that = this;
+switch (_that) {
+case AvatarUploadStarted() when started != null:
+return started(_that);case AvatarUploadImageSourceSelected() when imageSourceSelected != null:
+return imageSourceSelected(_that);case AvatarUploadImagePicked() when imagePicked != null:
+return imagePicked(_that);case AvatarUploadUploadRequested() when uploadRequested != null:
+return uploadRequested(_that);case AvatarUploadUploadCancelled() when uploadCancelled != null:
+return uploadCancelled(_that);case AvatarUploadDeleteRequested() when deleteRequested != null:
+return deleteRequested(_that);case AvatarUploadReset() when reset != null:
+return reset(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( ImageSource source)?  imageSourceSelected,TResult Function( File imageFile)?  imagePicked,TResult Function()?  uploadRequested,TResult Function()?  uploadCancelled,TResult Function()?  deleteRequested,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case AvatarUploadStarted() when started != null:
+return started();case AvatarUploadImageSourceSelected() when imageSourceSelected != null:
+return imageSourceSelected(_that.source);case AvatarUploadImagePicked() when imagePicked != null:
+return imagePicked(_that.imageFile);case AvatarUploadUploadRequested() when uploadRequested != null:
+return uploadRequested();case AvatarUploadUploadCancelled() when uploadCancelled != null:
+return uploadCancelled();case AvatarUploadDeleteRequested() when deleteRequested != null:
+return deleteRequested();case AvatarUploadReset() when reset != null:
+return reset();case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( ImageSource source)  imageSourceSelected,required TResult Function( File imageFile)  imagePicked,required TResult Function()  uploadRequested,required TResult Function()  uploadCancelled,required TResult Function()  deleteRequested,required TResult Function()  reset,}) {final _that = this;
+switch (_that) {
+case AvatarUploadStarted():
+return started();case AvatarUploadImageSourceSelected():
+return imageSourceSelected(_that.source);case AvatarUploadImagePicked():
+return imagePicked(_that.imageFile);case AvatarUploadUploadRequested():
+return uploadRequested();case AvatarUploadUploadCancelled():
+return uploadCancelled();case AvatarUploadDeleteRequested():
+return deleteRequested();case AvatarUploadReset():
+return reset();case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( ImageSource source)?  imageSourceSelected,TResult? Function( File imageFile)?  imagePicked,TResult? Function()?  uploadRequested,TResult? Function()?  uploadCancelled,TResult? Function()?  deleteRequested,TResult? Function()?  reset,}) {final _that = this;
+switch (_that) {
+case AvatarUploadStarted() when started != null:
+return started();case AvatarUploadImageSourceSelected() when imageSourceSelected != null:
+return imageSourceSelected(_that.source);case AvatarUploadImagePicked() when imagePicked != null:
+return imagePicked(_that.imageFile);case AvatarUploadUploadRequested() when uploadRequested != null:
+return uploadRequested();case AvatarUploadUploadCancelled() when uploadCancelled != null:
+return uploadCancelled();case AvatarUploadDeleteRequested() when deleteRequested != null:
+return deleteRequested();case AvatarUploadReset() when reset != null:
+return reset();case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$AvatarUploadStartedImplCopyWith<$Res> {
-  factory _$$AvatarUploadStartedImplCopyWith(
-    _$AvatarUploadStartedImpl value,
-    $Res Function(_$AvatarUploadStartedImpl) then,
-  ) = __$$AvatarUploadStartedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AvatarUploadStartedImplCopyWithImpl<$Res>
-    extends _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadStartedImpl>
-    implements _$$AvatarUploadStartedImplCopyWith<$Res> {
-  __$$AvatarUploadStartedImplCopyWithImpl(
-    _$AvatarUploadStartedImpl _value,
-    $Res Function(_$AvatarUploadStartedImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$AvatarUploadStartedImpl implements AvatarUploadStarted {
-  const _$AvatarUploadStartedImpl();
-
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.started()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadStartedImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return started();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return started?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return started(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return started?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AvatarUploadStarted implements AvatarUploadEvent {
-  const factory AvatarUploadStarted() = _$AvatarUploadStartedImpl;
-}
-
-/// @nodoc
-abstract class _$$AvatarUploadImageSourceSelectedImplCopyWith<$Res> {
-  factory _$$AvatarUploadImageSourceSelectedImplCopyWith(
-    _$AvatarUploadImageSourceSelectedImpl value,
-    $Res Function(_$AvatarUploadImageSourceSelectedImpl) then,
-  ) = __$$AvatarUploadImageSourceSelectedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ImageSource source});
-}
-
-/// @nodoc
-class __$$AvatarUploadImageSourceSelectedImplCopyWithImpl<$Res>
-    extends
-        _$AvatarUploadEventCopyWithImpl<
-          $Res,
-          _$AvatarUploadImageSourceSelectedImpl
-        >
-    implements _$$AvatarUploadImageSourceSelectedImplCopyWith<$Res> {
-  __$$AvatarUploadImageSourceSelectedImplCopyWithImpl(
-    _$AvatarUploadImageSourceSelectedImpl _value,
-    $Res Function(_$AvatarUploadImageSourceSelectedImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? source = null}) {
-    return _then(
-      _$AvatarUploadImageSourceSelectedImpl(
-        source: null == source
-            ? _value.source
-            : source // ignore: cast_nullable_to_non_nullable
-                  as ImageSource,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$AvatarUploadImageSourceSelectedImpl
-    implements AvatarUploadImageSourceSelected {
-  const _$AvatarUploadImageSourceSelectedImpl({required this.source});
 
-  @override
-  final ImageSource source;
+class AvatarUploadStarted implements AvatarUploadEvent {
+  const AvatarUploadStarted();
+  
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.imageSourceSelected(source: $source)';
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadImageSourceSelectedImpl &&
-            (identical(other.source, source) || other.source == source));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, source);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AvatarUploadImageSourceSelectedImplCopyWith<
-    _$AvatarUploadImageSourceSelectedImpl
-  >
-  get copyWith =>
-      __$$AvatarUploadImageSourceSelectedImplCopyWithImpl<
-        _$AvatarUploadImageSourceSelectedImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return imageSourceSelected(source);
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return imageSourceSelected?.call(source);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (imageSourceSelected != null) {
-      return imageSourceSelected(source);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return imageSourceSelected(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return imageSourceSelected?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (imageSourceSelected != null) {
-      return imageSourceSelected(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadStarted);
 }
 
-abstract class AvatarUploadImageSourceSelected implements AvatarUploadEvent {
-  const factory AvatarUploadImageSourceSelected({
-    required final ImageSource source,
-  }) = _$AvatarUploadImageSourceSelectedImpl;
 
-  ImageSource get source;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AvatarUploadImageSourceSelectedImplCopyWith<
-    _$AvatarUploadImageSourceSelectedImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'AvatarUploadEvent.started()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class AvatarUploadImageSourceSelected implements AvatarUploadEvent {
+  const AvatarUploadImageSourceSelected({required this.source});
+  
+
+ final  ImageSource source;
+
+/// Create a copy of AvatarUploadEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AvatarUploadImageSourceSelectedCopyWith<AvatarUploadImageSourceSelected> get copyWith => _$AvatarUploadImageSourceSelectedCopyWithImpl<AvatarUploadImageSourceSelected>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadImageSourceSelected&&(identical(other.source, source) || other.source == source));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,source);
+
+@override
+String toString() {
+  return 'AvatarUploadEvent.imageSourceSelected(source: $source)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$AvatarUploadImagePickedImplCopyWith<$Res> {
-  factory _$$AvatarUploadImagePickedImplCopyWith(
-    _$AvatarUploadImagePickedImpl value,
-    $Res Function(_$AvatarUploadImagePickedImpl) then,
-  ) = __$$AvatarUploadImagePickedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({File imageFile});
+abstract mixin class $AvatarUploadImageSourceSelectedCopyWith<$Res> implements $AvatarUploadEventCopyWith<$Res> {
+  factory $AvatarUploadImageSourceSelectedCopyWith(AvatarUploadImageSourceSelected value, $Res Function(AvatarUploadImageSourceSelected) _then) = _$AvatarUploadImageSourceSelectedCopyWithImpl;
+@useResult
+$Res call({
+ ImageSource source
+});
+
+
+
+
+}
+/// @nodoc
+class _$AvatarUploadImageSourceSelectedCopyWithImpl<$Res>
+    implements $AvatarUploadImageSourceSelectedCopyWith<$Res> {
+  _$AvatarUploadImageSourceSelectedCopyWithImpl(this._self, this._then);
+
+  final AvatarUploadImageSourceSelected _self;
+  final $Res Function(AvatarUploadImageSourceSelected) _then;
+
+/// Create a copy of AvatarUploadEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? source = null,}) {
+  return _then(AvatarUploadImageSourceSelected(
+source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as ImageSource,
+  ));
 }
 
-/// @nodoc
-class __$$AvatarUploadImagePickedImplCopyWithImpl<$Res>
-    extends _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadImagePickedImpl>
-    implements _$$AvatarUploadImagePickedImplCopyWith<$Res> {
-  __$$AvatarUploadImagePickedImplCopyWithImpl(
-    _$AvatarUploadImagePickedImpl _value,
-    $Res Function(_$AvatarUploadImagePickedImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? imageFile = null}) {
-    return _then(
-      _$AvatarUploadImagePickedImpl(
-        imageFile: null == imageFile
-            ? _value.imageFile
-            : imageFile // ignore: cast_nullable_to_non_nullable
-                  as File,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$AvatarUploadImagePickedImpl implements AvatarUploadImagePicked {
-  const _$AvatarUploadImagePickedImpl({required this.imageFile});
 
-  @override
-  final File imageFile;
+class AvatarUploadImagePicked implements AvatarUploadEvent {
+  const AvatarUploadImagePicked({required this.imageFile});
+  
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.imagePicked(imageFile: $imageFile)';
-  }
+ final  File imageFile;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadImagePickedImpl &&
-            (identical(other.imageFile, imageFile) ||
-                other.imageFile == imageFile));
-  }
+/// Create a copy of AvatarUploadEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AvatarUploadImagePickedCopyWith<AvatarUploadImagePicked> get copyWith => _$AvatarUploadImagePickedCopyWithImpl<AvatarUploadImagePicked>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, imageFile);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AvatarUploadImagePickedImplCopyWith<_$AvatarUploadImagePickedImpl>
-  get copyWith =>
-      __$$AvatarUploadImagePickedImplCopyWithImpl<
-        _$AvatarUploadImagePickedImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return imagePicked(imageFile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return imagePicked?.call(imageFile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (imagePicked != null) {
-      return imagePicked(imageFile);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return imagePicked(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return imagePicked?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (imagePicked != null) {
-      return imagePicked(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadImagePicked&&(identical(other.imageFile, imageFile) || other.imageFile == imageFile));
 }
 
-abstract class AvatarUploadImagePicked implements AvatarUploadEvent {
-  const factory AvatarUploadImagePicked({required final File imageFile}) =
-      _$AvatarUploadImagePickedImpl;
 
-  File get imageFile;
+@override
+int get hashCode => Object.hash(runtimeType,imageFile);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AvatarUploadImagePickedImplCopyWith<_$AvatarUploadImagePickedImpl>
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'AvatarUploadEvent.imagePicked(imageFile: $imageFile)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$AvatarUploadUploadRequestedImplCopyWith<$Res> {
-  factory _$$AvatarUploadUploadRequestedImplCopyWith(
-    _$AvatarUploadUploadRequestedImpl value,
-    $Res Function(_$AvatarUploadUploadRequestedImpl) then,
-  ) = __$$AvatarUploadUploadRequestedImplCopyWithImpl<$Res>;
+abstract mixin class $AvatarUploadImagePickedCopyWith<$Res> implements $AvatarUploadEventCopyWith<$Res> {
+  factory $AvatarUploadImagePickedCopyWith(AvatarUploadImagePicked value, $Res Function(AvatarUploadImagePicked) _then) = _$AvatarUploadImagePickedCopyWithImpl;
+@useResult
+$Res call({
+ File imageFile
+});
+
+
+
+
+}
+/// @nodoc
+class _$AvatarUploadImagePickedCopyWithImpl<$Res>
+    implements $AvatarUploadImagePickedCopyWith<$Res> {
+  _$AvatarUploadImagePickedCopyWithImpl(this._self, this._then);
+
+  final AvatarUploadImagePicked _self;
+  final $Res Function(AvatarUploadImagePicked) _then;
+
+/// Create a copy of AvatarUploadEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? imageFile = null,}) {
+  return _then(AvatarUploadImagePicked(
+imageFile: null == imageFile ? _self.imageFile : imageFile // ignore: cast_nullable_to_non_nullable
+as File,
+  ));
 }
 
-/// @nodoc
-class __$$AvatarUploadUploadRequestedImplCopyWithImpl<$Res>
-    extends
-        _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadUploadRequestedImpl>
-    implements _$$AvatarUploadUploadRequestedImplCopyWith<$Res> {
-  __$$AvatarUploadUploadRequestedImplCopyWithImpl(
-    _$AvatarUploadUploadRequestedImpl _value,
-    $Res Function(_$AvatarUploadUploadRequestedImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$AvatarUploadUploadRequestedImpl implements AvatarUploadUploadRequested {
-  const _$AvatarUploadUploadRequestedImpl();
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.uploadRequested()';
-  }
+class AvatarUploadUploadRequested implements AvatarUploadEvent {
+  const AvatarUploadUploadRequested();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadUploadRequestedImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return uploadRequested();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return uploadRequested?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (uploadRequested != null) {
-      return uploadRequested();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return uploadRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return uploadRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (uploadRequested != null) {
-      return uploadRequested(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadUploadRequested);
 }
 
-abstract class AvatarUploadUploadRequested implements AvatarUploadEvent {
-  const factory AvatarUploadUploadRequested() =
-      _$AvatarUploadUploadRequestedImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AvatarUploadEvent.uploadRequested()';
 }
 
-/// @nodoc
-abstract class _$$AvatarUploadUploadCancelledImplCopyWith<$Res> {
-  factory _$$AvatarUploadUploadCancelledImplCopyWith(
-    _$AvatarUploadUploadCancelledImpl value,
-    $Res Function(_$AvatarUploadUploadCancelledImpl) then,
-  ) = __$$AvatarUploadUploadCancelledImplCopyWithImpl<$Res>;
+
 }
 
-/// @nodoc
-class __$$AvatarUploadUploadCancelledImplCopyWithImpl<$Res>
-    extends
-        _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadUploadCancelledImpl>
-    implements _$$AvatarUploadUploadCancelledImplCopyWith<$Res> {
-  __$$AvatarUploadUploadCancelledImplCopyWithImpl(
-    _$AvatarUploadUploadCancelledImpl _value,
-    $Res Function(_$AvatarUploadUploadCancelledImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
+
 
 /// @nodoc
 
-class _$AvatarUploadUploadCancelledImpl implements AvatarUploadUploadCancelled {
-  const _$AvatarUploadUploadCancelledImpl();
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.uploadCancelled()';
-  }
+class AvatarUploadUploadCancelled implements AvatarUploadEvent {
+  const AvatarUploadUploadCancelled();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadUploadCancelledImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return uploadCancelled();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return uploadCancelled?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (uploadCancelled != null) {
-      return uploadCancelled();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return uploadCancelled(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return uploadCancelled?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (uploadCancelled != null) {
-      return uploadCancelled(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadUploadCancelled);
 }
 
-abstract class AvatarUploadUploadCancelled implements AvatarUploadEvent {
-  const factory AvatarUploadUploadCancelled() =
-      _$AvatarUploadUploadCancelledImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AvatarUploadEvent.uploadCancelled()';
 }
 
-/// @nodoc
-abstract class _$$AvatarUploadDeleteRequestedImplCopyWith<$Res> {
-  factory _$$AvatarUploadDeleteRequestedImplCopyWith(
-    _$AvatarUploadDeleteRequestedImpl value,
-    $Res Function(_$AvatarUploadDeleteRequestedImpl) then,
-  ) = __$$AvatarUploadDeleteRequestedImplCopyWithImpl<$Res>;
+
 }
 
-/// @nodoc
-class __$$AvatarUploadDeleteRequestedImplCopyWithImpl<$Res>
-    extends
-        _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadDeleteRequestedImpl>
-    implements _$$AvatarUploadDeleteRequestedImplCopyWith<$Res> {
-  __$$AvatarUploadDeleteRequestedImplCopyWithImpl(
-    _$AvatarUploadDeleteRequestedImpl _value,
-    $Res Function(_$AvatarUploadDeleteRequestedImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
+
 
 /// @nodoc
 
-class _$AvatarUploadDeleteRequestedImpl implements AvatarUploadDeleteRequested {
-  const _$AvatarUploadDeleteRequestedImpl();
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.deleteRequested()';
-  }
+class AvatarUploadDeleteRequested implements AvatarUploadEvent {
+  const AvatarUploadDeleteRequested();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AvatarUploadDeleteRequestedImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return deleteRequested();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return deleteRequested?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (deleteRequested != null) {
-      return deleteRequested();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return deleteRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return deleteRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (deleteRequested != null) {
-      return deleteRequested(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadDeleteRequested);
 }
 
-abstract class AvatarUploadDeleteRequested implements AvatarUploadEvent {
-  const factory AvatarUploadDeleteRequested() =
-      _$AvatarUploadDeleteRequestedImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AvatarUploadEvent.deleteRequested()';
 }
 
-/// @nodoc
-abstract class _$$AvatarUploadResetImplCopyWith<$Res> {
-  factory _$$AvatarUploadResetImplCopyWith(
-    _$AvatarUploadResetImpl value,
-    $Res Function(_$AvatarUploadResetImpl) then,
-  ) = __$$AvatarUploadResetImplCopyWithImpl<$Res>;
+
 }
 
-/// @nodoc
-class __$$AvatarUploadResetImplCopyWithImpl<$Res>
-    extends _$AvatarUploadEventCopyWithImpl<$Res, _$AvatarUploadResetImpl>
-    implements _$$AvatarUploadResetImplCopyWith<$Res> {
-  __$$AvatarUploadResetImplCopyWithImpl(
-    _$AvatarUploadResetImpl _value,
-    $Res Function(_$AvatarUploadResetImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of AvatarUploadEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
+
 
 /// @nodoc
 
-class _$AvatarUploadResetImpl implements AvatarUploadReset {
-  const _$AvatarUploadResetImpl();
 
-  @override
-  String toString() {
-    return 'AvatarUploadEvent.reset()';
-  }
+class AvatarUploadReset implements AvatarUploadEvent {
+  const AvatarUploadReset();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AvatarUploadResetImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(ImageSource source) imageSourceSelected,
-    required TResult Function(File imageFile) imagePicked,
-    required TResult Function() uploadRequested,
-    required TResult Function() uploadCancelled,
-    required TResult Function() deleteRequested,
-    required TResult Function() reset,
-  }) {
-    return reset();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(ImageSource source)? imageSourceSelected,
-    TResult? Function(File imageFile)? imagePicked,
-    TResult? Function()? uploadRequested,
-    TResult? Function()? uploadCancelled,
-    TResult? Function()? deleteRequested,
-    TResult? Function()? reset,
-  }) {
-    return reset?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(ImageSource source)? imageSourceSelected,
-    TResult Function(File imageFile)? imagePicked,
-    TResult Function()? uploadRequested,
-    TResult Function()? uploadCancelled,
-    TResult Function()? deleteRequested,
-    TResult Function()? reset,
-    required TResult orElse(),
-  }) {
-    if (reset != null) {
-      return reset();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AvatarUploadStarted value) started,
-    required TResult Function(AvatarUploadImageSourceSelected value)
-    imageSourceSelected,
-    required TResult Function(AvatarUploadImagePicked value) imagePicked,
-    required TResult Function(AvatarUploadUploadRequested value)
-    uploadRequested,
-    required TResult Function(AvatarUploadUploadCancelled value)
-    uploadCancelled,
-    required TResult Function(AvatarUploadDeleteRequested value)
-    deleteRequested,
-    required TResult Function(AvatarUploadReset value) reset,
-  }) {
-    return reset(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AvatarUploadStarted value)? started,
-    TResult? Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult? Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult? Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult? Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult? Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult? Function(AvatarUploadReset value)? reset,
-  }) {
-    return reset?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AvatarUploadStarted value)? started,
-    TResult Function(AvatarUploadImageSourceSelected value)?
-    imageSourceSelected,
-    TResult Function(AvatarUploadImagePicked value)? imagePicked,
-    TResult Function(AvatarUploadUploadRequested value)? uploadRequested,
-    TResult Function(AvatarUploadUploadCancelled value)? uploadCancelled,
-    TResult Function(AvatarUploadDeleteRequested value)? deleteRequested,
-    TResult Function(AvatarUploadReset value)? reset,
-    required TResult orElse(),
-  }) {
-    if (reset != null) {
-      return reset(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AvatarUploadReset);
 }
 
-abstract class AvatarUploadReset implements AvatarUploadEvent {
-  const factory AvatarUploadReset() = _$AvatarUploadResetImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AvatarUploadEvent.reset()';
 }
+
+
+}
+
+
+
+
+// dart format on

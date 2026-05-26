@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'email_verification_event.freezed.dart';
 
 @freezed
-class EmailVerificationEvent with _$EmailVerificationEvent {
+abstract class EmailVerificationEvent with _$EmailVerificationEvent {
   /// Check current verification status
   const factory EmailVerificationEvent.checkStatus() =
       EmailVerificationCheckStatus;

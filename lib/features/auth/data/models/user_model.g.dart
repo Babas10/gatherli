@@ -6,22 +6,21 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
-    _$UserModelImpl(
-      uid: json['uid'] as String,
-      email: json['email'] as String,
-      displayName: json['displayName'] as String?,
-      photoUrl: json['photoUrl'] as String?,
-      isEmailVerified: json['isEmailVerified'] as bool,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      lastSignInAt: json['lastSignInAt'] == null
-          ? null
-          : DateTime.parse(json['lastSignInAt'] as String),
-    );
+_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
+  uid: json['uid'] as String,
+  email: json['email'] as String,
+  displayName: json['displayName'] as String?,
+  photoUrl: json['photoUrl'] as String?,
+  isEmailVerified: json['isEmailVerified'] as bool,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  lastSignInAt: json['lastSignInAt'] == null
+      ? null
+      : DateTime.parse(json['lastSignInAt'] as String),
+);
 
-Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
+Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'email': instance.email,

@@ -8,7 +8,7 @@ part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel({
     required String uid,
     required String email,
@@ -266,7 +266,7 @@ enum UserPrivacyLevel {
 /// Nemesis record tracking the opponent a player has lost to most often.
 /// This record is automatically updated by Cloud Functions after each game.
 @freezed
-class NemesisRecord with _$NemesisRecord {
+abstract class NemesisRecord with _$NemesisRecord {
   const factory NemesisRecord({
     /// Opponent user ID
     required String opponentId,
@@ -309,7 +309,7 @@ class NemesisRecord with _$NemesisRecord {
 /// Best win record tracking the highest-rated opponent team defeated.
 /// This record is automatically updated by Cloud Functions after each game win.
 @freezed
-class BestWinRecord with _$BestWinRecord {
+abstract class BestWinRecord with _$BestWinRecord {
   const factory BestWinRecord({
     /// Game ID where this best win occurred
     required String gameId,
@@ -354,7 +354,7 @@ class BestWinRecord with _$BestWinRecord {
 /// Point statistics tracking average point differential per set.
 /// Separates winning sets from losing sets to show dominance vs competitiveness.
 @freezed
-class PointStats with _$PointStats {
+abstract class PointStats with _$PointStats {
   const factory PointStats({
     /// Sum of point differentials in winning sets (always positive)
     @Default(0) int totalDiffInWinningSets,
@@ -416,7 +416,7 @@ class PointStats with _$PointStats {
 /// Statistics for a specific team role (weak-link, carry, or balanced).
 /// Tracks performance when player is in different positions relative to teammates.
 @freezed
-class RoleStats with _$RoleStats {
+abstract class RoleStats with _$RoleStats {
   const factory RoleStats({
     /// Number of games played in this role
     @Default(0) int games,
@@ -452,7 +452,7 @@ class RoleStats with _$RoleStats {
 /// Role-based performance statistics tracking how a player performs in different team contexts.
 /// Shows adaptability by analyzing win rates when player is weak-link, carry, or in balanced teams.
 @freezed
-class RoleBasedStats with _$RoleBasedStats {
+abstract class RoleBasedStats with _$RoleBasedStats {
   const factory RoleBasedStats({
     /// Stats when player is lowest ELO on their team (playing with stronger teammates)
     @Default(RoleStats()) RoleStats weakLink,

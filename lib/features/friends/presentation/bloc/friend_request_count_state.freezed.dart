@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,505 +9,342 @@ part of 'friend_request_count_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$FriendRequestCountState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int count) loaded,
-    required TResult Function(String message) error,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int count)? loaded,
-    TResult? Function(String message)? error,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int count)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountInitial value) initial,
-    required TResult Function(FriendRequestCountLoaded value) loaded,
-    required TResult Function(FriendRequestCountError value) error,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountInitial value)? initial,
-    TResult? Function(FriendRequestCountLoaded value)? loaded,
-    TResult? Function(FriendRequestCountError value)? error,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountInitial value)? initial,
-    TResult Function(FriendRequestCountLoaded value)? loaded,
-    TResult Function(FriendRequestCountError value)? error,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'FriendRequestCountState()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $FriendRequestCountStateCopyWith<$Res> {
-  factory $FriendRequestCountStateCopyWith(
-    FriendRequestCountState value,
-    $Res Function(FriendRequestCountState) then,
-  ) = _$FriendRequestCountStateCopyWithImpl<$Res, FriendRequestCountState>;
+class $FriendRequestCountStateCopyWith<$Res>  {
+$FriendRequestCountStateCopyWith(FriendRequestCountState _, $Res Function(FriendRequestCountState) __);
 }
 
-/// @nodoc
-class _$FriendRequestCountStateCopyWithImpl<
-  $Res,
-  $Val extends FriendRequestCountState
->
-    implements $FriendRequestCountStateCopyWith<$Res> {
-  _$FriendRequestCountStateCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [FriendRequestCountState].
+extension FriendRequestCountStatePatterns on FriendRequestCountState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FriendRequestCountInitial value)?  initial,TResult Function( FriendRequestCountLoaded value)?  loaded,TResult Function( FriendRequestCountError value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountInitial() when initial != null:
+return initial(_that);case FriendRequestCountLoaded() when loaded != null:
+return loaded(_that);case FriendRequestCountError() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FriendRequestCountInitial value)  initial,required TResult Function( FriendRequestCountLoaded value)  loaded,required TResult Function( FriendRequestCountError value)  error,}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountInitial():
+return initial(_that);case FriendRequestCountLoaded():
+return loaded(_that);case FriendRequestCountError():
+return error(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FriendRequestCountInitial value)?  initial,TResult? Function( FriendRequestCountLoaded value)?  loaded,TResult? Function( FriendRequestCountError value)?  error,}){
+final _that = this;
+switch (_that) {
+case FriendRequestCountInitial() when initial != null:
+return initial(_that);case FriendRequestCountLoaded() when loaded != null:
+return loaded(_that);case FriendRequestCountError() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( int count)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case FriendRequestCountInitial() when initial != null:
+return initial();case FriendRequestCountLoaded() when loaded != null:
+return loaded(_that.count);case FriendRequestCountError() when error != null:
+return error(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( int count)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+switch (_that) {
+case FriendRequestCountInitial():
+return initial();case FriendRequestCountLoaded():
+return loaded(_that.count);case FriendRequestCountError():
+return error(_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( int count)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+switch (_that) {
+case FriendRequestCountInitial() when initial != null:
+return initial();case FriendRequestCountLoaded() when loaded != null:
+return loaded(_that.count);case FriendRequestCountError() when error != null:
+return error(_that.message);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$FriendRequestCountInitialImplCopyWith<$Res> {
-  factory _$$FriendRequestCountInitialImplCopyWith(
-    _$FriendRequestCountInitialImpl value,
-    $Res Function(_$FriendRequestCountInitialImpl) then,
-  ) = __$$FriendRequestCountInitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FriendRequestCountInitialImplCopyWithImpl<$Res>
-    extends
-        _$FriendRequestCountStateCopyWithImpl<
-          $Res,
-          _$FriendRequestCountInitialImpl
-        >
-    implements _$$FriendRequestCountInitialImplCopyWith<$Res> {
-  __$$FriendRequestCountInitialImplCopyWithImpl(
-    _$FriendRequestCountInitialImpl _value,
-    $Res Function(_$FriendRequestCountInitialImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$FriendRequestCountInitialImpl implements FriendRequestCountInitial {
-  const _$FriendRequestCountInitialImpl();
-
-  @override
-  String toString() {
-    return 'FriendRequestCountState.initial()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendRequestCountInitialImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int count) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int count)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int count)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountInitial value) initial,
-    required TResult Function(FriendRequestCountLoaded value) loaded,
-    required TResult Function(FriendRequestCountError value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountInitial value)? initial,
-    TResult? Function(FriendRequestCountLoaded value)? loaded,
-    TResult? Function(FriendRequestCountError value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountInitial value)? initial,
-    TResult Function(FriendRequestCountLoaded value)? loaded,
-    TResult Function(FriendRequestCountError value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FriendRequestCountInitial implements FriendRequestCountState {
-  const factory FriendRequestCountInitial() = _$FriendRequestCountInitialImpl;
-}
-
-/// @nodoc
-abstract class _$$FriendRequestCountLoadedImplCopyWith<$Res> {
-  factory _$$FriendRequestCountLoadedImplCopyWith(
-    _$FriendRequestCountLoadedImpl value,
-    $Res Function(_$FriendRequestCountLoadedImpl) then,
-  ) = __$$FriendRequestCountLoadedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int count});
-}
-
-/// @nodoc
-class __$$FriendRequestCountLoadedImplCopyWithImpl<$Res>
-    extends
-        _$FriendRequestCountStateCopyWithImpl<
-          $Res,
-          _$FriendRequestCountLoadedImpl
-        >
-    implements _$$FriendRequestCountLoadedImplCopyWith<$Res> {
-  __$$FriendRequestCountLoadedImplCopyWithImpl(
-    _$FriendRequestCountLoadedImpl _value,
-    $Res Function(_$FriendRequestCountLoadedImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? count = null}) {
-    return _then(
-      _$FriendRequestCountLoadedImpl(
-        count: null == count
-            ? _value.count
-            : count // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$FriendRequestCountLoadedImpl implements FriendRequestCountLoaded {
-  const _$FriendRequestCountLoadedImpl({required this.count});
 
-  @override
-  final int count;
+class FriendRequestCountInitial implements FriendRequestCountState {
+  const FriendRequestCountInitial();
+  
 
-  @override
-  String toString() {
-    return 'FriendRequestCountState.loaded(count: $count)';
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendRequestCountLoadedImpl &&
-            (identical(other.count, count) || other.count == count));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, count);
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FriendRequestCountLoadedImplCopyWith<_$FriendRequestCountLoadedImpl>
-  get copyWith =>
-      __$$FriendRequestCountLoadedImplCopyWithImpl<
-        _$FriendRequestCountLoadedImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int count) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return loaded(count);
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int count)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return loaded?.call(count);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int count)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(count);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountInitial value) initial,
-    required TResult Function(FriendRequestCountLoaded value) loaded,
-    required TResult Function(FriendRequestCountError value) error,
-  }) {
-    return loaded(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountInitial value)? initial,
-    TResult? Function(FriendRequestCountLoaded value)? loaded,
-    TResult? Function(FriendRequestCountError value)? error,
-  }) {
-    return loaded?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountInitial value)? initial,
-    TResult Function(FriendRequestCountLoaded value)? loaded,
-    TResult Function(FriendRequestCountError value)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountInitial);
 }
 
-abstract class FriendRequestCountLoaded implements FriendRequestCountState {
-  const factory FriendRequestCountLoaded({required final int count}) =
-      _$FriendRequestCountLoadedImpl;
 
-  int get count;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FriendRequestCountLoadedImplCopyWith<_$FriendRequestCountLoadedImpl>
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'FriendRequestCountState.initial()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class FriendRequestCountLoaded implements FriendRequestCountState {
+  const FriendRequestCountLoaded({required this.count});
+  
+
+ final  int count;
+
+/// Create a copy of FriendRequestCountState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FriendRequestCountLoadedCopyWith<FriendRequestCountLoaded> get copyWith => _$FriendRequestCountLoadedCopyWithImpl<FriendRequestCountLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountLoaded&&(identical(other.count, count) || other.count == count));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,count);
+
+@override
+String toString() {
+  return 'FriendRequestCountState.loaded(count: $count)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$FriendRequestCountErrorImplCopyWith<$Res> {
-  factory _$$FriendRequestCountErrorImplCopyWith(
-    _$FriendRequestCountErrorImpl value,
-    $Res Function(_$FriendRequestCountErrorImpl) then,
-  ) = __$$FriendRequestCountErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
+abstract mixin class $FriendRequestCountLoadedCopyWith<$Res> implements $FriendRequestCountStateCopyWith<$Res> {
+  factory $FriendRequestCountLoadedCopyWith(FriendRequestCountLoaded value, $Res Function(FriendRequestCountLoaded) _then) = _$FriendRequestCountLoadedCopyWithImpl;
+@useResult
+$Res call({
+ int count
+});
+
+
+
+
+}
+/// @nodoc
+class _$FriendRequestCountLoadedCopyWithImpl<$Res>
+    implements $FriendRequestCountLoadedCopyWith<$Res> {
+  _$FriendRequestCountLoadedCopyWithImpl(this._self, this._then);
+
+  final FriendRequestCountLoaded _self;
+  final $Res Function(FriendRequestCountLoaded) _then;
+
+/// Create a copy of FriendRequestCountState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? count = null,}) {
+  return _then(FriendRequestCountLoaded(
+count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
 }
 
-/// @nodoc
-class __$$FriendRequestCountErrorImplCopyWithImpl<$Res>
-    extends
-        _$FriendRequestCountStateCopyWithImpl<
-          $Res,
-          _$FriendRequestCountErrorImpl
-        >
-    implements _$$FriendRequestCountErrorImplCopyWith<$Res> {
-  __$$FriendRequestCountErrorImplCopyWithImpl(
-    _$FriendRequestCountErrorImpl _value,
-    $Res Function(_$FriendRequestCountErrorImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? message = null}) {
-    return _then(
-      _$FriendRequestCountErrorImpl(
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$FriendRequestCountErrorImpl implements FriendRequestCountError {
-  const _$FriendRequestCountErrorImpl({required this.message});
 
-  @override
-  final String message;
+class FriendRequestCountError implements FriendRequestCountState {
+  const FriendRequestCountError({required this.message});
+  
 
-  @override
-  String toString() {
-    return 'FriendRequestCountState.error(message: $message)';
-  }
+ final  String message;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendRequestCountErrorImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
+/// Create a copy of FriendRequestCountState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FriendRequestCountErrorCopyWith<FriendRequestCountError> get copyWith => _$FriendRequestCountErrorCopyWithImpl<FriendRequestCountError>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FriendRequestCountErrorImplCopyWith<_$FriendRequestCountErrorImpl>
-  get copyWith =>
-      __$$FriendRequestCountErrorImplCopyWithImpl<
-        _$FriendRequestCountErrorImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int count) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int count)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int count)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FriendRequestCountInitial value) initial,
-    required TResult Function(FriendRequestCountLoaded value) loaded,
-    required TResult Function(FriendRequestCountError value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FriendRequestCountInitial value)? initial,
-    TResult? Function(FriendRequestCountLoaded value)? loaded,
-    TResult? Function(FriendRequestCountError value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FriendRequestCountInitial value)? initial,
-    TResult Function(FriendRequestCountLoaded value)? loaded,
-    TResult Function(FriendRequestCountError value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendRequestCountError&&(identical(other.message, message) || other.message == message));
 }
 
-abstract class FriendRequestCountError implements FriendRequestCountState {
-  const factory FriendRequestCountError({required final String message}) =
-      _$FriendRequestCountErrorImpl;
 
-  String get message;
+@override
+int get hashCode => Object.hash(runtimeType,message);
 
-  /// Create a copy of FriendRequestCountState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FriendRequestCountErrorImplCopyWith<_$FriendRequestCountErrorImpl>
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'FriendRequestCountState.error(message: $message)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class $FriendRequestCountErrorCopyWith<$Res> implements $FriendRequestCountStateCopyWith<$Res> {
+  factory $FriendRequestCountErrorCopyWith(FriendRequestCountError value, $Res Function(FriendRequestCountError) _then) = _$FriendRequestCountErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class _$FriendRequestCountErrorCopyWithImpl<$Res>
+    implements $FriendRequestCountErrorCopyWith<$Res> {
+  _$FriendRequestCountErrorCopyWithImpl(this._self, this._then);
+
+  final FriendRequestCountError _self;
+  final $Res Function(FriendRequestCountError) _then;
+
+/// Create a copy of FriendRequestCountState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(FriendRequestCountError(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

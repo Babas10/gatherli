@@ -13,7 +13,7 @@ part 'friendship_model.g.dart';
 ///
 /// Firestore collection: /friendships/{friendshipId}
 @freezed
-class FriendshipModel with _$FriendshipModel {
+abstract class FriendshipModel with _$FriendshipModel {
   const factory FriendshipModel({
     required String id,
     required String initiatorId,
