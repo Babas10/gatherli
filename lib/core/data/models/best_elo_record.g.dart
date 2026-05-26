@@ -6,14 +6,14 @@ part of 'best_elo_record.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BestEloRecordImpl _$$BestEloRecordImplFromJson(Map<String, dynamic> json) =>
-    _$BestEloRecordImpl(
+_BestEloRecord _$BestEloRecordFromJson(Map<String, dynamic> json) =>
+    _BestEloRecord(
       elo: (json['elo'] as num).toDouble(),
       date: const TimestampConverter().fromJson(json['date'] as Object),
       gameId: json['gameId'] as String,
     );
 
-Map<String, dynamic> _$$BestEloRecordImplToJson(_$BestEloRecordImpl instance) =>
+Map<String, dynamic> _$BestEloRecordToJson(_BestEloRecord instance) =>
     <String, dynamic>{
       'elo': instance.elo,
       'date': const TimestampConverter().toJson(instance.date),

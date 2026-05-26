@@ -48,6 +48,7 @@ import 'package:play_with_me/features/notifications/domain/repositories/notifica
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_bloc.dart';
+import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_details/game_details_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_bloc.dart';
@@ -339,6 +340,15 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<GameCreationBloc>()) {
     sl.registerFactory<GameCreationBloc>(
       () => GameCreationBloc(gameRepository: sl(), analytics: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<InviteeSelectionBloc>()) {
+    sl.registerFactory<InviteeSelectionBloc>(
+      () => InviteeSelectionBloc(
+        friendRepository: sl(),
+        userRepository: sl(),
+      ),
     );
   }
 

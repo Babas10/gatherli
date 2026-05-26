@@ -7,7 +7,7 @@ part 'friend_state.freezed.dart';
 
 /// States for the FriendBloc
 @freezed
-class FriendState with _$FriendState {
+abstract class FriendState with _$FriendState {
   /// Initial state
   const factory FriendState.initial() = FriendInitial;
 

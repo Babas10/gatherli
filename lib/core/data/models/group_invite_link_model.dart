@@ -12,7 +12,7 @@ part 'group_invite_link_model.g.dart';
 /// Firestore collection: /groups/{groupId}/invites/{inviteId}
 /// Token lookup collection: /invite_tokens/{token}
 @freezed
-class GroupInviteLinkModel with _$GroupInviteLinkModel {
+abstract class GroupInviteLinkModel with _$GroupInviteLinkModel {
   const factory GroupInviteLinkModel({
     required String id,
     required String token,

@@ -3,6 +3,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/data/models/activity_context_type.dart';
 import '../../../../../core/data/models/game_model.dart';
 import '../../../../../core/domain/exceptions/repository_exceptions.dart';
 import '../../../../../core/domain/repositories/game_repository.dart';
@@ -19,6 +20,7 @@ class GameCreationBloc extends Bloc<GameCreationEvent, GameCreationState> {
   }) : _gameRepository = gameRepository,
        _analytics = analytics,
        super(const GameCreationInitial()) {
+    on<SetContextType>(_onSetContextType);
     on<SelectGroup>(_onSelectGroup);
     on<SetDateTime>(_onSetDateTime);
     on<SetLocation>(_onSetLocation);
@@ -39,6 +41,18 @@ class GameCreationBloc extends Bloc<GameCreationEvent, GameCreationState> {
       return currentState;
     }
     return const GameCreationFormState();
+  }
+
+  void _onSetContextType(
+    SetContextType event,
+    Emitter<GameCreationState> emit,
+  ) {
+    final formState = _currentFormState.copyWith(
+      contextType: event.contextType,
+      // Clear groupId/groupName when switching to pickup mode.
+      groupError: null,
+    );
+    emit(_validateAndEmit(formState));
   }
 
   Future<void> _onSelectGroup(
@@ -143,7 +157,10 @@ class GameCreationBloc extends Bloc<GameCreationEvent, GameCreationState> {
         id: '', // Will be set by Firestore
         title: formState.title,
         description: formState.description,
-        groupId: formState.groupId!,
+        groupId: formState.contextType == ActivityContextType.pickup
+            ? null
+            : formState.groupId,
+        contextType: formState.contextType,
         createdBy: event.createdBy,
         createdAt: DateTime.now(),
         scheduledAt: formState.dateTime!,
@@ -192,8 +209,9 @@ class GameCreationBloc extends Bloc<GameCreationEvent, GameCreationState> {
     String? titleError;
     String? playersError;
 
-    // Validate group selection
-    if (formState.groupId == null || formState.groupId!.isEmpty) {
+    // Validate group selection (not required for pickup games)
+    if (formState.contextType != ActivityContextType.pickup &&
+        (formState.groupId == null || formState.groupId!.isEmpty)) {
       groupError = 'Please select a group';
     }
 

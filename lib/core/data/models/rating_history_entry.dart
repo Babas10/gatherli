@@ -9,7 +9,7 @@ part 'rating_history_entry.g.dart';
 /// Represents an entry in a user's ELO rating history (Story 14.5.3).
 /// Each entry records a rating change after a game.
 @freezed
-class RatingHistoryEntry with _$RatingHistoryEntry {
+abstract class RatingHistoryEntry with _$RatingHistoryEntry {
   const factory RatingHistoryEntry({
     /// Auto-generated document ID from Firestore
     required String entryId,

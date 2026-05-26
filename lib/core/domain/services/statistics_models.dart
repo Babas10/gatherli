@@ -5,7 +5,7 @@ part 'statistics_models.g.dart';
 
 /// Represents a player's rating for ELO calculations
 @freezed
-class PlayerRating with _$PlayerRating {
+abstract class PlayerRating with _$PlayerRating {
   const factory PlayerRating({
     required String playerId,
     required double rating,
@@ -20,7 +20,7 @@ class PlayerRating with _$PlayerRating {
 
 /// Represents the result of an ELO calculation
 @freezed
-class EloResult with _$EloResult {
+abstract class EloResult with _$EloResult {
   const factory EloResult({
     required PlayerRating teamAPlayer1,
     required PlayerRating teamAPlayer2,
@@ -68,7 +68,7 @@ class EloResult with _$EloResult {
 
 /// Represents statistics about a teammate
 @freezed
-class TeammateStats with _$TeammateStats {
+abstract class TeammateStats with _$TeammateStats {
   const factory TeammateStats({
     required String playerId,
     required String displayName,

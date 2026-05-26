@@ -5,7 +5,7 @@ part 'locale_preferences_event.freezed.dart';
 
 /// Events for LocalePreferencesBloc
 @freezed
-class LocalePreferencesEvent with _$LocalePreferencesEvent {
+abstract class LocalePreferencesEvent with _$LocalePreferencesEvent {
   /// Load preferences from local storage
   const factory LocalePreferencesEvent.loadPreferences() = LoadPreferences;
 

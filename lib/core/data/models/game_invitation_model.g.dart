@@ -6,24 +6,25 @@ part of 'game_invitation_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameInvitationModelImpl _$$GameInvitationModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$GameInvitationModelImpl(
-  id: json['id'] as String,
-  gameId: json['gameId'] as String,
-  groupId: json['groupId'] as String,
-  inviteeId: json['inviteeId'] as String,
-  inviterId: json['inviterId'] as String,
-  status:
-      $enumDecodeNullable(_$GameInvitationStatusEnumMap, json['status']) ??
-      GameInvitationStatus.pending,
-  createdAt: const TimestampConverter().fromJson(json['createdAt'] as Object),
-  updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
-  expiresAt: const NullableTimestampConverter().fromJson(json['expiresAt']),
-);
+_GameInvitationModel _$GameInvitationModelFromJson(Map<String, dynamic> json) =>
+    _GameInvitationModel(
+      id: json['id'] as String,
+      gameId: json['gameId'] as String,
+      groupId: json['groupId'] as String,
+      inviteeId: json['inviteeId'] as String,
+      inviterId: json['inviterId'] as String,
+      status:
+          $enumDecodeNullable(_$GameInvitationStatusEnumMap, json['status']) ??
+          GameInvitationStatus.pending,
+      createdAt: const TimestampConverter().fromJson(
+        json['createdAt'] as Object,
+      ),
+      updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
+      expiresAt: const NullableTimestampConverter().fromJson(json['expiresAt']),
+    );
 
-Map<String, dynamic> _$$GameInvitationModelImplToJson(
-  _$GameInvitationModelImpl instance,
+Map<String, dynamic> _$GameInvitationModelToJson(
+  _GameInvitationModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'gameId': instance.gameId,

@@ -7,7 +7,7 @@ part 'teammate_stats.g.dart';
 /// Statistics for games played with a specific teammate.
 /// Tracks comprehensive performance metrics for partner analysis.
 @freezed
-class TeammateStats with _$TeammateStats {
+abstract class TeammateStats with _$TeammateStats {
   const factory TeammateStats({
     /// The teammate's user ID
     required String userId,
@@ -121,7 +121,7 @@ class TeammateStats with _$TeammateStats {
 
 /// Represents a single game result in recent games history.
 @freezed
-class RecentGameResult with _$RecentGameResult {
+abstract class RecentGameResult with _$RecentGameResult {
   const factory RecentGameResult({
     /// Reference to the game
     required String gameId,

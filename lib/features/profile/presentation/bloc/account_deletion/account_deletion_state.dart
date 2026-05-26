@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'account_deletion_state.freezed.dart';
 
 @freezed
-class AccountDeletionState with _$AccountDeletionState {
+abstract class AccountDeletionState with _$AccountDeletionState {
   /// Idle — waiting for user action.
   const factory AccountDeletionState.initial() = AccountDeletionInitial;
 

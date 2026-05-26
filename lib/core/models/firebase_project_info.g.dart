@@ -6,21 +6,20 @@ part of 'firebase_project_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FirebaseProjectInfoImpl _$$FirebaseProjectInfoImplFromJson(
-  Map<String, dynamic> json,
-) => _$FirebaseProjectInfoImpl(
-  environment: json['environment'] as String,
-  expectedProjectId: json['expectedProjectId'] as String,
-  actualProjectId: json['actualProjectId'] as String?,
-  status: $enumDecode(_$FirebaseProjectStatusEnumMap, json['status']),
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  matchesExpected: json['matchesExpected'] as bool? ?? false,
-);
+_FirebaseProjectInfo _$FirebaseProjectInfoFromJson(Map<String, dynamic> json) =>
+    _FirebaseProjectInfo(
+      environment: json['environment'] as String,
+      expectedProjectId: json['expectedProjectId'] as String,
+      actualProjectId: json['actualProjectId'] as String?,
+      status: $enumDecode(_$FirebaseProjectStatusEnumMap, json['status']),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      matchesExpected: json['matchesExpected'] as bool? ?? false,
+    );
 
-Map<String, dynamic> _$$FirebaseProjectInfoImplToJson(
-  _$FirebaseProjectInfoImpl instance,
+Map<String, dynamic> _$FirebaseProjectInfoToJson(
+  _FirebaseProjectInfo instance,
 ) => <String, dynamic>{
   'environment': instance.environment,
   'expectedProjectId': instance.expectedProjectId,
@@ -37,9 +36,9 @@ const _$FirebaseProjectStatusEnumMap = {
   FirebaseProjectStatus.error: 'error',
 };
 
-_$FirebaseProjectTrackerImpl _$$FirebaseProjectTrackerImplFromJson(
+_FirebaseProjectTracker _$FirebaseProjectTrackerFromJson(
   Map<String, dynamic> json,
-) => _$FirebaseProjectTrackerImpl(
+) => _FirebaseProjectTracker(
   storyVersion: json['storyVersion'] as String,
   trackedAt: DateTime.parse(json['trackedAt'] as String),
   projects: (json['projects'] as List<dynamic>)
@@ -47,8 +46,8 @@ _$FirebaseProjectTrackerImpl _$$FirebaseProjectTrackerImplFromJson(
       .toList(),
 );
 
-Map<String, dynamic> _$$FirebaseProjectTrackerImplToJson(
-  _$FirebaseProjectTrackerImpl instance,
+Map<String, dynamic> _$FirebaseProjectTrackerToJson(
+  _FirebaseProjectTracker instance,
 ) => <String, dynamic>{
   'storyVersion': instance.storyVersion,
   'trackedAt': instance.trackedAt.toIso8601String(),

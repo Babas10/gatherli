@@ -6,22 +6,24 @@ part of 'recurrence_rule_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RecurrenceRuleModelImpl _$$RecurrenceRuleModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$RecurrenceRuleModelImpl(
-  frequency:
-      $enumDecodeNullable(_$RecurrenceFrequencyEnumMap, json['frequency']) ??
-      RecurrenceFrequency.none,
-  interval: (json['interval'] as num?)?.toInt() ?? 1,
-  count: (json['count'] as num?)?.toInt(),
-  endDate: _dateTimeFromJson(json['endDate'] as String?),
-  daysOfWeek: (json['daysOfWeek'] as List<dynamic>?)
-      ?.map((e) => (e as num).toInt())
-      .toList(),
-);
+_RecurrenceRuleModel _$RecurrenceRuleModelFromJson(Map<String, dynamic> json) =>
+    _RecurrenceRuleModel(
+      frequency:
+          $enumDecodeNullable(
+            _$RecurrenceFrequencyEnumMap,
+            json['frequency'],
+          ) ??
+          RecurrenceFrequency.none,
+      interval: (json['interval'] as num?)?.toInt() ?? 1,
+      count: (json['count'] as num?)?.toInt(),
+      endDate: _dateTimeFromJson(json['endDate'] as String?),
+      daysOfWeek: (json['daysOfWeek'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+    );
 
-Map<String, dynamic> _$$RecurrenceRuleModelImplToJson(
-  _$RecurrenceRuleModelImpl instance,
+Map<String, dynamic> _$RecurrenceRuleModelToJson(
+  _RecurrenceRuleModel instance,
 ) => <String, dynamic>{
   'frequency': _$RecurrenceFrequencyEnumMap[instance.frequency]!,
   'interval': instance.interval,

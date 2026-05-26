@@ -5,7 +5,7 @@ part 'friend_request_count_state.freezed.dart';
 /// States for the FriendRequestCountBloc
 /// This BLoC manages only the badge count for friend requests
 @freezed
-class FriendRequestCountState with _$FriendRequestCountState {
+abstract class FriendRequestCountState with _$FriendRequestCountState {
   /// Initial state - count not yet loaded
   const factory FriendRequestCountState.initial() = FriendRequestCountInitial;
 

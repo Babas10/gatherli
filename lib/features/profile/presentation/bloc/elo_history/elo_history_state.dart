@@ -6,7 +6,7 @@ import 'package:play_with_me/core/domain/entities/time_period.dart';
 part 'elo_history_state.freezed.dart';
 
 @freezed
-class EloHistoryState with _$EloHistoryState {
+abstract class EloHistoryState with _$EloHistoryState {
   const factory EloHistoryState.initial() = EloHistoryInitial;
 
   const factory EloHistoryState.loading() = EloHistoryLoading;

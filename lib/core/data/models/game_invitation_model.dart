@@ -21,7 +21,7 @@ enum GameInvitationStatus {
 /// Stored in the `gameInvitations` Firestore collection.
 /// Created and mutated exclusively via Cloud Functions (Admin SDK).
 @freezed
-class GameInvitationModel with _$GameInvitationModel {
+abstract class GameInvitationModel with _$GameInvitationModel {
   const factory GameInvitationModel({
     required String id,
     required String gameId,

@@ -7,7 +7,7 @@ import 'game_history_state.dart';
 part 'game_history_event.freezed.dart';
 
 @freezed
-class GameHistoryEvent with _$GameHistoryEvent {
+abstract class GameHistoryEvent with _$GameHistoryEvent {
   /// Load initial game history
   const factory GameHistoryEvent.load({
     String? groupId,

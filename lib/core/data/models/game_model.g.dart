@@ -6,9 +6,7 @@ part of 'game_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameModelImpl _$$GameModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$GameModelImpl(
+_GameModel _$GameModelFromJson(Map<String, dynamic> json) => _GameModel(
   id: json['id'] as String,
   title: json['title'] as String,
   description: json['description'] as String?,
@@ -82,8 +80,8 @@ _$GameModelImpl _$$GameModelImplFromJson(
   ),
 );
 
-Map<String, dynamic> _$$GameModelImplToJson(
-  _$GameModelImpl instance,
+Map<String, dynamic> _$GameModelToJson(
+  _GameModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'title': instance.title,
@@ -168,28 +166,27 @@ const _$GameGenderTypeEnumMap = {
   GameGenderType.mix: 'mix',
 };
 
-_$GameTeamsImpl _$$GameTeamsImplFromJson(Map<String, dynamic> json) =>
-    _$GameTeamsImpl(
-      teamAPlayerIds:
-          (json['teamAPlayerIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      teamBPlayerIds:
-          (json['teamBPlayerIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-    );
+_GameTeams _$GameTeamsFromJson(Map<String, dynamic> json) => _GameTeams(
+  teamAPlayerIds:
+      (json['teamAPlayerIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+  teamBPlayerIds:
+      (json['teamBPlayerIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
+);
 
-Map<String, dynamic> _$$GameTeamsImplToJson(_$GameTeamsImpl instance) =>
+Map<String, dynamic> _$GameTeamsToJson(_GameTeams instance) =>
     <String, dynamic>{
       'teamAPlayerIds': instance.teamAPlayerIds,
       'teamBPlayerIds': instance.teamBPlayerIds,
     };
 
-_$GameLocationImpl _$$GameLocationImplFromJson(Map<String, dynamic> json) =>
-    _$GameLocationImpl(
+_GameLocation _$GameLocationFromJson(Map<String, dynamic> json) =>
+    _GameLocation(
       name: json['name'] as String,
       address: json['address'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
@@ -199,7 +196,7 @@ _$GameLocationImpl _$$GameLocationImplFromJson(Map<String, dynamic> json) =>
       accessInstructions: json['accessInstructions'] as String?,
     );
 
-Map<String, dynamic> _$$GameLocationImplToJson(_$GameLocationImpl instance) =>
+Map<String, dynamic> _$GameLocationToJson(_GameLocation instance) =>
     <String, dynamic>{
       'name': instance.name,
       'address': instance.address,
@@ -210,16 +207,15 @@ Map<String, dynamic> _$$GameLocationImplToJson(_$GameLocationImpl instance) =>
       'accessInstructions': instance.accessInstructions,
     };
 
-_$GameScoreImpl _$$GameScoreImplFromJson(Map<String, dynamic> json) =>
-    _$GameScoreImpl(
-      playerId: json['playerId'] as String,
-      score: (json['score'] as num).toInt(),
-      sets: (json['sets'] as num?)?.toInt() ?? 0,
-      gamesWon: (json['gamesWon'] as num?)?.toInt() ?? 0,
-      additionalStats: json['additionalStats'] as Map<String, dynamic>?,
-    );
+_GameScore _$GameScoreFromJson(Map<String, dynamic> json) => _GameScore(
+  playerId: json['playerId'] as String,
+  score: (json['score'] as num).toInt(),
+  sets: (json['sets'] as num?)?.toInt() ?? 0,
+  gamesWon: (json['gamesWon'] as num?)?.toInt() ?? 0,
+  additionalStats: json['additionalStats'] as Map<String, dynamic>?,
+);
 
-Map<String, dynamic> _$$GameScoreImplToJson(_$GameScoreImpl instance) =>
+Map<String, dynamic> _$GameScoreToJson(_GameScore instance) =>
     <String, dynamic>{
       'playerId': instance.playerId,
       'score': instance.score,
@@ -228,22 +224,20 @@ Map<String, dynamic> _$$GameScoreImplToJson(_$GameScoreImpl instance) =>
       'additionalStats': instance.additionalStats,
     };
 
-_$SetScoreImpl _$$SetScoreImplFromJson(Map<String, dynamic> json) =>
-    _$SetScoreImpl(
-      teamAPoints: (json['teamAPoints'] as num).toInt(),
-      teamBPoints: (json['teamBPoints'] as num).toInt(),
-      setNumber: (json['setNumber'] as num).toInt(),
-    );
+_SetScore _$SetScoreFromJson(Map<String, dynamic> json) => _SetScore(
+  teamAPoints: (json['teamAPoints'] as num).toInt(),
+  teamBPoints: (json['teamBPoints'] as num).toInt(),
+  setNumber: (json['setNumber'] as num).toInt(),
+);
 
-Map<String, dynamic> _$$SetScoreImplToJson(_$SetScoreImpl instance) =>
-    <String, dynamic>{
-      'teamAPoints': instance.teamAPoints,
-      'teamBPoints': instance.teamBPoints,
-      'setNumber': instance.setNumber,
-    };
+Map<String, dynamic> _$SetScoreToJson(_SetScore instance) => <String, dynamic>{
+  'teamAPoints': instance.teamAPoints,
+  'teamBPoints': instance.teamBPoints,
+  'setNumber': instance.setNumber,
+};
 
-_$IndividualGameImpl _$$IndividualGameImplFromJson(Map<String, dynamic> json) =>
-    _$IndividualGameImpl(
+_IndividualGame _$IndividualGameFromJson(Map<String, dynamic> json) =>
+    _IndividualGame(
       gameNumber: (json['gameNumber'] as num).toInt(),
       sets: const SetScoreListConverter().fromJson(json['sets'] as List),
       winner: json['winner'] as String,
@@ -252,24 +246,20 @@ _$IndividualGameImpl _$$IndividualGameImplFromJson(Map<String, dynamic> json) =>
       ),
     );
 
-Map<String, dynamic> _$$IndividualGameImplToJson(
-  _$IndividualGameImpl instance,
-) => <String, dynamic>{
-  'gameNumber': instance.gameNumber,
-  'sets': const SetScoreListConverter().toJson(instance.sets),
-  'winner': instance.winner,
-  'teams': const GameTeamsConverter().toJson(instance.teams),
-};
+Map<String, dynamic> _$IndividualGameToJson(_IndividualGame instance) =>
+    <String, dynamic>{
+      'gameNumber': instance.gameNumber,
+      'sets': const SetScoreListConverter().toJson(instance.sets),
+      'winner': instance.winner,
+      'teams': const GameTeamsConverter().toJson(instance.teams),
+    };
 
-_$GameResultImpl _$$GameResultImplFromJson(Map<String, dynamic> json) =>
-    _$GameResultImpl(
-      games: const IndividualGameListConverter().fromJson(
-        json['games'] as List,
-      ),
-      overallWinner: json['overallWinner'] as String?,
-    );
+_GameResult _$GameResultFromJson(Map<String, dynamic> json) => _GameResult(
+  games: const IndividualGameListConverter().fromJson(json['games'] as List),
+  overallWinner: json['overallWinner'] as String?,
+);
 
-Map<String, dynamic> _$$GameResultImplToJson(_$GameResultImpl instance) =>
+Map<String, dynamic> _$GameResultToJson(_GameResult instance) =>
     <String, dynamic>{
       'games': const IndividualGameListConverter().toJson(instance.games),
       'overallWinner': instance.overallWinner,

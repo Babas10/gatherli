@@ -4,7 +4,7 @@ part 'friend_event.freezed.dart';
 
 /// Events for the FriendBloc
 @freezed
-class FriendEvent with _$FriendEvent {
+abstract class FriendEvent with _$FriendEvent {
   /// Load all friends and pending requests for the current user
   const factory FriendEvent.loadRequested() = FriendLoadRequested;
 

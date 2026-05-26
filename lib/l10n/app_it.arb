@@ -717,5 +717,40 @@
   "chatPlayersOnly": "Solo i giocatori possono inviare messaggi",
   "@chatPlayersOnly": {},
   "chatJoinToView": "Devi unirti alla partita per vedere la chat",
-  "@chatJoinToView": {}
+  "@chatJoinToView": {},
+
+  "createPickupGame": "Crea partita al volo",
+  "@createPickupGame": {},
+  "pickupGame": "Partita al volo",
+  "@pickupGame": {},
+  "gameDetailsStep": "Dettagli del gioco",
+  "@gameDetailsStep": {},
+  "invitePlayersStep": "Invita giocatori",
+  "@invitePlayersStep": {},
+  "invitePlayersFromCommunity": "Invita giocatori dalla tua comunità o dai tuoi gruppi",
+  "@invitePlayersFromCommunity": {},
+  "noUsersToInvite": "Nessun giocatore disponibile da invitare",
+  "@noUsersToInvite": {},
+  "skipInvitations": "Salta",
+  "@skipInvitations": {},
+  "createAndInvite": "Crea e invita",
+  "@createAndInvite": {},
+  "invitationsSentSuccess": "Inviti inviati!",
+  "@invitationsSentSuccess": {},
+  "pickupGameCreatedSuccess": "Partita al volo creata con successo!",
+  "@pickupGameCreatedSuccess": {},
+  "groupMembersSection": "Membri del gruppo",
+  "@groupMembersSection": {},
+  "friendsSection": "Amici",
+  "@friendsSection": {},
+  "selectedCount": "{count, plural, =0{Nessun giocatore selezionato} =1{1 giocatore selezionato} other{{count} giocatori selezionati}}",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Avanti",
+  "@next": {}
 }

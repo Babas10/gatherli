@@ -12,7 +12,7 @@ enum GameHistoryFilter {
 }
 
 @freezed
-class GameHistoryState with _$GameHistoryState {
+abstract class GameHistoryState with _$GameHistoryState {
   const factory GameHistoryState.initial() = GameHistoryInitial;
 
   const factory GameHistoryState.loading() = GameHistoryLoading;

@@ -36,7 +36,7 @@ enum InvitationStatus {
 /// Context fields (`groupId`, `gameId`, etc.) are nullable — only the fields
 /// relevant to the invitation `type` are populated.
 @freezed
-class InvitationModel with _$InvitationModel {
+abstract class InvitationModel with _$InvitationModel {
   const factory InvitationModel({
     required String id,
     @Default(InvitationType.group) InvitationType type,

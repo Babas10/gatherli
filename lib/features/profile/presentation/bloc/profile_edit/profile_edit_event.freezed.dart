@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,901 +9,454 @@ part of 'profile_edit_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$ProfileEditEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileEditEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ProfileEditEventCopyWith<$Res> {
-  factory $ProfileEditEventCopyWith(
-    ProfileEditEvent value,
-    $Res Function(ProfileEditEvent) then,
-  ) = _$ProfileEditEventCopyWithImpl<$Res, ProfileEditEvent>;
+class $ProfileEditEventCopyWith<$Res>  {
+$ProfileEditEventCopyWith(ProfileEditEvent _, $Res Function(ProfileEditEvent) __);
 }
 
-/// @nodoc
-class _$ProfileEditEventCopyWithImpl<$Res, $Val extends ProfileEditEvent>
-    implements $ProfileEditEventCopyWith<$Res> {
-  _$ProfileEditEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [ProfileEditEvent].
+extension ProfileEditEventPatterns on ProfileEditEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProfileEditStarted value)?  started,TResult Function( ProfileEditDisplayNameChanged value)?  displayNameChanged,TResult Function( ProfileEditPhotoUrlChanged value)?  photoUrlChanged,TResult Function( ProfileEditSaveRequested value)?  saveRequested,TResult Function( ProfileEditCancelled value)?  cancelled,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case ProfileEditStarted() when started != null:
+return started(_that);case ProfileEditDisplayNameChanged() when displayNameChanged != null:
+return displayNameChanged(_that);case ProfileEditPhotoUrlChanged() when photoUrlChanged != null:
+return photoUrlChanged(_that);case ProfileEditSaveRequested() when saveRequested != null:
+return saveRequested(_that);case ProfileEditCancelled() when cancelled != null:
+return cancelled(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProfileEditStarted value)  started,required TResult Function( ProfileEditDisplayNameChanged value)  displayNameChanged,required TResult Function( ProfileEditPhotoUrlChanged value)  photoUrlChanged,required TResult Function( ProfileEditSaveRequested value)  saveRequested,required TResult Function( ProfileEditCancelled value)  cancelled,}){
+final _that = this;
+switch (_that) {
+case ProfileEditStarted():
+return started(_that);case ProfileEditDisplayNameChanged():
+return displayNameChanged(_that);case ProfileEditPhotoUrlChanged():
+return photoUrlChanged(_that);case ProfileEditSaveRequested():
+return saveRequested(_that);case ProfileEditCancelled():
+return cancelled(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProfileEditStarted value)?  started,TResult? Function( ProfileEditDisplayNameChanged value)?  displayNameChanged,TResult? Function( ProfileEditPhotoUrlChanged value)?  photoUrlChanged,TResult? Function( ProfileEditSaveRequested value)?  saveRequested,TResult? Function( ProfileEditCancelled value)?  cancelled,}){
+final _that = this;
+switch (_that) {
+case ProfileEditStarted() when started != null:
+return started(_that);case ProfileEditDisplayNameChanged() when displayNameChanged != null:
+return displayNameChanged(_that);case ProfileEditPhotoUrlChanged() when photoUrlChanged != null:
+return photoUrlChanged(_that);case ProfileEditSaveRequested() when saveRequested != null:
+return saveRequested(_that);case ProfileEditCancelled() when cancelled != null:
+return cancelled(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String currentDisplayName,  String? currentPhotoUrl)?  started,TResult Function( String displayName)?  displayNameChanged,TResult Function( String photoUrl)?  photoUrlChanged,TResult Function()?  saveRequested,TResult Function()?  cancelled,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case ProfileEditStarted() when started != null:
+return started(_that.currentDisplayName,_that.currentPhotoUrl);case ProfileEditDisplayNameChanged() when displayNameChanged != null:
+return displayNameChanged(_that.displayName);case ProfileEditPhotoUrlChanged() when photoUrlChanged != null:
+return photoUrlChanged(_that.photoUrl);case ProfileEditSaveRequested() when saveRequested != null:
+return saveRequested();case ProfileEditCancelled() when cancelled != null:
+return cancelled();case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String currentDisplayName,  String? currentPhotoUrl)  started,required TResult Function( String displayName)  displayNameChanged,required TResult Function( String photoUrl)  photoUrlChanged,required TResult Function()  saveRequested,required TResult Function()  cancelled,}) {final _that = this;
+switch (_that) {
+case ProfileEditStarted():
+return started(_that.currentDisplayName,_that.currentPhotoUrl);case ProfileEditDisplayNameChanged():
+return displayNameChanged(_that.displayName);case ProfileEditPhotoUrlChanged():
+return photoUrlChanged(_that.photoUrl);case ProfileEditSaveRequested():
+return saveRequested();case ProfileEditCancelled():
+return cancelled();case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String currentDisplayName,  String? currentPhotoUrl)?  started,TResult? Function( String displayName)?  displayNameChanged,TResult? Function( String photoUrl)?  photoUrlChanged,TResult? Function()?  saveRequested,TResult? Function()?  cancelled,}) {final _that = this;
+switch (_that) {
+case ProfileEditStarted() when started != null:
+return started(_that.currentDisplayName,_that.currentPhotoUrl);case ProfileEditDisplayNameChanged() when displayNameChanged != null:
+return displayNameChanged(_that.displayName);case ProfileEditPhotoUrlChanged() when photoUrlChanged != null:
+return photoUrlChanged(_that.photoUrl);case ProfileEditSaveRequested() when saveRequested != null:
+return saveRequested();case ProfileEditCancelled() when cancelled != null:
+return cancelled();case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$ProfileEditStartedImplCopyWith<$Res> {
-  factory _$$ProfileEditStartedImplCopyWith(
-    _$ProfileEditStartedImpl value,
-    $Res Function(_$ProfileEditStartedImpl) then,
-  ) = __$$ProfileEditStartedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String currentDisplayName, String? currentPhotoUrl});
-}
-
-/// @nodoc
-class __$$ProfileEditStartedImplCopyWithImpl<$Res>
-    extends _$ProfileEditEventCopyWithImpl<$Res, _$ProfileEditStartedImpl>
-    implements _$$ProfileEditStartedImplCopyWith<$Res> {
-  __$$ProfileEditStartedImplCopyWithImpl(
-    _$ProfileEditStartedImpl _value,
-    $Res Function(_$ProfileEditStartedImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? currentDisplayName = null,
-    Object? currentPhotoUrl = freezed,
-  }) {
-    return _then(
-      _$ProfileEditStartedImpl(
-        currentDisplayName: null == currentDisplayName
-            ? _value.currentDisplayName
-            : currentDisplayName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        currentPhotoUrl: freezed == currentPhotoUrl
-            ? _value.currentPhotoUrl
-            : currentPhotoUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$ProfileEditStartedImpl implements ProfileEditStarted {
-  const _$ProfileEditStartedImpl({
-    required this.currentDisplayName,
-    this.currentPhotoUrl,
-  });
-
-  @override
-  final String currentDisplayName;
-  @override
-  final String? currentPhotoUrl;
-
-  @override
-  String toString() {
-    return 'ProfileEditEvent.started(currentDisplayName: $currentDisplayName, currentPhotoUrl: $currentPhotoUrl)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileEditStartedImpl &&
-            (identical(other.currentDisplayName, currentDisplayName) ||
-                other.currentDisplayName == currentDisplayName) &&
-            (identical(other.currentPhotoUrl, currentPhotoUrl) ||
-                other.currentPhotoUrl == currentPhotoUrl));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, currentDisplayName, currentPhotoUrl);
-
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileEditStartedImplCopyWith<_$ProfileEditStartedImpl> get copyWith =>
-      __$$ProfileEditStartedImplCopyWithImpl<_$ProfileEditStartedImpl>(
-        this,
-        _$identity,
-      );
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) {
-    return started(currentDisplayName, currentPhotoUrl);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) {
-    return started?.call(currentDisplayName, currentPhotoUrl);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started(currentDisplayName, currentPhotoUrl);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) {
-    return started(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) {
-    return started?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ProfileEditStarted implements ProfileEditEvent {
-  const factory ProfileEditStarted({
-    required final String currentDisplayName,
-    final String? currentPhotoUrl,
-  }) = _$ProfileEditStartedImpl;
-
-  String get currentDisplayName;
-  String? get currentPhotoUrl;
-
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProfileEditStartedImplCopyWith<_$ProfileEditStartedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ProfileEditDisplayNameChangedImplCopyWith<$Res> {
-  factory _$$ProfileEditDisplayNameChangedImplCopyWith(
-    _$ProfileEditDisplayNameChangedImpl value,
-    $Res Function(_$ProfileEditDisplayNameChangedImpl) then,
-  ) = __$$ProfileEditDisplayNameChangedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String displayName});
-}
-
-/// @nodoc
-class __$$ProfileEditDisplayNameChangedImplCopyWithImpl<$Res>
-    extends
-        _$ProfileEditEventCopyWithImpl<
-          $Res,
-          _$ProfileEditDisplayNameChangedImpl
-        >
-    implements _$$ProfileEditDisplayNameChangedImplCopyWith<$Res> {
-  __$$ProfileEditDisplayNameChangedImplCopyWithImpl(
-    _$ProfileEditDisplayNameChangedImpl _value,
-    $Res Function(_$ProfileEditDisplayNameChangedImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? displayName = null}) {
-    return _then(
-      _$ProfileEditDisplayNameChangedImpl(
-        null == displayName
-            ? _value.displayName
-            : displayName // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$ProfileEditDisplayNameChangedImpl
-    implements ProfileEditDisplayNameChanged {
-  const _$ProfileEditDisplayNameChangedImpl(this.displayName);
 
-  @override
-  final String displayName;
+class ProfileEditStarted implements ProfileEditEvent {
+  const ProfileEditStarted({required this.currentDisplayName, this.currentPhotoUrl});
+  
 
-  @override
-  String toString() {
-    return 'ProfileEditEvent.displayNameChanged(displayName: $displayName)';
-  }
+ final  String currentDisplayName;
+ final  String? currentPhotoUrl;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileEditDisplayNameChangedImpl &&
-            (identical(other.displayName, displayName) ||
-                other.displayName == displayName));
-  }
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProfileEditStartedCopyWith<ProfileEditStarted> get copyWith => _$ProfileEditStartedCopyWithImpl<ProfileEditStarted>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, displayName);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileEditDisplayNameChangedImplCopyWith<
-    _$ProfileEditDisplayNameChangedImpl
-  >
-  get copyWith =>
-      __$$ProfileEditDisplayNameChangedImplCopyWithImpl<
-        _$ProfileEditDisplayNameChangedImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) {
-    return displayNameChanged(displayName);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) {
-    return displayNameChanged?.call(displayName);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) {
-    if (displayNameChanged != null) {
-      return displayNameChanged(displayName);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) {
-    return displayNameChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) {
-    return displayNameChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) {
-    if (displayNameChanged != null) {
-      return displayNameChanged(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditStarted&&(identical(other.currentDisplayName, currentDisplayName) || other.currentDisplayName == currentDisplayName)&&(identical(other.currentPhotoUrl, currentPhotoUrl) || other.currentPhotoUrl == currentPhotoUrl));
 }
 
-abstract class ProfileEditDisplayNameChanged implements ProfileEditEvent {
-  const factory ProfileEditDisplayNameChanged(final String displayName) =
-      _$ProfileEditDisplayNameChangedImpl;
 
-  String get displayName;
+@override
+int get hashCode => Object.hash(runtimeType,currentDisplayName,currentPhotoUrl);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProfileEditDisplayNameChangedImplCopyWith<
-    _$ProfileEditDisplayNameChangedImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ProfileEditEvent.started(currentDisplayName: $currentDisplayName, currentPhotoUrl: $currentPhotoUrl)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$ProfileEditPhotoUrlChangedImplCopyWith<$Res> {
-  factory _$$ProfileEditPhotoUrlChangedImplCopyWith(
-    _$ProfileEditPhotoUrlChangedImpl value,
-    $Res Function(_$ProfileEditPhotoUrlChangedImpl) then,
-  ) = __$$ProfileEditPhotoUrlChangedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String photoUrl});
+abstract mixin class $ProfileEditStartedCopyWith<$Res> implements $ProfileEditEventCopyWith<$Res> {
+  factory $ProfileEditStartedCopyWith(ProfileEditStarted value, $Res Function(ProfileEditStarted) _then) = _$ProfileEditStartedCopyWithImpl;
+@useResult
+$Res call({
+ String currentDisplayName, String? currentPhotoUrl
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProfileEditStartedCopyWithImpl<$Res>
+    implements $ProfileEditStartedCopyWith<$Res> {
+  _$ProfileEditStartedCopyWithImpl(this._self, this._then);
+
+  final ProfileEditStarted _self;
+  final $Res Function(ProfileEditStarted) _then;
+
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? currentDisplayName = null,Object? currentPhotoUrl = freezed,}) {
+  return _then(ProfileEditStarted(
+currentDisplayName: null == currentDisplayName ? _self.currentDisplayName : currentDisplayName // ignore: cast_nullable_to_non_nullable
+as String,currentPhotoUrl: freezed == currentPhotoUrl ? _self.currentPhotoUrl : currentPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-/// @nodoc
-class __$$ProfileEditPhotoUrlChangedImplCopyWithImpl<$Res>
-    extends
-        _$ProfileEditEventCopyWithImpl<$Res, _$ProfileEditPhotoUrlChangedImpl>
-    implements _$$ProfileEditPhotoUrlChangedImplCopyWith<$Res> {
-  __$$ProfileEditPhotoUrlChangedImplCopyWithImpl(
-    _$ProfileEditPhotoUrlChangedImpl _value,
-    $Res Function(_$ProfileEditPhotoUrlChangedImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? photoUrl = null}) {
-    return _then(
-      _$ProfileEditPhotoUrlChangedImpl(
-        null == photoUrl
-            ? _value.photoUrl
-            : photoUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$ProfileEditPhotoUrlChangedImpl implements ProfileEditPhotoUrlChanged {
-  const _$ProfileEditPhotoUrlChangedImpl(this.photoUrl);
 
-  @override
-  final String photoUrl;
+class ProfileEditDisplayNameChanged implements ProfileEditEvent {
+  const ProfileEditDisplayNameChanged(this.displayName);
+  
 
-  @override
-  String toString() {
-    return 'ProfileEditEvent.photoUrlChanged(photoUrl: $photoUrl)';
-  }
+ final  String displayName;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileEditPhotoUrlChangedImpl &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
-  }
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProfileEditDisplayNameChangedCopyWith<ProfileEditDisplayNameChanged> get copyWith => _$ProfileEditDisplayNameChangedCopyWithImpl<ProfileEditDisplayNameChanged>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, photoUrl);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileEditPhotoUrlChangedImplCopyWith<_$ProfileEditPhotoUrlChangedImpl>
-  get copyWith =>
-      __$$ProfileEditPhotoUrlChangedImplCopyWithImpl<
-        _$ProfileEditPhotoUrlChangedImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) {
-    return photoUrlChanged(photoUrl);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) {
-    return photoUrlChanged?.call(photoUrl);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) {
-    if (photoUrlChanged != null) {
-      return photoUrlChanged(photoUrl);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) {
-    return photoUrlChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) {
-    return photoUrlChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) {
-    if (photoUrlChanged != null) {
-      return photoUrlChanged(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditDisplayNameChanged&&(identical(other.displayName, displayName) || other.displayName == displayName));
 }
 
-abstract class ProfileEditPhotoUrlChanged implements ProfileEditEvent {
-  const factory ProfileEditPhotoUrlChanged(final String photoUrl) =
-      _$ProfileEditPhotoUrlChangedImpl;
 
-  String get photoUrl;
+@override
+int get hashCode => Object.hash(runtimeType,displayName);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProfileEditPhotoUrlChangedImplCopyWith<_$ProfileEditPhotoUrlChangedImpl>
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ProfileEditEvent.displayNameChanged(displayName: $displayName)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$ProfileEditSaveRequestedImplCopyWith<$Res> {
-  factory _$$ProfileEditSaveRequestedImplCopyWith(
-    _$ProfileEditSaveRequestedImpl value,
-    $Res Function(_$ProfileEditSaveRequestedImpl) then,
-  ) = __$$ProfileEditSaveRequestedImplCopyWithImpl<$Res>;
+abstract mixin class $ProfileEditDisplayNameChangedCopyWith<$Res> implements $ProfileEditEventCopyWith<$Res> {
+  factory $ProfileEditDisplayNameChangedCopyWith(ProfileEditDisplayNameChanged value, $Res Function(ProfileEditDisplayNameChanged) _then) = _$ProfileEditDisplayNameChangedCopyWithImpl;
+@useResult
+$Res call({
+ String displayName
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProfileEditDisplayNameChangedCopyWithImpl<$Res>
+    implements $ProfileEditDisplayNameChangedCopyWith<$Res> {
+  _$ProfileEditDisplayNameChangedCopyWithImpl(this._self, this._then);
+
+  final ProfileEditDisplayNameChanged _self;
+  final $Res Function(ProfileEditDisplayNameChanged) _then;
+
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? displayName = null,}) {
+  return _then(ProfileEditDisplayNameChanged(
+null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-class __$$ProfileEditSaveRequestedImplCopyWithImpl<$Res>
-    extends _$ProfileEditEventCopyWithImpl<$Res, _$ProfileEditSaveRequestedImpl>
-    implements _$$ProfileEditSaveRequestedImplCopyWith<$Res> {
-  __$$ProfileEditSaveRequestedImplCopyWithImpl(
-    _$ProfileEditSaveRequestedImpl _value,
-    $Res Function(_$ProfileEditSaveRequestedImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$ProfileEditSaveRequestedImpl implements ProfileEditSaveRequested {
-  const _$ProfileEditSaveRequestedImpl();
 
-  @override
-  String toString() {
-    return 'ProfileEditEvent.saveRequested()';
-  }
+class ProfileEditPhotoUrlChanged implements ProfileEditEvent {
+  const ProfileEditPhotoUrlChanged(this.photoUrl);
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileEditSaveRequestedImpl);
-  }
+ final  String photoUrl;
 
-  @override
-  int get hashCode => runtimeType.hashCode;
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProfileEditPhotoUrlChangedCopyWith<ProfileEditPhotoUrlChanged> get copyWith => _$ProfileEditPhotoUrlChangedCopyWithImpl<ProfileEditPhotoUrlChanged>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) {
-    return saveRequested();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) {
-    return saveRequested?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) {
-    if (saveRequested != null) {
-      return saveRequested();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) {
-    return saveRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) {
-    return saveRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) {
-    if (saveRequested != null) {
-      return saveRequested(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditPhotoUrlChanged&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl));
 }
 
-abstract class ProfileEditSaveRequested implements ProfileEditEvent {
-  const factory ProfileEditSaveRequested() = _$ProfileEditSaveRequestedImpl;
+
+@override
+int get hashCode => Object.hash(runtimeType,photoUrl);
+
+@override
+String toString() {
+  return 'ProfileEditEvent.photoUrlChanged(photoUrl: $photoUrl)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$ProfileEditCancelledImplCopyWith<$Res> {
-  factory _$$ProfileEditCancelledImplCopyWith(
-    _$ProfileEditCancelledImpl value,
-    $Res Function(_$ProfileEditCancelledImpl) then,
-  ) = __$$ProfileEditCancelledImplCopyWithImpl<$Res>;
+abstract mixin class $ProfileEditPhotoUrlChangedCopyWith<$Res> implements $ProfileEditEventCopyWith<$Res> {
+  factory $ProfileEditPhotoUrlChangedCopyWith(ProfileEditPhotoUrlChanged value, $Res Function(ProfileEditPhotoUrlChanged) _then) = _$ProfileEditPhotoUrlChangedCopyWithImpl;
+@useResult
+$Res call({
+ String photoUrl
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProfileEditPhotoUrlChangedCopyWithImpl<$Res>
+    implements $ProfileEditPhotoUrlChangedCopyWith<$Res> {
+  _$ProfileEditPhotoUrlChangedCopyWithImpl(this._self, this._then);
+
+  final ProfileEditPhotoUrlChanged _self;
+  final $Res Function(ProfileEditPhotoUrlChanged) _then;
+
+/// Create a copy of ProfileEditEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? photoUrl = null,}) {
+  return _then(ProfileEditPhotoUrlChanged(
+null == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-class __$$ProfileEditCancelledImplCopyWithImpl<$Res>
-    extends _$ProfileEditEventCopyWithImpl<$Res, _$ProfileEditCancelledImpl>
-    implements _$$ProfileEditCancelledImplCopyWith<$Res> {
-  __$$ProfileEditCancelledImplCopyWithImpl(
-    _$ProfileEditCancelledImpl _value,
-    $Res Function(_$ProfileEditCancelledImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of ProfileEditEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$ProfileEditCancelledImpl implements ProfileEditCancelled {
-  const _$ProfileEditCancelledImpl();
 
-  @override
-  String toString() {
-    return 'ProfileEditEvent.cancelled()';
-  }
+class ProfileEditSaveRequested implements ProfileEditEvent {
+  const ProfileEditSaveRequested();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileEditCancelledImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String currentDisplayName,
-      String? currentPhotoUrl,
-    )
-    started,
-    required TResult Function(String displayName) displayNameChanged,
-    required TResult Function(String photoUrl) photoUrlChanged,
-    required TResult Function() saveRequested,
-    required TResult Function() cancelled,
-  }) {
-    return cancelled();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult? Function(String displayName)? displayNameChanged,
-    TResult? Function(String photoUrl)? photoUrlChanged,
-    TResult? Function()? saveRequested,
-    TResult? Function()? cancelled,
-  }) {
-    return cancelled?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String currentDisplayName, String? currentPhotoUrl)?
-    started,
-    TResult Function(String displayName)? displayNameChanged,
-    TResult Function(String photoUrl)? photoUrlChanged,
-    TResult Function()? saveRequested,
-    TResult Function()? cancelled,
-    required TResult orElse(),
-  }) {
-    if (cancelled != null) {
-      return cancelled();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProfileEditStarted value) started,
-    required TResult Function(ProfileEditDisplayNameChanged value)
-    displayNameChanged,
-    required TResult Function(ProfileEditPhotoUrlChanged value) photoUrlChanged,
-    required TResult Function(ProfileEditSaveRequested value) saveRequested,
-    required TResult Function(ProfileEditCancelled value) cancelled,
-  }) {
-    return cancelled(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProfileEditStarted value)? started,
-    TResult? Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult? Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult? Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult? Function(ProfileEditCancelled value)? cancelled,
-  }) {
-    return cancelled?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProfileEditStarted value)? started,
-    TResult Function(ProfileEditDisplayNameChanged value)? displayNameChanged,
-    TResult Function(ProfileEditPhotoUrlChanged value)? photoUrlChanged,
-    TResult Function(ProfileEditSaveRequested value)? saveRequested,
-    TResult Function(ProfileEditCancelled value)? cancelled,
-    required TResult orElse(),
-  }) {
-    if (cancelled != null) {
-      return cancelled(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditSaveRequested);
 }
 
-abstract class ProfileEditCancelled implements ProfileEditEvent {
-  const factory ProfileEditCancelled() = _$ProfileEditCancelledImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileEditEvent.saveRequested()';
 }
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ProfileEditCancelled implements ProfileEditEvent {
+  const ProfileEditCancelled();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditCancelled);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileEditEvent.cancelled()';
+}
+
+
+}
+
+
+
+
+// dart format on

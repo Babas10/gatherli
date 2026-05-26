@@ -6,9 +6,9 @@ part of 'group_invite_link_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GroupInviteLinkModelImpl _$$GroupInviteLinkModelImplFromJson(
+_GroupInviteLinkModel _$GroupInviteLinkModelFromJson(
   Map<String, dynamic> json,
-) => _$GroupInviteLinkModelImpl(
+) => _GroupInviteLinkModel(
   id: json['id'] as String,
   token: json['token'] as String,
   createdBy: json['createdBy'] as String,
@@ -21,8 +21,8 @@ _$GroupInviteLinkModelImpl _$$GroupInviteLinkModelImplFromJson(
   inviteType: json['inviteType'] as String? ?? 'group_link',
 );
 
-Map<String, dynamic> _$$GroupInviteLinkModelImplToJson(
-  _$GroupInviteLinkModelImpl instance,
+Map<String, dynamic> _$GroupInviteLinkModelToJson(
+  _GroupInviteLinkModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'token': instance.token,

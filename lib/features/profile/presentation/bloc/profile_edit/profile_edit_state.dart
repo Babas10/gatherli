@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'profile_edit_state.freezed.dart';
 
 @freezed
-class ProfileEditState with _$ProfileEditState {
+abstract class ProfileEditState with _$ProfileEditState {
   /// Initial state before form is loaded
   const factory ProfileEditState.initial() = ProfileEditInitial;
 

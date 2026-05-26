@@ -9,7 +9,7 @@ part 'training_session_participant_model.g.dart';
 /// Represents a participant in a training session
 /// Stored as a subcollection under trainingSessions/{sessionId}/participants/{userId}
 @freezed
-class TrainingSessionParticipantModel with _$TrainingSessionParticipantModel {
+abstract class TrainingSessionParticipantModel with _$TrainingSessionParticipantModel {
   const factory TrainingSessionParticipantModel({
     /// User ID of the participant
     required String userId,

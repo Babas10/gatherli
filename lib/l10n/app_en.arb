@@ -2962,5 +2962,67 @@
   "chatJoinToView": "You need to join the game to see the chat",
   "@chatJoinToView": {
     "description": "Message shown to users who are not in the game and cannot see the chat"
+  },
+
+  "createPickupGame": "Create Pickup Game",
+  "@createPickupGame": {
+    "description": "FAB tooltip and button label for creating a pickup game"
+  },
+  "pickupGame": "Pickup Game",
+  "@pickupGame": {
+    "description": "Title for the pickup game creation page"
+  },
+  "gameDetailsStep": "Game Details",
+  "@gameDetailsStep": {
+    "description": "Step 1 title in pickup game creation flow"
+  },
+  "invitePlayersStep": "Invite Players",
+  "@invitePlayersStep": {
+    "description": "Step 2 title in pickup game creation flow"
+  },
+  "invitePlayersFromCommunity": "Invite players from your community or groups",
+  "@invitePlayersFromCommunity": {
+    "description": "Subtitle on invite step"
+  },
+  "noUsersToInvite": "No players available to invite",
+  "@noUsersToInvite": {
+    "description": "Empty state when no friends or group members exist"
+  },
+  "skipInvitations": "Skip",
+  "@skipInvitations": {
+    "description": "Button to skip the invitation step and just create the game"
+  },
+  "createAndInvite": "Create & Invite",
+  "@createAndInvite": {
+    "description": "Button to create the pickup game and send invitations"
+  },
+  "invitationsSentSuccess": "Invitations sent!",
+  "@invitationsSentSuccess": {
+    "description": "Snackbar message when invitations are sent successfully"
+  },
+  "pickupGameCreatedSuccess": "Pickup game created successfully!",
+  "@pickupGameCreatedSuccess": {
+    "description": "Snackbar message when a pickup game is created"
+  },
+  "groupMembersSection": "Group Members",
+  "@groupMembersSection": {
+    "description": "Section header for group members in the invitee picker"
+  },
+  "friendsSection": "Friends",
+  "@friendsSection": {
+    "description": "Section header for friends in the invitee picker (pickup game)"
+  },
+  "selectedCount": "{count, plural, =0{No players selected} =1{1 player selected} other{{count} players selected}}",
+  "@selectedCount": {
+    "description": "Selected invitees count label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button in multi-step form"
   }
 }

@@ -1,5 +1,6 @@
 // Validates GameCreationBloc states for tracking game creation form state and validation.
 
+import '../../../../../core/data/models/activity_context_type.dart';
 import '../../../../../core/data/models/game_model.dart';
 import '../../../../../core/presentation/bloc/base_bloc_state.dart';
 
@@ -14,6 +15,7 @@ class GameCreationInitial extends GameCreationState implements InitialState {
 
 /// State when form is being filled
 class GameCreationFormState extends GameCreationState {
+  final ActivityContextType contextType;
   final String? groupId;
   final String? groupName;
   final DateTime? dateTime;
@@ -37,6 +39,7 @@ class GameCreationFormState extends GameCreationState {
   final bool isValid;
 
   const GameCreationFormState({
+    this.contextType = ActivityContextType.group,
     this.groupId,
     this.groupName,
     this.dateTime,
@@ -57,6 +60,7 @@ class GameCreationFormState extends GameCreationState {
   });
 
   GameCreationFormState copyWith({
+    ActivityContextType? contextType,
     String? groupId,
     String? groupName,
     DateTime? dateTime,
@@ -76,6 +80,7 @@ class GameCreationFormState extends GameCreationState {
     bool? isValid,
   }) {
     return GameCreationFormState(
+      contextType: contextType ?? this.contextType,
       groupId: groupId ?? this.groupId,
       groupName: groupName ?? this.groupName,
       dateTime: dateTime ?? this.dateTime,
@@ -98,6 +103,7 @@ class GameCreationFormState extends GameCreationState {
 
   @override
   List<Object?> get props => [
+    contextType,
     groupId,
     groupName,
     dateTime,
