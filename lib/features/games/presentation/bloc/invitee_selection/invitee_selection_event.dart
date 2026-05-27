@@ -6,17 +6,18 @@ abstract class InviteeSelectionEvent extends BaseBlocEvent {
 }
 
 /// Load invitable users: friends from My Community and members of the given groups.
+/// [groups] maps groupId → groupName so the picker can label each group section.
 class LoadInvitees extends InviteeSelectionEvent {
   final String userId;
-  final List<String> groupIds;
+  final Map<String, String> groups;
 
-  const LoadInvitees({required this.userId, this.groupIds = const []});
+  const LoadInvitees({required this.userId, this.groups = const {}});
 
   @override
-  List<Object?> get props => [userId, groupIds];
+  List<Object?> get props => [userId, groups];
 }
 
-/// Toggle selection of a user by their uid.
+/// Toggle selection of an individual friend.
 class ToggleInvitee extends InviteeSelectionEvent {
   final String uid;
 
@@ -24,4 +25,14 @@ class ToggleInvitee extends InviteeSelectionEvent {
 
   @override
   List<Object?> get props => [uid];
+}
+
+/// Toggle selection of an entire group (invites / un-invites all its members).
+class ToggleGroup extends InviteeSelectionEvent {
+  final String groupId;
+
+  const ToggleGroup({required this.groupId});
+
+  @override
+  List<Object?> get props => [groupId];
 }

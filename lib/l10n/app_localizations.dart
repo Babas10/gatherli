@@ -3806,6 +3806,13 @@ abstract class AppLocalizations {
   /// **'Invite players from your community or groups'**
   String get invitePlayersFromCommunity;
 
+  /// Shown in Groups tab when user has no groups
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t belong to any groups yet'**
+  String get noGroupsToInvite;
+
+
   /// Empty state when no friends or group members exist
   ///
   /// In en, this message translates to:

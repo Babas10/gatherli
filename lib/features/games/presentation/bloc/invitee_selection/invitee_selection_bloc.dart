@@ -20,6 +20,7 @@ class InviteeSelectionBloc
         super(const InviteeSelectionInitial()) {
     on<LoadInvitees>(_onLoadInvitees);
     on<ToggleInvitee>(_onToggleInvitee);
+    on<ToggleGroup>(_onToggleGroup);
   }
 
   Future<void> _onLoadInvitees(
@@ -28,54 +29,52 @@ class InviteeSelectionBloc
   ) async {
     emit(const InviteeSelectionLoading());
     try {
-      // Load friends from My Community (deduplicated by uid, friends come first).
-      final friends = await _friendRepository.getFriends(event.userId);
-      final seen = <String>{};
-      final users = <InvitableUser>[];
-
-      for (final friend in friends) {
-        if (seen.add(friend.uid)) {
-          users.add(
-            InvitableUser(
-              uid: friend.uid,
-              displayName: friend.displayName,
-              photoUrl: friend.photoUrl,
-            ),
-          );
+      // My Community: friends list (deduplicated).
+      final friendEntities = await _friendRepository.getFriends(event.userId);
+      final seenFriendIds = <String>{};
+      final friends = <InvitableUser>[];
+      for (final f in friendEntities) {
+        if (seenFriendIds.add(f.uid)) {
+          friends.add(InvitableUser(
+            uid: f.uid,
+            displayName: f.displayName,
+            photoUrl: f.photoUrl,
+          ));
         }
       }
 
-      // Load members from each group, skipping duplicates and current user.
-      for (final groupId in event.groupIds) {
-        final members = await _userRepository.getUsersInGroup(groupId);
-        for (final member in members) {
-          if (member.uid != event.userId && seen.add(member.uid)) {
-            users.add(
-              InvitableUser(
-                uid: member.uid,
-                displayName: member.displayName,
-                photoUrl: member.photoUrl,
-              ),
-            );
-          }
+      // Groups: one InvitableGroup per group with all its members (excl. self).
+      final groups = <InvitableGroup>[];
+      for (final entry in event.groups.entries) {
+        final members = await _userRepository.getUsersInGroup(entry.key);
+        final groupMembers = members
+            .where((m) => m.uid != event.userId)
+            .map((m) => InvitableUser(
+                  uid: m.uid,
+                  displayName: m.displayName,
+                  photoUrl: m.photoUrl,
+                ))
+            .toList();
+        if (groupMembers.isNotEmpty) {
+          groups.add(InvitableGroup(
+            id: entry.key,
+            name: entry.value,
+            members: groupMembers,
+          ));
         }
       }
 
-      emit(InviteeSelectionLoaded(allUsers: users, selectedIds: const {}));
+      emit(InviteeSelectionLoaded(friends: friends, groups: groups));
     } on FriendshipException catch (e) {
-      emit(
-        InviteeSelectionError(
-          message: e.message,
-          errorCode: e.code ?? 'LOAD_INVITEES_ERROR',
-        ),
-      );
+      emit(InviteeSelectionError(
+        message: e.message,
+        errorCode: e.code ?? 'LOAD_INVITEES_ERROR',
+      ));
     } catch (e) {
-      emit(
-        InviteeSelectionError(
-          message: 'Failed to load invitees: ${e.toString()}',
-          errorCode: 'LOAD_INVITEES_ERROR',
-        ),
-      );
+      emit(InviteeSelectionError(
+        message: 'Failed to load invitees: ${e.toString()}',
+        errorCode: 'LOAD_INVITEES_ERROR',
+      ));
     }
   }
 
@@ -85,12 +84,27 @@ class InviteeSelectionBloc
   ) {
     if (state is! InviteeSelectionLoaded) return;
     final current = state as InviteeSelectionLoaded;
-    final newSelected = Set<String>.from(current.selectedIds);
-    if (newSelected.contains(event.uid)) {
-      newSelected.remove(event.uid);
+    final newIds = Set<String>.from(current.selectedFriendIds);
+    if (newIds.contains(event.uid)) {
+      newIds.remove(event.uid);
     } else {
-      newSelected.add(event.uid);
+      newIds.add(event.uid);
     }
-    emit(current.copyWith(selectedIds: newSelected));
+    emit(current.copyWith(selectedFriendIds: newIds));
+  }
+
+  void _onToggleGroup(
+    ToggleGroup event,
+    Emitter<InviteeSelectionState> emit,
+  ) {
+    if (state is! InviteeSelectionLoaded) return;
+    final current = state as InviteeSelectionLoaded;
+    final newGroupIds = Set<String>.from(current.selectedGroupIds);
+    if (newGroupIds.contains(event.groupId)) {
+      newGroupIds.remove(event.groupId);
+    } else {
+      newGroupIds.add(event.groupId);
+    }
+    emit(current.copyWith(selectedGroupIds: newGroupIds));
   }
 }

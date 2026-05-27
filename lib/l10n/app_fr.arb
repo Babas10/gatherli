@@ -729,6 +729,10 @@
   "@invitePlayersStep": {},
   "invitePlayersFromCommunity": "Invitez des joueurs de votre communauté ou de vos groupes",
   "@invitePlayersFromCommunity": {},
+  "noGroupsToInvite": "Vous n'appartenez encore à aucun groupe",
+  "@noGroupsToInvite": {
+    "description": "Shown in Groups tab when user has no groups"
+  },
   "noUsersToInvite": "Aucun joueur disponible à inviter",
   "@noUsersToInvite": {},
   "skipInvitations": "Passer",

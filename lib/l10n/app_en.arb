@@ -2984,6 +2984,10 @@
   "@invitePlayersFromCommunity": {
     "description": "Subtitle on invite step"
   },
+  "noGroupsToInvite": "You don't belong to any groups yet",
+  "@noGroupsToInvite": {
+    "description": "Shown in Groups tab when user has no groups"
+  },
   "noUsersToInvite": "No players available to invite",
   "@noUsersToInvite": {
     "description": "Empty state when no friends or group members exist"

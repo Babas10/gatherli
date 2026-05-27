@@ -48,6 +48,7 @@ function makeTimestamp(iso: string) {
 
 function buildMockDb({
   invitationDocs = [] as any[],
+  unifiedInvitationDocs = [] as any[],
   gameDocs = [] as any[],
   groupDocs = [] as any[],
   userDocs = [] as any[],
@@ -61,6 +62,17 @@ function buildMockDb({
           get: jest.fn().mockResolvedValue({
             empty: invitationDocs.length === 0,
             docs: invitationDocs,
+          }),
+        };
+      }
+
+      if (col === "invitations") {
+        return {
+          where: jest.fn().mockReturnThis(),
+          orderBy: jest.fn().mockReturnThis(),
+          get: jest.fn().mockResolvedValue({
+            empty: unifiedInvitationDocs.length === 0,
+            docs: unifiedInvitationDocs,
           }),
         };
       }
@@ -251,6 +263,72 @@ describe("getGameInvitationsForUser", () => {
         ([c]: [string]) => c === "games"
       );
       expect(gamesCollection.length).toBe(1);
+    });
+
+    it("returns enriched invitation from unified invitations collection", async () => {
+      // Unified docs use invitedUserId/invitedBy field names; handler normalises them.
+      const unifiedDoc = {
+        id: "unified-inv-1",
+        data: () => ({
+          gameId: "game-1",
+          groupId: null,
+          invitedUserId: "invitee-uid",
+          invitedBy: "creator-uid",
+          status: "pending",
+          type: "guest",
+          createdAt: makeTimestamp("2026-06-01T10:00:00.000Z"),
+          expiresAt: null,
+        }),
+      };
+      const db = buildMockDb({
+        invitationDocs: [],
+        unifiedInvitationDocs: [unifiedDoc],
+        gameDocs: [SAMPLE_GAME_DOC],
+        groupDocs: [],
+        userDocs: [SAMPLE_INVITER_DOC],
+      });
+      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
+
+      const result = await getGameInvitationsForUserHandler({}, AUTH_CTX);
+
+      expect(result.invitations).toHaveLength(1);
+      const inv = result.invitations[0];
+      expect(inv.invitationId).toBe("unified-inv-1");
+      expect(inv.gameTitle).toBe("Sunday Beach Volleyball");
+      expect(inv.inviterDisplayName).toBe("Alice");
+      expect(inv.groupName).toBe("");
+      expect(inv.type).toBe("guest");
+    });
+
+    it("merges legacy and unified invitations into a single list", async () => {
+      const unifiedDoc = {
+        id: "unified-inv-2",
+        data: () => ({
+          gameId: "game-1",
+          groupId: "group-abc",
+          invitedUserId: "invitee-uid",
+          invitedBy: "creator-uid",
+          status: "pending",
+          type: "game",
+          createdAt: makeTimestamp("2026-06-03T10:00:00.000Z"),
+          expiresAt: null,
+        }),
+      };
+      const db = buildMockDb({
+        invitationDocs: [SAMPLE_INVITATION_DOC],
+        unifiedInvitationDocs: [unifiedDoc],
+        gameDocs: [SAMPLE_GAME_DOC],
+        groupDocs: [SAMPLE_GROUP_DOC],
+        userDocs: [SAMPLE_INVITER_DOC],
+      });
+      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
+
+      const result = await getGameInvitationsForUserHandler({}, AUTH_CTX);
+
+      expect(result.invitations).toHaveLength(2);
+      const ids = result.invitations.map((i) => i.invitationId);
+      expect(ids).toContain("inv-1");
+      expect(ids).toContain("unified-inv-2");
     });
 
     it("includes expiresAt ISO string when set", async () => {

@@ -2075,6 +2075,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Invita jugadores de tu comunidad o grupos';
 
   @override
+  String get noGroupsToInvite => 'Aún no perteneces a ningún grupo';
+
+  @override
+
   String get noUsersToInvite => 'No hay jugadores disponibles para invitar';
 
   @override

@@ -40,21 +40,55 @@ export const getGameInvitationsForUserHandler = async (
   const uid = context.auth.uid;
 
   try {
-    // ── Fetch pending invitations ───────────────────────────────────────────
-    const invitationsSnap = await db()
-      .collection("gameInvitations")
-      .where("inviteeId", "==", uid)
-      .where("status", "==", "pending")
-      .orderBy("createdAt", "desc")
-      .get();
+    // ── Fetch pending invitations from both collections ─────────────────────
+    // Legacy `gameInvitations`: group-game notifications written by onGameCreated
+    //   trigger (field: inviteeId, inviterId).
+    // Unified `invitations`: written by sendInvitation CF (Story 31.6+), covers
+    //   guest and pickup-game invitations (field: invitedUserId, invitedBy).
+    const [legacySnap, unifiedSnap] = await Promise.all([
+      db()
+        .collection("gameInvitations")
+        .where("inviteeId", "==", uid)
+        .where("status", "==", "pending")
+        .orderBy("createdAt", "desc")
+        .get(),
+      db()
+        .collection("invitations")
+        .where("type", "==", "game")
+        .where("invitedUserId", "==", uid)
+        .where("status", "==", "pending")
+        .orderBy("createdAt", "desc")
+        .get(),
+    ]);
 
-    if (invitationsSnap.empty) {
+    if (legacySnap.empty && unifiedSnap.empty) {
       return { invitations: [] };
     }
 
+    // Normalise unified-collection docs to the same shape as legacy ones so
+    // the rest of the pipeline is collection-agnostic.
+    const normalisedUnified = unifiedSnap.docs.map((doc) => {
+      const d = doc.data();
+      return {
+        id: doc.id,
+        data: () => ({
+          gameId: d.gameId,
+          groupId: d.groupId ?? null,
+          inviteeId: d.invitedUserId,
+          inviterId: d.invitedBy,
+          status: d.status,
+          type: d.type ?? "guest",
+          createdAt: d.createdAt,
+          expiresAt: d.expiresAt ?? null,
+        }),
+      };
+    });
+
+    const allDocs = [...legacySnap.docs, ...normalisedUnified];
+
     // ── Filter out expired invitations ──────────────────────────────────────
     const now = new Date();
-    const invDocs = invitationsSnap.docs.filter((doc) => {
+    const invDocs = allDocs.filter((doc) => {
       const expiresAt = doc.data().expiresAt as admin.firestore.Timestamp | undefined;
       return !expiresAt || expiresAt.toDate() > now;
     });
@@ -65,7 +99,13 @@ export const getGameInvitationsForUserHandler = async (
 
     // ── Collect unique IDs for batch fetching ───────────────────────────────
     const gameIds = [...new Set(invDocs.map((d) => d.data().gameId as string))];
-    const groupIds = [...new Set(invDocs.map((d) => d.data().groupId as string))];
+    const groupIds = [
+      ...new Set(
+        invDocs
+          .map((d) => d.data().groupId as string | null)
+          .filter((id): id is string => !!id)
+      ),
+    ];
     const inviterIds = [...new Set(invDocs.map((d) => d.data().inviterId as string))];
 
     // ── Parallel batch fetches ──────────────────────────────────────────────
@@ -84,7 +124,7 @@ export const getGameInvitationsForUserHandler = async (
     const enriched = invDocs.map((doc) => {
       const inv = doc.data();
       const game = gameMap.get(inv.gameId) ?? {};
-      const group = groupMap.get(inv.groupId) ?? {};
+      const group = inv.groupId ? (groupMap.get(inv.groupId) ?? {}) : {};
       const inviter = inviterMap.get(inv.inviterId) ?? {};
 
       // Skip if the user has already joined this game (badge should disappear).

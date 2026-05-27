@@ -17,29 +17,49 @@ class InviteeSelectionLoading extends InviteeSelectionState
 }
 
 class InviteeSelectionLoaded extends InviteeSelectionState {
-  final List<InvitableUser> allUsers;
-  final Set<String> selectedIds;
+  /// Friends from My Community (individually selectable).
+  final List<InvitableUser> friends;
+  /// Groups the user belongs to (selectable as a whole).
+  final List<InvitableGroup> groups;
+  /// UIDs of individually selected friends.
+  final Set<String> selectedFriendIds;
+  /// IDs of groups whose members are all invited.
+  final Set<String> selectedGroupIds;
 
   const InviteeSelectionLoaded({
-    required this.allUsers,
-    required this.selectedIds,
+    required this.friends,
+    required this.groups,
+    this.selectedFriendIds = const {},
+    this.selectedGroupIds = const {},
   });
 
-  List<InvitableUser> get selectedUsers =>
-      allUsers.where((u) => selectedIds.contains(u.uid)).toList();
+  /// All user IDs to invite: individually selected friends + every member of
+  /// every selected group (deduped via Set).
+  Set<String> get selectedIds {
+    final ids = Set<String>.from(selectedFriendIds);
+    for (final g in groups.where((g) => selectedGroupIds.contains(g.id))) {
+      ids.addAll(g.members.map((m) => m.uid));
+    }
+    return ids;
+  }
 
   InviteeSelectionLoaded copyWith({
-    List<InvitableUser>? allUsers,
-    Set<String>? selectedIds,
+    List<InvitableUser>? friends,
+    List<InvitableGroup>? groups,
+    Set<String>? selectedFriendIds,
+    Set<String>? selectedGroupIds,
   }) {
     return InviteeSelectionLoaded(
-      allUsers: allUsers ?? this.allUsers,
-      selectedIds: selectedIds ?? this.selectedIds,
+      friends: friends ?? this.friends,
+      groups: groups ?? this.groups,
+      selectedFriendIds: selectedFriendIds ?? this.selectedFriendIds,
+      selectedGroupIds: selectedGroupIds ?? this.selectedGroupIds,
     );
   }
 
   @override
-  List<Object?> get props => [allUsers, selectedIds];
+  List<Object?> get props =>
+      [friends, groups, selectedFriendIds, selectedGroupIds];
 }
 
 class InviteeSelectionError extends InviteeSelectionState implements ErrorState {

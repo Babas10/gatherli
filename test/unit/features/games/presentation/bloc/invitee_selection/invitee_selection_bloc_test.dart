@@ -49,7 +49,7 @@ void main() {
 
     group('LoadInvitees', () {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
-        'emits Loading then Loaded with friends list when no groupIds given',
+        'emits Loading then Loaded with friends list when no groups given',
         build: () {
           when(() => mockFriendRepo.getFriends('user-1'))
               .thenAnswer((_) async => [
@@ -58,19 +58,19 @@ void main() {
                   ]);
           return makeBloc();
         },
-        act: (bloc) =>
-            bloc.add(const LoadInvitees(userId: 'user-1')),
+        act: (bloc) => bloc.add(const LoadInvitees(userId: 'user-1')),
         expect: () => [
           isA<InviteeSelectionLoading>(),
           isA<InviteeSelectionLoaded>()
-              .having((s) => s.allUsers.length, 'allUsers.length', 2)
-              .having((s) => s.allUsers.first.uid, 'first uid', 'friend-a')
+              .having((s) => s.friends.length, 'friends.length', 2)
+              .having((s) => s.friends.first.uid, 'first uid', 'friend-a')
+              .having((s) => s.groups, 'groups', isEmpty)
               .having((s) => s.selectedIds, 'selectedIds', isEmpty),
         ],
       );
 
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
-        'deduplicates users — friends take priority over group members',
+        'loads group members into InvitableGroup',
         build: () {
           when(() => mockFriendRepo.getFriends('user-1'))
               .thenAnswer((_) async => [
@@ -78,25 +78,21 @@ void main() {
                   ]);
           when(() => mockUserRepo.getUsersInGroup('group-1'))
               .thenAnswer((_) async => [
-                    _makeUserModel('friend-a', displayName: 'Alice (group)'),
+                    _makeUserModel('friend-a', displayName: 'Alice'),
                     _makeUserModel('member-b', displayName: 'Bob'),
                   ]);
           return makeBloc();
         },
         act: (bloc) => bloc.add(
-          const LoadInvitees(userId: 'user-1', groupIds: ['group-1']),
+          const LoadInvitees(userId: 'user-1', groups: {'group-1': 'Team A'}),
         ),
         expect: () => [
           isA<InviteeSelectionLoading>(),
           isA<InviteeSelectionLoaded>()
-              .having((s) => s.allUsers.length, 'allUsers.length', 2)
-              .having((s) => s.allUsers.first.displayName, 'first displayName',
-                  'Alice')
-              .having(
-                (s) => s.allUsers.map((u) => u.uid).toList(),
-                'uids',
-                containsAll(['friend-a', 'member-b']),
-              ),
+              .having((s) => s.friends.length, 'friends.length', 1)
+              .having((s) => s.groups.length, 'groups.length', 1)
+              .having((s) => s.groups.first.name, 'group name', 'Team A')
+              .having((s) => s.groups.first.members.length, 'group members', 2),
         ],
       );
 
@@ -113,13 +109,14 @@ void main() {
           return makeBloc();
         },
         act: (bloc) => bloc.add(
-          const LoadInvitees(userId: 'user-1', groupIds: ['group-1']),
+          const LoadInvitees(userId: 'user-1', groups: {'group-1': 'Team A'}),
         ),
         expect: () => [
           isA<InviteeSelectionLoading>(),
           isA<InviteeSelectionLoaded>()
-              .having((s) => s.allUsers.length, 'allUsers.length', 1)
-              .having((s) => s.allUsers.first.uid, 'uid', 'member-b'),
+              .having((s) => s.groups.first.members.length, 'members', 1)
+              .having(
+                  (s) => s.groups.first.members.first.uid, 'uid', 'member-b'),
         ],
       );
 
@@ -143,53 +140,89 @@ void main() {
 
     group('ToggleInvitee', () {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
-        'adds uid to selectedIds when not already selected',
-        build: () {
-          when(() => mockFriendRepo.getFriends('user-1'))
-              .thenAnswer((_) async => [
-                    _makeUserEntity('friend-a'),
-                  ]);
-          return makeBloc();
-        },
-        seed: () => InviteeSelectionLoaded(
-          allUsers: [
-            const InvitableUser(uid: 'friend-a', displayName: 'Alice'),
-          ],
-          selectedIds: const {},
+        'adds uid to selectedFriendIds when not already selected',
+        build: () => makeBloc(),
+        seed: () => const InviteeSelectionLoaded(
+          friends: [InvitableUser(uid: 'friend-a', displayName: 'Alice')],
+          groups: [],
         ),
-        act: (bloc) =>
-            bloc.add(const ToggleInvitee(uid: 'friend-a')),
+        act: (bloc) => bloc.add(const ToggleInvitee(uid: 'friend-a')),
         expect: () => [
-          isA<InviteeSelectionLoaded>()
-              .having((s) => s.selectedIds, 'selectedIds',
-                  contains('friend-a')),
+          isA<InviteeSelectionLoaded>().having(
+              (s) => s.selectedFriendIds, 'selectedFriendIds',
+              contains('friend-a')),
         ],
       );
 
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
-        'removes uid from selectedIds when already selected',
+        'removes uid from selectedFriendIds when already selected',
         build: () => makeBloc(),
-        seed: () => InviteeSelectionLoaded(
-          allUsers: [
-            const InvitableUser(uid: 'friend-a', displayName: 'Alice'),
-          ],
-          selectedIds: const {'friend-a'},
+        seed: () => const InviteeSelectionLoaded(
+          friends: [InvitableUser(uid: 'friend-a', displayName: 'Alice')],
+          groups: [],
+          selectedFriendIds: {'friend-a'},
         ),
-        act: (bloc) =>
-            bloc.add(const ToggleInvitee(uid: 'friend-a')),
+        act: (bloc) => bloc.add(const ToggleInvitee(uid: 'friend-a')),
         expect: () => [
-          isA<InviteeSelectionLoaded>()
-              .having((s) => s.selectedIds, 'selectedIds',
-                  isNot(contains('friend-a'))),
+          isA<InviteeSelectionLoaded>().having((s) => s.selectedFriendIds,
+              'selectedFriendIds', isNot(contains('friend-a'))),
         ],
       );
 
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
         'does nothing when state is not InviteeSelectionLoaded',
         build: () => makeBloc(),
-        act: (bloc) =>
-            bloc.add(const ToggleInvitee(uid: 'friend-a')),
+        act: (bloc) => bloc.add(const ToggleInvitee(uid: 'friend-a')),
         expect: () => <InviteeSelectionState>[],
+      );
+    });
+
+    group('ToggleGroup', () {
+      blocTest<InviteeSelectionBloc, InviteeSelectionState>(
+        'adds group to selectedGroupIds and its members to selectedIds',
+        build: () => makeBloc(),
+        seed: () => InviteeSelectionLoaded(
+          friends: const [],
+          groups: [
+            InvitableGroup(
+              id: 'group-1',
+              name: 'Team A',
+              members: const [InvitableUser(uid: 'member-a')],
+            ),
+          ],
+        ),
+        act: (bloc) => bloc.add(const ToggleGroup(groupId: 'group-1')),
+        expect: () => [
+          isA<InviteeSelectionLoaded>()
+              .having((s) => s.selectedGroupIds, 'selectedGroupIds',
+                  contains('group-1'))
+              .having((s) => s.selectedIds, 'selectedIds',
+                  contains('member-a')),
+        ],
+      );
+
+      blocTest<InviteeSelectionBloc, InviteeSelectionState>(
+        'removes group from selectedGroupIds when already selected',
+        build: () => makeBloc(),
+        seed: () => InviteeSelectionLoaded(
+          friends: const [],
+          groups: [
+            InvitableGroup(
+              id: 'group-1',
+              name: 'Team A',
+              members: const [InvitableUser(uid: 'member-a')],
+            ),
+          ],
+          selectedGroupIds: const {'group-1'},
+        ),
+        act: (bloc) => bloc.add(const ToggleGroup(groupId: 'group-1')),
+        expect: () => [
+          isA<InviteeSelectionLoaded>()
+              .having((s) => s.selectedGroupIds, 'selectedGroupIds',
+                  isNot(contains('group-1')))
+              .having(
+                  (s) => s.selectedIds, 'selectedIds', isNot(contains('member-a'))),
+        ],
       );
     });
   });

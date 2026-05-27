@@ -19,10 +19,10 @@ import '../bloc/invitee_selection/invitee_selection_state.dart';
 import '../widgets/invitee_picker.dart';
 
 class PickupGameCreationPage extends StatelessWidget {
-  /// IDs of groups the current user belongs to (used to populate invitee list).
-  final List<String> userGroupIds;
+  /// Groups the current user belongs to: groupId → groupName.
+  final Map<String, String> userGroups;
 
-  const PickupGameCreationPage({super.key, this.userGroupIds = const []});
+  const PickupGameCreationPage({super.key, this.userGroups = const {}});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class PickupGameCreationPage extends StatelessWidget {
                 ? authState.user.uid
                 : '';
             return sl<InviteeSelectionBloc>()
-              ..add(LoadInvitees(userId: userId, groupIds: userGroupIds));
+              ..add(LoadInvitees(userId: userId, groups: userGroups));
           },
         ),
       ],
@@ -102,6 +102,55 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
       helpText: l10n.selectGameDate,
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
+          datePickerTheme: DatePickerThemeData(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            headerBackgroundColor: Colors.white,
+            headerForegroundColor: blue,
+            dayForegroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return blue;
+              return null;
+            }),
+            dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return Colors.white;
+              return null;
+            }),
+            dayShape: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: const BorderSide(color: blue, width: 2),
+                );
+              }
+              return null;
+            }),
+            todayForegroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return blue;
+              return null;
+            }),
+            todayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return Colors.white;
+              return null;
+            }),
+            todayBorder: const BorderSide(color: Colors.transparent),
+            yearForegroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return blue;
+              return null;
+            }),
+            yearBackgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) return Colors.white;
+              return null;
+            }),
+            yearShape: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: const BorderSide(color: blue, width: 2),
+                );
+              }
+              return null;
+            }),
+          ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(foregroundColor: blue),
           ),
@@ -113,7 +162,13 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
     if (date == null || !context.mounted) return;
 
     TimeOfDay? time;
-    DateTime pickerTime = DateTime(date.year, date.month, date.day, 14, 0);
+    final isToday =
+        date.year == now.year && date.month == now.month && date.day == now.day;
+    final minPickerTime = isToday ? now : null;
+    DateTime pickerTime = isToday
+        ? DateTime(date.year, date.month, date.day, now.hour, now.minute)
+            .add(const Duration(hours: 1))
+        : DateTime(date.year, date.month, date.day, 14, 0);
 
     // ignore: use_build_context_synchronously
     await showDialog<void>(
@@ -138,11 +193,21 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
                       child: Text(l10n.cancel,
                           style: const TextStyle(color: blue, fontSize: 16)),
                     ),
-                    Text(l10n.selectGameTime,
-                        style: const TextStyle(
-                            color: blue,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600)),
+                    Column(
+                      children: [
+                        Text(l10n.selectGameTime,
+                            style: const TextStyle(
+                                color: blue,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600)),
+                        if (isToday)
+                          Text(
+                            '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} ${l10n.orLater}',
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 12),
+                          ),
+                      ],
+                    ),
                     TextButton(
                       onPressed: () {
                         time = TimeOfDay(
@@ -164,6 +229,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.time,
                   initialDateTime: pickerTime,
+                  minimumDate: minPickerTime,
                   use24hFormat: true,
                   onDateTimeChanged: (dt) => pickerTime = dt,
                 ),
@@ -533,46 +599,28 @@ class _InviteStep extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            l10n.invitePlayersFromCommunity,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
-                ),
-            textAlign: TextAlign.center,
-          ),
+        // Selected count badge
+        BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
+          builder: (context, state) {
+            if (state is! InviteeSelectionLoaded) return const SizedBox.shrink();
+            final count = state.selectedIds.length;
+            if (count == 0) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: Text(
+                l10n.selectedCount(count),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
         ),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
-              builder: (context, state) {
-                final selectedCount = state is InviteeSelectionLoaded
-                    ? state.selectedIds.length
-                    : 0;
-                return Column(
-                  children: [
-                    if (state is InviteeSelectionLoaded)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-                          l10n.selectedCount(selectedCount),
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.secondary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ),
-                    const InviteePicker(),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
+        // Tabbed picker fills the remaining space
+        const Expanded(child: InviteePicker()),
+        // Action buttons
         Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

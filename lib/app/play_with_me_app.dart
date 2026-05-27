@@ -522,15 +522,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 heroTag: 'pickup_game_fab',
                 onPressed: () {
                   final groupState = _groupBloc.state;
-                  final groupIds = groupState is GroupsLoaded
-                      ? groupState.groups.map((g) => g.id).toList()
-                      : <String>[];
+                  final userGroups = groupState is GroupsLoaded
+                      ? {for (final g in groupState.groups) g.id: g.name}
+                      : <String, String>{};
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => BlocProvider<AuthenticationBloc>.value(
                         value: context.read<AuthenticationBloc>(),
-                        child: PickupGameCreationPage(userGroupIds: groupIds),
+                        child: PickupGameCreationPage(userGroups: userGroups),
                       ),
                     ),
                   );

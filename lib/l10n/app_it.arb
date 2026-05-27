@@ -729,6 +729,10 @@
   "@invitePlayersStep": {},
   "invitePlayersFromCommunity": "Invita giocatori dalla tua comunità o dai tuoi gruppi",
   "@invitePlayersFromCommunity": {},
+  "noGroupsToInvite": "Non appartieni ancora a nessun gruppo",
+  "@noGroupsToInvite": {
+    "description": "Shown in Groups tab when user has no groups"
+  },
   "noUsersToInvite": "Nessun giocatore disponibile da invitare",
   "@noUsersToInvite": {},
   "skipInvitations": "Salta",

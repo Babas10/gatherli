@@ -2086,6 +2086,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Spieler aus deiner Community oder Gruppen einladen';
 
   @override
+  String get noGroupsToInvite => 'Sie gehören noch keiner Gruppe an';
+
+  @override
+
   String get noUsersToInvite => 'Keine Spieler zum Einladen verfügbar';
 
   @override
