@@ -3812,6 +3812,7 @@ abstract class AppLocalizations {
   /// **'You don\'t belong to any groups yet'**
   String get noGroupsToInvite;
 
+
   /// Empty state when no friends or group members exist
   ///
   /// In en, this message translates to:

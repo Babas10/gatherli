@@ -2094,6 +2094,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noGroupsToInvite => 'Vous n\'appartenez encore à aucun groupe';
 
   @override
+
   String get noUsersToInvite => 'Aucun joueur disponible à inviter';
 
   @override

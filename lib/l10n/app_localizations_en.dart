@@ -2050,6 +2050,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noGroupsToInvite => 'You don\'t belong to any groups yet';
 
   @override
+
   String get noUsersToInvite => 'No players available to invite';
 
   @override

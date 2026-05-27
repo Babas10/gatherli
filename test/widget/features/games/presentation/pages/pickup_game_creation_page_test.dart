@@ -119,7 +119,7 @@ class _FakePickupGameCreationView extends StatelessWidget {
                 builder: (context, invState) {
                   if (invState is InviteeSelectionLoaded) {
                     return Text(
-                        'Invitees loaded: ${invState.allUsers.length}');
+                        'Invitees loaded: ${invState.friends.length}');
                   }
                   if (invState is InviteeSelectionLoading) {
                     return const Text('Loading invitees');
@@ -281,12 +281,12 @@ void main() {
 
   testWidgets('InviteePicker shows loaded users count', (tester) async {
     when(() => mockInviteeSelectionBloc.state).thenReturn(
-      InviteeSelectionLoaded(
-        allUsers: [
-          const InvitableUser(uid: 'friend-a', displayName: 'Alice'),
-          const InvitableUser(uid: 'friend-b', displayName: 'Bob'),
+      const InviteeSelectionLoaded(
+        friends: [
+          InvitableUser(uid: 'friend-a', displayName: 'Alice'),
+          InvitableUser(uid: 'friend-b', displayName: 'Bob'),
         ],
-        selectedIds: const {},
+        groups: [],
       ),
     );
 
