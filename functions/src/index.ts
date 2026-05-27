@@ -26,6 +26,7 @@ export {getHeadToHeadStats} from "./getHeadToHeadStats"; // Story 301.8
 export {calculateUserRanking} from "./calculateUserRanking"; // Story 302.2
 export {createTrainingSession} from "./createTrainingSession"; // Story 15.1 (Epic 15: Training Sessions)
 export {createPickupGame} from "./createPickupGame"; // Story 31.8 (Pickup Game Creation)
+export {createChampionship} from "./createChampionship"; // Story 30.2 (Championship Creation)
 export {generateRecurringTrainingSessions} from "./generateRecurringTrainingSessions"; // Story 15.2 (Recurring Training Sessions)
 export {joinTrainingSession} from "./joinTrainingSession"; // Story 15.3 (Join Training Session)
 export {leaveTrainingSession} from "./leaveTrainingSession"; // Story 15.3 (Leave Training Session)
