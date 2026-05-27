@@ -10,7 +10,7 @@ part 'training_feedback_model.g.dart';
 /// Feedback is stored in a subcollection under training sessions
 /// The participant's identity is hashed to prevent duplicates while maintaining anonymity
 @freezed
-class TrainingFeedbackModel with _$TrainingFeedbackModel {
+abstract class TrainingFeedbackModel with _$TrainingFeedbackModel {
   const factory TrainingFeedbackModel({
     required String id,
     required String trainingSessionId,

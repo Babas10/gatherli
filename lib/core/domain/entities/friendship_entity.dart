@@ -5,7 +5,7 @@ part 'friendship_entity.g.dart';
 
 /// Represents a friendship relationship between two users
 @freezed
-class FriendshipEntity with _$FriendshipEntity {
+abstract class FriendshipEntity with _$FriendshipEntity {
   const factory FriendshipEntity({
     required String id,
     required String initiatorId,

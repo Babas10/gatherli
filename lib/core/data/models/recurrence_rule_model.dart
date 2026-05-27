@@ -23,7 +23,7 @@ enum RecurrenceFrequency {
 /// - Every 2 weeks on Mondays and Wednesdays until a specific date
 /// - Every month for 6 occurrences
 @freezed
-class RecurrenceRuleModel with _$RecurrenceRuleModel {
+abstract class RecurrenceRuleModel with _$RecurrenceRuleModel {
   const factory RecurrenceRuleModel({
     /// The frequency of recurrence (weekly, monthly, or none)
     @Default(RecurrenceFrequency.none) RecurrenceFrequency frequency,

@@ -8,7 +8,7 @@ part 'group_activity_item.freezed.dart';
 /// Union type representing an activity in a group (game or training session)
 /// Used to combine and display both types in a unified activity feed
 @freezed
-class GroupActivityItem with _$GroupActivityItem {
+abstract class GroupActivityItem with _$GroupActivityItem {
   const factory GroupActivityItem.game(GameModel game) = GameActivityItem;
   const factory GroupActivityItem.training(TrainingSessionModel session) =
       TrainingActivityItem;

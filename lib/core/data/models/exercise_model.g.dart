@@ -6,8 +6,8 @@ part of 'exercise_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ExerciseModelImpl _$$ExerciseModelImplFromJson(Map<String, dynamic> json) =>
-    _$ExerciseModelImpl(
+_ExerciseModel _$ExerciseModelFromJson(Map<String, dynamic> json) =>
+    _ExerciseModel(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
@@ -18,8 +18,8 @@ _$ExerciseModelImpl _$$ExerciseModelImplFromJson(Map<String, dynamic> json) =>
       updatedAt: const NullableTimestampConverter().fromJson(json['updatedAt']),
     );
 
-Map<String, dynamic> _$$ExerciseModelImplToJson(
-  _$ExerciseModelImpl instance,
+Map<String, dynamic> _$ExerciseModelToJson(
+  _ExerciseModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,

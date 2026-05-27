@@ -6,24 +6,22 @@ part of 'chat_message_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ChatMessageModelImpl _$$ChatMessageModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$ChatMessageModelImpl(
-  id: json['id'] as String,
-  senderId: json['senderId'] as String,
-  senderDisplayName: json['senderDisplayName'] as String,
-  text: json['text'] as String,
-  sentAt: const TimestampConverter().fromJson(json['sentAt'] as Object),
-  teamId: json['teamId'] as String?,
-);
+_ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) =>
+    _ChatMessageModel(
+      id: json['id'] as String,
+      senderId: json['senderId'] as String,
+      senderDisplayName: json['senderDisplayName'] as String,
+      text: json['text'] as String,
+      sentAt: const TimestampConverter().fromJson(json['sentAt'] as Object),
+      teamId: json['teamId'] as String?,
+    );
 
-Map<String, dynamic> _$$ChatMessageModelImplToJson(
-  _$ChatMessageModelImpl instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'senderId': instance.senderId,
-  'senderDisplayName': instance.senderDisplayName,
-  'text': instance.text,
-  'sentAt': const TimestampConverter().toJson(instance.sentAt),
-  'teamId': instance.teamId,
-};
+Map<String, dynamic> _$ChatMessageModelToJson(_ChatMessageModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'senderId': instance.senderId,
+      'senderDisplayName': instance.senderDisplayName,
+      'text': instance.text,
+      'sentAt': const TimestampConverter().toJson(instance.sentAt),
+      'teamId': instance.teamId,
+    };

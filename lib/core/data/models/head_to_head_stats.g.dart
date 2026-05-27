@@ -6,9 +6,9 @@ part of 'head_to_head_stats.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$HeadToHeadStatsImpl _$$HeadToHeadStatsImplFromJson(
+_HeadToHeadStats _$HeadToHeadStatsFromJson(
   Map<String, dynamic> json,
-) => _$HeadToHeadStatsImpl(
+) => _HeadToHeadStats(
   userId: json['userId'] as String,
   opponentId: json['opponentId'] as String,
   opponentName: json['opponentName'] as String?,
@@ -30,31 +30,30 @@ _$HeadToHeadStatsImpl _$$HeadToHeadStatsImplFromJson(
   lastUpdated: const NullableTimestampConverter().fromJson(json['lastUpdated']),
 );
 
-Map<String, dynamic> _$$HeadToHeadStatsImplToJson(
-  _$HeadToHeadStatsImpl instance,
-) => <String, dynamic>{
-  'userId': instance.userId,
-  'opponentId': instance.opponentId,
-  'opponentName': instance.opponentName,
-  'opponentEmail': instance.opponentEmail,
-  'opponentPhotoUrl': instance.opponentPhotoUrl,
-  'gamesPlayed': instance.gamesPlayed,
-  'gamesWon': instance.gamesWon,
-  'gamesLost': instance.gamesLost,
-  'pointsScored': instance.pointsScored,
-  'pointsAllowed': instance.pointsAllowed,
-  'eloChange': instance.eloChange,
-  'largestVictoryMargin': instance.largestVictoryMargin,
-  'largestDefeatMargin': instance.largestDefeatMargin,
-  'recentMatchups': instance.recentMatchups,
-  'lastUpdated': const NullableTimestampConverter().toJson(
-    instance.lastUpdated,
-  ),
-};
+Map<String, dynamic> _$HeadToHeadStatsToJson(_HeadToHeadStats instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'opponentId': instance.opponentId,
+      'opponentName': instance.opponentName,
+      'opponentEmail': instance.opponentEmail,
+      'opponentPhotoUrl': instance.opponentPhotoUrl,
+      'gamesPlayed': instance.gamesPlayed,
+      'gamesWon': instance.gamesWon,
+      'gamesLost': instance.gamesLost,
+      'pointsScored': instance.pointsScored,
+      'pointsAllowed': instance.pointsAllowed,
+      'eloChange': instance.eloChange,
+      'largestVictoryMargin': instance.largestVictoryMargin,
+      'largestDefeatMargin': instance.largestDefeatMargin,
+      'recentMatchups': instance.recentMatchups,
+      'lastUpdated': const NullableTimestampConverter().toJson(
+        instance.lastUpdated,
+      ),
+    };
 
-_$HeadToHeadGameResultImpl _$$HeadToHeadGameResultImplFromJson(
+_HeadToHeadGameResult _$HeadToHeadGameResultFromJson(
   Map<String, dynamic> json,
-) => _$HeadToHeadGameResultImpl(
+) => _HeadToHeadGameResult(
   gameId: json['gameId'] as String,
   won: json['won'] as bool,
   pointsScored: (json['pointsScored'] as num).toInt(),
@@ -65,8 +64,8 @@ _$HeadToHeadGameResultImpl _$$HeadToHeadGameResultImplFromJson(
   timestamp: const TimestampConverter().fromJson(json['timestamp'] as Object),
 );
 
-Map<String, dynamic> _$$HeadToHeadGameResultImplToJson(
-  _$HeadToHeadGameResultImpl instance,
+Map<String, dynamic> _$HeadToHeadGameResultToJson(
+  _HeadToHeadGameResult instance,
 ) => <String, dynamic>{
   'gameId': instance.gameId,
   'won': instance.won,

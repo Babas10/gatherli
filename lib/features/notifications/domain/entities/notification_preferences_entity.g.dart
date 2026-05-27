@@ -6,10 +6,9 @@ part of 'notification_preferences_entity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$NotificationPreferencesEntityImpl
-_$$NotificationPreferencesEntityImplFromJson(
+_NotificationPreferencesEntity _$NotificationPreferencesEntityFromJson(
   Map<String, dynamic> json,
-) => _$NotificationPreferencesEntityImpl(
+) => _NotificationPreferencesEntity(
   groupInvitations: json['groupInvitations'] as bool? ?? true,
   invitationAccepted: json['invitationAccepted'] as bool? ?? true,
   gameCreated: json['gameCreated'] as bool? ?? true,
@@ -34,8 +33,8 @@ _$$NotificationPreferencesEntityImplFromJson(
   trainingSessionCancelled: json['trainingSessionCancelled'] as bool? ?? true,
 );
 
-Map<String, dynamic> _$$NotificationPreferencesEntityImplToJson(
-  _$NotificationPreferencesEntityImpl instance,
+Map<String, dynamic> _$NotificationPreferencesEntityToJson(
+  _NotificationPreferencesEntity instance,
 ) => <String, dynamic>{
   'groupInvitations': instance.groupInvitations,
   'invitationAccepted': instance.invitationAccepted,

@@ -28,9 +28,7 @@ class GroupBottomNavBar extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
         return SafeArea(
-          child: Container(
-            color: Colors.white,
-            child: Column(
+          child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
@@ -80,7 +78,6 @@ class GroupBottomNavBar extends StatelessWidget {
                   },
                 ),
               ],
-            ),
           ),
         );
       },

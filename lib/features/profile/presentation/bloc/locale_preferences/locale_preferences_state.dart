@@ -5,7 +5,7 @@ part 'locale_preferences_state.freezed.dart';
 
 /// States for LocalePreferencesBloc
 @freezed
-class LocalePreferencesState with _$LocalePreferencesState {
+abstract class LocalePreferencesState with _$LocalePreferencesState {
   /// Initial state
   const factory LocalePreferencesState.initial() = LocalePreferencesInitial;
 

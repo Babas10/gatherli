@@ -8,6 +8,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 
 import '../../domain/exceptions/repository_exceptions.dart';
 import '../../domain/repositories/game_repository.dart';
+import '../models/activity_context_type.dart';
 import '../models/game_model.dart';
 
 class FirestoreGameRepository implements GameRepository {
@@ -582,6 +583,9 @@ class FirestoreGameRepository implements GameRepository {
 
   @override
   Future<String> createGame(GameModel game) async {
+    if (game.contextType == ActivityContextType.pickup) {
+      return _createPickupGameViaCF(game);
+    }
     try {
       final docRef = await _firestore
           .collection(_collection)
@@ -591,6 +595,30 @@ class FirestoreGameRepository implements GameRepository {
       throw GameException('Failed to create game: ${e.message}', code: e.code);
     } catch (e) {
       throw GameException('Failed to create game: $e', code: 'unknown');
+    }
+  }
+
+  /// Creates a pickup game via Cloud Function (Admin SDK bypasses Firestore rules).
+  Future<String> _createPickupGameViaCF(GameModel game) async {
+    try {
+      final callable = FirebaseFunctions.instanceFor(region: 'europe-west6')
+          .httpsCallable('createPickupGame');
+      final result = await callable.call({
+        'title': game.title,
+        'description': game.description,
+        'scheduledAt': game.scheduledAt.toUtc().toIso8601String(),
+        'locationName': game.location.name,
+        'locationAddress': game.location.address,
+        'maxPlayers': game.maxPlayers,
+        'minPlayers': game.minPlayers,
+        'gameType': game.gameType?.name,
+      });
+      final gameId = result.data['gameId'] as String;
+      return gameId;
+    } on FirebaseFunctionsException catch (e) {
+      throw GameException(e.message ?? 'Failed to create pickup game', code: e.code);
+    } catch (e) {
+      throw GameException('Failed to create pickup game: $e', code: 'unknown');
     }
   }
 

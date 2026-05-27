@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,1061 +9,462 @@ part of 'game_history_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$GameHistoryEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameHistoryEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $GameHistoryEventCopyWith<$Res> {
-  factory $GameHistoryEventCopyWith(
-    GameHistoryEvent value,
-    $Res Function(GameHistoryEvent) then,
-  ) = _$GameHistoryEventCopyWithImpl<$Res, GameHistoryEvent>;
+class $GameHistoryEventCopyWith<$Res>  {
+$GameHistoryEventCopyWith(GameHistoryEvent _, $Res Function(GameHistoryEvent) __);
 }
 
-/// @nodoc
-class _$GameHistoryEventCopyWithImpl<$Res, $Val extends GameHistoryEvent>
-    implements $GameHistoryEventCopyWith<$Res> {
-  _$GameHistoryEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [GameHistoryEvent].
+extension GameHistoryEventPatterns on GameHistoryEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GameHistoryLoadEvent value)?  load,TResult Function( GameHistoryLoadMoreEvent value)?  loadMore,TResult Function( GameHistoryRefreshEvent value)?  refresh,TResult Function( GameHistoryFilterChangedEvent value)?  filterChanged,TResult Function( GameHistoryDateRangeChangedEvent value)?  dateRangeChanged,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent() when load != null:
+return load(_that);case GameHistoryLoadMoreEvent() when loadMore != null:
+return loadMore(_that);case GameHistoryRefreshEvent() when refresh != null:
+return refresh(_that);case GameHistoryFilterChangedEvent() when filterChanged != null:
+return filterChanged(_that);case GameHistoryDateRangeChangedEvent() when dateRangeChanged != null:
+return dateRangeChanged(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GameHistoryLoadEvent value)  load,required TResult Function( GameHistoryLoadMoreEvent value)  loadMore,required TResult Function( GameHistoryRefreshEvent value)  refresh,required TResult Function( GameHistoryFilterChangedEvent value)  filterChanged,required TResult Function( GameHistoryDateRangeChangedEvent value)  dateRangeChanged,}){
+final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent():
+return load(_that);case GameHistoryLoadMoreEvent():
+return loadMore(_that);case GameHistoryRefreshEvent():
+return refresh(_that);case GameHistoryFilterChangedEvent():
+return filterChanged(_that);case GameHistoryDateRangeChangedEvent():
+return dateRangeChanged(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GameHistoryLoadEvent value)?  load,TResult? Function( GameHistoryLoadMoreEvent value)?  loadMore,TResult? Function( GameHistoryRefreshEvent value)?  refresh,TResult? Function( GameHistoryFilterChangedEvent value)?  filterChanged,TResult? Function( GameHistoryDateRangeChangedEvent value)?  dateRangeChanged,}){
+final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent() when load != null:
+return load(_that);case GameHistoryLoadMoreEvent() when loadMore != null:
+return loadMore(_that);case GameHistoryRefreshEvent() when refresh != null:
+return refresh(_that);case GameHistoryFilterChangedEvent() when filterChanged != null:
+return filterChanged(_that);case GameHistoryDateRangeChangedEvent() when dateRangeChanged != null:
+return dateRangeChanged(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String? groupId,  String userId,  GameHistoryFilter filter,  DateTime? startDate,  DateTime? endDate)?  load,TResult Function()?  loadMore,TResult Function()?  refresh,TResult Function( GameHistoryFilter filter)?  filterChanged,TResult Function( DateTime? startDate,  DateTime? endDate)?  dateRangeChanged,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent() when load != null:
+return load(_that.groupId,_that.userId,_that.filter,_that.startDate,_that.endDate);case GameHistoryLoadMoreEvent() when loadMore != null:
+return loadMore();case GameHistoryRefreshEvent() when refresh != null:
+return refresh();case GameHistoryFilterChangedEvent() when filterChanged != null:
+return filterChanged(_that.filter);case GameHistoryDateRangeChangedEvent() when dateRangeChanged != null:
+return dateRangeChanged(_that.startDate,_that.endDate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String? groupId,  String userId,  GameHistoryFilter filter,  DateTime? startDate,  DateTime? endDate)  load,required TResult Function()  loadMore,required TResult Function()  refresh,required TResult Function( GameHistoryFilter filter)  filterChanged,required TResult Function( DateTime? startDate,  DateTime? endDate)  dateRangeChanged,}) {final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent():
+return load(_that.groupId,_that.userId,_that.filter,_that.startDate,_that.endDate);case GameHistoryLoadMoreEvent():
+return loadMore();case GameHistoryRefreshEvent():
+return refresh();case GameHistoryFilterChangedEvent():
+return filterChanged(_that.filter);case GameHistoryDateRangeChangedEvent():
+return dateRangeChanged(_that.startDate,_that.endDate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String? groupId,  String userId,  GameHistoryFilter filter,  DateTime? startDate,  DateTime? endDate)?  load,TResult? Function()?  loadMore,TResult? Function()?  refresh,TResult? Function( GameHistoryFilter filter)?  filterChanged,TResult? Function( DateTime? startDate,  DateTime? endDate)?  dateRangeChanged,}) {final _that = this;
+switch (_that) {
+case GameHistoryLoadEvent() when load != null:
+return load(_that.groupId,_that.userId,_that.filter,_that.startDate,_that.endDate);case GameHistoryLoadMoreEvent() when loadMore != null:
+return loadMore();case GameHistoryRefreshEvent() when refresh != null:
+return refresh();case GameHistoryFilterChangedEvent() when filterChanged != null:
+return filterChanged(_that.filter);case GameHistoryDateRangeChangedEvent() when dateRangeChanged != null:
+return dateRangeChanged(_that.startDate,_that.endDate);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$GameHistoryLoadEventImplCopyWith<$Res> {
-  factory _$$GameHistoryLoadEventImplCopyWith(
-    _$GameHistoryLoadEventImpl value,
-    $Res Function(_$GameHistoryLoadEventImpl) then,
-  ) = __$$GameHistoryLoadEventImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({
-    String? groupId,
-    String userId,
-    GameHistoryFilter filter,
-    DateTime? startDate,
-    DateTime? endDate,
-  });
-}
-
-/// @nodoc
-class __$$GameHistoryLoadEventImplCopyWithImpl<$Res>
-    extends _$GameHistoryEventCopyWithImpl<$Res, _$GameHistoryLoadEventImpl>
-    implements _$$GameHistoryLoadEventImplCopyWith<$Res> {
-  __$$GameHistoryLoadEventImplCopyWithImpl(
-    _$GameHistoryLoadEventImpl _value,
-    $Res Function(_$GameHistoryLoadEventImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? groupId = freezed,
-    Object? userId = null,
-    Object? filter = null,
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(
-      _$GameHistoryLoadEventImpl(
-        groupId: freezed == groupId
-            ? _value.groupId
-            : groupId // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        filter: null == filter
-            ? _value.filter
-            : filter // ignore: cast_nullable_to_non_nullable
-                  as GameHistoryFilter,
-        startDate: freezed == startDate
-            ? _value.startDate
-            : startDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        endDate: freezed == endDate
-            ? _value.endDate
-            : endDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$GameHistoryLoadEventImpl implements GameHistoryLoadEvent {
-  const _$GameHistoryLoadEventImpl({
-    this.groupId,
-    required this.userId,
-    this.filter = GameHistoryFilter.all,
-    this.startDate,
-    this.endDate,
-  });
-
-  @override
-  final String? groupId;
-  @override
-  final String userId;
-  @override
-  @JsonKey()
-  final GameHistoryFilter filter;
-  @override
-  final DateTime? startDate;
-  @override
-  final DateTime? endDate;
-
-  @override
-  String toString() {
-    return 'GameHistoryEvent.load(groupId: $groupId, userId: $userId, filter: $filter, startDate: $startDate, endDate: $endDate)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GameHistoryLoadEventImpl &&
-            (identical(other.groupId, groupId) || other.groupId == groupId) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.filter, filter) || other.filter == filter) &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, groupId, userId, filter, startDate, endDate);
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GameHistoryLoadEventImplCopyWith<_$GameHistoryLoadEventImpl>
-  get copyWith =>
-      __$$GameHistoryLoadEventImplCopyWithImpl<_$GameHistoryLoadEventImpl>(
-        this,
-        _$identity,
-      );
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) {
-    return load(groupId, userId, filter, startDate, endDate);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) {
-    return load?.call(groupId, userId, filter, startDate, endDate);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (load != null) {
-      return load(groupId, userId, filter, startDate, endDate);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) {
-    return load(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) {
-    return load?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (load != null) {
-      return load(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GameHistoryLoadEvent implements GameHistoryEvent {
-  const factory GameHistoryLoadEvent({
-    final String? groupId,
-    required final String userId,
-    final GameHistoryFilter filter,
-    final DateTime? startDate,
-    final DateTime? endDate,
-  }) = _$GameHistoryLoadEventImpl;
-
-  String? get groupId;
-  String get userId;
-  GameHistoryFilter get filter;
-  DateTime? get startDate;
-  DateTime? get endDate;
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameHistoryLoadEventImplCopyWith<_$GameHistoryLoadEventImpl>
-  get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$GameHistoryLoadMoreEventImplCopyWith<$Res> {
-  factory _$$GameHistoryLoadMoreEventImplCopyWith(
-    _$GameHistoryLoadMoreEventImpl value,
-    $Res Function(_$GameHistoryLoadMoreEventImpl) then,
-  ) = __$$GameHistoryLoadMoreEventImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$GameHistoryLoadMoreEventImplCopyWithImpl<$Res>
-    extends _$GameHistoryEventCopyWithImpl<$Res, _$GameHistoryLoadMoreEventImpl>
-    implements _$$GameHistoryLoadMoreEventImplCopyWith<$Res> {
-  __$$GameHistoryLoadMoreEventImplCopyWithImpl(
-    _$GameHistoryLoadMoreEventImpl _value,
-    $Res Function(_$GameHistoryLoadMoreEventImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$GameHistoryLoadMoreEventImpl implements GameHistoryLoadMoreEvent {
-  const _$GameHistoryLoadMoreEventImpl();
 
-  @override
-  String toString() {
-    return 'GameHistoryEvent.loadMore()';
-  }
+class GameHistoryLoadEvent implements GameHistoryEvent {
+  const GameHistoryLoadEvent({this.groupId, required this.userId, this.filter = GameHistoryFilter.all, this.startDate, this.endDate});
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GameHistoryLoadMoreEventImpl);
-  }
+ final  String? groupId;
+ final  String userId;
+@JsonKey() final  GameHistoryFilter filter;
+ final  DateTime? startDate;
+ final  DateTime? endDate;
 
-  @override
-  int get hashCode => runtimeType.hashCode;
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameHistoryLoadEventCopyWith<GameHistoryLoadEvent> get copyWith => _$GameHistoryLoadEventCopyWithImpl<GameHistoryLoadEvent>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) {
-    return loadMore();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) {
-    return loadMore?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (loadMore != null) {
-      return loadMore();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) {
-    return loadMore(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) {
-    return loadMore?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (loadMore != null) {
-      return loadMore(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryLoadEvent&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
 }
 
-abstract class GameHistoryLoadMoreEvent implements GameHistoryEvent {
-  const factory GameHistoryLoadMoreEvent() = _$GameHistoryLoadMoreEventImpl;
+
+@override
+int get hashCode => Object.hash(runtimeType,groupId,userId,filter,startDate,endDate);
+
+@override
+String toString() {
+  return 'GameHistoryEvent.load(groupId: $groupId, userId: $userId, filter: $filter, startDate: $startDate, endDate: $endDate)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$GameHistoryRefreshEventImplCopyWith<$Res> {
-  factory _$$GameHistoryRefreshEventImplCopyWith(
-    _$GameHistoryRefreshEventImpl value,
-    $Res Function(_$GameHistoryRefreshEventImpl) then,
-  ) = __$$GameHistoryRefreshEventImplCopyWithImpl<$Res>;
+abstract mixin class $GameHistoryLoadEventCopyWith<$Res> implements $GameHistoryEventCopyWith<$Res> {
+  factory $GameHistoryLoadEventCopyWith(GameHistoryLoadEvent value, $Res Function(GameHistoryLoadEvent) _then) = _$GameHistoryLoadEventCopyWithImpl;
+@useResult
+$Res call({
+ String? groupId, String userId, GameHistoryFilter filter, DateTime? startDate, DateTime? endDate
+});
+
+
+
+
+}
+/// @nodoc
+class _$GameHistoryLoadEventCopyWithImpl<$Res>
+    implements $GameHistoryLoadEventCopyWith<$Res> {
+  _$GameHistoryLoadEventCopyWithImpl(this._self, this._then);
+
+  final GameHistoryLoadEvent _self;
+  final $Res Function(GameHistoryLoadEvent) _then;
+
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? groupId = freezed,Object? userId = null,Object? filter = null,Object? startDate = freezed,Object? endDate = freezed,}) {
+  return _then(GameHistoryLoadEvent(
+groupId: freezed == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
+as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as GameHistoryFilter,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
 }
 
-/// @nodoc
-class __$$GameHistoryRefreshEventImplCopyWithImpl<$Res>
-    extends _$GameHistoryEventCopyWithImpl<$Res, _$GameHistoryRefreshEventImpl>
-    implements _$$GameHistoryRefreshEventImplCopyWith<$Res> {
-  __$$GameHistoryRefreshEventImplCopyWithImpl(
-    _$GameHistoryRefreshEventImpl _value,
-    $Res Function(_$GameHistoryRefreshEventImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$GameHistoryRefreshEventImpl implements GameHistoryRefreshEvent {
-  const _$GameHistoryRefreshEventImpl();
 
-  @override
-  String toString() {
-    return 'GameHistoryEvent.refresh()';
-  }
+class GameHistoryLoadMoreEvent implements GameHistoryEvent {
+  const GameHistoryLoadMoreEvent();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GameHistoryRefreshEventImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) {
-    return refresh();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) {
-    return refresh?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (refresh != null) {
-      return refresh();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) {
-    return refresh(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) {
-    return refresh?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (refresh != null) {
-      return refresh(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryLoadMoreEvent);
 }
 
-abstract class GameHistoryRefreshEvent implements GameHistoryEvent {
-  const factory GameHistoryRefreshEvent() = _$GameHistoryRefreshEventImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameHistoryEvent.loadMore()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class GameHistoryRefreshEvent implements GameHistoryEvent {
+  const GameHistoryRefreshEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryRefreshEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameHistoryEvent.refresh()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class GameHistoryFilterChangedEvent implements GameHistoryEvent {
+  const GameHistoryFilterChangedEvent({required this.filter});
+  
+
+ final  GameHistoryFilter filter;
+
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameHistoryFilterChangedEventCopyWith<GameHistoryFilterChangedEvent> get copyWith => _$GameHistoryFilterChangedEventCopyWithImpl<GameHistoryFilterChangedEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryFilterChangedEvent&&(identical(other.filter, filter) || other.filter == filter));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,filter);
+
+@override
+String toString() {
+  return 'GameHistoryEvent.filterChanged(filter: $filter)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$GameHistoryFilterChangedEventImplCopyWith<$Res> {
-  factory _$$GameHistoryFilterChangedEventImplCopyWith(
-    _$GameHistoryFilterChangedEventImpl value,
-    $Res Function(_$GameHistoryFilterChangedEventImpl) then,
-  ) = __$$GameHistoryFilterChangedEventImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({GameHistoryFilter filter});
+abstract mixin class $GameHistoryFilterChangedEventCopyWith<$Res> implements $GameHistoryEventCopyWith<$Res> {
+  factory $GameHistoryFilterChangedEventCopyWith(GameHistoryFilterChangedEvent value, $Res Function(GameHistoryFilterChangedEvent) _then) = _$GameHistoryFilterChangedEventCopyWithImpl;
+@useResult
+$Res call({
+ GameHistoryFilter filter
+});
+
+
+
+
+}
+/// @nodoc
+class _$GameHistoryFilterChangedEventCopyWithImpl<$Res>
+    implements $GameHistoryFilterChangedEventCopyWith<$Res> {
+  _$GameHistoryFilterChangedEventCopyWithImpl(this._self, this._then);
+
+  final GameHistoryFilterChangedEvent _self;
+  final $Res Function(GameHistoryFilterChangedEvent) _then;
+
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? filter = null,}) {
+  return _then(GameHistoryFilterChangedEvent(
+filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as GameHistoryFilter,
+  ));
 }
 
-/// @nodoc
-class __$$GameHistoryFilterChangedEventImplCopyWithImpl<$Res>
-    extends
-        _$GameHistoryEventCopyWithImpl<
-          $Res,
-          _$GameHistoryFilterChangedEventImpl
-        >
-    implements _$$GameHistoryFilterChangedEventImplCopyWith<$Res> {
-  __$$GameHistoryFilterChangedEventImplCopyWithImpl(
-    _$GameHistoryFilterChangedEventImpl _value,
-    $Res Function(_$GameHistoryFilterChangedEventImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? filter = null}) {
-    return _then(
-      _$GameHistoryFilterChangedEventImpl(
-        filter: null == filter
-            ? _value.filter
-            : filter // ignore: cast_nullable_to_non_nullable
-                  as GameHistoryFilter,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$GameHistoryFilterChangedEventImpl
-    implements GameHistoryFilterChangedEvent {
-  const _$GameHistoryFilterChangedEventImpl({required this.filter});
 
-  @override
-  final GameHistoryFilter filter;
+class GameHistoryDateRangeChangedEvent implements GameHistoryEvent {
+  const GameHistoryDateRangeChangedEvent({this.startDate, this.endDate});
+  
 
-  @override
-  String toString() {
-    return 'GameHistoryEvent.filterChanged(filter: $filter)';
-  }
+ final  DateTime? startDate;
+ final  DateTime? endDate;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GameHistoryFilterChangedEventImpl &&
-            (identical(other.filter, filter) || other.filter == filter));
-  }
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameHistoryDateRangeChangedEventCopyWith<GameHistoryDateRangeChangedEvent> get copyWith => _$GameHistoryDateRangeChangedEventCopyWithImpl<GameHistoryDateRangeChangedEvent>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, filter);
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GameHistoryFilterChangedEventImplCopyWith<
-    _$GameHistoryFilterChangedEventImpl
-  >
-  get copyWith =>
-      __$$GameHistoryFilterChangedEventImplCopyWithImpl<
-        _$GameHistoryFilterChangedEventImpl
-      >(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) {
-    return filterChanged(filter);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) {
-    return filterChanged?.call(filter);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (filterChanged != null) {
-      return filterChanged(filter);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) {
-    return filterChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) {
-    return filterChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (filterChanged != null) {
-      return filterChanged(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameHistoryDateRangeChangedEvent&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
 }
 
-abstract class GameHistoryFilterChangedEvent implements GameHistoryEvent {
-  const factory GameHistoryFilterChangedEvent({
-    required final GameHistoryFilter filter,
-  }) = _$GameHistoryFilterChangedEventImpl;
 
-  GameHistoryFilter get filter;
+@override
+int get hashCode => Object.hash(runtimeType,startDate,endDate);
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameHistoryFilterChangedEventImplCopyWith<
-    _$GameHistoryFilterChangedEventImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'GameHistoryEvent.dateRangeChanged(startDate: $startDate, endDate: $endDate)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$GameHistoryDateRangeChangedEventImplCopyWith<$Res> {
-  factory _$$GameHistoryDateRangeChangedEventImplCopyWith(
-    _$GameHistoryDateRangeChangedEventImpl value,
-    $Res Function(_$GameHistoryDateRangeChangedEventImpl) then,
-  ) = __$$GameHistoryDateRangeChangedEventImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({DateTime? startDate, DateTime? endDate});
-}
+abstract mixin class $GameHistoryDateRangeChangedEventCopyWith<$Res> implements $GameHistoryEventCopyWith<$Res> {
+  factory $GameHistoryDateRangeChangedEventCopyWith(GameHistoryDateRangeChangedEvent value, $Res Function(GameHistoryDateRangeChangedEvent) _then) = _$GameHistoryDateRangeChangedEventCopyWithImpl;
+@useResult
+$Res call({
+ DateTime? startDate, DateTime? endDate
+});
 
+
+
+
+}
 /// @nodoc
-class __$$GameHistoryDateRangeChangedEventImplCopyWithImpl<$Res>
-    extends
-        _$GameHistoryEventCopyWithImpl<
-          $Res,
-          _$GameHistoryDateRangeChangedEventImpl
-        >
-    implements _$$GameHistoryDateRangeChangedEventImplCopyWith<$Res> {
-  __$$GameHistoryDateRangeChangedEventImplCopyWithImpl(
-    _$GameHistoryDateRangeChangedEventImpl _value,
-    $Res Function(_$GameHistoryDateRangeChangedEventImpl) _then,
-  ) : super(_value, _then);
+class _$GameHistoryDateRangeChangedEventCopyWithImpl<$Res>
+    implements $GameHistoryDateRangeChangedEventCopyWith<$Res> {
+  _$GameHistoryDateRangeChangedEventCopyWithImpl(this._self, this._then);
 
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
-    return _then(
-      _$GameHistoryDateRangeChangedEventImpl(
-        startDate: freezed == startDate
-            ? _value.startDate
-            : startDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        endDate: freezed == endDate
-            ? _value.endDate
-            : endDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
-  }
+  final GameHistoryDateRangeChangedEvent _self;
+  final $Res Function(GameHistoryDateRangeChangedEvent) _then;
+
+/// Create a copy of GameHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? startDate = freezed,Object? endDate = freezed,}) {
+  return _then(GameHistoryDateRangeChangedEvent(
+startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
 }
 
-/// @nodoc
 
-class _$GameHistoryDateRangeChangedEventImpl
-    implements GameHistoryDateRangeChangedEvent {
-  const _$GameHistoryDateRangeChangedEventImpl({this.startDate, this.endDate});
-
-  @override
-  final DateTime? startDate;
-  @override
-  final DateTime? endDate;
-
-  @override
-  String toString() {
-    return 'GameHistoryEvent.dateRangeChanged(startDate: $startDate, endDate: $endDate)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GameHistoryDateRangeChangedEventImpl &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, startDate, endDate);
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GameHistoryDateRangeChangedEventImplCopyWith<
-    _$GameHistoryDateRangeChangedEventImpl
-  >
-  get copyWith =>
-      __$$GameHistoryDateRangeChangedEventImplCopyWithImpl<
-        _$GameHistoryDateRangeChangedEventImpl
-      >(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )
-    load,
-    required TResult Function() loadMore,
-    required TResult Function() refresh,
-    required TResult Function(GameHistoryFilter filter) filterChanged,
-    required TResult Function(DateTime? startDate, DateTime? endDate)
-    dateRangeChanged,
-  }) {
-    return dateRangeChanged(startDate, endDate);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult? Function()? loadMore,
-    TResult? Function()? refresh,
-    TResult? Function(GameHistoryFilter filter)? filterChanged,
-    TResult? Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-  }) {
-    return dateRangeChanged?.call(startDate, endDate);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-      String? groupId,
-      String userId,
-      GameHistoryFilter filter,
-      DateTime? startDate,
-      DateTime? endDate,
-    )?
-    load,
-    TResult Function()? loadMore,
-    TResult Function()? refresh,
-    TResult Function(GameHistoryFilter filter)? filterChanged,
-    TResult Function(DateTime? startDate, DateTime? endDate)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (dateRangeChanged != null) {
-      return dateRangeChanged(startDate, endDate);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GameHistoryLoadEvent value) load,
-    required TResult Function(GameHistoryLoadMoreEvent value) loadMore,
-    required TResult Function(GameHistoryRefreshEvent value) refresh,
-    required TResult Function(GameHistoryFilterChangedEvent value)
-    filterChanged,
-    required TResult Function(GameHistoryDateRangeChangedEvent value)
-    dateRangeChanged,
-  }) {
-    return dateRangeChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GameHistoryLoadEvent value)? load,
-    TResult? Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult? Function(GameHistoryRefreshEvent value)? refresh,
-    TResult? Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult? Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-  }) {
-    return dateRangeChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GameHistoryLoadEvent value)? load,
-    TResult Function(GameHistoryLoadMoreEvent value)? loadMore,
-    TResult Function(GameHistoryRefreshEvent value)? refresh,
-    TResult Function(GameHistoryFilterChangedEvent value)? filterChanged,
-    TResult Function(GameHistoryDateRangeChangedEvent value)? dateRangeChanged,
-    required TResult orElse(),
-  }) {
-    if (dateRangeChanged != null) {
-      return dateRangeChanged(this);
-    }
-    return orElse();
-  }
 }
 
-abstract class GameHistoryDateRangeChangedEvent implements GameHistoryEvent {
-  const factory GameHistoryDateRangeChangedEvent({
-    final DateTime? startDate,
-    final DateTime? endDate,
-  }) = _$GameHistoryDateRangeChangedEventImpl;
-
-  DateTime? get startDate;
-  DateTime? get endDate;
-
-  /// Create a copy of GameHistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameHistoryDateRangeChangedEventImplCopyWith<
-    _$GameHistoryDateRangeChangedEventImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

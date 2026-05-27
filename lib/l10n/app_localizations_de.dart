@@ -2068,4 +2068,59 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get chatJoinToView =>
       'Du musst dem Spiel beitreten, um den Chat zu sehen';
+
+  @override
+  String get createPickupGame => 'Spontanspiel erstellen';
+
+  @override
+  String get pickupGame => 'Spontanspiel';
+
+  @override
+  String get gameDetailsStep => 'Spieldetails';
+
+  @override
+  String get invitePlayersStep => 'Spieler einladen';
+
+  @override
+  String get invitePlayersFromCommunity =>
+      'Spieler aus deiner Community oder Gruppen einladen';
+
+  @override
+  String get noGroupsToInvite => 'Sie gehören noch keiner Gruppe an';
+
+  @override
+  String get noUsersToInvite => 'Keine Spieler zum Einladen verfügbar';
+
+  @override
+  String get skipInvitations => 'Überspringen';
+
+  @override
+  String get createAndInvite => 'Erstellen & Einladen';
+
+  @override
+  String get invitationsSentSuccess => 'Einladungen gesendet!';
+
+  @override
+  String get pickupGameCreatedSuccess => 'Spontanspiel erfolgreich erstellt!';
+
+  @override
+  String get groupMembersSection => 'Gruppenmitglieder';
+
+  @override
+  String get friendsSection => 'Freunde';
+
+  @override
+  String selectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Spieler ausgewählt',
+      one: '1 Spieler ausgewählt',
+      zero: 'Keine Spieler ausgewählt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get next => 'Weiter';
 }

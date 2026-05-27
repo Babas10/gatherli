@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,330 +9,290 @@ part of 'friendship_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
-FriendshipEntity _$FriendshipEntityFromJson(Map<String, dynamic> json) {
-  return _FriendshipEntity.fromJson(json);
-}
 
 /// @nodoc
 mixin _$FriendshipEntity {
-  String get id => throw _privateConstructorUsedError;
-  String get initiatorId => throw _privateConstructorUsedError;
-  String get recipientId => throw _privateConstructorUsedError;
-  String get initiatorName => throw _privateConstructorUsedError;
-  String get recipientName => throw _privateConstructorUsedError;
-  FriendshipStatus get status => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+
+ String get id; String get initiatorId; String get recipientId; String get initiatorName; String get recipientName; FriendshipStatus get status; DateTime get createdAt; DateTime get updatedAt;
+/// Create a copy of FriendshipEntity
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FriendshipEntityCopyWith<FriendshipEntity> get copyWith => _$FriendshipEntityCopyWithImpl<FriendshipEntity>(this as FriendshipEntity, _$identity);
 
   /// Serializes this FriendshipEntity to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of FriendshipEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $FriendshipEntityCopyWith<FriendshipEntity> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendshipEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.initiatorId, initiatorId) || other.initiatorId == initiatorId)&&(identical(other.recipientId, recipientId) || other.recipientId == recipientId)&&(identical(other.initiatorName, initiatorName) || other.initiatorName == initiatorName)&&(identical(other.recipientName, recipientName) || other.recipientName == recipientName)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,initiatorId,recipientId,initiatorName,recipientName,status,createdAt,updatedAt);
+
+@override
+String toString() {
+  return 'FriendshipEntity(id: $id, initiatorId: $initiatorId, recipientId: $recipientId, initiatorName: $initiatorName, recipientName: $recipientName, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $FriendshipEntityCopyWith<$Res> {
-  factory $FriendshipEntityCopyWith(
-    FriendshipEntity value,
-    $Res Function(FriendshipEntity) then,
-  ) = _$FriendshipEntityCopyWithImpl<$Res, FriendshipEntity>;
-  @useResult
-  $Res call({
-    String id,
-    String initiatorId,
-    String recipientId,
-    String initiatorName,
-    String recipientName,
-    FriendshipStatus status,
-    DateTime createdAt,
-    DateTime updatedAt,
-  });
-}
+abstract mixin class $FriendshipEntityCopyWith<$Res>  {
+  factory $FriendshipEntityCopyWith(FriendshipEntity value, $Res Function(FriendshipEntity) _then) = _$FriendshipEntityCopyWithImpl;
+@useResult
+$Res call({
+ String id, String initiatorId, String recipientId, String initiatorName, String recipientName, FriendshipStatus status, DateTime createdAt, DateTime updatedAt
+});
 
+
+
+
+}
 /// @nodoc
-class _$FriendshipEntityCopyWithImpl<$Res, $Val extends FriendshipEntity>
+class _$FriendshipEntityCopyWithImpl<$Res>
     implements $FriendshipEntityCopyWith<$Res> {
-  _$FriendshipEntityCopyWithImpl(this._value, this._then);
+  _$FriendshipEntityCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final FriendshipEntity _self;
+  final $Res Function(FriendshipEntity) _then;
 
-  /// Create a copy of FriendshipEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? initiatorId = null,
-    Object? recipientId = null,
-    Object? initiatorName = null,
-    Object? recipientName = null,
-    Object? status = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
-  }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            initiatorId: null == initiatorId
-                ? _value.initiatorId
-                : initiatorId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientId: null == recipientId
-                ? _value.recipientId
-                : recipientId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            initiatorName: null == initiatorName
-                ? _value.initiatorName
-                : initiatorName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientName: null == recipientName
-                ? _value.recipientName
-                : recipientName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as FriendshipStatus,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            updatedAt: null == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of FriendshipEntity
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? initiatorId = null,Object? recipientId = null,Object? initiatorName = null,Object? recipientName = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,initiatorId: null == initiatorId ? _self.initiatorId : initiatorId // ignore: cast_nullable_to_non_nullable
+as String,recipientId: null == recipientId ? _self.recipientId : recipientId // ignore: cast_nullable_to_non_nullable
+as String,initiatorName: null == initiatorName ? _self.initiatorName : initiatorName // ignore: cast_nullable_to_non_nullable
+as String,recipientName: null == recipientName ? _self.recipientName : recipientName // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as FriendshipStatus,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
 }
 
-/// @nodoc
-abstract class _$$FriendshipEntityImplCopyWith<$Res>
-    implements $FriendshipEntityCopyWith<$Res> {
-  factory _$$FriendshipEntityImplCopyWith(
-    _$FriendshipEntityImpl value,
-    $Res Function(_$FriendshipEntityImpl) then,
-  ) = __$$FriendshipEntityImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    String id,
-    String initiatorId,
-    String recipientId,
-    String initiatorName,
-    String recipientName,
-    FriendshipStatus status,
-    DateTime createdAt,
-    DateTime updatedAt,
-  });
 }
 
-/// @nodoc
-class __$$FriendshipEntityImplCopyWithImpl<$Res>
-    extends _$FriendshipEntityCopyWithImpl<$Res, _$FriendshipEntityImpl>
-    implements _$$FriendshipEntityImplCopyWith<$Res> {
-  __$$FriendshipEntityImplCopyWithImpl(
-    _$FriendshipEntityImpl _value,
-    $Res Function(_$FriendshipEntityImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of FriendshipEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? initiatorId = null,
-    Object? recipientId = null,
-    Object? initiatorName = null,
-    Object? recipientName = null,
-    Object? status = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
-  }) {
-    return _then(
-      _$FriendshipEntityImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        initiatorId: null == initiatorId
-            ? _value.initiatorId
-            : initiatorId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientId: null == recipientId
-            ? _value.recipientId
-            : recipientId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        initiatorName: null == initiatorName
-            ? _value.initiatorName
-            : initiatorName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientName: null == recipientName
-            ? _value.recipientName
-            : recipientName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as FriendshipStatus,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        updatedAt: null == updatedAt
-            ? _value.updatedAt
-            : updatedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-      ),
-    );
-  }
+/// Adds pattern-matching-related methods to [FriendshipEntity].
+extension FriendshipEntityPatterns on FriendshipEntity {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _FriendshipEntity value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _FriendshipEntity() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _FriendshipEntity value)  $default,){
+final _that = this;
+switch (_that) {
+case _FriendshipEntity():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _FriendshipEntity value)?  $default,){
+final _that = this;
+switch (_that) {
+case _FriendshipEntity() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String initiatorId,  String recipientId,  String initiatorName,  String recipientName,  FriendshipStatus status,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _FriendshipEntity() when $default != null:
+return $default(_that.id,_that.initiatorId,_that.recipientId,_that.initiatorName,_that.recipientName,_that.status,_that.createdAt,_that.updatedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String initiatorId,  String recipientId,  String initiatorName,  String recipientName,  FriendshipStatus status,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+switch (_that) {
+case _FriendshipEntity():
+return $default(_that.id,_that.initiatorId,_that.recipientId,_that.initiatorName,_that.recipientName,_that.status,_that.createdAt,_that.updatedAt);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String initiatorId,  String recipientId,  String initiatorName,  String recipientName,  FriendshipStatus status,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _FriendshipEntity() when $default != null:
+return $default(_that.id,_that.initiatorId,_that.recipientId,_that.initiatorName,_that.recipientName,_that.status,_that.createdAt,_that.updatedAt);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$FriendshipEntityImpl implements _FriendshipEntity {
-  const _$FriendshipEntityImpl({
-    required this.id,
-    required this.initiatorId,
-    required this.recipientId,
-    required this.initiatorName,
-    required this.recipientName,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-  });
 
-  factory _$FriendshipEntityImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FriendshipEntityImplFromJson(json);
+class _FriendshipEntity implements FriendshipEntity {
+  const _FriendshipEntity({required this.id, required this.initiatorId, required this.recipientId, required this.initiatorName, required this.recipientName, required this.status, required this.createdAt, required this.updatedAt});
+  factory _FriendshipEntity.fromJson(Map<String, dynamic> json) => _$FriendshipEntityFromJson(json);
 
-  @override
-  final String id;
-  @override
-  final String initiatorId;
-  @override
-  final String recipientId;
-  @override
-  final String initiatorName;
-  @override
-  final String recipientName;
-  @override
-  final FriendshipStatus status;
-  @override
-  final DateTime createdAt;
-  @override
-  final DateTime updatedAt;
+@override final  String id;
+@override final  String initiatorId;
+@override final  String recipientId;
+@override final  String initiatorName;
+@override final  String recipientName;
+@override final  FriendshipStatus status;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
-  @override
-  String toString() {
-    return 'FriendshipEntity(id: $id, initiatorId: $initiatorId, recipientId: $recipientId, initiatorName: $initiatorName, recipientName: $recipientName, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
+/// Create a copy of FriendshipEntity
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FriendshipEntityCopyWith<_FriendshipEntity> get copyWith => __$FriendshipEntityCopyWithImpl<_FriendshipEntity>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FriendshipEntityImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.initiatorId, initiatorId) ||
-                other.initiatorId == initiatorId) &&
-            (identical(other.recipientId, recipientId) ||
-                other.recipientId == recipientId) &&
-            (identical(other.initiatorName, initiatorName) ||
-                other.initiatorName == initiatorName) &&
-            (identical(other.recipientName, recipientName) ||
-                other.recipientName == recipientName) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    initiatorId,
-    recipientId,
-    initiatorName,
-    recipientName,
-    status,
-    createdAt,
-    updatedAt,
-  );
-
-  /// Create a copy of FriendshipEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FriendshipEntityImplCopyWith<_$FriendshipEntityImpl> get copyWith =>
-      __$$FriendshipEntityImplCopyWithImpl<_$FriendshipEntityImpl>(
-        this,
-        _$identity,
-      );
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FriendshipEntityImplToJson(this);
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$FriendshipEntityToJson(this, );
 }
 
-abstract class _FriendshipEntity implements FriendshipEntity {
-  const factory _FriendshipEntity({
-    required final String id,
-    required final String initiatorId,
-    required final String recipientId,
-    required final String initiatorName,
-    required final String recipientName,
-    required final FriendshipStatus status,
-    required final DateTime createdAt,
-    required final DateTime updatedAt,
-  }) = _$FriendshipEntityImpl;
-
-  factory _FriendshipEntity.fromJson(Map<String, dynamic> json) =
-      _$FriendshipEntityImpl.fromJson;
-
-  @override
-  String get id;
-  @override
-  String get initiatorId;
-  @override
-  String get recipientId;
-  @override
-  String get initiatorName;
-  @override
-  String get recipientName;
-  @override
-  FriendshipStatus get status;
-  @override
-  DateTime get createdAt;
-  @override
-  DateTime get updatedAt;
-
-  /// Create a copy of FriendshipEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FriendshipEntityImplCopyWith<_$FriendshipEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FriendshipEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.initiatorId, initiatorId) || other.initiatorId == initiatorId)&&(identical(other.recipientId, recipientId) || other.recipientId == recipientId)&&(identical(other.initiatorName, initiatorName) || other.initiatorName == initiatorName)&&(identical(other.recipientName, recipientName) || other.recipientName == recipientName)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,initiatorId,recipientId,initiatorName,recipientName,status,createdAt,updatedAt);
+
+@override
+String toString() {
+  return 'FriendshipEntity(id: $id, initiatorId: $initiatorId, recipientId: $recipientId, initiatorName: $initiatorName, recipientName: $recipientName, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$FriendshipEntityCopyWith<$Res> implements $FriendshipEntityCopyWith<$Res> {
+  factory _$FriendshipEntityCopyWith(_FriendshipEntity value, $Res Function(_FriendshipEntity) _then) = __$FriendshipEntityCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String initiatorId, String recipientId, String initiatorName, String recipientName, FriendshipStatus status, DateTime createdAt, DateTime updatedAt
+});
+
+
+
+
+}
+/// @nodoc
+class __$FriendshipEntityCopyWithImpl<$Res>
+    implements _$FriendshipEntityCopyWith<$Res> {
+  __$FriendshipEntityCopyWithImpl(this._self, this._then);
+
+  final _FriendshipEntity _self;
+  final $Res Function(_FriendshipEntity) _then;
+
+/// Create a copy of FriendshipEntity
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? initiatorId = null,Object? recipientId = null,Object? initiatorName = null,Object? recipientName = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,}) {
+  return _then(_FriendshipEntity(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,initiatorId: null == initiatorId ? _self.initiatorId : initiatorId // ignore: cast_nullable_to_non_nullable
+as String,recipientId: null == recipientId ? _self.recipientId : recipientId // ignore: cast_nullable_to_non_nullable
+as String,initiatorName: null == initiatorName ? _self.initiatorName : initiatorName // ignore: cast_nullable_to_non_nullable
+as String,recipientName: null == recipientName ? _self.recipientName : recipientName // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as FriendshipStatus,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+
+
+}
+
+// dart format on

@@ -5,7 +5,7 @@ import '../../domain/entities/notification_preferences_entity.dart';
 part 'notification_state.freezed.dart';
 
 @freezed
-class NotificationState with _$NotificationState {
+abstract class NotificationState with _$NotificationState {
   const factory NotificationState.initial() = _Initial;
   const factory NotificationState.loading() = _Loading;
   const factory NotificationState.loaded(

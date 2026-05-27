@@ -5,7 +5,7 @@ part 'friendship_status_result.g.dart';
 
 /// Result of checking friendship status with a specific user
 @freezed
-class FriendshipStatusResult with _$FriendshipStatusResult {
+abstract class FriendshipStatusResult with _$FriendshipStatusResult {
   const factory FriendshipStatusResult({
     required bool isFriend,
     required bool hasPendingRequest,

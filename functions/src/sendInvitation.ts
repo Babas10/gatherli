@@ -206,22 +206,44 @@ async function sendGameInvitation(
     );
   }
 
-  // Shared-group trust boundary
-  const callerGroupsSnap = await db
-    .collection("groups")
-    .where("memberIds", "array-contains", callerId)
-    .get();
+  // Trust boundary — group games require a shared group; pickup games require friendship OR
+  // a shared group (InviteeSelectionBloc shows both friends and group members as candidates).
+  const isPickupGame = !game.groupId;
+  if (isPickupGame) {
+    const [areFriends, callerGroupsSnap] = await Promise.all([
+      checkFriendship(callerId, invitedUserId),
+      db.collection("groups").where("memberIds", "array-contains", callerId).get(),
+    ]);
 
-  const sharedGroup = callerGroupsSnap.docs.find((doc) => {
-    const members: string[] = doc.data().memberIds ?? [];
-    return members.includes(invitedUserId);
-  });
+    const hasSharedGroup = callerGroupsSnap.docs.some((doc) => {
+      const members: string[] = doc.data().memberIds ?? [];
+      return members.includes(invitedUserId);
+    });
 
-  if (!sharedGroup) {
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "You can only invite players who share at least one group with you"
-    );
+    if (!areFriends && !hasSharedGroup) {
+      throw new functions.https.HttpsError(
+        "permission-denied",
+        "You can only invite friends or group members to a pickup game"
+      );
+    }
+  } else {
+    // Group game: invitee must share at least one group with the creator.
+    const callerGroupsSnap = await db
+      .collection("groups")
+      .where("memberIds", "array-contains", callerId)
+      .get();
+
+    const sharedGroup = callerGroupsSnap.docs.find((doc) => {
+      const members: string[] = doc.data().memberIds ?? [];
+      return members.includes(invitedUserId);
+    });
+
+    if (!sharedGroup) {
+      throw new functions.https.HttpsError(
+        "permission-denied",
+        "You can only invite players who share at least one group with you"
+      );
+    }
   }
 
   // Atomic write: create invitation + update pendingInviteeIds on game

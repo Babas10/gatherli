@@ -59,6 +59,8 @@ import 'package:play_with_me/features/training/presentation/pages/training_sessi
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
+import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
+import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class PlayWithMeApp extends StatelessWidget {
@@ -515,6 +517,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 );
               },
             ),
+        floatingActionButton: _selectedIndex == 0
+            ? FloatingActionButton(
+                heroTag: 'pickup_game_fab',
+                onPressed: () {
+                  final groupState = _groupBloc.state;
+                  final userGroups = groupState is GroupsLoaded
+                      ? {for (final g in groupState.groups) g.id: g.name}
+                      : <String, String>{};
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider<AuthenticationBloc>.value(
+                        value: context.read<AuthenticationBloc>(),
+                        child: PickupGameCreationPage(userGroups: userGroups),
+                      ),
+                    ),
+                  );
+                },
+                backgroundColor: AppColors.secondary,
+                tooltip: AppLocalizations.of(context)!.createPickupGame,
+                child: const Icon(Icons.flash_on, color: Colors.white),
+              )
+            : null,
       ),
     );
   }

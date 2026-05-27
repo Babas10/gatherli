@@ -6,19 +6,18 @@ part of 'user_ranking.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserRankingImpl _$$UserRankingImplFromJson(Map<String, dynamic> json) =>
-    _$UserRankingImpl(
-      globalRank: (json['globalRank'] as num).toInt(),
-      totalUsers: (json['totalUsers'] as num).toInt(),
-      percentile: (json['percentile'] as num).toDouble(),
-      friendsRank: (json['friendsRank'] as num?)?.toInt(),
-      totalFriends: (json['totalFriends'] as num?)?.toInt(),
-      calculatedAt: const TimestampConverter().fromJson(
-        json['calculatedAt'] as Object,
-      ),
-    );
+_UserRanking _$UserRankingFromJson(Map<String, dynamic> json) => _UserRanking(
+  globalRank: (json['globalRank'] as num).toInt(),
+  totalUsers: (json['totalUsers'] as num).toInt(),
+  percentile: (json['percentile'] as num).toDouble(),
+  friendsRank: (json['friendsRank'] as num?)?.toInt(),
+  totalFriends: (json['totalFriends'] as num?)?.toInt(),
+  calculatedAt: const TimestampConverter().fromJson(
+    json['calculatedAt'] as Object,
+  ),
+);
 
-Map<String, dynamic> _$$UserRankingImplToJson(_$UserRankingImpl instance) =>
+Map<String, dynamic> _$UserRankingToJson(_UserRanking instance) =>
     <String, dynamic>{
       'globalRank': instance.globalRank,
       'totalUsers': instance.totalUsers,

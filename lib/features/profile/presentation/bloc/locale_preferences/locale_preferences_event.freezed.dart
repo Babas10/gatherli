@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,862 +9,486 @@ part of 'locale_preferences_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$LocalePreferencesEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LocalePreferencesEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'LocalePreferencesEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $LocalePreferencesEventCopyWith<$Res> {
-  factory $LocalePreferencesEventCopyWith(
-    LocalePreferencesEvent value,
-    $Res Function(LocalePreferencesEvent) then,
-  ) = _$LocalePreferencesEventCopyWithImpl<$Res, LocalePreferencesEvent>;
+class $LocalePreferencesEventCopyWith<$Res>  {
+$LocalePreferencesEventCopyWith(LocalePreferencesEvent _, $Res Function(LocalePreferencesEvent) __);
 }
 
-/// @nodoc
-class _$LocalePreferencesEventCopyWithImpl<
-  $Res,
-  $Val extends LocalePreferencesEvent
->
-    implements $LocalePreferencesEventCopyWith<$Res> {
-  _$LocalePreferencesEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [LocalePreferencesEvent].
+extension LocalePreferencesEventPatterns on LocalePreferencesEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadPreferences value)?  loadPreferences,TResult Function( UpdateLanguage value)?  updateLanguage,TResult Function( UpdateCountry value)?  updateCountry,TResult Function( SavePreferences value)?  savePreferences,TResult Function( LoadFromFirestore value)?  loadFromFirestore,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case LoadPreferences() when loadPreferences != null:
+return loadPreferences(_that);case UpdateLanguage() when updateLanguage != null:
+return updateLanguage(_that);case UpdateCountry() when updateCountry != null:
+return updateCountry(_that);case SavePreferences() when savePreferences != null:
+return savePreferences(_that);case LoadFromFirestore() when loadFromFirestore != null:
+return loadFromFirestore(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadPreferences value)  loadPreferences,required TResult Function( UpdateLanguage value)  updateLanguage,required TResult Function( UpdateCountry value)  updateCountry,required TResult Function( SavePreferences value)  savePreferences,required TResult Function( LoadFromFirestore value)  loadFromFirestore,}){
+final _that = this;
+switch (_that) {
+case LoadPreferences():
+return loadPreferences(_that);case UpdateLanguage():
+return updateLanguage(_that);case UpdateCountry():
+return updateCountry(_that);case SavePreferences():
+return savePreferences(_that);case LoadFromFirestore():
+return loadFromFirestore(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadPreferences value)?  loadPreferences,TResult? Function( UpdateLanguage value)?  updateLanguage,TResult? Function( UpdateCountry value)?  updateCountry,TResult? Function( SavePreferences value)?  savePreferences,TResult? Function( LoadFromFirestore value)?  loadFromFirestore,}){
+final _that = this;
+switch (_that) {
+case LoadPreferences() when loadPreferences != null:
+return loadPreferences(_that);case UpdateLanguage() when updateLanguage != null:
+return updateLanguage(_that);case UpdateCountry() when updateCountry != null:
+return updateCountry(_that);case SavePreferences() when savePreferences != null:
+return savePreferences(_that);case LoadFromFirestore() when loadFromFirestore != null:
+return loadFromFirestore(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadPreferences,TResult Function( Locale locale)?  updateLanguage,TResult Function( String country)?  updateCountry,TResult Function( String userId)?  savePreferences,TResult Function( String userId)?  loadFromFirestore,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case LoadPreferences() when loadPreferences != null:
+return loadPreferences();case UpdateLanguage() when updateLanguage != null:
+return updateLanguage(_that.locale);case UpdateCountry() when updateCountry != null:
+return updateCountry(_that.country);case SavePreferences() when savePreferences != null:
+return savePreferences(_that.userId);case LoadFromFirestore() when loadFromFirestore != null:
+return loadFromFirestore(_that.userId);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadPreferences,required TResult Function( Locale locale)  updateLanguage,required TResult Function( String country)  updateCountry,required TResult Function( String userId)  savePreferences,required TResult Function( String userId)  loadFromFirestore,}) {final _that = this;
+switch (_that) {
+case LoadPreferences():
+return loadPreferences();case UpdateLanguage():
+return updateLanguage(_that.locale);case UpdateCountry():
+return updateCountry(_that.country);case SavePreferences():
+return savePreferences(_that.userId);case LoadFromFirestore():
+return loadFromFirestore(_that.userId);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadPreferences,TResult? Function( Locale locale)?  updateLanguage,TResult? Function( String country)?  updateCountry,TResult? Function( String userId)?  savePreferences,TResult? Function( String userId)?  loadFromFirestore,}) {final _that = this;
+switch (_that) {
+case LoadPreferences() when loadPreferences != null:
+return loadPreferences();case UpdateLanguage() when updateLanguage != null:
+return updateLanguage(_that.locale);case UpdateCountry() when updateCountry != null:
+return updateCountry(_that.country);case SavePreferences() when savePreferences != null:
+return savePreferences(_that.userId);case LoadFromFirestore() when loadFromFirestore != null:
+return loadFromFirestore(_that.userId);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$LoadPreferencesImplCopyWith<$Res> {
-  factory _$$LoadPreferencesImplCopyWith(
-    _$LoadPreferencesImpl value,
-    $Res Function(_$LoadPreferencesImpl) then,
-  ) = __$$LoadPreferencesImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadPreferencesImplCopyWithImpl<$Res>
-    extends _$LocalePreferencesEventCopyWithImpl<$Res, _$LoadPreferencesImpl>
-    implements _$$LoadPreferencesImplCopyWith<$Res> {
-  __$$LoadPreferencesImplCopyWithImpl(
-    _$LoadPreferencesImpl _value,
-    $Res Function(_$LoadPreferencesImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$LoadPreferencesImpl implements LoadPreferences {
-  const _$LoadPreferencesImpl();
-
-  @override
-  String toString() {
-    return 'LocalePreferencesEvent.loadPreferences()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadPreferencesImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) {
-    return loadPreferences();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) {
-    return loadPreferences?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (loadPreferences != null) {
-      return loadPreferences();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) {
-    return loadPreferences(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) {
-    return loadPreferences?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (loadPreferences != null) {
-      return loadPreferences(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class LoadPreferences implements LocalePreferencesEvent {
-  const factory LoadPreferences() = _$LoadPreferencesImpl;
-}
-
-/// @nodoc
-abstract class _$$UpdateLanguageImplCopyWith<$Res> {
-  factory _$$UpdateLanguageImplCopyWith(
-    _$UpdateLanguageImpl value,
-    $Res Function(_$UpdateLanguageImpl) then,
-  ) = __$$UpdateLanguageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Locale locale});
-}
-
-/// @nodoc
-class __$$UpdateLanguageImplCopyWithImpl<$Res>
-    extends _$LocalePreferencesEventCopyWithImpl<$Res, _$UpdateLanguageImpl>
-    implements _$$UpdateLanguageImplCopyWith<$Res> {
-  __$$UpdateLanguageImplCopyWithImpl(
-    _$UpdateLanguageImpl _value,
-    $Res Function(_$UpdateLanguageImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? locale = null}) {
-    return _then(
-      _$UpdateLanguageImpl(
-        null == locale
-            ? _value.locale
-            : locale // ignore: cast_nullable_to_non_nullable
-                  as Locale,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$UpdateLanguageImpl implements UpdateLanguage {
-  const _$UpdateLanguageImpl(this.locale);
 
-  @override
-  final Locale locale;
+class LoadPreferences implements LocalePreferencesEvent {
+  const LoadPreferences();
+  
 
-  @override
-  String toString() {
-    return 'LocalePreferencesEvent.updateLanguage(locale: $locale)';
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdateLanguageImpl &&
-            (identical(other.locale, locale) || other.locale == locale));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, locale);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateLanguageImplCopyWith<_$UpdateLanguageImpl> get copyWith =>
-      __$$UpdateLanguageImplCopyWithImpl<_$UpdateLanguageImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) {
-    return updateLanguage(locale);
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) {
-    return updateLanguage?.call(locale);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (updateLanguage != null) {
-      return updateLanguage(locale);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) {
-    return updateLanguage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) {
-    return updateLanguage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (updateLanguage != null) {
-      return updateLanguage(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadPreferences);
 }
 
-abstract class UpdateLanguage implements LocalePreferencesEvent {
-  const factory UpdateLanguage(final Locale locale) = _$UpdateLanguageImpl;
 
-  Locale get locale;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UpdateLanguageImplCopyWith<_$UpdateLanguageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'LocalePreferencesEvent.loadPreferences()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class UpdateLanguage implements LocalePreferencesEvent {
+  const UpdateLanguage(this.locale);
+  
+
+ final  Locale locale;
+
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UpdateLanguageCopyWith<UpdateLanguage> get copyWith => _$UpdateLanguageCopyWithImpl<UpdateLanguage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateLanguage&&(identical(other.locale, locale) || other.locale == locale));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,locale);
+
+@override
+String toString() {
+  return 'LocalePreferencesEvent.updateLanguage(locale: $locale)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$UpdateCountryImplCopyWith<$Res> {
-  factory _$$UpdateCountryImplCopyWith(
-    _$UpdateCountryImpl value,
-    $Res Function(_$UpdateCountryImpl) then,
-  ) = __$$UpdateCountryImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String country});
+abstract mixin class $UpdateLanguageCopyWith<$Res> implements $LocalePreferencesEventCopyWith<$Res> {
+  factory $UpdateLanguageCopyWith(UpdateLanguage value, $Res Function(UpdateLanguage) _then) = _$UpdateLanguageCopyWithImpl;
+@useResult
+$Res call({
+ Locale locale
+});
+
+
+
+
+}
+/// @nodoc
+class _$UpdateLanguageCopyWithImpl<$Res>
+    implements $UpdateLanguageCopyWith<$Res> {
+  _$UpdateLanguageCopyWithImpl(this._self, this._then);
+
+  final UpdateLanguage _self;
+  final $Res Function(UpdateLanguage) _then;
+
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? locale = null,}) {
+  return _then(UpdateLanguage(
+null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
+as Locale,
+  ));
 }
 
-/// @nodoc
-class __$$UpdateCountryImplCopyWithImpl<$Res>
-    extends _$LocalePreferencesEventCopyWithImpl<$Res, _$UpdateCountryImpl>
-    implements _$$UpdateCountryImplCopyWith<$Res> {
-  __$$UpdateCountryImplCopyWithImpl(
-    _$UpdateCountryImpl _value,
-    $Res Function(_$UpdateCountryImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? country = null}) {
-    return _then(
-      _$UpdateCountryImpl(
-        null == country
-            ? _value.country
-            : country // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$UpdateCountryImpl implements UpdateCountry {
-  const _$UpdateCountryImpl(this.country);
 
-  @override
-  final String country;
+class UpdateCountry implements LocalePreferencesEvent {
+  const UpdateCountry(this.country);
+  
 
-  @override
-  String toString() {
-    return 'LocalePreferencesEvent.updateCountry(country: $country)';
-  }
+ final  String country;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdateCountryImpl &&
-            (identical(other.country, country) || other.country == country));
-  }
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UpdateCountryCopyWith<UpdateCountry> get copyWith => _$UpdateCountryCopyWithImpl<UpdateCountry>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, country);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateCountryImplCopyWith<_$UpdateCountryImpl> get copyWith =>
-      __$$UpdateCountryImplCopyWithImpl<_$UpdateCountryImpl>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) {
-    return updateCountry(country);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) {
-    return updateCountry?.call(country);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (updateCountry != null) {
-      return updateCountry(country);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) {
-    return updateCountry(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) {
-    return updateCountry?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (updateCountry != null) {
-      return updateCountry(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateCountry&&(identical(other.country, country) || other.country == country));
 }
 
-abstract class UpdateCountry implements LocalePreferencesEvent {
-  const factory UpdateCountry(final String country) = _$UpdateCountryImpl;
 
-  String get country;
+@override
+int get hashCode => Object.hash(runtimeType,country);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UpdateCountryImplCopyWith<_$UpdateCountryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'LocalePreferencesEvent.updateCountry(country: $country)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$SavePreferencesImplCopyWith<$Res> {
-  factory _$$SavePreferencesImplCopyWith(
-    _$SavePreferencesImpl value,
-    $Res Function(_$SavePreferencesImpl) then,
-  ) = __$$SavePreferencesImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String userId});
+abstract mixin class $UpdateCountryCopyWith<$Res> implements $LocalePreferencesEventCopyWith<$Res> {
+  factory $UpdateCountryCopyWith(UpdateCountry value, $Res Function(UpdateCountry) _then) = _$UpdateCountryCopyWithImpl;
+@useResult
+$Res call({
+ String country
+});
+
+
+
+
+}
+/// @nodoc
+class _$UpdateCountryCopyWithImpl<$Res>
+    implements $UpdateCountryCopyWith<$Res> {
+  _$UpdateCountryCopyWithImpl(this._self, this._then);
+
+  final UpdateCountry _self;
+  final $Res Function(UpdateCountry) _then;
+
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? country = null,}) {
+  return _then(UpdateCountry(
+null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-class __$$SavePreferencesImplCopyWithImpl<$Res>
-    extends _$LocalePreferencesEventCopyWithImpl<$Res, _$SavePreferencesImpl>
-    implements _$$SavePreferencesImplCopyWith<$Res> {
-  __$$SavePreferencesImplCopyWithImpl(
-    _$SavePreferencesImpl _value,
-    $Res Function(_$SavePreferencesImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? userId = null}) {
-    return _then(
-      _$SavePreferencesImpl(
-        null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$SavePreferencesImpl implements SavePreferences {
-  const _$SavePreferencesImpl(this.userId);
 
-  @override
-  final String userId;
+class SavePreferences implements LocalePreferencesEvent {
+  const SavePreferences(this.userId);
+  
 
-  @override
-  String toString() {
-    return 'LocalePreferencesEvent.savePreferences(userId: $userId)';
-  }
+ final  String userId;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SavePreferencesImpl &&
-            (identical(other.userId, userId) || other.userId == userId));
-  }
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SavePreferencesCopyWith<SavePreferences> get copyWith => _$SavePreferencesCopyWithImpl<SavePreferences>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, userId);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SavePreferencesImplCopyWith<_$SavePreferencesImpl> get copyWith =>
-      __$$SavePreferencesImplCopyWithImpl<_$SavePreferencesImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) {
-    return savePreferences(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) {
-    return savePreferences?.call(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (savePreferences != null) {
-      return savePreferences(userId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) {
-    return savePreferences(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) {
-    return savePreferences?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (savePreferences != null) {
-      return savePreferences(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SavePreferences&&(identical(other.userId, userId) || other.userId == userId));
 }
 
-abstract class SavePreferences implements LocalePreferencesEvent {
-  const factory SavePreferences(final String userId) = _$SavePreferencesImpl;
 
-  String get userId;
+@override
+int get hashCode => Object.hash(runtimeType,userId);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SavePreferencesImplCopyWith<_$SavePreferencesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'LocalePreferencesEvent.savePreferences(userId: $userId)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$LoadFromFirestoreImplCopyWith<$Res> {
-  factory _$$LoadFromFirestoreImplCopyWith(
-    _$LoadFromFirestoreImpl value,
-    $Res Function(_$LoadFromFirestoreImpl) then,
-  ) = __$$LoadFromFirestoreImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String userId});
+abstract mixin class $SavePreferencesCopyWith<$Res> implements $LocalePreferencesEventCopyWith<$Res> {
+  factory $SavePreferencesCopyWith(SavePreferences value, $Res Function(SavePreferences) _then) = _$SavePreferencesCopyWithImpl;
+@useResult
+$Res call({
+ String userId
+});
+
+
+
+
+}
+/// @nodoc
+class _$SavePreferencesCopyWithImpl<$Res>
+    implements $SavePreferencesCopyWith<$Res> {
+  _$SavePreferencesCopyWithImpl(this._self, this._then);
+
+  final SavePreferences _self;
+  final $Res Function(SavePreferences) _then;
+
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
+  return _then(SavePreferences(
+null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-class __$$LoadFromFirestoreImplCopyWithImpl<$Res>
-    extends _$LocalePreferencesEventCopyWithImpl<$Res, _$LoadFromFirestoreImpl>
-    implements _$$LoadFromFirestoreImplCopyWith<$Res> {
-  __$$LoadFromFirestoreImplCopyWithImpl(
-    _$LoadFromFirestoreImpl _value,
-    $Res Function(_$LoadFromFirestoreImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? userId = null}) {
-    return _then(
-      _$LoadFromFirestoreImpl(
-        null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$LoadFromFirestoreImpl implements LoadFromFirestore {
-  const _$LoadFromFirestoreImpl(this.userId);
 
-  @override
-  final String userId;
+class LoadFromFirestore implements LocalePreferencesEvent {
+  const LoadFromFirestore(this.userId);
+  
 
-  @override
-  String toString() {
-    return 'LocalePreferencesEvent.loadFromFirestore(userId: $userId)';
-  }
+ final  String userId;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadFromFirestoreImpl &&
-            (identical(other.userId, userId) || other.userId == userId));
-  }
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadFromFirestoreCopyWith<LoadFromFirestore> get copyWith => _$LoadFromFirestoreCopyWithImpl<LoadFromFirestore>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, userId);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadFromFirestoreImplCopyWith<_$LoadFromFirestoreImpl> get copyWith =>
-      __$$LoadFromFirestoreImplCopyWithImpl<_$LoadFromFirestoreImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPreferences,
-    required TResult Function(Locale locale) updateLanguage,
-    required TResult Function(String country) updateCountry,
-    required TResult Function(String userId) savePreferences,
-    required TResult Function(String userId) loadFromFirestore,
-  }) {
-    return loadFromFirestore(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadPreferences,
-    TResult? Function(Locale locale)? updateLanguage,
-    TResult? Function(String country)? updateCountry,
-    TResult? Function(String userId)? savePreferences,
-    TResult? Function(String userId)? loadFromFirestore,
-  }) {
-    return loadFromFirestore?.call(userId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPreferences,
-    TResult Function(Locale locale)? updateLanguage,
-    TResult Function(String country)? updateCountry,
-    TResult Function(String userId)? savePreferences,
-    TResult Function(String userId)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (loadFromFirestore != null) {
-      return loadFromFirestore(userId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadPreferences value) loadPreferences,
-    required TResult Function(UpdateLanguage value) updateLanguage,
-    required TResult Function(UpdateCountry value) updateCountry,
-    required TResult Function(SavePreferences value) savePreferences,
-    required TResult Function(LoadFromFirestore value) loadFromFirestore,
-  }) {
-    return loadFromFirestore(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoadPreferences value)? loadPreferences,
-    TResult? Function(UpdateLanguage value)? updateLanguage,
-    TResult? Function(UpdateCountry value)? updateCountry,
-    TResult? Function(SavePreferences value)? savePreferences,
-    TResult? Function(LoadFromFirestore value)? loadFromFirestore,
-  }) {
-    return loadFromFirestore?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadPreferences value)? loadPreferences,
-    TResult Function(UpdateLanguage value)? updateLanguage,
-    TResult Function(UpdateCountry value)? updateCountry,
-    TResult Function(SavePreferences value)? savePreferences,
-    TResult Function(LoadFromFirestore value)? loadFromFirestore,
-    required TResult orElse(),
-  }) {
-    if (loadFromFirestore != null) {
-      return loadFromFirestore(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadFromFirestore&&(identical(other.userId, userId) || other.userId == userId));
 }
 
-abstract class LoadFromFirestore implements LocalePreferencesEvent {
-  const factory LoadFromFirestore(final String userId) =
-      _$LoadFromFirestoreImpl;
 
-  String get userId;
+@override
+int get hashCode => Object.hash(runtimeType,userId);
 
-  /// Create a copy of LocalePreferencesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoadFromFirestoreImplCopyWith<_$LoadFromFirestoreImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'LocalePreferencesEvent.loadFromFirestore(userId: $userId)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class $LoadFromFirestoreCopyWith<$Res> implements $LocalePreferencesEventCopyWith<$Res> {
+  factory $LoadFromFirestoreCopyWith(LoadFromFirestore value, $Res Function(LoadFromFirestore) _then) = _$LoadFromFirestoreCopyWithImpl;
+@useResult
+$Res call({
+ String userId
+});
+
+
+
+
+}
+/// @nodoc
+class _$LoadFromFirestoreCopyWithImpl<$Res>
+    implements $LoadFromFirestoreCopyWith<$Res> {
+  _$LoadFromFirestoreCopyWithImpl(this._self, this._then);
+
+  final LoadFromFirestore _self;
+  final $Res Function(LoadFromFirestore) _then;
+
+/// Create a copy of LocalePreferencesEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
+  return _then(LoadFromFirestore(
+null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

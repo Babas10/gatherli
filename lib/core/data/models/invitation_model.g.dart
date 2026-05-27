@@ -6,9 +6,9 @@ part of 'invitation_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InvitationModelImpl _$$InvitationModelImplFromJson(
+_InvitationModel _$InvitationModelFromJson(
   Map<String, dynamic> json,
-) => _$InvitationModelImpl(
+) => _InvitationModel(
   id: json['id'] as String,
   type:
       $enumDecodeNullable(_$InvitationTypeEnumMap, json['type']) ??
@@ -32,8 +32,8 @@ _$InvitationModelImpl _$$InvitationModelImplFromJson(
   gameLocationName: json['gameLocationName'] as String?,
 );
 
-Map<String, dynamic> _$$InvitationModelImplToJson(
-  _$InvitationModelImpl instance,
+Map<String, dynamic> _$InvitationModelToJson(
+  _InvitationModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'type': _$InvitationTypeEnumMap[instance.type]!,

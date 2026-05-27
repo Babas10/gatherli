@@ -2050,4 +2050,59 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get chatJoinToView => 'Devi unirti alla partita per vedere la chat';
+
+  @override
+  String get createPickupGame => 'Crea partita al volo';
+
+  @override
+  String get pickupGame => 'Partita al volo';
+
+  @override
+  String get gameDetailsStep => 'Dettagli del gioco';
+
+  @override
+  String get invitePlayersStep => 'Invita giocatori';
+
+  @override
+  String get invitePlayersFromCommunity =>
+      'Invita giocatori dalla tua comunità o dai tuoi gruppi';
+
+  @override
+  String get noGroupsToInvite => 'Non appartieni ancora a nessun gruppo';
+
+  @override
+  String get noUsersToInvite => 'Nessun giocatore disponibile da invitare';
+
+  @override
+  String get skipInvitations => 'Salta';
+
+  @override
+  String get createAndInvite => 'Crea e invita';
+
+  @override
+  String get invitationsSentSuccess => 'Inviti inviati!';
+
+  @override
+  String get pickupGameCreatedSuccess => 'Partita al volo creata con successo!';
+
+  @override
+  String get groupMembersSection => 'Membri del gruppo';
+
+  @override
+  String get friendsSection => 'Amici';
+
+  @override
+  String selectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count giocatori selezionati',
+      one: '1 giocatore selezionato',
+      zero: 'Nessun giocatore selezionato',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get next => 'Avanti';
 }

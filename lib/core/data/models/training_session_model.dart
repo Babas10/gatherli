@@ -15,7 +15,7 @@ part 'training_session_model.g.dart';
 /// Since Story 31.5, groupId is nullable: group sessions set it, standalone
 /// practice sessions (pickup/championship) leave it null.
 @freezed
-class TrainingSessionModel with _$TrainingSessionModel {
+abstract class TrainingSessionModel with _$TrainingSessionModel {
   const factory TrainingSessionModel({
     required String id,
     // Nullable since Story 31.5: group sessions set this; standalone sessions leave it null.

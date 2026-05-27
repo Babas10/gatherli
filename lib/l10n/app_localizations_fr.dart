@@ -2073,4 +2073,60 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get chatJoinToView =>
       'Vous devez rejoindre la partie pour voir le chat';
+
+  @override
+  String get createPickupGame => 'Créer une partie improvisée';
+
+  @override
+  String get pickupGame => 'Partie improvisée';
+
+  @override
+  String get gameDetailsStep => 'Détails du jeu';
+
+  @override
+  String get invitePlayersStep => 'Inviter des joueurs';
+
+  @override
+  String get invitePlayersFromCommunity =>
+      'Invitez des joueurs de votre communauté ou de vos groupes';
+
+  @override
+  String get noGroupsToInvite => 'Vous n\'appartenez encore à aucun groupe';
+
+  @override
+  String get noUsersToInvite => 'Aucun joueur disponible à inviter';
+
+  @override
+  String get skipInvitations => 'Passer';
+
+  @override
+  String get createAndInvite => 'Créer et inviter';
+
+  @override
+  String get invitationsSentSuccess => 'Invitations envoyées !';
+
+  @override
+  String get pickupGameCreatedSuccess =>
+      'Partie improvisée créée avec succès !';
+
+  @override
+  String get groupMembersSection => 'Membres du groupe';
+
+  @override
+  String get friendsSection => 'Amis';
+
+  @override
+  String selectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count joueurs sélectionnés',
+      one: '1 joueur sélectionné',
+      zero: 'Aucun joueur sélectionné',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get next => 'Suivant';
 }

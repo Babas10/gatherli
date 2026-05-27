@@ -717,5 +717,44 @@
   "chatPlayersOnly": "Solo los jugadores pueden enviar mensajes",
   "@chatPlayersOnly": {},
   "chatJoinToView": "Debes unirte al juego para ver el chat",
-  "@chatJoinToView": {}
+  "@chatJoinToView": {},
+
+  "createPickupGame": "Crear partido informal",
+  "@createPickupGame": {},
+  "pickupGame": "Partido informal",
+  "@pickupGame": {},
+  "gameDetailsStep": "Detalles del juego",
+  "@gameDetailsStep": {},
+  "invitePlayersStep": "Invitar jugadores",
+  "@invitePlayersStep": {},
+  "invitePlayersFromCommunity": "Invita jugadores de tu comunidad o grupos",
+  "@invitePlayersFromCommunity": {},
+  "noGroupsToInvite": "Aún no perteneces a ningún grupo",
+  "@noGroupsToInvite": {
+    "description": "Shown in Groups tab when user has no groups"
+  },
+  "noUsersToInvite": "No hay jugadores disponibles para invitar",
+  "@noUsersToInvite": {},
+  "skipInvitations": "Omitir",
+  "@skipInvitations": {},
+  "createAndInvite": "Crear e invitar",
+  "@createAndInvite": {},
+  "invitationsSentSuccess": "¡Invitaciones enviadas!",
+  "@invitationsSentSuccess": {},
+  "pickupGameCreatedSuccess": "¡Partido informal creado con éxito!",
+  "@pickupGameCreatedSuccess": {},
+  "groupMembersSection": "Miembros del grupo",
+  "@groupMembersSection": {},
+  "friendsSection": "Amigos",
+  "@friendsSection": {},
+  "selectedCount": "{count, plural, =0{Ningún jugador seleccionado} =1{1 jugador seleccionado} other{{count} jugadores seleccionados}}",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Siguiente",
+  "@next": {}
 }

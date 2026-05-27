@@ -717,5 +717,44 @@
   "chatPlayersOnly": "Seuls les joueurs peuvent envoyer des messages",
   "@chatPlayersOnly": {},
   "chatJoinToView": "Vous devez rejoindre la partie pour voir le chat",
-  "@chatJoinToView": {}
+  "@chatJoinToView": {},
+
+  "createPickupGame": "Créer une partie improvisée",
+  "@createPickupGame": {},
+  "pickupGame": "Partie improvisée",
+  "@pickupGame": {},
+  "gameDetailsStep": "Détails du jeu",
+  "@gameDetailsStep": {},
+  "invitePlayersStep": "Inviter des joueurs",
+  "@invitePlayersStep": {},
+  "invitePlayersFromCommunity": "Invitez des joueurs de votre communauté ou de vos groupes",
+  "@invitePlayersFromCommunity": {},
+  "noGroupsToInvite": "Vous n'appartenez encore à aucun groupe",
+  "@noGroupsToInvite": {
+    "description": "Shown in Groups tab when user has no groups"
+  },
+  "noUsersToInvite": "Aucun joueur disponible à inviter",
+  "@noUsersToInvite": {},
+  "skipInvitations": "Passer",
+  "@skipInvitations": {},
+  "createAndInvite": "Créer et inviter",
+  "@createAndInvite": {},
+  "invitationsSentSuccess": "Invitations envoyées !",
+  "@invitationsSentSuccess": {},
+  "pickupGameCreatedSuccess": "Partie improvisée créée avec succès !",
+  "@pickupGameCreatedSuccess": {},
+  "groupMembersSection": "Membres du groupe",
+  "@groupMembersSection": {},
+  "friendsSection": "Amis",
+  "@friendsSection": {},
+  "selectedCount": "{count, plural, =0{Aucun joueur sélectionné} =1{1 joueur sélectionné} other{{count} joueurs sélectionnés}}",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "next": "Suivant",
+  "@next": {}
 }

@@ -8,7 +8,7 @@ part 'user_ranking.g.dart';
 /// Represents a user's ranking information across global, percentile, and friends contexts (Story 302.2).
 /// Used to display ranking stats in the monthly improvement chart.
 @freezed
-class UserRanking with _$UserRanking {
+abstract class UserRanking with _$UserRanking {
   const factory UserRanking({
     /// User's position in global rankings (1 = highest rated)
     required int globalRank,

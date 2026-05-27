@@ -10,7 +10,7 @@ part 'exercise_model.g.dart';
 /// Exercises define specific drills or activities to be practiced during training
 /// They are stored as a subcollection under training sessions
 @freezed
-class ExerciseModel with _$ExerciseModel {
+abstract class ExerciseModel with _$ExerciseModel {
   const factory ExerciseModel({
     required String id,
     required String name,

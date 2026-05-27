@@ -4,7 +4,7 @@ import 'package:play_with_me/core/domain/entities/time_period.dart';
 part 'elo_history_event.freezed.dart';
 
 @freezed
-class EloHistoryEvent with _$EloHistoryEvent {
+abstract class EloHistoryEvent with _$EloHistoryEvent {
   const factory EloHistoryEvent.loadHistory({
     required String userId,
     @Default(100) int limit,

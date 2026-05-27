@@ -8,7 +8,7 @@ part 'head_to_head_stats.g.dart';
 /// Head-to-head statistics between two players (when on opposing teams).
 /// Tracks rivalry/matchup performance for competitive analysis.
 @freezed
-class HeadToHeadStats with _$HeadToHeadStats {
+abstract class HeadToHeadStats with _$HeadToHeadStats {
   const factory HeadToHeadStats({
     /// Primary user ID (the user viewing these stats)
     required String userId,
@@ -159,7 +159,7 @@ class HeadToHeadStats with _$HeadToHeadStats {
 
 /// Represents a single head-to-head matchup result.
 @freezed
-class HeadToHeadGameResult with _$HeadToHeadGameResult {
+abstract class HeadToHeadGameResult with _$HeadToHeadGameResult {
   const factory HeadToHeadGameResult({
     /// Reference to the game
     required String gameId,

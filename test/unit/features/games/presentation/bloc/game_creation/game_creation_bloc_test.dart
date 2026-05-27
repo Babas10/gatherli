@@ -5,6 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import 'package:play_with_me/core/data/models/activity_context_type.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_bloc.dart';
@@ -617,6 +618,68 @@ void main() {
         ),
         act: (bloc) => bloc.add(const ResetForm()),
         expect: () => [const GameCreationFormState()],
+      );
+    });
+
+    group('Pickup Game (SetContextType)', () {
+      blocTest<GameCreationBloc, GameCreationState>(
+        'SetContextType.pickup clears groupError and skips group validation',
+        build: () => gameCreationBloc,
+        act: (bloc) => bloc.add(
+          const SetContextType(contextType: ActivityContextType.pickup),
+        ),
+        expect: () => [
+          isA<GameCreationFormState>()
+              .having((s) => s.contextType, 'contextType',
+                  ActivityContextType.pickup)
+              .having((s) => s.groupError, 'groupError', isNull),
+        ],
+      );
+
+      blocTest<GameCreationBloc, GameCreationState>(
+        'form is valid without groupId when contextType is pickup',
+        build: () => gameCreationBloc,
+        seed: () => GameCreationFormState(
+          contextType: ActivityContextType.pickup,
+          dateTime: DateTime.now().add(const Duration(days: 1)),
+          locationName: 'Beach Court',
+          title: 'Pickup Volleyball',
+          isValid: false,
+        ),
+        act: (bloc) => bloc.add(const ValidateForm()),
+        expect: () => [
+          isA<GameCreationFormState>()
+              .having((s) => s.isValid, 'isValid', isTrue)
+              .having((s) => s.groupError, 'groupError', isNull),
+        ],
+      );
+
+      blocTest<GameCreationBloc, GameCreationState>(
+        'SubmitGame with pickup context passes null groupId to repository',
+        build: () {
+          when(
+            () => mockGameRepository.createGame(any()),
+          ).thenAnswer((_) async => 'pickup-game-123');
+          return gameCreationBloc;
+        },
+        seed: () => GameCreationFormState(
+          contextType: ActivityContextType.pickup,
+          dateTime: DateTime.now().add(const Duration(days: 1)),
+          locationName: 'Beach Court',
+          title: 'Pickup Volleyball',
+          maxPlayers: 4,
+          minPlayers: 2,
+          isValid: true,
+        ),
+        act: (bloc) => bloc.add(const SubmitGame(createdBy: 'user-abc')),
+        expect: () => [
+          const GameCreationSubmitting(),
+          isA<GameCreationSuccess>()
+              .having((s) => s.gameId, 'gameId', equals('pickup-game-123'))
+              .having((s) => s.game.groupId, 'game.groupId', isNull)
+              .having((s) => s.game.contextType, 'game.contextType',
+                  ActivityContextType.pickup),
+        ],
       );
     });
   });

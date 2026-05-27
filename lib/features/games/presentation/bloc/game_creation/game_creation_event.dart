@@ -1,10 +1,21 @@
 // Validates GameCreationBloc events for managing game creation form state.
 
+import '../../../../../core/data/models/activity_context_type.dart';
 import '../../../../../core/data/models/game_model.dart';
 import '../../../../../core/presentation/bloc/base_bloc_event.dart';
 
 abstract class GameCreationEvent extends BaseBlocEvent {
   const GameCreationEvent();
+}
+
+/// Event to set the activity context type (group, pickup, championship)
+class SetContextType extends GameCreationEvent {
+  final ActivityContextType contextType;
+
+  const SetContextType({required this.contextType});
+
+  @override
+  List<Object?> get props => [contextType];
 }
 
 /// Event to select a group for the game
