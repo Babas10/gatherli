@@ -390,6 +390,57 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // ============================================
+    // Championships (Epic 30)
+    // ============================================
+    // Championships are independent of Groups and visible to all authenticated users.
+    // All mutations (except match messages) go through Cloud Functions (Admin SDK).
+
+    match /championships/{championshipId} {
+      // Any authenticated user can read championship documents.
+      allow get, list: if isAuthenticated();
+
+      // All writes via Cloud Functions only.
+      allow create, update, delete: if false;
+
+      // Teams subcollection — readable by anyone authenticated;
+      // writes via createChampionshipTeam / leaveChampionshipTeam Cloud Functions.
+      match /teams/{teamId} {
+        allow get, list: if isAuthenticated();
+        allow create, update, delete: if false;
+      }
+
+      // Matches subcollection — readable by anyone authenticated;
+      // writes (result submission, schedule, admin decision) via Cloud Functions.
+      match /matches/{matchId} {
+        allow get, list: if isAuthenticated();
+        allow create, update, delete: if false;
+
+        // Per-match coordination chat — direct writes allowed for team members.
+        match /messages/{messageId} {
+          allow get, list: if isAuthenticated();
+
+          // Only members of teamA or teamB may send messages.
+          // senderId must equal the authenticated user.
+          allow create: if isAuthenticated() &&
+                           request.resource.data.senderId == request.auth.uid &&
+                           (
+                             request.auth.uid in get(/databases/$(database)/documents/championships/$(championshipId)/teams/$(get(/databases/$(database)/documents/championships/$(championshipId)/matches/$(matchId)).data.teamAId)).data.memberIds ||
+                             request.auth.uid in get(/databases/$(database)/documents/championships/$(championshipId)/teams/$(get(/databases/$(database)/documents/championships/$(championshipId)/matches/$(matchId)).data.teamBId)).data.memberIds
+                           );
+
+          allow update, delete: if false;
+        }
+      }
+
+      // Standings subcollection — readable by anyone authenticated;
+      // writes via onChampionshipMatchVerified trigger (Cloud Function).
+      match /standings/{teamId} {
+        allow get, list: if isAuthenticated();
+        allow create, update, delete: if false;
+      }
+    }
+
     // Deny all other access
     match /{document=**} {
       allow read, write: if false;
