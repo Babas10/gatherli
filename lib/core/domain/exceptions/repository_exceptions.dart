@@ -110,3 +110,14 @@ class MessageException implements Exception {
   @override
   String toString() => message;
 }
+
+/// Exception thrown by Championship repository operations.
+class ChampionshipException implements Exception {
+  final String message;
+  final String? code;
+
+  ChampionshipException(this.message, {this.code});
+
+  @override
+  String toString() => message;
+}
