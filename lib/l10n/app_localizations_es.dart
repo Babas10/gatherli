@@ -2078,7 +2078,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noGroupsToInvite => 'Aún no perteneces a ningún grupo';
 
   @override
-
   String get noUsersToInvite => 'No hay jugadores disponibles para invitar';
 
   @override
@@ -2113,4 +2112,75 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get next => 'Siguiente';
+
+  @override
+  String get championshipsTitle => 'Campeonatos';
+
+  @override
+  String get championshipOpenRegistration => 'Inscripción abierta';
+
+  @override
+  String championshipTeamsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count equipos inscritos',
+      one: '1 equipo inscrito',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipSlotsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count plazas restantes',
+      one: '1 plaza restante',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipDeadlineLabel(String date) {
+    return 'Plazo: $date';
+  }
+
+  @override
+  String get registerTeam => 'Inscribir equipo';
+
+  @override
+  String get leaveTeam => 'Abandonar equipo';
+
+  @override
+  String get leaveTeamConfirmTitle => '¿Abandonar equipo?';
+
+  @override
+  String get leaveTeamConfirmBody =>
+      'Tu equipo se eliminará y tu plaza quedará libre.';
+
+  @override
+  String get createTeamTitle => 'Crea tu equipo';
+
+  @override
+  String get teamNameLabel => 'Nombre del equipo';
+
+  @override
+  String get teamNameHint => 'p. ej. Beach Wolves';
+
+  @override
+  String get selectPartnerLabel => 'Elige a tu compañero/a';
+
+  @override
+  String get noFriendsForPartner =>
+      'Aún no tienes amigos para invitar. Añade amigos desde Mi comunidad primero.';
+
+  @override
+  String get teamRegisteredSuccess => '¡Equipo inscrito!';
+
+  @override
+  String get teamLeftSuccess => 'Has abandonado el equipo.';
+
+  @override
+  String get yourTeam => 'Tu equipo';
 }

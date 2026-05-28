@@ -756,5 +756,22 @@
     }
   },
   "next": "Suivant",
-  "@next": {}
+  "@next": {},
+  "championshipsTitle": "Championnats",
+  "championshipOpenRegistration": "Inscriptions ouvertes",
+  "championshipTeamsCount": "{count, plural, =1{1 \u00e9quipe inscrite} other{{count} \u00e9quipes inscrites}}",
+  "championshipSlotsLeft": "{count, plural, =1{1 place restante} other{{count} places restantes}}",
+  "championshipDeadlineLabel": "Date limite\u00a0: {date}",
+  "registerTeam": "Inscrire une \u00e9quipe",
+  "leaveTeam": "Quitter l'\u00e9quipe",
+  "leaveTeamConfirmTitle": "Quitter l'\u00e9quipe\u00a0?",
+  "leaveTeamConfirmBody": "Votre \u00e9quipe sera supprim\u00e9e et votre place lib\u00e9r\u00e9e.",
+  "createTeamTitle": "Cr\u00e9er votre \u00e9quipe",
+  "teamNameLabel": "Nom de l'\u00e9quipe",
+  "teamNameHint": "ex.\u00a0: Beach Wolves",
+  "selectPartnerLabel": "Choisir votre partenaire",
+  "noFriendsForPartner": "Vous n'avez pas encore d'amis \u00e0 inviter. Ajoutez des amis depuis Ma communaut\u00e9.",
+  "teamRegisteredSuccess": "\u00c9quipe inscrite\u00a0!",
+  "teamLeftSuccess": "Vous avez quitt\u00e9 l'\u00e9quipe.",
+  "yourTeam": "Votre \u00e9quipe"
 }

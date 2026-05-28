@@ -756,5 +756,22 @@
     }
   },
   "next": "Avanti",
-  "@next": {}
+  "@next": {},
+  "championshipsTitle": "Campionati",
+  "championshipOpenRegistration": "Iscrizioni aperte",
+  "championshipTeamsCount": "{count, plural, =1{1 squadra iscritta} other{{count} squadre iscritte}}",
+  "championshipSlotsLeft": "{count, plural, =1{1 posto rimasto} other{{count} posti rimasti}}",
+  "championshipDeadlineLabel": "Scadenza: {date}",
+  "registerTeam": "Iscriviti con la squadra",
+  "leaveTeam": "Lascia la squadra",
+  "leaveTeamConfirmTitle": "Lasciare la squadra?",
+  "leaveTeamConfirmBody": "La tua squadra verr\u00e0 eliminata e il posto liberato.",
+  "createTeamTitle": "Crea la tua squadra",
+  "teamNameLabel": "Nome della squadra",
+  "teamNameHint": "es. Beach Wolves",
+  "selectPartnerLabel": "Scegli il tuo partner",
+  "noFriendsForPartner": "Non hai ancora amici da invitare. Aggiungi amici dalla tua Community prima.",
+  "teamRegisteredSuccess": "Squadra iscritta!",
+  "teamLeftSuccess": "Hai lasciato la squadra.",
+  "yourTeam": "La tua squadra"
 }

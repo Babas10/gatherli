@@ -3812,7 +3812,6 @@ abstract class AppLocalizations {
   /// **'You don\'t belong to any groups yet'**
   String get noGroupsToInvite;
 
-
   /// Empty state when no friends or group members exist
   ///
   /// In en, this message translates to:
@@ -3866,6 +3865,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
+
+  /// Title for the championships list screen
+  ///
+  /// In en, this message translates to:
+  /// **'Championships'**
+  String get championshipsTitle;
+
+  /// Status label when a championship is accepting team registrations
+  ///
+  /// In en, this message translates to:
+  /// **'Open registration'**
+  String get championshipOpenRegistration;
+
+  /// Number of teams registered in a championship
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 team registered} other{{count} teams registered}}'**
+  String championshipTeamsCount(int count);
+
+  /// Number of registration slots remaining
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 slot left} other{{count} slots left}}'**
+  String championshipSlotsLeft(int count);
+
+  /// Registration deadline label
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {date}'**
+  String championshipDeadlineLabel(String date);
+
+  /// Button to open the team registration bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Register team'**
+  String get registerTeam;
+
+  /// Button to leave / delete the user's team
+  ///
+  /// In en, this message translates to:
+  /// **'Leave team'**
+  String get leaveTeam;
+
+  /// Confirmation dialog title when leaving a team
+  ///
+  /// In en, this message translates to:
+  /// **'Leave team?'**
+  String get leaveTeamConfirmTitle;
+
+  /// Confirmation dialog body when leaving a team
+  ///
+  /// In en, this message translates to:
+  /// **'Your team will be deleted and your slot will be freed.'**
+  String get leaveTeamConfirmBody;
+
+  /// Title of the create-team bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Create your team'**
+  String get createTeamTitle;
+
+  /// Label for the team name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Team name'**
+  String get teamNameLabel;
+
+  /// Hint text for the team name input
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Beach Wolves'**
+  String get teamNameHint;
+
+  /// Section header for the partner picker
+  ///
+  /// In en, this message translates to:
+  /// **'Select your partner'**
+  String get selectPartnerLabel;
+
+  /// Empty state when the user has no friends to pick as partner
+  ///
+  /// In en, this message translates to:
+  /// **'You have no friends to invite yet. Add friends from My Community first.'**
+  String get noFriendsForPartner;
+
+  /// Snackbar message after successfully registering a team
+  ///
+  /// In en, this message translates to:
+  /// **'Team registered!'**
+  String get teamRegisteredSuccess;
+
+  /// Snackbar message after successfully leaving a team
+  ///
+  /// In en, this message translates to:
+  /// **'You have left the team.'**
+  String get teamLeftSuccess;
+
+  /// Section header showing the user's registered team
+  ///
+  /// In en, this message translates to:
+  /// **'Your team'**
+  String get yourTeam;
 }
 
 class _AppLocalizationsDelegate

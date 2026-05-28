@@ -2071,7 +2071,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get noGroupsToInvite => 'Non appartieni ancora a nessun gruppo';
 
   @override
-
   String get noUsersToInvite => 'Nessun giocatore disponibile da invitare';
 
   @override
@@ -2106,4 +2105,75 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get next => 'Avanti';
+
+  @override
+  String get championshipsTitle => 'Campionati';
+
+  @override
+  String get championshipOpenRegistration => 'Iscrizioni aperte';
+
+  @override
+  String championshipTeamsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count squadre iscritte',
+      one: '1 squadra iscritta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipSlotsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count posti rimasti',
+      one: '1 posto rimasto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipDeadlineLabel(String date) {
+    return 'Scadenza: $date';
+  }
+
+  @override
+  String get registerTeam => 'Iscriviti con la squadra';
+
+  @override
+  String get leaveTeam => 'Lascia la squadra';
+
+  @override
+  String get leaveTeamConfirmTitle => 'Lasciare la squadra?';
+
+  @override
+  String get leaveTeamConfirmBody =>
+      'La tua squadra verrà eliminata e il posto liberato.';
+
+  @override
+  String get createTeamTitle => 'Crea la tua squadra';
+
+  @override
+  String get teamNameLabel => 'Nome della squadra';
+
+  @override
+  String get teamNameHint => 'es. Beach Wolves';
+
+  @override
+  String get selectPartnerLabel => 'Scegli il tuo partner';
+
+  @override
+  String get noFriendsForPartner =>
+      'Non hai ancora amici da invitare. Aggiungi amici dalla tua Community prima.';
+
+  @override
+  String get teamRegisteredSuccess => 'Squadra iscritta!';
+
+  @override
+  String get teamLeftSuccess => 'Hai lasciato la squadra.';
+
+  @override
+  String get yourTeam => 'La tua squadra';
 }
