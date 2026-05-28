@@ -3062,5 +3062,13 @@
   "teamLeftSuccess": "You have left the team.",
   "@teamLeftSuccess": {"description": "Snackbar message after successfully leaving a team"},
   "yourTeam": "Your team",
-  "@yourTeam": {"description": "Section header showing the user's registered team"}
+  "@yourTeam": {"description": "Section header showing the user's registered team"},
+  "matchChatTitle": "Match Chat",
+  "@matchChatTitle": {"description": "Title of the per-match coordination chat section"},
+  "matchChatCoordinationHint": "Coordinate date, time & location with the opposing team",
+  "@matchChatCoordinationHint": {"description": "Subtitle under the match chat title explaining its purpose"},
+  "matchChatNotMember": "Only team members can participate in this chat.",
+  "@matchChatNotMember": {"description": "Message shown to users who are not part of either team in the match"},
+  "matchChatEmpty": "No messages yet. Start coordinating with the opposing team!",
+  "@matchChatEmpty": {"description": "Empty state message in the match chat when no messages have been sent"}
 }

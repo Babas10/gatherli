@@ -2176,4 +2176,19 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get yourTeam => 'La tua squadra';
+
+  @override
+  String get matchChatTitle => 'Chat del match';
+
+  @override
+  String get matchChatCoordinationHint =>
+      'Coordinate data, ora e luogo con la squadra avversaria';
+
+  @override
+  String get matchChatNotMember =>
+      'Solo i membri delle squadre possono partecipare a questa chat.';
+
+  @override
+  String get matchChatEmpty =>
+      'Nessun messaggio ancora. Inizia a coordinare con la squadra avversaria!';
 }
