@@ -773,5 +773,9 @@
   "noFriendsForPartner": "Sie haben noch keine Freunde einzuladen. F\u00fcgen Sie zuerst Freunde aus Meine Community hinzu.",
   "teamRegisteredSuccess": "Team angemeldet!",
   "teamLeftSuccess": "Sie haben das Team verlassen.",
-  "yourTeam": "Ihr Team"
+  "yourTeam": "Ihr Team",
+  "matchChatTitle": "Match-Chat",
+  "matchChatCoordinationHint": "Koordiniert Datum, Uhrzeit und Ort mit dem gegnerischen Team",
+  "matchChatNotMember": "Nur Teammitglieder können an diesem Chat teilnehmen.",
+  "matchChatEmpty": "Noch keine Nachrichten. Beginnt die Koordination mit dem gegnerischen Team!"
 }

@@ -75,6 +75,7 @@ import 'package:play_with_me/features/championships/domain/repositories/champion
 import 'package:play_with_me/features/championships/data/repositories/firestore_championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/match_chat/match_chat_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -237,6 +238,12 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<PartnerPickerBloc>()) {
     sl.registerFactory<PartnerPickerBloc>(
       () => PartnerPickerBloc(friendRepository: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<MatchChatBloc>()) {
+    sl.registerFactory<MatchChatBloc>(
+      () => MatchChatBloc(messageRepository: sl()),
     );
   }
 

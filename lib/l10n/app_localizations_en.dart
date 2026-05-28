@@ -2155,4 +2155,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourTeam => 'Your team';
+
+  @override
+  String get matchChatTitle => 'Match Chat';
+
+  @override
+  String get matchChatCoordinationHint =>
+      'Coordinate date, time & location with the opposing team';
+
+  @override
+  String get matchChatNotMember =>
+      'Only team members can participate in this chat.';
+
+  @override
+  String get matchChatEmpty =>
+      'No messages yet. Start coordinating with the opposing team!';
 }

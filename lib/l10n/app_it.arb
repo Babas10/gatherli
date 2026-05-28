@@ -773,5 +773,9 @@
   "noFriendsForPartner": "Non hai ancora amici da invitare. Aggiungi amici dalla tua Community prima.",
   "teamRegisteredSuccess": "Squadra iscritta!",
   "teamLeftSuccess": "Hai lasciato la squadra.",
-  "yourTeam": "La tua squadra"
+  "yourTeam": "La tua squadra",
+  "matchChatTitle": "Chat del match",
+  "matchChatCoordinationHint": "Coordinate data, ora e luogo con la squadra avversaria",
+  "matchChatNotMember": "Solo i membri delle squadre possono partecipare a questa chat.",
+  "matchChatEmpty": "Nessun messaggio ancora. Inizia a coordinare con la squadra avversaria!"
 }

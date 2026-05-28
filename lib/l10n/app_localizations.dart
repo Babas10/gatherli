@@ -3967,6 +3967,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your team'**
   String get yourTeam;
+
+  /// Title of the per-match coordination chat section
+  ///
+  /// In en, this message translates to:
+  /// **'Match Chat'**
+  String get matchChatTitle;
+
+  /// Subtitle under the match chat title explaining its purpose
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinate date, time & location with the opposing team'**
+  String get matchChatCoordinationHint;
+
+  /// Message shown to users who are not part of either team in the match
+  ///
+  /// In en, this message translates to:
+  /// **'Only team members can participate in this chat.'**
+  String get matchChatNotMember;
+
+  /// Empty state message in the match chat when no messages have been sent
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet. Start coordinating with the opposing team!'**
+  String get matchChatEmpty;
 }
 
 class _AppLocalizationsDelegate
