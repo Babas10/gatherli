@@ -2050,7 +2050,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noGroupsToInvite => 'You don\'t belong to any groups yet';
 
   @override
-
   String get noUsersToInvite => 'No players available to invite';
 
   @override
@@ -2085,4 +2084,75 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get next => 'Next';
+
+  @override
+  String get championshipsTitle => 'Championships';
+
+  @override
+  String get championshipOpenRegistration => 'Open registration';
+
+  @override
+  String championshipTeamsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count teams registered',
+      one: '1 team registered',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipSlotsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count slots left',
+      one: '1 slot left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipDeadlineLabel(String date) {
+    return 'Deadline: $date';
+  }
+
+  @override
+  String get registerTeam => 'Register team';
+
+  @override
+  String get leaveTeam => 'Leave team';
+
+  @override
+  String get leaveTeamConfirmTitle => 'Leave team?';
+
+  @override
+  String get leaveTeamConfirmBody =>
+      'Your team will be deleted and your slot will be freed.';
+
+  @override
+  String get createTeamTitle => 'Create your team';
+
+  @override
+  String get teamNameLabel => 'Team name';
+
+  @override
+  String get teamNameHint => 'e.g. Beach Wolves';
+
+  @override
+  String get selectPartnerLabel => 'Select your partner';
+
+  @override
+  String get noFriendsForPartner =>
+      'You have no friends to invite yet. Add friends from My Community first.';
+
+  @override
+  String get teamRegisteredSuccess => 'Team registered!';
+
+  @override
+  String get teamLeftSuccess => 'You have left the team.';
+
+  @override
+  String get yourTeam => 'Your team';
 }

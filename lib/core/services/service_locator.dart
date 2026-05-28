@@ -71,6 +71,10 @@ import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dar
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
+import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/data/repositories/firestore_championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -211,6 +215,28 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<GroupInviteLinkRepository>()) {
     sl.registerLazySingleton<GroupInviteLinkRepository>(
       () => FirestoreGroupInviteLinkRepository(functions: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<ChampionshipRepository>()) {
+    sl.registerLazySingleton<ChampionshipRepository>(
+      () => FirestoreChampionshipRepository(
+        firestore: sl(),
+        functions: sl(),
+      ),
+    );
+  }
+
+  // Register championship BLoCs as factories (one instance per page)
+  if (!sl.isRegistered<TeamRegistrationBloc>()) {
+    sl.registerFactory<TeamRegistrationBloc>(
+      () => TeamRegistrationBloc(championshipRepository: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<PartnerPickerBloc>()) {
+    sl.registerFactory<PartnerPickerBloc>(
+      () => PartnerPickerBloc(friendRepository: sl()),
     );
   }
 

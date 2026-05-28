@@ -2094,7 +2094,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noGroupsToInvite => 'Vous n\'appartenez encore à aucun groupe';
 
   @override
-
   String get noUsersToInvite => 'Aucun joueur disponible à inviter';
 
   @override
@@ -2130,4 +2129,75 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get next => 'Suivant';
+
+  @override
+  String get championshipsTitle => 'Championnats';
+
+  @override
+  String get championshipOpenRegistration => 'Inscriptions ouvertes';
+
+  @override
+  String championshipTeamsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count équipes inscrites',
+      one: '1 équipe inscrite',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipSlotsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count places restantes',
+      one: '1 place restante',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipDeadlineLabel(String date) {
+    return 'Date limite : $date';
+  }
+
+  @override
+  String get registerTeam => 'Inscrire une équipe';
+
+  @override
+  String get leaveTeam => 'Quitter l\'équipe';
+
+  @override
+  String get leaveTeamConfirmTitle => 'Quitter l\'équipe ?';
+
+  @override
+  String get leaveTeamConfirmBody =>
+      'Votre équipe sera supprimée et votre place libérée.';
+
+  @override
+  String get createTeamTitle => 'Créer votre équipe';
+
+  @override
+  String get teamNameLabel => 'Nom de l\'équipe';
+
+  @override
+  String get teamNameHint => 'ex. : Beach Wolves';
+
+  @override
+  String get selectPartnerLabel => 'Choisir votre partenaire';
+
+  @override
+  String get noFriendsForPartner =>
+      'Vous n\'avez pas encore d\'amis à inviter. Ajoutez des amis depuis Ma communauté.';
+
+  @override
+  String get teamRegisteredSuccess => 'Équipe inscrite !';
+
+  @override
+  String get teamLeftSuccess => 'Vous avez quitté l\'équipe.';
+
+  @override
+  String get yourTeam => 'Votre équipe';
 }

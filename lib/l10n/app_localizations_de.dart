@@ -2089,7 +2089,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noGroupsToInvite => 'Sie gehören noch keiner Gruppe an';
 
   @override
-
   String get noUsersToInvite => 'Keine Spieler zum Einladen verfügbar';
 
   @override
@@ -2124,4 +2123,75 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get next => 'Weiter';
+
+  @override
+  String get championshipsTitle => 'Meisterschaften';
+
+  @override
+  String get championshipOpenRegistration => 'Anmeldung offen';
+
+  @override
+  String championshipTeamsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Teams angemeldet',
+      one: '1 Team angemeldet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipSlotsLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Plätze frei',
+      one: '1 Platz frei',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipDeadlineLabel(String date) {
+    return 'Frist: $date';
+  }
+
+  @override
+  String get registerTeam => 'Team anmelden';
+
+  @override
+  String get leaveTeam => 'Team verlassen';
+
+  @override
+  String get leaveTeamConfirmTitle => 'Team verlassen?';
+
+  @override
+  String get leaveTeamConfirmBody =>
+      'Ihr Team wird gelöscht und Ihr Platz freigegeben.';
+
+  @override
+  String get createTeamTitle => 'Team erstellen';
+
+  @override
+  String get teamNameLabel => 'Teamname';
+
+  @override
+  String get teamNameHint => 'z. B. Beach Wolves';
+
+  @override
+  String get selectPartnerLabel => 'Partner auswählen';
+
+  @override
+  String get noFriendsForPartner =>
+      'Sie haben noch keine Freunde einzuladen. Fügen Sie zuerst Freunde aus Meine Community hinzu.';
+
+  @override
+  String get teamRegisteredSuccess => 'Team angemeldet!';
+
+  @override
+  String get teamLeftSuccess => 'Sie haben das Team verlassen.';
+
+  @override
+  String get yourTeam => 'Ihr Team';
 }
