@@ -32,4 +32,12 @@ abstract class ChampionshipRepository {
     required String championshipId,
     required String teamId,
   });
+
+  /// Starts the championship and generates all round-robin fixtures (admin only).
+  /// Returns the number of match documents created (45 for 10 teams).
+  /// Throws [ChampionshipException] on error.
+  Future<int> startChampionship({
+    required String championshipId,
+    required DateTime startDate,
+  });
 }

@@ -102,4 +102,23 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       throw ChampionshipException('Failed to leave team: $e');
     }
   }
+
+  @override
+  Future<int> startChampionship({
+    required String championshipId,
+    required DateTime startDate,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('startChampionship');
+      final result = await callable.call({
+        'championshipId': championshipId,
+        'startDate': startDate.toIso8601String(),
+      });
+      return result.data['matchesCreated'] as int;
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(e.message ?? 'Failed to start championship', code: e.code);
+    } catch (e) {
+      throw ChampionshipException('Failed to start championship: $e');
+    }
+  }
 }
