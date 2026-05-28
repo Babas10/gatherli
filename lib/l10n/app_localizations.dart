@@ -3991,6 +3991,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No messages yet. Start coordinating with the opposing team!'**
   String get matchChatEmpty;
+
+  /// Title of the match result entry form
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Result'**
+  String get submitResultTitle;
+
+  /// Label for a set row in the result form
+  ///
+  /// In en, this message translates to:
+  /// **'Set {number}'**
+  String submitResultSet(int number);
+
+  /// Button to add the optional deciding set to the result form
+  ///
+  /// In en, this message translates to:
+  /// **'+ Add deciding set (set 3)'**
+  String get submitResultAddSet3;
+
+  /// Button to remove the deciding set from the result form
+  ///
+  /// In en, this message translates to:
+  /// **'Remove set 3'**
+  String get submitResultRemoveSet3;
+
+  /// Submit button label on the result entry form
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Result'**
+  String get submitResultSubmitButton;
+
+  /// Success message shown after result submission, before verification
+  ///
+  /// In en, this message translates to:
+  /// **'Result submitted. Awaiting verification by the opposing team.'**
+  String get submitResultAwaitingVerification;
+
+  /// Error prefix shown when a set score fails validation
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid score'**
+  String get submitResultInvalidSetScore;
+
+  /// Validation error when the sets entered don't produce a clear winner
+  ///
+  /// In en, this message translates to:
+  /// **'One team must win 2 sets.'**
+  String get submitResultNoWinner;
 }
 
 class _AppLocalizationsDelegate

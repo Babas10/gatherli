@@ -30,6 +30,7 @@ export {createChampionship} from "./createChampionship"; // Story 30.2 (Champion
 export {createChampionshipTeam} from "./createChampionshipTeam"; // Story 30.3 (Team Registration)
 export {leaveChampionshipTeam} from "./leaveChampionshipTeam"; // Story 30.3 (Team Registration)
 export {startChampionship} from "./startChampionship"; // Story 30.4 (Fixture Generation)
+export {submitChampionshipMatchResult} from "./submitChampionshipMatchResult"; // Story 30.6 (Result Submission)
 export {generateRecurringTrainingSessions} from "./generateRecurringTrainingSessions"; // Story 15.2 (Recurring Training Sessions)
 export {joinTrainingSession} from "./joinTrainingSession"; // Story 15.3 (Join Training Session)
 export {leaveTrainingSession} from "./leaveTrainingSession"; // Story 15.3 (Leave Training Session)

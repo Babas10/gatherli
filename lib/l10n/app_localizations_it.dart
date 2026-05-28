@@ -2191,4 +2191,31 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get matchChatEmpty =>
       'Nessun messaggio ancora. Inizia a coordinare con la squadra avversaria!';
+
+  @override
+  String get submitResultTitle => 'Invia risultato';
+
+  @override
+  String submitResultSet(int number) {
+    return 'Set $number';
+  }
+
+  @override
+  String get submitResultAddSet3 => '+ Aggiungi set decisivo (set 3)';
+
+  @override
+  String get submitResultRemoveSet3 => 'Rimuovi set 3';
+
+  @override
+  String get submitResultSubmitButton => 'Invia';
+
+  @override
+  String get submitResultAwaitingVerification =>
+      'Risultato inviato. In attesa di verifica dalla squadra avversaria.';
+
+  @override
+  String get submitResultInvalidSetScore => 'Punteggio non valido';
+
+  @override
+  String get submitResultNoWinner => 'Una squadra deve vincere 2 set.';
 }

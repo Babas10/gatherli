@@ -2215,4 +2215,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get matchChatEmpty =>
       'Aucun message pour l’instant. Commencez à coordonner avec l’équipe adverse !';
+
+  @override
+  String get submitResultTitle => 'Soumettre le résultat';
+
+  @override
+  String submitResultSet(int number) {
+    return 'Set $number';
+  }
+
+  @override
+  String get submitResultAddSet3 => '+ Ajouter le set décisif (set 3)';
+
+  @override
+  String get submitResultRemoveSet3 => 'Supprimer le set 3';
+
+  @override
+  String get submitResultSubmitButton => 'Soumettre';
+
+  @override
+  String get submitResultAwaitingVerification =>
+      'Résultat soumis. En attente de vérification par l\'équipe adverse.';
+
+  @override
+  String get submitResultInvalidSetScore => 'Score invalide';
+
+  @override
+  String get submitResultNoWinner => 'Une équipe doit gagner 2 sets.';
 }
