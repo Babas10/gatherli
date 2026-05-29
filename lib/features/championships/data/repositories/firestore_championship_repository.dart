@@ -145,4 +145,31 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       throw ChampionshipException('Failed to submit match result: $e');
     }
   }
+
+  @override
+  Future<String> verifyMatchResult({
+    required String championshipId,
+    required String matchId,
+    required String action,
+    String? disputeReason,
+  }) async {
+    try {
+      final callable =
+          _functions.httpsCallable('verifyChampionshipMatchResult');
+      final result = await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+        'action': action,
+        if (disputeReason != null) 'disputeReason': disputeReason,
+      });
+      return result.data['status'] as String;
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to verify match result',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to verify match result: $e');
+    }
+  }
 }

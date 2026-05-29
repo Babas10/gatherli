@@ -785,5 +785,14 @@
   "submitResultSubmitButton": "Einreichen",
   "submitResultAwaitingVerification": "Ergebnis eingereicht. Warte auf Bestätigung des gegnerischen Teams.",
   "submitResultInvalidSetScore": "Ungültiger Score",
-  "submitResultNoWinner": "Ein Team muss 2 Sätze gewinnen."
+  "submitResultNoWinner": "Ein Team muss 2 Sätze gewinnen.",
+  "verifyResultTitle": "Ergebnis bestätigen",
+  "verifyResultSubmittedBy": "Ergebnis eingereicht von {teamName}",
+  "verifyResultConfirmButton": "Ergebnis bestätigen",
+  "verifyResultDisputeButton": "Ergebnis anfechten",
+  "verifyResultDisputeReasonLabel": "Grund für die Anfechtung",
+  "verifyResultDisputeReasonHint": "Erklären Sie, warum das Ergebnis falsch ist...",
+  "verifyResultDisputeReasonRequired": "Bitte geben Sie einen Grund für die Anfechtung an.",
+  "verifyResultVerified": "Ergebnis bestätigt. Die Rangliste wird in Kürze aktualisiert.",
+  "verifyResultDisputed": "Ergebnis angefochten. Ein Administrator wird es prüfen und lösen."
 }

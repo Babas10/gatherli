@@ -50,4 +50,16 @@ abstract class ChampionshipRepository {
     required String matchId,
     required List<MatchSetScore> sets,
   });
+
+  /// Verifies or disputes a match result via Cloud Function.
+  /// [action] must be 'verify' or 'dispute'. [disputeReason] is required
+  /// when action is 'dispute'.
+  /// Returns the resulting match status ('verified' or 'disputed').
+  /// Throws [ChampionshipException] on error.
+  Future<String> verifyMatchResult({
+    required String championshipId,
+    required String matchId,
+    required String action,
+    String? disputeReason,
+  });
 }

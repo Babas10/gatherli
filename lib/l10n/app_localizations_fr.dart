@@ -2242,4 +2242,37 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get submitResultNoWinner => 'Une équipe doit gagner 2 sets.';
+
+  @override
+  String get verifyResultTitle => 'Vérifier le résultat';
+
+  @override
+  String verifyResultSubmittedBy(String teamName) {
+    return 'Résultat soumis par $teamName';
+  }
+
+  @override
+  String get verifyResultConfirmButton => 'Confirmer le résultat';
+
+  @override
+  String get verifyResultDisputeButton => 'Contester le résultat';
+
+  @override
+  String get verifyResultDisputeReasonLabel => 'Motif de la contestation';
+
+  @override
+  String get verifyResultDisputeReasonHint =>
+      'Expliquez pourquoi le résultat est incorrect...';
+
+  @override
+  String get verifyResultDisputeReasonRequired =>
+      'Veuillez indiquer un motif de contestation.';
+
+  @override
+  String get verifyResultVerified =>
+      'Résultat confirmé. Le classement sera mis à jour prochainement.';
+
+  @override
+  String get verifyResultDisputed =>
+      'Résultat contesté. Un administrateur examinera et résoudra le litige.';
 }

@@ -785,5 +785,14 @@
   "submitResultSubmitButton": "Invia",
   "submitResultAwaitingVerification": "Risultato inviato. In attesa di verifica dalla squadra avversaria.",
   "submitResultInvalidSetScore": "Punteggio non valido",
-  "submitResultNoWinner": "Una squadra deve vincere 2 set."
+  "submitResultNoWinner": "Una squadra deve vincere 2 set.",
+  "verifyResultTitle": "Verifica risultato",
+  "verifyResultSubmittedBy": "Risultato inviato da {teamName}",
+  "verifyResultConfirmButton": "Conferma risultato",
+  "verifyResultDisputeButton": "Contesta risultato",
+  "verifyResultDisputeReasonLabel": "Motivo della contestazione",
+  "verifyResultDisputeReasonHint": "Spiega perché il risultato è errato...",
+  "verifyResultDisputeReasonRequired": "Per favore, fornisci un motivo per la contestazione.",
+  "verifyResultVerified": "Risultato confermato. La classifica verrà aggiornata a breve.",
+  "verifyResultDisputed": "Risultato contestato. Un amministratore lo esaminerà e lo risolverà."
 }
