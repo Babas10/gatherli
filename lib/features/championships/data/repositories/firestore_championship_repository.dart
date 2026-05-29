@@ -40,6 +40,29 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
+  Stream<List<ChampionshipModel>> getChampionships() {
+    try {
+      return _firestore
+          .collection('championships')
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .map((snap) =>
+              snap.docs.map((d) => ChampionshipModel.fromFirestore(d)).toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load championships: $e',
+          code: 'LOAD_CHAMPIONSHIPS_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load championships: $e',
+        code: 'LOAD_CHAMPIONSHIPS_ERROR',
+      ));
+    }
+  }
+
+  @override
   Future<ChampionshipTeamModel?> getMyTeam({
     required String championshipId,
     required String userId,

@@ -794,5 +794,16 @@
   "verifyResultDisputeReasonHint": "Explica por qué el resultado es incorrecto...",
   "verifyResultDisputeReasonRequired": "Por favor, indica el motivo de la disputa.",
   "verifyResultVerified": "Resultado confirmado. La clasificación se actualizará en breve.",
-  "verifyResultDisputed": "Resultado disputado. Un administrador lo revisará y resolverá."
+  "verifyResultDisputed": "Resultado disputado. Un administrador lo revisará y resolverá.",
+  "championshipFilterAll": "Todos",
+  "championshipFilterRegistration": "Inscripción",
+  "championshipFilterActive": "Activo",
+  "championshipFilterCompleted": "Completado",
+  "championshipStatusBadgeRegistration": "Inscripción abierta",
+  "championshipStatusBadgeClosed": "Inscripción cerrada",
+  "championshipStatusBadgeActive": "Ronda {current}/{total}",
+  "championshipStatusBadgeCompleted": "Completado",
+  "championshipNoResults": "No hay campeonatos en este momento.",
+  "championshipDeadlineCountdown": "{days, plural, =1{1 día restante} other{{days} días restantes}}",
+  "championshipTeamCountOf": "{count} / {max} equipos"
 }

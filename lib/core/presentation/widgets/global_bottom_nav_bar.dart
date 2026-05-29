@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
-/// Global bottom navigation bar with four sections: Home, Stats, Groups, Community.
+/// Global bottom navigation bar with five sections: Home, Stats, Groups, Community, Championships.
 /// Pass [selectedIndex] to highlight the current section and [friendRequestCount]
 /// to show the red badge on the Community icon.
 class GlobalBottomNavBar extends StatelessWidget {
@@ -74,6 +74,11 @@ class GlobalBottomNavBar extends StatelessWidget {
             ],
           ),
           label: l10n.community,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.emoji_events_outlined),
+          activeIcon: const Icon(Icons.emoji_events),
+          label: l10n.championshipsTitle,
         ),
       ],
     );

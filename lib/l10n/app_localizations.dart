@@ -4093,6 +4093,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Result disputed. An admin will review and resolve it.'**
   String get verifyResultDisputed;
+
+  /// Filter chip label to show all championships
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get championshipFilterAll;
+
+  /// Filter chip label to show championships in registration phase
+  ///
+  /// In en, this message translates to:
+  /// **'Registration'**
+  String get championshipFilterRegistration;
+
+  /// Filter chip label to show active championships
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get championshipFilterActive;
+
+  /// Filter chip label to show completed championships
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get championshipFilterCompleted;
+
+  /// Status badge for championships accepting team registrations
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Open'**
+  String get championshipStatusBadgeRegistration;
+
+  /// Status badge for championships that closed registration
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Closed'**
+  String get championshipStatusBadgeClosed;
+
+  /// Status badge for active championships showing current round
+  ///
+  /// In en, this message translates to:
+  /// **'Round {current}/{total}'**
+  String championshipStatusBadgeActive(int current, int total);
+
+  /// Status badge for completed championships
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get championshipStatusBadgeCompleted;
+
+  /// Empty state message on the championship list screen
+  ///
+  /// In en, this message translates to:
+  /// **'No championships at the moment.'**
+  String get championshipNoResults;
+
+  /// Countdown until registration deadline
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day left} other{{days} days left}}'**
+  String championshipDeadlineCountdown(int days);
+
+  /// Team count display on championship card
+  ///
+  /// In en, this message translates to:
+  /// **'{count} / {max} teams'**
+  String championshipTeamCountOf(int count, int max);
 }
 
 class _AppLocalizationsDelegate
