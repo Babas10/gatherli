@@ -1,4 +1,5 @@
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
+import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 
@@ -39,5 +40,14 @@ abstract class ChampionshipRepository {
   Future<int> startChampionship({
     required String championshipId,
     required DateTime startDate,
+  });
+
+  /// Submits a match result via Cloud Function.
+  /// [sets] must contain 2 or 3 [MatchSetScore] items.
+  /// Throws [ChampionshipException] on error.
+  Future<void> submitMatchResult({
+    required String championshipId,
+    required String matchId,
+    required List<MatchSetScore> sets,
   });
 }

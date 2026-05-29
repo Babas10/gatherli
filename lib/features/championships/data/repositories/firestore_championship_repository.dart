@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
+import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
@@ -119,6 +120,29 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       throw ChampionshipException(e.message ?? 'Failed to start championship', code: e.code);
     } catch (e) {
       throw ChampionshipException('Failed to start championship: $e');
+    }
+  }
+
+  @override
+  Future<void> submitMatchResult({
+    required String championshipId,
+    required String matchId,
+    required List<MatchSetScore> sets,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('submitChampionshipMatchResult');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+        'sets': sets.map((s) => s.toJson()).toList(),
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to submit match result',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to submit match result: $e');
     }
   }
 }

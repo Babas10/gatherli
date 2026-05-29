@@ -777,5 +777,13 @@
   "matchChatTitle": "Chat del match",
   "matchChatCoordinationHint": "Coordinate data, ora e luogo con la squadra avversaria",
   "matchChatNotMember": "Solo i membri delle squadre possono partecipare a questa chat.",
-  "matchChatEmpty": "Nessun messaggio ancora. Inizia a coordinare con la squadra avversaria!"
+  "matchChatEmpty": "Nessun messaggio ancora. Inizia a coordinare con la squadra avversaria!",
+  "submitResultTitle": "Invia risultato",
+  "submitResultSet": "Set {number}",
+  "submitResultAddSet3": "+ Aggiungi set decisivo (set 3)",
+  "submitResultRemoveSet3": "Rimuovi set 3",
+  "submitResultSubmitButton": "Invia",
+  "submitResultAwaitingVerification": "Risultato inviato. In attesa di verifica dalla squadra avversaria.",
+  "submitResultInvalidSetScore": "Punteggio non valido",
+  "submitResultNoWinner": "Una squadra deve vincere 2 set."
 }

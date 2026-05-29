@@ -3070,5 +3070,21 @@
   "matchChatNotMember": "Only team members can participate in this chat.",
   "@matchChatNotMember": {"description": "Message shown to users who are not part of either team in the match"},
   "matchChatEmpty": "No messages yet. Start coordinating with the opposing team!",
-  "@matchChatEmpty": {"description": "Empty state message in the match chat when no messages have been sent"}
+  "@matchChatEmpty": {"description": "Empty state message in the match chat when no messages have been sent"},
+  "submitResultTitle": "Submit Result",
+  "@submitResultTitle": {"description": "Title of the match result entry form"},
+  "submitResultSet": "Set {number}",
+  "@submitResultSet": {"description": "Label for a set row in the result form", "placeholders": {"number": {"type": "int"}}},
+  "submitResultAddSet3": "+ Add deciding set (set 3)",
+  "@submitResultAddSet3": {"description": "Button to add the optional deciding set to the result form"},
+  "submitResultRemoveSet3": "Remove set 3",
+  "@submitResultRemoveSet3": {"description": "Button to remove the deciding set from the result form"},
+  "submitResultSubmitButton": "Submit Result",
+  "@submitResultSubmitButton": {"description": "Submit button label on the result entry form"},
+  "submitResultAwaitingVerification": "Result submitted. Awaiting verification by the opposing team.",
+  "@submitResultAwaitingVerification": {"description": "Success message shown after result submission, before verification"},
+  "submitResultInvalidSetScore": "Invalid score",
+  "@submitResultInvalidSetScore": {"description": "Error prefix shown when a set score fails validation"},
+  "submitResultNoWinner": "One team must win 2 sets.",
+  "@submitResultNoWinner": {"description": "Validation error when the sets entered don't produce a clear winner"}
 }

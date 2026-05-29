@@ -2170,4 +2170,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get matchChatEmpty =>
       'No messages yet. Start coordinating with the opposing team!';
+
+  @override
+  String get submitResultTitle => 'Submit Result';
+
+  @override
+  String submitResultSet(int number) {
+    return 'Set $number';
+  }
+
+  @override
+  String get submitResultAddSet3 => '+ Add deciding set (set 3)';
+
+  @override
+  String get submitResultRemoveSet3 => 'Remove set 3';
+
+  @override
+  String get submitResultSubmitButton => 'Submit Result';
+
+  @override
+  String get submitResultAwaitingVerification =>
+      'Result submitted. Awaiting verification by the opposing team.';
+
+  @override
+  String get submitResultInvalidSetScore => 'Invalid score';
+
+  @override
+  String get submitResultNoWinner => 'One team must win 2 sets.';
 }

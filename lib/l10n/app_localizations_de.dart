@@ -2209,4 +2209,31 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get matchChatEmpty =>
       'Noch keine Nachrichten. Beginnt die Koordination mit dem gegnerischen Team!';
+
+  @override
+  String get submitResultTitle => 'Ergebnis einreichen';
+
+  @override
+  String submitResultSet(int number) {
+    return 'Satz $number';
+  }
+
+  @override
+  String get submitResultAddSet3 => '+ Entscheidungssatz hinzufügen (Satz 3)';
+
+  @override
+  String get submitResultRemoveSet3 => 'Satz 3 entfernen';
+
+  @override
+  String get submitResultSubmitButton => 'Einreichen';
+
+  @override
+  String get submitResultAwaitingVerification =>
+      'Ergebnis eingereicht. Warte auf Bestätigung des gegnerischen Teams.';
+
+  @override
+  String get submitResultInvalidSetScore => 'Ungültiger Score';
+
+  @override
+  String get submitResultNoWinner => 'Ein Team muss 2 Sätze gewinnen.';
 }
