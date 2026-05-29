@@ -2197,4 +2197,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submitResultNoWinner => 'One team must win 2 sets.';
+
+  @override
+  String get verifyResultTitle => 'Verify Result';
+
+  @override
+  String verifyResultSubmittedBy(String teamName) {
+    return 'Result submitted by $teamName';
+  }
+
+  @override
+  String get verifyResultConfirmButton => 'Confirm Result';
+
+  @override
+  String get verifyResultDisputeButton => 'Dispute Result';
+
+  @override
+  String get verifyResultDisputeReasonLabel => 'Reason for dispute';
+
+  @override
+  String get verifyResultDisputeReasonHint =>
+      'Explain why the result is incorrect...';
+
+  @override
+  String get verifyResultDisputeReasonRequired =>
+      'Please provide a reason for the dispute.';
+
+  @override
+  String get verifyResultVerified =>
+      'Result confirmed. Standings will be updated shortly.';
+
+  @override
+  String get verifyResultDisputed =>
+      'Result disputed. An admin will review and resolve it.';
 }

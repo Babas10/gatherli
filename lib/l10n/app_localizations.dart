@@ -4039,6 +4039,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'One team must win 2 sets.'**
   String get submitResultNoWinner;
+
+  /// Title of the match result verification card
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Result'**
+  String get verifyResultTitle;
+
+  /// Subtitle showing which team submitted the result
+  ///
+  /// In en, this message translates to:
+  /// **'Result submitted by {teamName}'**
+  String verifyResultSubmittedBy(String teamName);
+
+  /// Button to verify/confirm the submitted match result
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Result'**
+  String get verifyResultConfirmButton;
+
+  /// Button to dispute the submitted match result
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute Result'**
+  String get verifyResultDisputeButton;
+
+  /// Label above the dispute reason text field
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for dispute'**
+  String get verifyResultDisputeReasonLabel;
+
+  /// Hint text inside the dispute reason text field
+  ///
+  /// In en, this message translates to:
+  /// **'Explain why the result is incorrect...'**
+  String get verifyResultDisputeReasonHint;
+
+  /// Validation error shown when the dispute reason field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide a reason for the dispute.'**
+  String get verifyResultDisputeReasonRequired;
+
+  /// Success message shown after the opposing team confirms the match result
+  ///
+  /// In en, this message translates to:
+  /// **'Result confirmed. Standings will be updated shortly.'**
+  String get verifyResultVerified;
+
+  /// Message shown after the opposing team disputes the match result
+  ///
+  /// In en, this message translates to:
+  /// **'Result disputed. An admin will review and resolve it.'**
+  String get verifyResultDisputed;
 }
 
 class _AppLocalizationsDelegate
