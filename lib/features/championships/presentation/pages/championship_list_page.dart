@@ -109,7 +109,7 @@ class _FilterRow extends StatelessWidget {
       case 'completed':
         return l10n.championshipFilterCompleted;
       default:
-        return filter ?? '';
+        return filter;
     }
   }
 
@@ -137,7 +137,7 @@ class _FilterRow extends StatelessWidget {
                           .read<ChampionshipListBloc>()
                           .add(FilterChampionships(status: filter)),
                       selectedColor:
-                          AppColors.primary.withOpacity(0.15),
+                          AppColors.primary.withValues(alpha: 0.15),
                       checkmarkColor: AppColors.primary,
                       labelStyle: TextStyle(
                         color: activeFilter == filter
@@ -286,9 +286,9 @@ class _StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
       ),
       child: Text(
         label,
