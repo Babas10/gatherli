@@ -4159,6 +4159,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} / {max} teams'**
   String championshipTeamCountOf(int count, int max);
+
+  /// Label for the standings tab on the championship detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Standings'**
+  String get championshipDetailStandingsTab;
+
+  /// Label for the matches tab on the championship detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get championshipDetailMatchesTab;
+
+  /// Round label in the matches tab round selector
+  ///
+  /// In en, this message translates to:
+  /// **'Round {round}'**
+  String championshipDetailRound(int round);
+
+  /// Standings table header for position column
+  ///
+  /// In en, this message translates to:
+  /// **'#'**
+  String get championshipDetailColPosition;
+
+  /// Standings table header for team name column
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get championshipDetailColTeam;
+
+  /// Standings table header for matches played column
+  ///
+  /// In en, this message translates to:
+  /// **'P'**
+  String get championshipDetailColPlayed;
+
+  /// Standings table header for points column
+  ///
+  /// In en, this message translates to:
+  /// **'Pts'**
+  String get championshipDetailColPoints;
+
+  /// Standings table header for wins column
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get championshipDetailColWins;
+
+  /// Standings table header for losses column
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get championshipDetailColLosses;
+
+  /// Standings table header for set ratio column
+  ///
+  /// In en, this message translates to:
+  /// **'SR'**
+  String get championshipDetailColSetRatio;
+
+  /// Empty state when no standings data is available
+  ///
+  /// In en, this message translates to:
+  /// **'No standings yet.'**
+  String get championshipDetailNoStandings;
+
+  /// Empty state when a round has no matches
+  ///
+  /// In en, this message translates to:
+  /// **'No matches for this round.'**
+  String get championshipDetailNoMatchesForRound;
+
+  /// Separator between two team names in a match card
+  ///
+  /// In en, this message translates to:
+  /// **'vs'**
+  String get championshipMatchVs;
+
+  /// Match status badge: not yet played
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get championshipMatchStatusPending;
+
+  /// Match status badge: result submitted, awaiting verification
+  ///
+  /// In en, this message translates to:
+  /// **'Played'**
+  String get championshipMatchStatusPlayed;
+
+  /// Match status badge: result verified by both teams
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get championshipMatchStatusVerified;
+
+  /// Match status badge: result disputed by opposing team
+  ///
+  /// In en, this message translates to:
+  /// **'Disputed'**
+  String get championshipMatchStatusDisputed;
+
+  /// Match status badge: result decided by admin
+  ///
+  /// In en, this message translates to:
+  /// **'Decided'**
+  String get championshipMatchStatusAdminDecided;
 }
 
 class _AppLocalizationsDelegate

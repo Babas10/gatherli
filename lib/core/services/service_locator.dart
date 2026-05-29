@@ -78,6 +78,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/bloc/match_chat/match_chat_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/result_submission/result_submission_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_verification/match_verification_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 
 final GetIt sl = GetIt.instance;
@@ -265,6 +266,12 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<ChampionshipListBloc>()) {
     sl.registerFactory<ChampionshipListBloc>(
       () => ChampionshipListBloc(repository: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<ChampionshipDetailBloc>()) {
+    sl.registerFactory<ChampionshipDetailBloc>(
+      () => ChampionshipDetailBloc(repository: sl()),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 
 /// Repository for championship data.
@@ -14,6 +15,21 @@ abstract class ChampionshipRepository {
   /// Real-time stream of all championships ordered by createdAt descending.
   /// Throws [ChampionshipException] on error.
   Stream<List<ChampionshipModel>> getChampionships();
+
+  /// Real-time stream of a single championship by ID.
+  /// Throws [ChampionshipException] on error or if not found.
+  Stream<ChampionshipModel> getChampionshipById(String championshipId);
+
+  /// Real-time stream of standings for [championshipId], ordered by position ascending.
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipStandingsModel>> getStandings(String championshipId);
+
+  /// Real-time stream of matches for [round] in [championshipId].
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipMatchModel>> getMatchesForRound({
+    required String championshipId,
+    required int round,
+  });
 
   /// Returns the team the [userId] belongs to in [championshipId], or null if none.
   /// Throws [ChampionshipException] on error.

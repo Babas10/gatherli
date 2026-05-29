@@ -2320,4 +2320,61 @@ class AppLocalizationsFr extends AppLocalizations {
   String championshipTeamCountOf(int count, int max) {
     return '$count / $max équipes';
   }
+
+  @override
+  String get championshipDetailStandingsTab => 'Classement';
+
+  @override
+  String get championshipDetailMatchesTab => 'Matchs';
+
+  @override
+  String championshipDetailRound(int round) {
+    return 'Tour $round';
+  }
+
+  @override
+  String get championshipDetailColPosition => '#';
+
+  @override
+  String get championshipDetailColTeam => 'Équipe';
+
+  @override
+  String get championshipDetailColPlayed => 'J';
+
+  @override
+  String get championshipDetailColPoints => 'Pts';
+
+  @override
+  String get championshipDetailColWins => 'V';
+
+  @override
+  String get championshipDetailColLosses => 'D';
+
+  @override
+  String get championshipDetailColSetRatio => 'DR';
+
+  @override
+  String get championshipDetailNoStandings =>
+      'Aucun classement pour le moment.';
+
+  @override
+  String get championshipDetailNoMatchesForRound => 'Aucun match pour ce tour.';
+
+  @override
+  String get championshipMatchVs => 'vs';
+
+  @override
+  String get championshipMatchStatusPending => 'En attente';
+
+  @override
+  String get championshipMatchStatusPlayed => 'Joué';
+
+  @override
+  String get championshipMatchStatusVerified => 'Vérifié';
+
+  @override
+  String get championshipMatchStatusDisputed => 'Contesté';
+
+  @override
+  String get championshipMatchStatusAdminDecided => 'Décidé';
 }
