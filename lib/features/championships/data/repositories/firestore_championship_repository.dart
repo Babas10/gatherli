@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 
@@ -58,6 +59,91 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       return Stream.error(ChampionshipException(
         'Failed to load championships: $e',
         code: 'LOAD_CHAMPIONSHIPS_ERROR',
+      ));
+    }
+  }
+
+  @override
+  Stream<ChampionshipModel> getChampionshipById(String championshipId) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .snapshots()
+          .map((doc) {
+        if (!doc.exists) {
+          throw ChampionshipException(
+            'Championship not found',
+            code: 'NOT_FOUND',
+          );
+        }
+        return ChampionshipModel.fromFirestore(doc);
+      }).handleError((e) {
+        throw ChampionshipException(
+          'Failed to load championship: $e',
+          code: 'LOAD_CHAMPIONSHIP_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load championship: $e',
+        code: 'LOAD_CHAMPIONSHIP_ERROR',
+      ));
+    }
+  }
+
+  @override
+  Stream<List<ChampionshipStandingsModel>> getStandings(
+      String championshipId) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('standings')
+          .orderBy('position')
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipStandingsModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load standings: $e',
+          code: 'LOAD_STANDINGS_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load standings: $e',
+        code: 'LOAD_STANDINGS_ERROR',
+      ));
+    }
+  }
+
+  @override
+  Stream<List<ChampionshipMatchModel>> getMatchesForRound({
+    required String championshipId,
+    required int round,
+  }) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('matches')
+          .where('round', isEqualTo: round)
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipMatchModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load matches: $e',
+          code: 'LOAD_MATCHES_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load matches: $e',
+        code: 'LOAD_MATCHES_ERROR',
       ));
     }
   }

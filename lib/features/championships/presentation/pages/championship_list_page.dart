@@ -8,6 +8,7 @@ import 'package:play_with_me/features/championships/data/models/championship_mod
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_state.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class ChampionshipListPage extends StatelessWidget {
@@ -79,10 +80,12 @@ class _ChampionshipListView extends StatelessWidget {
   }
 
   void _onTap(BuildContext context, ChampionshipModel championship) {
-    // Navigation to Championship Detail (Story 30.10)
-    // Placeholder until detail screen is implemented
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(championship.title)),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            ChampionshipDetailPage(championshipId: championship.id),
+      ),
     );
   }
 }
