@@ -11,6 +11,10 @@ abstract class ChampionshipRepository {
   /// Throws [ChampionshipException] on error.
   Stream<List<ChampionshipModel>> getOpenChampionships();
 
+  /// Real-time stream of all championships ordered by createdAt descending.
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipModel>> getChampionships();
+
   /// Returns the team the [userId] belongs to in [championshipId], or null if none.
   /// Throws [ChampionshipException] on error.
   Future<ChampionshipTeamModel?> getMyTeam({

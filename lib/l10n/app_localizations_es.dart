@@ -2258,4 +2258,49 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get verifyResultDisputed =>
       'Resultado disputado. Un administrador lo revisará y resolverá.';
+
+  @override
+  String get championshipFilterAll => 'Todos';
+
+  @override
+  String get championshipFilterRegistration => 'Inscripción';
+
+  @override
+  String get championshipFilterActive => 'Activo';
+
+  @override
+  String get championshipFilterCompleted => 'Completado';
+
+  @override
+  String get championshipStatusBadgeRegistration => 'Inscripción abierta';
+
+  @override
+  String get championshipStatusBadgeClosed => 'Inscripción cerrada';
+
+  @override
+  String championshipStatusBadgeActive(int current, int total) {
+    return 'Ronda $current/$total';
+  }
+
+  @override
+  String get championshipStatusBadgeCompleted => 'Completado';
+
+  @override
+  String get championshipNoResults => 'No hay campeonatos en este momento.';
+
+  @override
+  String championshipDeadlineCountdown(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days días restantes',
+      one: '1 día restante',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String championshipTeamCountOf(int count, int max) {
+    return '$count / $max equipos';
+  }
 }

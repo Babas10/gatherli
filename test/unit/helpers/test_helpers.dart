@@ -25,6 +25,8 @@ import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
+import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import '../features/auth/data/mock_auth_repository.dart';
 import '../core/data/repositories/mock_group_repository.dart';
 
@@ -53,6 +55,10 @@ class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 // Mock for GroupInviteLinkRepository
 class MockGroupInviteLinkRepository extends Mock
     implements GroupInviteLinkRepository {}
+
+// Mock for ChampionshipRepository
+class MockChampionshipRepository extends Mock
+    implements ChampionshipRepository {}
 
 // Fake for UserModel (required for mocktail's any() matcher)
 class FakeUserModel extends Fake implements UserModel {}
@@ -253,6 +259,19 @@ Future<void> initializeTestDependencies({
   // Register GameInvitationsBloc using the unified InvitationRepository (Story 31.6)
   sl.registerFactory<GameInvitationsBloc>(
     () => GameInvitationsBloc(repository: sl<InvitationRepository>()),
+  );
+
+  // Register mock ChampionshipRepository and ChampionshipListBloc (Story 30.9)
+  final mockChampionshipRepo = MockChampionshipRepository();
+  when(() => mockChampionshipRepo.getChampionships())
+      .thenAnswer((_) => Stream.value([]));
+  when(() => mockChampionshipRepo.getOpenChampionships())
+      .thenAnswer((_) => Stream.value([]));
+  sl.registerLazySingleton<ChampionshipRepository>(
+    () => mockChampionshipRepo,
+  );
+  sl.registerFactory<ChampionshipListBloc>(
+    () => ChampionshipListBloc(repository: sl<ChampionshipRepository>()),
   );
 }
 

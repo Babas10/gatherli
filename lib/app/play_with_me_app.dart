@@ -61,6 +61,7 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_list_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class PlayWithMeApp extends StatelessWidget {
@@ -347,6 +348,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: const GroupListPage(),
       ),
       const MyCommunityPage(),
+      const ChampionshipListPage(),
     ];
   }
 
@@ -443,6 +445,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         return l10n.myGroups;
       case 3:
         return l10n.myCommunity;
+      case 4:
+        return l10n.championshipsTitle;
       default:
         return l10n.appTitle;
     }

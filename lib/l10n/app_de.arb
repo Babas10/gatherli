@@ -794,5 +794,16 @@
   "verifyResultDisputeReasonHint": "Erklären Sie, warum das Ergebnis falsch ist...",
   "verifyResultDisputeReasonRequired": "Bitte geben Sie einen Grund für die Anfechtung an.",
   "verifyResultVerified": "Ergebnis bestätigt. Die Rangliste wird in Kürze aktualisiert.",
-  "verifyResultDisputed": "Ergebnis angefochten. Ein Administrator wird es prüfen und lösen."
+  "verifyResultDisputed": "Ergebnis angefochten. Ein Administrator wird es prüfen und lösen.",
+  "championshipFilterAll": "Alle",
+  "championshipFilterRegistration": "Anmeldung",
+  "championshipFilterActive": "Aktiv",
+  "championshipFilterCompleted": "Abgeschlossen",
+  "championshipStatusBadgeRegistration": "Anmeldung offen",
+  "championshipStatusBadgeClosed": "Anmeldung geschlossen",
+  "championshipStatusBadgeActive": "Runde {current}/{total}",
+  "championshipStatusBadgeCompleted": "Abgeschlossen",
+  "championshipNoResults": "Derzeit keine Meisterschaften.",
+  "championshipDeadlineCountdown": "{days, plural, =1{Noch 1 Tag} other{Noch {days} Tage}}",
+  "championshipTeamCountOf": "{count} / {max} Teams"
 }

@@ -794,5 +794,16 @@
   "verifyResultDisputeReasonHint": "Expliquez pourquoi le résultat est incorrect...",
   "verifyResultDisputeReasonRequired": "Veuillez indiquer un motif de contestation.",
   "verifyResultVerified": "Résultat confirmé. Le classement sera mis à jour prochainement.",
-  "verifyResultDisputed": "Résultat contesté. Un administrateur examinera et résoudra le litige."
+  "verifyResultDisputed": "Résultat contesté. Un administrateur examinera et résoudra le litige.",
+  "championshipFilterAll": "Tous",
+  "championshipFilterRegistration": "Inscription",
+  "championshipFilterActive": "Actif",
+  "championshipFilterCompleted": "Terminé",
+  "championshipStatusBadgeRegistration": "Inscriptions ouvertes",
+  "championshipStatusBadgeClosed": "Inscriptions fermées",
+  "championshipStatusBadgeActive": "Tour {current}/{total}",
+  "championshipStatusBadgeCompleted": "Terminé",
+  "championshipNoResults": "Aucun championnat pour le moment.",
+  "championshipDeadlineCountdown": "{days, plural, =1{1 jour restant} other{{days} jours restants}}",
+  "championshipTeamCountOf": "{count} / {max} équipes"
 }

@@ -794,5 +794,16 @@
   "verifyResultDisputeReasonHint": "Spiega perché il risultato è errato...",
   "verifyResultDisputeReasonRequired": "Per favore, fornisci un motivo per la contestazione.",
   "verifyResultVerified": "Risultato confermato. La classifica verrà aggiornata a breve.",
-  "verifyResultDisputed": "Risultato contestato. Un amministratore lo esaminerà e lo risolverà."
+  "verifyResultDisputed": "Risultato contestato. Un amministratore lo esaminerà e lo risolverà.",
+  "championshipFilterAll": "Tutti",
+  "championshipFilterRegistration": "Iscrizione",
+  "championshipFilterActive": "Attivo",
+  "championshipFilterCompleted": "Completato",
+  "championshipStatusBadgeRegistration": "Iscrizioni aperte",
+  "championshipStatusBadgeClosed": "Iscrizioni chiuse",
+  "championshipStatusBadgeActive": "Turno {current}/{total}",
+  "championshipStatusBadgeCompleted": "Completato",
+  "championshipNoResults": "Nessun campionato al momento.",
+  "championshipDeadlineCountdown": "{days, plural, =1{1 giorno rimasto} other{{days} giorni rimasti}}",
+  "championshipTeamCountOf": "{count} / {max} squadre"
 }
