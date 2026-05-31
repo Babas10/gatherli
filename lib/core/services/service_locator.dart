@@ -79,6 +79,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/match_chat
 import 'package:play_with_me/features/championships/presentation/bloc/result_submission/result_submission_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_verification/match_verification_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 
@@ -267,6 +268,12 @@ Future<void> initializeDependencies() async {
   if (!sl.isRegistered<MatchDetailBloc>()) {
     sl.registerFactory<MatchDetailBloc>(
       () => MatchDetailBloc(repository: sl()),
+    );
+  }
+
+  if (!sl.isRegistered<AdminPanelBloc>()) {
+    sl.registerFactory<AdminPanelBloc>(
+      () => AdminPanelBloc(repository: sl()),
     );
   }
 

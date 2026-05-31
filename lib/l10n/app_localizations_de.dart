@@ -2397,4 +2397,53 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get matchDetailProposeConfirm => 'Vorschlagen';
+
+  @override
+  String get adminPanelTabLabel => 'Admin';
+
+  @override
+  String get adminPanelNoMatchesNeedingAttention =>
+      'Keine Spiele erfordern eine Admin-Entscheidung';
+
+  @override
+  String get adminPanelMatchOverdue => 'Überfällig';
+
+  @override
+  String get adminPanelMatchDisputed => 'Strittig';
+
+  @override
+  String get adminPanelDecisionTitle => 'Admin-Entscheidung';
+
+  @override
+  String get adminPanelDecisionSetResult => 'Ergebnis festlegen';
+
+  @override
+  String get adminPanelDecisionAwardWalkover => 'Walkover vergeben';
+
+  @override
+  String get adminPanelDecisionCancel => 'Spiel absagen';
+
+  @override
+  String get adminPanelDecisionWinnerLabel => 'Gewinner';
+
+  @override
+  String get adminPanelDecisionNotesLabel => 'Admin-Notizen';
+
+  @override
+  String get adminPanelDecisionNotesHint =>
+      'Begründung für diese Entscheidung…';
+
+  @override
+  String get adminPanelDecisionConfirm => 'Entscheidung anwenden';
+
+  @override
+  String get adminPanelDecisionSuccess => 'Entscheidung erfolgreich angewendet';
+
+  @override
+  String get adminPanelDecisionErrorNotesRequired =>
+      'Notizen sind erforderlich';
+
+  @override
+  String get adminPanelDecisionErrorWinnerRequired =>
+      'Wählen Sie einen Gewinner für den Walkover';
 }

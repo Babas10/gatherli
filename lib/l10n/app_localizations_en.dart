@@ -2358,4 +2358,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matchDetailProposeConfirm => 'Propose';
+
+  @override
+  String get adminPanelTabLabel => 'Admin';
+
+  @override
+  String get adminPanelNoMatchesNeedingAttention =>
+      'No matches requiring admin attention';
+
+  @override
+  String get adminPanelMatchOverdue => 'Overdue';
+
+  @override
+  String get adminPanelMatchDisputed => 'Disputed';
+
+  @override
+  String get adminPanelDecisionTitle => 'Match Decision';
+
+  @override
+  String get adminPanelDecisionSetResult => 'Set result';
+
+  @override
+  String get adminPanelDecisionAwardWalkover => 'Award walkover';
+
+  @override
+  String get adminPanelDecisionCancel => 'Cancel match';
+
+  @override
+  String get adminPanelDecisionWinnerLabel => 'Winner';
+
+  @override
+  String get adminPanelDecisionNotesLabel => 'Admin notes';
+
+  @override
+  String get adminPanelDecisionNotesHint => 'Reason for this decision…';
+
+  @override
+  String get adminPanelDecisionConfirm => 'Apply Decision';
+
+  @override
+  String get adminPanelDecisionSuccess => 'Decision applied successfully';
+
+  @override
+  String get adminPanelDecisionErrorNotesRequired => 'Notes are required';
+
+  @override
+  String get adminPanelDecisionErrorWinnerRequired =>
+      'Select a winner for walkover';
 }

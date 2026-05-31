@@ -4315,6 +4315,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Propose'**
   String get matchDetailProposeConfirm;
+
+  /// Label for the admin tab in championship detail
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get adminPanelTabLabel;
+
+  /// Empty state for admin panel when no matches need a decision
+  ///
+  /// In en, this message translates to:
+  /// **'No matches requiring admin attention'**
+  String get adminPanelNoMatchesNeedingAttention;
+
+  /// Badge shown on overdue matches in the admin panel
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get adminPanelMatchOverdue;
+
+  /// Badge shown on disputed matches in the admin panel
+  ///
+  /// In en, this message translates to:
+  /// **'Disputed'**
+  String get adminPanelMatchDisputed;
+
+  /// Title of the admin decision bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Match Decision'**
+  String get adminPanelDecisionTitle;
+
+  /// Admin decision option: manually enter the match result
+  ///
+  /// In en, this message translates to:
+  /// **'Set result'**
+  String get adminPanelDecisionSetResult;
+
+  /// Admin decision option: award a 2-0 walkover to one team
+  ///
+  /// In en, this message translates to:
+  /// **'Award walkover'**
+  String get adminPanelDecisionAwardWalkover;
+
+  /// Admin decision option: cancel the match with no result
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel match'**
+  String get adminPanelDecisionCancel;
+
+  /// Label for the winner selector in admin decision form
+  ///
+  /// In en, this message translates to:
+  /// **'Winner'**
+  String get adminPanelDecisionWinnerLabel;
+
+  /// Label for the notes field in admin decision form
+  ///
+  /// In en, this message translates to:
+  /// **'Admin notes'**
+  String get adminPanelDecisionNotesLabel;
+
+  /// Hint text for the notes field in admin decision form
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for this decision…'**
+  String get adminPanelDecisionNotesHint;
+
+  /// Confirm button in the admin decision form
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Decision'**
+  String get adminPanelDecisionConfirm;
+
+  /// Snackbar message after a successful admin decision
+  ///
+  /// In en, this message translates to:
+  /// **'Decision applied successfully'**
+  String get adminPanelDecisionSuccess;
+
+  /// Validation error when notes are empty in admin decision form
+  ///
+  /// In en, this message translates to:
+  /// **'Notes are required'**
+  String get adminPanelDecisionErrorNotesRequired;
+
+  /// Validation error when no winner is selected for walkover decision
+  ///
+  /// In en, this message translates to:
+  /// **'Select a winner for walkover'**
+  String get adminPanelDecisionErrorWinnerRequired;
 }
 
 class _AppLocalizationsDelegate

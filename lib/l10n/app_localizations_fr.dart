@@ -2403,4 +2403,52 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get matchDetailProposeConfirm => 'Proposer';
+
+  @override
+  String get adminPanelTabLabel => 'Admin';
+
+  @override
+  String get adminPanelNoMatchesNeedingAttention =>
+      'Aucun match ne nécessite d\'intervention';
+
+  @override
+  String get adminPanelMatchOverdue => 'En retard';
+
+  @override
+  String get adminPanelMatchDisputed => 'Contesté';
+
+  @override
+  String get adminPanelDecisionTitle => 'Décision administrative';
+
+  @override
+  String get adminPanelDecisionSetResult => 'Définir le résultat';
+
+  @override
+  String get adminPanelDecisionAwardWalkover => 'Attribuer un forfait';
+
+  @override
+  String get adminPanelDecisionCancel => 'Annuler le match';
+
+  @override
+  String get adminPanelDecisionWinnerLabel => 'Vainqueur';
+
+  @override
+  String get adminPanelDecisionNotesLabel => 'Notes administratives';
+
+  @override
+  String get adminPanelDecisionNotesHint => 'Raison de cette décision…';
+
+  @override
+  String get adminPanelDecisionConfirm => 'Appliquer la décision';
+
+  @override
+  String get adminPanelDecisionSuccess => 'Décision appliquée avec succès';
+
+  @override
+  String get adminPanelDecisionErrorNotesRequired =>
+      'Les notes sont obligatoires';
+
+  @override
+  String get adminPanelDecisionErrorWinnerRequired =>
+      'Sélectionnez un vainqueur pour le forfait';
 }

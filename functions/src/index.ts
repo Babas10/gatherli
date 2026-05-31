@@ -34,6 +34,7 @@ export {submitChampionshipMatchResult} from "./submitChampionshipMatchResult"; /
 export {verifyChampionshipMatchResult} from "./verifyChampionshipMatchResult"; // Story 30.7 (Result Verification)
 export {proposeMatchSchedule} from "./proposeMatchSchedule"; // Story 30.5/30.11 (Schedule Proposal)
 export {onChampionshipMatchVerified} from "./onChampionshipMatchVerified"; // Story 30.8 (Standings Recalculation)
+export {adminDecideChampionshipMatch} from "./adminDecideChampionshipMatch"; // Story 30.12 (Admin Match Decision)
 export {generateRecurringTrainingSessions} from "./generateRecurringTrainingSessions"; // Story 15.2 (Recurring Training Sessions)
 export {joinTrainingSession} from "./joinTrainingSession"; // Story 15.3 (Join Training Session)
 export {leaveTrainingSession} from "./leaveTrainingSession"; // Story 15.3 (Leave Training Session)
