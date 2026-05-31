@@ -165,8 +165,8 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Admin Notifications section (after Training Sessions)
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      // Scroll down to find Admin Notifications section (after Training Sessions + Championships)
+      await tester.drag(find.byType(ListView), const Offset(0, -700));
       await tester.pumpAndSettle();
 
       // Assert
@@ -218,8 +218,8 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Admin Notifications section (after Training Sessions)
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      // Scroll down to find Admin Notifications section (after Training Sessions + Championships)
+      await tester.drag(find.byType(ListView), const Offset(0, -700));
       await tester.pumpAndSettle();
 
       // Assert

@@ -66,6 +66,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           emit,
           (prefs) => prefs.copyWith(trainingSessionCancelled: enabled),
         ),
+        // Championship notification toggle handler (Story 30.13)
+        toggleChampionship: (enabled) => _handleToggle(
+          emit,
+          (prefs) => prefs.copyWith(championship: enabled),
+        ),
       );
     });
   }

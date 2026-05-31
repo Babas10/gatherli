@@ -142,6 +142,23 @@ class _NotificationSettingsView extends StatelessWidget {
 
                 const Divider(height: 32),
 
+                // Championships Section (Story 30.13)
+                _SectionHeader(title: 'Championships'),
+                SwitchListTile(
+                  title: const Text('Championship Events'),
+                  subtitle: const Text(
+                    'Result submissions, verifications, disputes and deadline warnings',
+                  ),
+                  value: preferences.championship,
+                  onChanged: (value) {
+                    context.read<NotificationBloc>().add(
+                      NotificationEvent.toggleChampionship(value),
+                    );
+                  },
+                ),
+
+                const Divider(height: 32),
+
                 // Admin Notifications Section
                 _SectionHeader(title: 'Admin Notifications'),
                 const Padding(

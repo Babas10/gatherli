@@ -16,7 +16,8 @@ T _$identity<T>(T value) => value;
 mixin _$NotificationPreferencesEntity {
 
  bool get groupInvitations; bool get invitationAccepted; bool get gameCreated; bool get memberJoined; bool get memberLeft; bool get roleChanged; bool get friendRequestReceived; bool get friendRequestAccepted; bool get friendRemoved; bool get quietHoursEnabled; String? get quietHoursStart; String? get quietHoursEnd; Map<String, bool> get groupSpecific;// Training session notification preferences (Story 15.13)
- bool get trainingSessionCreated; bool get trainingMinParticipantsReached; bool get trainingFeedbackReceived; bool get trainingSessionCancelled;
+ bool get trainingSessionCreated; bool get trainingMinParticipantsReached; bool get trainingFeedbackReceived; bool get trainingSessionCancelled;// Championship notification preferences (Story 30.13)
+ bool get championship;
 /// Create a copy of NotificationPreferencesEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +30,16 @@ $NotificationPreferencesEntityCopyWith<NotificationPreferencesEntity> get copyWi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferencesEntity&&(identical(other.groupInvitations, groupInvitations) || other.groupInvitations == groupInvitations)&&(identical(other.invitationAccepted, invitationAccepted) || other.invitationAccepted == invitationAccepted)&&(identical(other.gameCreated, gameCreated) || other.gameCreated == gameCreated)&&(identical(other.memberJoined, memberJoined) || other.memberJoined == memberJoined)&&(identical(other.memberLeft, memberLeft) || other.memberLeft == memberLeft)&&(identical(other.roleChanged, roleChanged) || other.roleChanged == roleChanged)&&(identical(other.friendRequestReceived, friendRequestReceived) || other.friendRequestReceived == friendRequestReceived)&&(identical(other.friendRequestAccepted, friendRequestAccepted) || other.friendRequestAccepted == friendRequestAccepted)&&(identical(other.friendRemoved, friendRemoved) || other.friendRemoved == friendRemoved)&&(identical(other.quietHoursEnabled, quietHoursEnabled) || other.quietHoursEnabled == quietHoursEnabled)&&(identical(other.quietHoursStart, quietHoursStart) || other.quietHoursStart == quietHoursStart)&&(identical(other.quietHoursEnd, quietHoursEnd) || other.quietHoursEnd == quietHoursEnd)&&const DeepCollectionEquality().equals(other.groupSpecific, groupSpecific)&&(identical(other.trainingSessionCreated, trainingSessionCreated) || other.trainingSessionCreated == trainingSessionCreated)&&(identical(other.trainingMinParticipantsReached, trainingMinParticipantsReached) || other.trainingMinParticipantsReached == trainingMinParticipantsReached)&&(identical(other.trainingFeedbackReceived, trainingFeedbackReceived) || other.trainingFeedbackReceived == trainingFeedbackReceived)&&(identical(other.trainingSessionCancelled, trainingSessionCancelled) || other.trainingSessionCancelled == trainingSessionCancelled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferencesEntity&&(identical(other.groupInvitations, groupInvitations) || other.groupInvitations == groupInvitations)&&(identical(other.invitationAccepted, invitationAccepted) || other.invitationAccepted == invitationAccepted)&&(identical(other.gameCreated, gameCreated) || other.gameCreated == gameCreated)&&(identical(other.memberJoined, memberJoined) || other.memberJoined == memberJoined)&&(identical(other.memberLeft, memberLeft) || other.memberLeft == memberLeft)&&(identical(other.roleChanged, roleChanged) || other.roleChanged == roleChanged)&&(identical(other.friendRequestReceived, friendRequestReceived) || other.friendRequestReceived == friendRequestReceived)&&(identical(other.friendRequestAccepted, friendRequestAccepted) || other.friendRequestAccepted == friendRequestAccepted)&&(identical(other.friendRemoved, friendRemoved) || other.friendRemoved == friendRemoved)&&(identical(other.quietHoursEnabled, quietHoursEnabled) || other.quietHoursEnabled == quietHoursEnabled)&&(identical(other.quietHoursStart, quietHoursStart) || other.quietHoursStart == quietHoursStart)&&(identical(other.quietHoursEnd, quietHoursEnd) || other.quietHoursEnd == quietHoursEnd)&&const DeepCollectionEquality().equals(other.groupSpecific, groupSpecific)&&(identical(other.trainingSessionCreated, trainingSessionCreated) || other.trainingSessionCreated == trainingSessionCreated)&&(identical(other.trainingMinParticipantsReached, trainingMinParticipantsReached) || other.trainingMinParticipantsReached == trainingMinParticipantsReached)&&(identical(other.trainingFeedbackReceived, trainingFeedbackReceived) || other.trainingFeedbackReceived == trainingFeedbackReceived)&&(identical(other.trainingSessionCancelled, trainingSessionCancelled) || other.trainingSessionCancelled == trainingSessionCancelled)&&(identical(other.championship, championship) || other.championship == championship));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupInvitations,invitationAccepted,gameCreated,memberJoined,memberLeft,roleChanged,friendRequestReceived,friendRequestAccepted,friendRemoved,quietHoursEnabled,quietHoursStart,quietHoursEnd,const DeepCollectionEquality().hash(groupSpecific),trainingSessionCreated,trainingMinParticipantsReached,trainingFeedbackReceived,trainingSessionCancelled);
+int get hashCode => Object.hash(runtimeType,groupInvitations,invitationAccepted,gameCreated,memberJoined,memberLeft,roleChanged,friendRequestReceived,friendRequestAccepted,friendRemoved,quietHoursEnabled,quietHoursStart,quietHoursEnd,const DeepCollectionEquality().hash(groupSpecific),trainingSessionCreated,trainingMinParticipantsReached,trainingFeedbackReceived,trainingSessionCancelled,championship);
 
 @override
 String toString() {
-  return 'NotificationPreferencesEntity(groupInvitations: $groupInvitations, invitationAccepted: $invitationAccepted, gameCreated: $gameCreated, memberJoined: $memberJoined, memberLeft: $memberLeft, roleChanged: $roleChanged, friendRequestReceived: $friendRequestReceived, friendRequestAccepted: $friendRequestAccepted, friendRemoved: $friendRemoved, quietHoursEnabled: $quietHoursEnabled, quietHoursStart: $quietHoursStart, quietHoursEnd: $quietHoursEnd, groupSpecific: $groupSpecific, trainingSessionCreated: $trainingSessionCreated, trainingMinParticipantsReached: $trainingMinParticipantsReached, trainingFeedbackReceived: $trainingFeedbackReceived, trainingSessionCancelled: $trainingSessionCancelled)';
+  return 'NotificationPreferencesEntity(groupInvitations: $groupInvitations, invitationAccepted: $invitationAccepted, gameCreated: $gameCreated, memberJoined: $memberJoined, memberLeft: $memberLeft, roleChanged: $roleChanged, friendRequestReceived: $friendRequestReceived, friendRequestAccepted: $friendRequestAccepted, friendRemoved: $friendRemoved, quietHoursEnabled: $quietHoursEnabled, quietHoursStart: $quietHoursStart, quietHoursEnd: $quietHoursEnd, groupSpecific: $groupSpecific, trainingSessionCreated: $trainingSessionCreated, trainingMinParticipantsReached: $trainingMinParticipantsReached, trainingFeedbackReceived: $trainingFeedbackReceived, trainingSessionCancelled: $trainingSessionCancelled, championship: $championship)';
 }
 
 
@@ -49,7 +50,7 @@ abstract mixin class $NotificationPreferencesEntityCopyWith<$Res>  {
   factory $NotificationPreferencesEntityCopyWith(NotificationPreferencesEntity value, $Res Function(NotificationPreferencesEntity) _then) = _$NotificationPreferencesEntityCopyWithImpl;
 @useResult
 $Res call({
- bool groupInvitations, bool invitationAccepted, bool gameCreated, bool memberJoined, bool memberLeft, bool roleChanged, bool friendRequestReceived, bool friendRequestAccepted, bool friendRemoved, bool quietHoursEnabled, String? quietHoursStart, String? quietHoursEnd, Map<String, bool> groupSpecific, bool trainingSessionCreated, bool trainingMinParticipantsReached, bool trainingFeedbackReceived, bool trainingSessionCancelled
+ bool groupInvitations, bool invitationAccepted, bool gameCreated, bool memberJoined, bool memberLeft, bool roleChanged, bool friendRequestReceived, bool friendRequestAccepted, bool friendRemoved, bool quietHoursEnabled, String? quietHoursStart, String? quietHoursEnd, Map<String, bool> groupSpecific, bool trainingSessionCreated, bool trainingMinParticipantsReached, bool trainingFeedbackReceived, bool trainingSessionCancelled, bool championship
 });
 
 
@@ -66,7 +67,7 @@ class _$NotificationPreferencesEntityCopyWithImpl<$Res>
 
 /// Create a copy of NotificationPreferencesEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? groupInvitations = null,Object? invitationAccepted = null,Object? gameCreated = null,Object? memberJoined = null,Object? memberLeft = null,Object? roleChanged = null,Object? friendRequestReceived = null,Object? friendRequestAccepted = null,Object? friendRemoved = null,Object? quietHoursEnabled = null,Object? quietHoursStart = freezed,Object? quietHoursEnd = freezed,Object? groupSpecific = null,Object? trainingSessionCreated = null,Object? trainingMinParticipantsReached = null,Object? trainingFeedbackReceived = null,Object? trainingSessionCancelled = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupInvitations = null,Object? invitationAccepted = null,Object? gameCreated = null,Object? memberJoined = null,Object? memberLeft = null,Object? roleChanged = null,Object? friendRequestReceived = null,Object? friendRequestAccepted = null,Object? friendRemoved = null,Object? quietHoursEnabled = null,Object? quietHoursStart = freezed,Object? quietHoursEnd = freezed,Object? groupSpecific = null,Object? trainingSessionCreated = null,Object? trainingMinParticipantsReached = null,Object? trainingFeedbackReceived = null,Object? trainingSessionCancelled = null,Object? championship = null,}) {
   return _then(_self.copyWith(
 groupInvitations: null == groupInvitations ? _self.groupInvitations : groupInvitations // ignore: cast_nullable_to_non_nullable
 as bool,invitationAccepted: null == invitationAccepted ? _self.invitationAccepted : invitationAccepted // ignore: cast_nullable_to_non_nullable
@@ -85,6 +86,7 @@ as Map<String, bool>,trainingSessionCreated: null == trainingSessionCreated ? _s
 as bool,trainingMinParticipantsReached: null == trainingMinParticipantsReached ? _self.trainingMinParticipantsReached : trainingMinParticipantsReached // ignore: cast_nullable_to_non_nullable
 as bool,trainingFeedbackReceived: null == trainingFeedbackReceived ? _self.trainingFeedbackReceived : trainingFeedbackReceived // ignore: cast_nullable_to_non_nullable
 as bool,trainingSessionCancelled: null == trainingSessionCancelled ? _self.trainingSessionCancelled : trainingSessionCancelled // ignore: cast_nullable_to_non_nullable
+as bool,championship: null == championship ? _self.championship : championship // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -170,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled,  bool championship)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NotificationPreferencesEntity() when $default != null:
-return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled);case _:
+return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled,_that.championship);case _:
   return orElse();
 
 }
@@ -191,10 +193,10 @@ return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreate
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled,  bool championship)  $default,) {final _that = this;
 switch (_that) {
 case _NotificationPreferencesEntity():
-return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled);case _:
+return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled,_that.championship);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +213,10 @@ return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreate
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool groupInvitations,  bool invitationAccepted,  bool gameCreated,  bool memberJoined,  bool memberLeft,  bool roleChanged,  bool friendRequestReceived,  bool friendRequestAccepted,  bool friendRemoved,  bool quietHoursEnabled,  String? quietHoursStart,  String? quietHoursEnd,  Map<String, bool> groupSpecific,  bool trainingSessionCreated,  bool trainingMinParticipantsReached,  bool trainingFeedbackReceived,  bool trainingSessionCancelled,  bool championship)?  $default,) {final _that = this;
 switch (_that) {
 case _NotificationPreferencesEntity() when $default != null:
-return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled);case _:
+return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreated,_that.memberJoined,_that.memberLeft,_that.roleChanged,_that.friendRequestReceived,_that.friendRequestAccepted,_that.friendRemoved,_that.quietHoursEnabled,_that.quietHoursStart,_that.quietHoursEnd,_that.groupSpecific,_that.trainingSessionCreated,_that.trainingMinParticipantsReached,_that.trainingFeedbackReceived,_that.trainingSessionCancelled,_that.championship);case _:
   return null;
 
 }
@@ -226,7 +228,7 @@ return $default(_that.groupInvitations,_that.invitationAccepted,_that.gameCreate
 @JsonSerializable()
 
 class _NotificationPreferencesEntity extends NotificationPreferencesEntity {
-  const _NotificationPreferencesEntity({this.groupInvitations = true, this.invitationAccepted = true, this.gameCreated = true, this.memberJoined = false, this.memberLeft = false, this.roleChanged = true, this.friendRequestReceived = true, this.friendRequestAccepted = true, this.friendRemoved = false, this.quietHoursEnabled = false, this.quietHoursStart, this.quietHoursEnd, final  Map<String, bool> groupSpecific = const {}, this.trainingSessionCreated = true, this.trainingMinParticipantsReached = true, this.trainingFeedbackReceived = true, this.trainingSessionCancelled = true}): _groupSpecific = groupSpecific,super._();
+  const _NotificationPreferencesEntity({this.groupInvitations = true, this.invitationAccepted = true, this.gameCreated = true, this.memberJoined = false, this.memberLeft = false, this.roleChanged = true, this.friendRequestReceived = true, this.friendRequestAccepted = true, this.friendRemoved = false, this.quietHoursEnabled = false, this.quietHoursStart, this.quietHoursEnd, final  Map<String, bool> groupSpecific = const {}, this.trainingSessionCreated = true, this.trainingMinParticipantsReached = true, this.trainingFeedbackReceived = true, this.trainingSessionCancelled = true, this.championship = true}): _groupSpecific = groupSpecific,super._();
   factory _NotificationPreferencesEntity.fromJson(Map<String, dynamic> json) => _$NotificationPreferencesEntityFromJson(json);
 
 @override@JsonKey() final  bool groupInvitations;
@@ -253,6 +255,8 @@ class _NotificationPreferencesEntity extends NotificationPreferencesEntity {
 @override@JsonKey() final  bool trainingMinParticipantsReached;
 @override@JsonKey() final  bool trainingFeedbackReceived;
 @override@JsonKey() final  bool trainingSessionCancelled;
+// Championship notification preferences (Story 30.13)
+@override@JsonKey() final  bool championship;
 
 /// Create a copy of NotificationPreferencesEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -267,16 +271,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferencesEntity&&(identical(other.groupInvitations, groupInvitations) || other.groupInvitations == groupInvitations)&&(identical(other.invitationAccepted, invitationAccepted) || other.invitationAccepted == invitationAccepted)&&(identical(other.gameCreated, gameCreated) || other.gameCreated == gameCreated)&&(identical(other.memberJoined, memberJoined) || other.memberJoined == memberJoined)&&(identical(other.memberLeft, memberLeft) || other.memberLeft == memberLeft)&&(identical(other.roleChanged, roleChanged) || other.roleChanged == roleChanged)&&(identical(other.friendRequestReceived, friendRequestReceived) || other.friendRequestReceived == friendRequestReceived)&&(identical(other.friendRequestAccepted, friendRequestAccepted) || other.friendRequestAccepted == friendRequestAccepted)&&(identical(other.friendRemoved, friendRemoved) || other.friendRemoved == friendRemoved)&&(identical(other.quietHoursEnabled, quietHoursEnabled) || other.quietHoursEnabled == quietHoursEnabled)&&(identical(other.quietHoursStart, quietHoursStart) || other.quietHoursStart == quietHoursStart)&&(identical(other.quietHoursEnd, quietHoursEnd) || other.quietHoursEnd == quietHoursEnd)&&const DeepCollectionEquality().equals(other._groupSpecific, _groupSpecific)&&(identical(other.trainingSessionCreated, trainingSessionCreated) || other.trainingSessionCreated == trainingSessionCreated)&&(identical(other.trainingMinParticipantsReached, trainingMinParticipantsReached) || other.trainingMinParticipantsReached == trainingMinParticipantsReached)&&(identical(other.trainingFeedbackReceived, trainingFeedbackReceived) || other.trainingFeedbackReceived == trainingFeedbackReceived)&&(identical(other.trainingSessionCancelled, trainingSessionCancelled) || other.trainingSessionCancelled == trainingSessionCancelled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferencesEntity&&(identical(other.groupInvitations, groupInvitations) || other.groupInvitations == groupInvitations)&&(identical(other.invitationAccepted, invitationAccepted) || other.invitationAccepted == invitationAccepted)&&(identical(other.gameCreated, gameCreated) || other.gameCreated == gameCreated)&&(identical(other.memberJoined, memberJoined) || other.memberJoined == memberJoined)&&(identical(other.memberLeft, memberLeft) || other.memberLeft == memberLeft)&&(identical(other.roleChanged, roleChanged) || other.roleChanged == roleChanged)&&(identical(other.friendRequestReceived, friendRequestReceived) || other.friendRequestReceived == friendRequestReceived)&&(identical(other.friendRequestAccepted, friendRequestAccepted) || other.friendRequestAccepted == friendRequestAccepted)&&(identical(other.friendRemoved, friendRemoved) || other.friendRemoved == friendRemoved)&&(identical(other.quietHoursEnabled, quietHoursEnabled) || other.quietHoursEnabled == quietHoursEnabled)&&(identical(other.quietHoursStart, quietHoursStart) || other.quietHoursStart == quietHoursStart)&&(identical(other.quietHoursEnd, quietHoursEnd) || other.quietHoursEnd == quietHoursEnd)&&const DeepCollectionEquality().equals(other._groupSpecific, _groupSpecific)&&(identical(other.trainingSessionCreated, trainingSessionCreated) || other.trainingSessionCreated == trainingSessionCreated)&&(identical(other.trainingMinParticipantsReached, trainingMinParticipantsReached) || other.trainingMinParticipantsReached == trainingMinParticipantsReached)&&(identical(other.trainingFeedbackReceived, trainingFeedbackReceived) || other.trainingFeedbackReceived == trainingFeedbackReceived)&&(identical(other.trainingSessionCancelled, trainingSessionCancelled) || other.trainingSessionCancelled == trainingSessionCancelled)&&(identical(other.championship, championship) || other.championship == championship));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupInvitations,invitationAccepted,gameCreated,memberJoined,memberLeft,roleChanged,friendRequestReceived,friendRequestAccepted,friendRemoved,quietHoursEnabled,quietHoursStart,quietHoursEnd,const DeepCollectionEquality().hash(_groupSpecific),trainingSessionCreated,trainingMinParticipantsReached,trainingFeedbackReceived,trainingSessionCancelled);
+int get hashCode => Object.hash(runtimeType,groupInvitations,invitationAccepted,gameCreated,memberJoined,memberLeft,roleChanged,friendRequestReceived,friendRequestAccepted,friendRemoved,quietHoursEnabled,quietHoursStart,quietHoursEnd,const DeepCollectionEquality().hash(_groupSpecific),trainingSessionCreated,trainingMinParticipantsReached,trainingFeedbackReceived,trainingSessionCancelled,championship);
 
 @override
 String toString() {
-  return 'NotificationPreferencesEntity(groupInvitations: $groupInvitations, invitationAccepted: $invitationAccepted, gameCreated: $gameCreated, memberJoined: $memberJoined, memberLeft: $memberLeft, roleChanged: $roleChanged, friendRequestReceived: $friendRequestReceived, friendRequestAccepted: $friendRequestAccepted, friendRemoved: $friendRemoved, quietHoursEnabled: $quietHoursEnabled, quietHoursStart: $quietHoursStart, quietHoursEnd: $quietHoursEnd, groupSpecific: $groupSpecific, trainingSessionCreated: $trainingSessionCreated, trainingMinParticipantsReached: $trainingMinParticipantsReached, trainingFeedbackReceived: $trainingFeedbackReceived, trainingSessionCancelled: $trainingSessionCancelled)';
+  return 'NotificationPreferencesEntity(groupInvitations: $groupInvitations, invitationAccepted: $invitationAccepted, gameCreated: $gameCreated, memberJoined: $memberJoined, memberLeft: $memberLeft, roleChanged: $roleChanged, friendRequestReceived: $friendRequestReceived, friendRequestAccepted: $friendRequestAccepted, friendRemoved: $friendRemoved, quietHoursEnabled: $quietHoursEnabled, quietHoursStart: $quietHoursStart, quietHoursEnd: $quietHoursEnd, groupSpecific: $groupSpecific, trainingSessionCreated: $trainingSessionCreated, trainingMinParticipantsReached: $trainingMinParticipantsReached, trainingFeedbackReceived: $trainingFeedbackReceived, trainingSessionCancelled: $trainingSessionCancelled, championship: $championship)';
 }
 
 
@@ -287,7 +291,7 @@ abstract mixin class _$NotificationPreferencesEntityCopyWith<$Res> implements $N
   factory _$NotificationPreferencesEntityCopyWith(_NotificationPreferencesEntity value, $Res Function(_NotificationPreferencesEntity) _then) = __$NotificationPreferencesEntityCopyWithImpl;
 @override @useResult
 $Res call({
- bool groupInvitations, bool invitationAccepted, bool gameCreated, bool memberJoined, bool memberLeft, bool roleChanged, bool friendRequestReceived, bool friendRequestAccepted, bool friendRemoved, bool quietHoursEnabled, String? quietHoursStart, String? quietHoursEnd, Map<String, bool> groupSpecific, bool trainingSessionCreated, bool trainingMinParticipantsReached, bool trainingFeedbackReceived, bool trainingSessionCancelled
+ bool groupInvitations, bool invitationAccepted, bool gameCreated, bool memberJoined, bool memberLeft, bool roleChanged, bool friendRequestReceived, bool friendRequestAccepted, bool friendRemoved, bool quietHoursEnabled, String? quietHoursStart, String? quietHoursEnd, Map<String, bool> groupSpecific, bool trainingSessionCreated, bool trainingMinParticipantsReached, bool trainingFeedbackReceived, bool trainingSessionCancelled, bool championship
 });
 
 
@@ -304,7 +308,7 @@ class __$NotificationPreferencesEntityCopyWithImpl<$Res>
 
 /// Create a copy of NotificationPreferencesEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? groupInvitations = null,Object? invitationAccepted = null,Object? gameCreated = null,Object? memberJoined = null,Object? memberLeft = null,Object? roleChanged = null,Object? friendRequestReceived = null,Object? friendRequestAccepted = null,Object? friendRemoved = null,Object? quietHoursEnabled = null,Object? quietHoursStart = freezed,Object? quietHoursEnd = freezed,Object? groupSpecific = null,Object? trainingSessionCreated = null,Object? trainingMinParticipantsReached = null,Object? trainingFeedbackReceived = null,Object? trainingSessionCancelled = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupInvitations = null,Object? invitationAccepted = null,Object? gameCreated = null,Object? memberJoined = null,Object? memberLeft = null,Object? roleChanged = null,Object? friendRequestReceived = null,Object? friendRequestAccepted = null,Object? friendRemoved = null,Object? quietHoursEnabled = null,Object? quietHoursStart = freezed,Object? quietHoursEnd = freezed,Object? groupSpecific = null,Object? trainingSessionCreated = null,Object? trainingMinParticipantsReached = null,Object? trainingFeedbackReceived = null,Object? trainingSessionCancelled = null,Object? championship = null,}) {
   return _then(_NotificationPreferencesEntity(
 groupInvitations: null == groupInvitations ? _self.groupInvitations : groupInvitations // ignore: cast_nullable_to_non_nullable
 as bool,invitationAccepted: null == invitationAccepted ? _self.invitationAccepted : invitationAccepted // ignore: cast_nullable_to_non_nullable
@@ -323,6 +327,7 @@ as Map<String, bool>,trainingSessionCreated: null == trainingSessionCreated ? _s
 as bool,trainingMinParticipantsReached: null == trainingMinParticipantsReached ? _self.trainingMinParticipantsReached : trainingMinParticipantsReached // ignore: cast_nullable_to_non_nullable
 as bool,trainingFeedbackReceived: null == trainingFeedbackReceived ? _self.trainingFeedbackReceived : trainingFeedbackReceived // ignore: cast_nullable_to_non_nullable
 as bool,trainingSessionCancelled: null == trainingSessionCancelled ? _self.trainingSessionCancelled : trainingSessionCancelled // ignore: cast_nullable_to_non_nullable
+as bool,championship: null == championship ? _self.championship : championship // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

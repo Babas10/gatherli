@@ -24,6 +24,8 @@ abstract class NotificationPreferencesEntity with _$NotificationPreferencesEntit
     @Default(true) bool trainingMinParticipantsReached,
     @Default(true) bool trainingFeedbackReceived,
     @Default(true) bool trainingSessionCancelled,
+    // Championship notification preferences (Story 30.13)
+    @Default(true) bool championship,
   }) = _NotificationPreferencesEntity;
 
   const NotificationPreferencesEntity._();
