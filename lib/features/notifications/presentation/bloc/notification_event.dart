@@ -41,4 +41,7 @@ abstract class NotificationEvent with _$NotificationEvent {
       _ToggleTrainingFeedbackReceived;
   const factory NotificationEvent.toggleTrainingSessionCancelled(bool enabled) =
       _ToggleTrainingSessionCancelled;
+  // Championship notification toggle event (Story 30.13)
+  const factory NotificationEvent.toggleChampionship(bool enabled) =
+      _ToggleChampionship;
 }
