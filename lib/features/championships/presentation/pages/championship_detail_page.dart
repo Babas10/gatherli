@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class ChampionshipDetailPage extends StatelessWidget {
@@ -339,6 +342,24 @@ class _MatchesTab extends StatelessWidget {
     required this.l10n,
   });
 
+  void _navigateToMatch(BuildContext context, ChampionshipMatchModel match) {
+    final authState = context.read<AuthenticationBloc>().state;
+    if (authState is! AuthenticationAuthenticated) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MatchDetailPage(
+          championshipId: championship.id,
+          matchId: match.id,
+          currentUserId: authState.user.uid,
+          currentUserDisplayName:
+              authState.user.displayName ?? authState.user.email,
+        ),
+      ),
+    );
+  }
+
   String _teamName(String teamId) {
     try {
       return standings.firstWhere((s) => s.teamId == teamId).teamName;
@@ -405,11 +426,12 @@ class _MatchesTab extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   itemCount: matches.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
-                  itemBuilder: (_, i) => _MatchCard(
+                  itemBuilder: (ctx, i) => _MatchCard(
                     match: matches[i],
                     teamAName: _teamName(matches[i].teamAId),
                     teamBName: _teamName(matches[i].teamBId),
                     l10n: l10n,
+                    onTap: () => _navigateToMatch(ctx, matches[i]),
                   ),
                 ),
         ),
@@ -427,12 +449,14 @@ class _MatchCard extends StatelessWidget {
   final String teamAName;
   final String teamBName;
   final AppLocalizations l10n;
+  final VoidCallback? onTap;
 
   const _MatchCard({
     required this.match,
     required this.teamAName,
     required this.teamBName,
     required this.l10n,
+    this.onTap,
   });
 
   String _statusLabel() {
@@ -474,7 +498,10 @@ class _MatchCard extends StatelessWidget {
 
     return Card(
       margin: EdgeInsets.zero,
-      child: Padding(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -549,6 +576,7 @@ class _MatchCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

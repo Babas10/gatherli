@@ -3163,5 +3163,21 @@
   "championshipMatchStatusDisputed": "Disputed",
   "@championshipMatchStatusDisputed": {"description": "Match status badge: result disputed by opposing team"},
   "championshipMatchStatusAdminDecided": "Decided",
-  "@championshipMatchStatusAdminDecided": {"description": "Match status badge: result decided by admin"}
+  "@championshipMatchStatusAdminDecided": {"description": "Match status badge: result decided by admin"},
+  "championshipMatchStatusScheduled": "Scheduled",
+  "@championshipMatchStatusScheduled": {"description": "Match status badge: match has a proposed schedule"},
+  "matchDetailTitle": "Match Detail",
+  "@matchDetailTitle": {"description": "AppBar title for the match detail screen"},
+  "matchDetailScheduledAt": "Scheduled: {datetime}",
+  "@matchDetailScheduledAt": {"description": "Shows the proposed match date/time", "placeholders": {"datetime": {"type": "String"}}},
+  "matchDetailProposeSchedule": "Propose Schedule",
+  "@matchDetailProposeSchedule": {"description": "Button to open the propose schedule dialog"},
+  "matchDetailProposeDateLabel": "Date",
+  "@matchDetailProposeDateLabel": {"description": "Label for the date picker in the propose schedule dialog"},
+  "matchDetailProposeTimeLabel": "Time",
+  "@matchDetailProposeTimeLabel": {"description": "Label for the time picker in the propose schedule dialog"},
+  "matchDetailProposeLocationLabel": "Location (optional)",
+  "@matchDetailProposeLocationLabel": {"description": "Label for the location field in the propose schedule dialog"},
+  "matchDetailProposeConfirm": "Propose",
+  "@matchDetailProposeConfirm": {"description": "Confirm button in the propose schedule dialog"}
 }

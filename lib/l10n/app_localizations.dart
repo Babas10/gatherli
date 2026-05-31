@@ -4267,6 +4267,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Decided'**
   String get championshipMatchStatusAdminDecided;
+
+  /// Match status badge: match has a proposed schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get championshipMatchStatusScheduled;
+
+  /// AppBar title for the match detail screen
+  ///
+  /// In en, this message translates to:
+  /// **'Match Detail'**
+  String get matchDetailTitle;
+
+  /// Shows the proposed match date/time
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled: {datetime}'**
+  String matchDetailScheduledAt(String datetime);
+
+  /// Button to open the propose schedule dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Propose Schedule'**
+  String get matchDetailProposeSchedule;
+
+  /// Label for the date picker in the propose schedule dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get matchDetailProposeDateLabel;
+
+  /// Label for the time picker in the propose schedule dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get matchDetailProposeTimeLabel;
+
+  /// Label for the location field in the propose schedule dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get matchDetailProposeLocationLabel;
+
+  /// Confirm button in the propose schedule dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Propose'**
+  String get matchDetailProposeConfirm;
 }
 
 class _AppLocalizationsDelegate

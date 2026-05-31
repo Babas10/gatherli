@@ -823,5 +823,13 @@
   "championshipMatchStatusPlayed": "Giocato",
   "championshipMatchStatusVerified": "Verificato",
   "championshipMatchStatusDisputed": "Disputato",
-  "championshipMatchStatusAdminDecided": "Deciso"
+  "championshipMatchStatusAdminDecided": "Deciso",
+  "championshipMatchStatusScheduled": "Programmato",
+  "matchDetailTitle": "Dettaglio partita",
+  "matchDetailScheduledAt": "Programmato: {datetime}",
+  "matchDetailProposeSchedule": "Proponi orario",
+  "matchDetailProposeDateLabel": "Data",
+  "matchDetailProposeTimeLabel": "Ora",
+  "matchDetailProposeLocationLabel": "Luogo (opzionale)",
+  "matchDetailProposeConfirm": "Proponi"
 }

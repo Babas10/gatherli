@@ -2353,4 +2353,30 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get championshipMatchStatusAdminDecided => 'Deciso';
+
+  @override
+  String get championshipMatchStatusScheduled => 'Programmato';
+
+  @override
+  String get matchDetailTitle => 'Dettaglio partita';
+
+  @override
+  String matchDetailScheduledAt(String datetime) {
+    return 'Programmato: $datetime';
+  }
+
+  @override
+  String get matchDetailProposeSchedule => 'Proponi orario';
+
+  @override
+  String get matchDetailProposeDateLabel => 'Data';
+
+  @override
+  String get matchDetailProposeTimeLabel => 'Ora';
+
+  @override
+  String get matchDetailProposeLocationLabel => 'Luogo (opzionale)';
+
+  @override
+  String get matchDetailProposeConfirm => 'Proponi';
 }
