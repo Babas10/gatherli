@@ -422,4 +422,60 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       throw ChampionshipException('Failed to load team: $e');
     }
   }
+
+  @override
+  Stream<List<ChampionshipMatchModel>> getAllMatches(String championshipId) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('matches')
+          .orderBy('round')
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipMatchModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load matches: $e',
+          code: 'LOAD_MATCHES_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load matches: $e',
+        code: 'LOAD_MATCHES_ERROR',
+      ));
+    }
+  }
+
+  @override
+  Future<void> adminDecideMatch({
+    required String championshipId,
+    required String matchId,
+    required String decision,
+    String? winnerId,
+    List<MatchSetScore>? sets,
+    required String notes,
+  }) async {
+    try {
+      final callable =
+          _functions.httpsCallable('adminDecideChampionshipMatch');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+        'decision': decision,
+        if (winnerId != null) 'winnerId': winnerId,
+        if (sets != null) 'sets': sets.map((s) => s.toJson()).toList(),
+        'notes': notes,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to apply admin decision',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to apply admin decision: $e');
+    }
+  }
 }

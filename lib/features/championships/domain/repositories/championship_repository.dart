@@ -127,4 +127,23 @@ abstract class ChampionshipRepository {
     required String championshipId,
     required String teamId,
   });
+
+  /// Real-time stream of all matches for [championshipId], ordered by round.
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipMatchModel>> getAllMatches(String championshipId);
+
+  /// Admin-only: applies an admin decision to a match via Cloud Function.
+  /// [decision] must be 'set_result', 'award_walkover', or 'cancel'.
+  /// [winnerId] is required for 'award_walkover'.
+  /// [sets] is required for 'set_result'.
+  /// [notes] is always required.
+  /// Throws [ChampionshipException] on error.
+  Future<void> adminDecideMatch({
+    required String championshipId,
+    required String matchId,
+    required String decision,
+    String? winnerId,
+    List<MatchSetScore>? sets,
+    required String notes,
+  });
 }

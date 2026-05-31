@@ -831,5 +831,21 @@
   "matchDetailProposeDateLabel": "Datum",
   "matchDetailProposeTimeLabel": "Uhrzeit",
   "matchDetailProposeLocationLabel": "Ort (optional)",
-  "matchDetailProposeConfirm": "Vorschlagen"
+  "matchDetailProposeConfirm": "Vorschlagen",
+
+  "adminPanelTabLabel": "Admin",
+  "adminPanelNoMatchesNeedingAttention": "Keine Spiele erfordern eine Admin-Entscheidung",
+  "adminPanelMatchOverdue": "Überfällig",
+  "adminPanelMatchDisputed": "Strittig",
+  "adminPanelDecisionTitle": "Admin-Entscheidung",
+  "adminPanelDecisionSetResult": "Ergebnis festlegen",
+  "adminPanelDecisionAwardWalkover": "Walkover vergeben",
+  "adminPanelDecisionCancel": "Spiel absagen",
+  "adminPanelDecisionWinnerLabel": "Gewinner",
+  "adminPanelDecisionNotesLabel": "Admin-Notizen",
+  "adminPanelDecisionNotesHint": "Begründung für diese Entscheidung…",
+  "adminPanelDecisionConfirm": "Entscheidung anwenden",
+  "adminPanelDecisionSuccess": "Entscheidung erfolgreich angewendet",
+  "adminPanelDecisionErrorNotesRequired": "Notizen sind erforderlich",
+  "adminPanelDecisionErrorWinnerRequired": "Wählen Sie einen Gewinner für den Walkover"
 }

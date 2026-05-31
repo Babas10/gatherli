@@ -831,5 +831,21 @@
   "matchDetailProposeDateLabel": "Fecha",
   "matchDetailProposeTimeLabel": "Hora",
   "matchDetailProposeLocationLabel": "Ubicación (opcional)",
-  "matchDetailProposeConfirm": "Proponer"
+  "matchDetailProposeConfirm": "Proponer",
+
+  "adminPanelTabLabel": "Admin",
+  "adminPanelNoMatchesNeedingAttention": "No hay partidos que requieran atención",
+  "adminPanelMatchOverdue": "Vencido",
+  "adminPanelMatchDisputed": "Disputado",
+  "adminPanelDecisionTitle": "Decisión administrativa",
+  "adminPanelDecisionSetResult": "Establecer resultado",
+  "adminPanelDecisionAwardWalkover": "Conceder walkover",
+  "adminPanelDecisionCancel": "Cancelar partido",
+  "adminPanelDecisionWinnerLabel": "Ganador",
+  "adminPanelDecisionNotesLabel": "Notas del administrador",
+  "adminPanelDecisionNotesHint": "Razón de esta decisión…",
+  "adminPanelDecisionConfirm": "Aplicar decisión",
+  "adminPanelDecisionSuccess": "Decisión aplicada con éxito",
+  "adminPanelDecisionErrorNotesRequired": "Las notas son obligatorias",
+  "adminPanelDecisionErrorWinnerRequired": "Selecciona un ganador para el walkover"
 }

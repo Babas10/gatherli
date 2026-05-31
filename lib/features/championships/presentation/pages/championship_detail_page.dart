@@ -1,4 +1,5 @@
-// Championship detail screen: header info, standings table, and per-round matches.
+// Championship detail screen: header info, standings table, per-round matches,
+// and an admin panel tab (visible to championship admins only).
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
@@ -8,6 +9,9 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_event.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_state.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
@@ -65,8 +69,15 @@ class _ChampionshipDetailView extends StatelessWidget {
     }
 
     if (state is ChampionshipDetailLoaded) {
+      final authState = context.read<AuthenticationBloc>().state;
+      final currentUserId = authState is AuthenticationAuthenticated
+          ? authState.user.uid
+          : null;
+      final isAdmin = currentUserId != null &&
+          state.championship.adminIds.contains(currentUserId);
+
       return DefaultTabController(
-        length: 2,
+        length: isAdmin ? 3 : 2,
         child: Column(
           children: [
             _ChampionshipHeader(championship: state.championship),
@@ -74,6 +85,7 @@ class _ChampionshipDetailView extends StatelessWidget {
               tabs: [
                 Tab(text: l10n.championshipDetailStandingsTab),
                 Tab(text: l10n.championshipDetailMatchesTab),
+                if (isAdmin) Tab(text: l10n.adminPanelTabLabel),
               ],
             ),
             Expanded(
@@ -90,6 +102,12 @@ class _ChampionshipDetailView extends StatelessWidget {
                     selectedRound: state.selectedRound,
                     l10n: l10n,
                   ),
+                  if (isAdmin)
+                    _AdminTab(
+                      championship: state.championship,
+                      standings: state.standings,
+                      l10n: l10n,
+                    ),
                 ],
               ),
             ),
@@ -577,6 +595,399 @@ class _MatchCard extends StatelessWidget {
           ],
         ),
       ),
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// Admin tab
+// ============================================================================
+
+class _AdminTab extends StatelessWidget {
+  final ChampionshipModel championship;
+  final List<ChampionshipStandingsModel> standings;
+  final AppLocalizations l10n;
+
+  const _AdminTab({
+    required this.championship,
+    required this.standings,
+    required this.l10n,
+  });
+
+  String _teamName(String teamId) {
+    try {
+      return standings.firstWhere((s) => s.teamId == teamId).teamName;
+    } catch (_) {
+      return teamId;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<AdminPanelBloc>()
+        ..add(LoadAdminPanel(championship.id)),
+      child: BlocConsumer<AdminPanelBloc, AdminPanelState>(
+        listener: (context, state) {
+          if (state is AdminPanelLoaded && state.lastDecidedMatchId != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.adminPanelDecisionSuccess)),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is AdminPanelLoading || state is AdminPanelInitial) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is AdminPanelError) {
+            return Center(child: Text(state.message));
+          }
+
+          if (state is AdminPanelLoaded) {
+            if (state.matches.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Text(
+                    l10n.adminPanelNoMatchesNeedingAttention,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              itemCount: state.matches.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (ctx, i) {
+                final match = state.matches[i];
+                return _AdminMatchCard(
+                  match: match,
+                  teamAName: _teamName(match.teamAId),
+                  teamBName: _teamName(match.teamBId),
+                  l10n: l10n,
+                  onDecide: () => _showDecisionSheet(ctx, match),
+                );
+              },
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+
+  void _showDecisionSheet(BuildContext context, ChampionshipMatchModel match) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) => BlocProvider.value(
+        value: context.read<AdminPanelBloc>(),
+        child: _DecisionSheet(
+          match: match,
+          teamAName: standings
+              .where((s) => s.teamId == match.teamAId)
+              .map((s) => s.teamName)
+              .firstOrNull ?? match.teamAId,
+          teamBName: standings
+              .where((s) => s.teamId == match.teamBId)
+              .map((s) => s.teamName)
+              .firstOrNull ?? match.teamBId,
+          l10n: l10n,
+        ),
+      ),
+    );
+  }
+}
+
+// ── Admin match card ──────────────────────────────────────────────────────────
+
+class _AdminMatchCard extends StatelessWidget {
+  final ChampionshipMatchModel match;
+  final String teamAName;
+  final String teamBName;
+  final AppLocalizations l10n;
+  final VoidCallback onDecide;
+
+  const _AdminMatchCard({
+    required this.match,
+    required this.teamAName,
+    required this.teamBName,
+    required this.l10n,
+    required this.onDecide,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDisputed = match.status == ChampionshipMatchStatus.disputed;
+    final badgeLabel =
+        isDisputed ? l10n.adminPanelMatchDisputed : l10n.adminPanelMatchOverdue;
+    final badgeColor = isDisputed ? Colors.orange : Colors.red;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      child: InkWell(
+        onTap: onDecide,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$teamAName  vs  $teamBName',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Round ${match.round}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: badgeColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: badgeColor.withValues(alpha: 0.4)),
+                ),
+                child: Text(
+                  badgeLabel,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: badgeColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(Icons.chevron_right, color: AppColors.textMuted),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Decision bottom sheet ─────────────────────────────────────────────────────
+
+class _DecisionSheet extends StatefulWidget {
+  final ChampionshipMatchModel match;
+  final String teamAName;
+  final String teamBName;
+  final AppLocalizations l10n;
+
+  const _DecisionSheet({
+    required this.match,
+    required this.teamAName,
+    required this.teamBName,
+    required this.l10n,
+  });
+
+  @override
+  State<_DecisionSheet> createState() => _DecisionSheetState();
+}
+
+class _DecisionSheetState extends State<_DecisionSheet> {
+  String _decision = 'cancel';
+  String? _winnerId;
+  final _notesController = TextEditingController();
+  String? _validationError;
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final notes = _notesController.text.trim();
+    if (notes.isEmpty) {
+      setState(
+          () => _validationError = widget.l10n.adminPanelDecisionErrorNotesRequired);
+      return;
+    }
+    if (_decision == 'award_walkover' && _winnerId == null) {
+      setState(
+          () => _validationError = widget.l10n.adminPanelDecisionErrorWinnerRequired);
+      return;
+    }
+    setState(() => _validationError = null);
+
+    context.read<AdminPanelBloc>().add(
+          DecideMatch(
+            matchId: widget.match.id,
+            decision: _decision,
+            winnerId: _winnerId,
+            notes: notes,
+          ),
+        );
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = widget.l10n;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 16,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.adminPanelDecisionTitle,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${widget.teamAName}  vs  ${widget.teamBName}',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                ),
+          ),
+          const SizedBox(height: 16),
+          // Decision radio buttons
+          RadioListTile<String>(
+            title: Text(l10n.adminPanelDecisionSetResult),
+            value: 'set_result',
+            groupValue: _decision,
+            onChanged: (v) => setState(() => _decision = v!),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+          ),
+          RadioListTile<String>(
+            title: Text(l10n.adminPanelDecisionAwardWalkover),
+            value: 'award_walkover',
+            groupValue: _decision,
+            onChanged: (v) => setState(() => _decision = v!),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+          ),
+          RadioListTile<String>(
+            title: Text(l10n.adminPanelDecisionCancel),
+            value: 'cancel',
+            groupValue: _decision,
+            onChanged: (v) => setState(() => _decision = v!),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+          ),
+          if (_decision == 'award_walkover') ...[
+            const SizedBox(height: 8),
+            Text(l10n.adminPanelDecisionWinnerLabel,
+                style: Theme.of(context).textTheme.labelMedium),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: Text(widget.teamAName,
+                        style: Theme.of(context).textTheme.bodySmall),
+                    value: widget.match.teamAId,
+                    groupValue: _winnerId,
+                    onChanged: (v) => setState(() => _winnerId = v),
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: Text(widget.teamBName,
+                        style: Theme.of(context).textTheme.bodySmall),
+                    value: widget.match.teamBId,
+                    groupValue: _winnerId,
+                    onChanged: (v) => setState(() => _winnerId = v),
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 12),
+          TextField(
+            controller: _notesController,
+            decoration: InputDecoration(
+              labelText: l10n.adminPanelDecisionNotesLabel,
+              hintText: l10n.adminPanelDecisionNotesHint,
+              border: const OutlineInputBorder(),
+            ),
+            minLines: 2,
+            maxLines: 4,
+          ),
+          if (_validationError != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              _validationError!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+            ),
+          ],
+          const SizedBox(height: 16),
+          BlocBuilder<AdminPanelBloc, AdminPanelState>(
+            builder: (context, state) {
+              final isDeciding =
+                  state is AdminPanelLoaded && state.isDeciding;
+              final serverError =
+                  state is AdminPanelLoaded ? state.decisionError : null;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (serverError != null) ...[
+                    Text(
+                      serverError,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                  ElevatedButton(
+                    onPressed: isDeciding ? null : _submit,
+                    child: isDeciding
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(l10n.adminPanelDecisionConfirm),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
     );
   }

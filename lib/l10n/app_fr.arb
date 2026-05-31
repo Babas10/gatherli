@@ -831,5 +831,21 @@
   "matchDetailProposeDateLabel": "Date",
   "matchDetailProposeTimeLabel": "Heure",
   "matchDetailProposeLocationLabel": "Lieu (optionnel)",
-  "matchDetailProposeConfirm": "Proposer"
+  "matchDetailProposeConfirm": "Proposer",
+
+  "adminPanelTabLabel": "Admin",
+  "adminPanelNoMatchesNeedingAttention": "Aucun match ne nécessite d'intervention",
+  "adminPanelMatchOverdue": "En retard",
+  "adminPanelMatchDisputed": "Contesté",
+  "adminPanelDecisionTitle": "Décision administrative",
+  "adminPanelDecisionSetResult": "Définir le résultat",
+  "adminPanelDecisionAwardWalkover": "Attribuer un forfait",
+  "adminPanelDecisionCancel": "Annuler le match",
+  "adminPanelDecisionWinnerLabel": "Vainqueur",
+  "adminPanelDecisionNotesLabel": "Notes administratives",
+  "adminPanelDecisionNotesHint": "Raison de cette décision…",
+  "adminPanelDecisionConfirm": "Appliquer la décision",
+  "adminPanelDecisionSuccess": "Décision appliquée avec succès",
+  "adminPanelDecisionErrorNotesRequired": "Les notes sont obligatoires",
+  "adminPanelDecisionErrorWinnerRequired": "Sélectionnez un vainqueur pour le forfait"
 }
