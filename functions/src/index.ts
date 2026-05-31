@@ -161,3 +161,6 @@ export {migrateRemoveUserArrays} from "./migrateRemoveUserArrays";
 // Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
 export {sendInvitation} from "./sendInvitation";
 
+// Story 30.x: Get all championships via Admin SDK (bypasses Firestore rules)
+export {getChampionships} from "./getChampionships";
+
