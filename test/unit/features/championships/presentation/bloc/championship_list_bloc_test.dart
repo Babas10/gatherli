@@ -111,13 +111,8 @@ void main() {
     blocTest<ChampionshipListBloc, ChampionshipListState>(
       'FilterChampionships applies filter to loaded championships',
       build: () {
-        when(() => mockRepo.getChampionships()).thenAnswer(
-          (_) => Stream.value([
-            _makeChamp('reg')
-              ..copyWith(status: ChampionshipStatus.registration),
-            _makeChamp('act')..copyWith(status: ChampionshipStatus.active),
-          ]),
-        );
+        when(() => mockRepo.getChampionships())
+            .thenAnswer((_) => const Stream.empty());
         return makeBloc();
       },
       seed: () => ChampionshipListLoaded(
