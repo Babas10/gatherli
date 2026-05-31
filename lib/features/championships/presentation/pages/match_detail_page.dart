@@ -1,0 +1,658 @@
+// Match detail screen: coordination chat, schedule proposal, and result
+// submission / verification for a single championship match.
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/match_chat_section.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/match_result_entry_widget.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/match_verification_widget.dart';
+import 'package:play_with_me/l10n/app_localizations.dart';
+
+class MatchDetailPage extends StatelessWidget {
+  final String championshipId;
+  final String matchId;
+  final String currentUserId;
+  final String currentUserDisplayName;
+
+  const MatchDetailPage({
+    super.key,
+    required this.championshipId,
+    required this.matchId,
+    required this.currentUserId,
+    required this.currentUserDisplayName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<MatchDetailBloc>()
+        ..add(LoadMatchDetail(
+          championshipId: championshipId,
+          matchId: matchId,
+          currentUserId: currentUserId,
+        )),
+      child: _MatchDetailView(
+        currentUserId: currentUserId,
+        currentUserDisplayName: currentUserDisplayName,
+      ),
+    );
+  }
+}
+
+class _MatchDetailView extends StatelessWidget {
+  final String currentUserId;
+  final String currentUserDisplayName;
+
+  const _MatchDetailView({
+    required this.currentUserId,
+    required this.currentUserDisplayName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.matchDetailTitle)),
+      body: BlocBuilder<MatchDetailBloc, MatchDetailState>(
+        builder: (context, state) {
+          if (state is MatchDetailLoading || state is MatchDetailInitial) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is MatchDetailError) {
+            return Center(child: Text(state.message));
+          }
+
+          if (state is MatchDetailLoaded) {
+            return _MatchDetailBody(
+              state: state,
+              currentUserId: currentUserId,
+              currentUserDisplayName: currentUserDisplayName,
+              l10n: l10n,
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// Body
+// ============================================================================
+
+class _MatchDetailBody extends StatelessWidget {
+  final MatchDetailLoaded state;
+  final String currentUserId;
+  final String currentUserDisplayName;
+  final AppLocalizations l10n;
+
+  const _MatchDetailBody({
+    required this.state,
+    required this.currentUserId,
+    required this.currentUserDisplayName,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final match = state.match;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _MatchHeaderCard(
+            match: match,
+            teamA: state.teamA,
+            teamB: state.teamB,
+            l10n: l10n,
+          ),
+          if (_canProposeSchedule(match, state)) ...[
+            const SizedBox(height: 12),
+            _ProposeScheduleSection(
+              state: state,
+              l10n: l10n,
+            ),
+          ],
+          const SizedBox(height: 16),
+          MatchChatSection(
+            championshipId: state.championshipId,
+            matchId: match.id,
+            currentUserId: currentUserId,
+            currentUserDisplayName: currentUserDisplayName,
+            isTeamMember: state.isTeamMember,
+            currentTeamId: state.myTeamId,
+          ),
+          const SizedBox(height: 16),
+          _ResultSection(
+            state: state,
+            l10n: l10n,
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _canProposeSchedule(
+      ChampionshipMatchModel match, MatchDetailLoaded state) {
+    return state.isTeamMember &&
+        (match.status == ChampionshipMatchStatus.pending ||
+            match.status == ChampionshipMatchStatus.scheduled);
+  }
+}
+
+// ============================================================================
+// Match header card
+// ============================================================================
+
+class _MatchHeaderCard extends StatelessWidget {
+  final ChampionshipMatchModel match;
+  final ChampionshipTeamModel teamA;
+  final ChampionshipTeamModel teamB;
+  final AppLocalizations l10n;
+
+  const _MatchHeaderCard({
+    required this.match,
+    required this.teamA,
+    required this.teamB,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final result = match.result;
+    final color = _statusColor();
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Teams row
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    teamA.name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: result?.winner == 'teamA'
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    l10n.championshipMatchVs,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    teamB.name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: result?.winner == 'teamB'
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            // Set scores if result exists
+            if (result != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                result.sets
+                    .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
+                    .join('  '),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            const SizedBox(height: 12),
+            // Status badge
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: color.withValues(alpha: 0.4)),
+              ),
+              child: Text(
+                _statusLabel(l10n),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+            // Scheduled date
+            if (match.scheduledAt != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.event, size: 14, color: AppColors.textMuted),
+                  const SizedBox(width: 4),
+                  Text(
+                    l10n.matchDetailScheduledAt(
+                      DateFormat('d MMM yyyy · HH:mm')
+                          .format(match.scheduledAt!),
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                  ),
+                ],
+              ),
+              if (match.location != null) ...[
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.location_on_outlined,
+                        size: 14, color: AppColors.textMuted),
+                    const SizedBox(width: 4),
+                    Text(
+                      match.location!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+            // Deadline
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.schedule, size: 14,
+                    color: AppColors.textMuted),
+                const SizedBox(width: 4),
+                Text(
+                  l10n.championshipDeadlineLabel(
+                    DateFormat('d MMM yyyy').format(match.deadline),
+                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _statusLabel(AppLocalizations l10n) {
+    return switch (match.status) {
+      ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
+      ChampionshipMatchStatus.scheduled =>
+        l10n.championshipMatchStatusScheduled,
+      ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
+      ChampionshipMatchStatus.disputed =>
+        l10n.championshipMatchStatusDisputed,
+      ChampionshipMatchStatus.adminDecided =>
+        l10n.championshipMatchStatusAdminDecided,
+      ChampionshipMatchStatus.verified =>
+        l10n.championshipMatchStatusVerified,
+    };
+  }
+
+  Color _statusColor() {
+    return switch (match.status) {
+      ChampionshipMatchStatus.pending => AppColors.textMuted,
+      ChampionshipMatchStatus.scheduled => Colors.blue,
+      ChampionshipMatchStatus.played => Colors.orange,
+      ChampionshipMatchStatus.disputed => Colors.deepOrange,
+      ChampionshipMatchStatus.adminDecided => Colors.purple,
+      ChampionshipMatchStatus.verified => Colors.green,
+    };
+  }
+}
+
+// ============================================================================
+// Propose schedule section
+// ============================================================================
+
+class _ProposeScheduleSection extends StatefulWidget {
+  final MatchDetailLoaded state;
+  final AppLocalizations l10n;
+
+  const _ProposeScheduleSection({required this.state, required this.l10n});
+
+  @override
+  State<_ProposeScheduleSection> createState() =>
+      _ProposeScheduleSectionState();
+}
+
+class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+  final _locationController = TextEditingController();
+
+  @override
+  void dispose() {
+    _locationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null) setState(() => _selectedDate = picked);
+  }
+
+  Future<void> _pickTime(BuildContext context) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime ?? TimeOfDay.now(),
+    );
+    if (picked != null) setState(() => _selectedTime = picked);
+  }
+
+  void _confirm(BuildContext context) {
+    final date = _selectedDate;
+    final time = _selectedTime;
+    if (date == null || time == null) return;
+
+    final scheduledAt = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    final location = _locationController.text.trim();
+
+    context.read<MatchDetailBloc>().add(ProposeSchedule(
+          scheduledAt: scheduledAt,
+          location: location.isEmpty ? null : location,
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = widget.l10n;
+    final state = widget.state;
+    final isProposing = state.isProposingSchedule;
+
+    final dateStr = _selectedDate != null
+        ? DateFormat('d MMM yyyy').format(_selectedDate!)
+        : '—';
+    final timeStr = _selectedTime != null
+        ? _selectedTime!.format(context)
+        : '—';
+    final canConfirm = _selectedDate != null && _selectedTime != null;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.matchDetailProposeSchedule,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondary,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed:
+                        isProposing ? null : () => _pickDate(context),
+                    icon: const Icon(Icons.calendar_today, size: 16),
+                    label: Text(
+                        '${l10n.matchDetailProposeDateLabel}: $dateStr'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed:
+                        isProposing ? null : () => _pickTime(context),
+                    icon: const Icon(Icons.access_time, size: 16),
+                    label: Text(
+                        '${l10n.matchDetailProposeTimeLabel}: $timeStr'),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _locationController,
+              enabled: !isProposing,
+              decoration: InputDecoration(
+                labelText: l10n.matchDetailProposeLocationLabel,
+                border: const OutlineInputBorder(),
+                isDense: true,
+              ),
+            ),
+            if (state.scheduleError != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                state.scheduleError!,
+                style:
+                    const TextStyle(color: Colors.red, fontSize: 13),
+              ),
+            ],
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed:
+                    (isProposing || !canConfirm)
+                        ? null
+                        : () => _confirm(context),
+                child: isProposing
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text(l10n.matchDetailProposeConfirm),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// Result section — role-aware
+// ============================================================================
+
+class _ResultSection extends StatelessWidget {
+  final MatchDetailLoaded state;
+  final AppLocalizations l10n;
+
+  const _ResultSection({required this.state, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final match = state.match;
+    final teamA = state.teamA;
+    final teamB = state.teamB;
+
+    switch (match.status) {
+      case ChampionshipMatchStatus.pending:
+      case ChampionshipMatchStatus.scheduled:
+        if (!state.isTeamMember) return const SizedBox.shrink();
+        return MatchResultEntryWidget(
+          championshipId: state.championshipId,
+          matchId: match.id,
+          teamAName: teamA.name,
+          teamBName: teamB.name,
+        );
+
+      case ChampionshipMatchStatus.played:
+        final submittedByTeamId = match.submittedByTeamId;
+        final myTeamId = state.myTeamId;
+
+        if (!state.isTeamMember) return const SizedBox.shrink();
+
+        // The opposing team (not the submitter) verifies.
+        if (submittedByTeamId != null && myTeamId != submittedByTeamId) {
+          final submittingTeamName = submittedByTeamId == match.teamAId
+              ? teamA.name
+              : teamB.name;
+          return MatchVerificationWidget(
+            championshipId: state.championshipId,
+            matchId: match.id,
+            submittingTeamName: submittingTeamName,
+          );
+        }
+
+        // The submitter sees an awaiting message.
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.hourglass_top,
+                    color: Colors.orange, size: 40),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.submitResultAwaitingVerification,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+
+      case ChampionshipMatchStatus.verified:
+        return _ResultSummaryCard(
+          match: match,
+          teamA: teamA,
+          teamB: teamB,
+          icon: Icons.check_circle,
+          iconColor: Colors.green,
+          message: l10n.verifyResultVerified,
+        );
+
+      case ChampionshipMatchStatus.disputed:
+        return _ResultSummaryCard(
+          match: match,
+          teamA: teamA,
+          teamB: teamB,
+          icon: Icons.gavel,
+          iconColor: Colors.orange,
+          message: l10n.verifyResultDisputed,
+        );
+
+      case ChampionshipMatchStatus.adminDecided:
+        return _ResultSummaryCard(
+          match: match,
+          teamA: teamA,
+          teamB: teamB,
+          icon: Icons.gavel,
+          iconColor: Colors.purple,
+          message: l10n.championshipMatchStatusAdminDecided,
+        );
+    }
+  }
+}
+
+class _ResultSummaryCard extends StatelessWidget {
+  final ChampionshipMatchModel match;
+  final ChampionshipTeamModel teamA;
+  final ChampionshipTeamModel teamB;
+  final IconData icon;
+  final Color iconColor;
+  final String message;
+
+  const _ResultSummaryCard({
+    required this.match,
+    required this.teamA,
+    required this.teamB,
+    required this.icon,
+    required this.iconColor,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final result = match.result;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: iconColor, size: 40),
+            const SizedBox(height: 12),
+            if (result != null) ...[
+              Text(
+                result.sets
+                    .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
+                    .join('  '),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                result.winner == 'teamA' ? teamA.name : teamB.name,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+              ),
+              const SizedBox(height: 12),
+            ],
+            Text(
+              message,
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

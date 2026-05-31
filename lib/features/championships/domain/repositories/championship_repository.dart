@@ -1,5 +1,6 @@
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_message_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
@@ -81,5 +82,49 @@ abstract class ChampionshipRepository {
     required String matchId,
     required String action,
     String? disputeReason,
+  });
+
+  /// Real-time stream of a single match by ID.
+  /// Throws [ChampionshipException] on error or if not found.
+  Stream<ChampionshipMatchModel> getMatch({
+    required String championshipId,
+    required String matchId,
+  });
+
+  /// Real-time stream of coordination chat messages for [matchId],
+  /// ordered by sentAt ascending.
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipMessageModel>> getMatchMessages({
+    required String championshipId,
+    required String matchId,
+  });
+
+  /// Sends a coordination chat message directly to Firestore.
+  /// Allowed only for team members (enforced by Firestore rules).
+  /// Throws [ChampionshipException] on error.
+  Future<void> sendMatchMessage({
+    required String championshipId,
+    required String matchId,
+    required String senderId,
+    required String senderDisplayName,
+    required String teamId,
+    required String text,
+  });
+
+  /// Proposes a match schedule (date/time/location) via Cloud Function.
+  /// Sets match status to 'scheduled' and adds a system message to chat.
+  /// Throws [ChampionshipException] on error.
+  Future<void> proposeMatchSchedule({
+    required String championshipId,
+    required String matchId,
+    required DateTime scheduledAt,
+    String? location,
+  });
+
+  /// Loads a team by ID. Returns null if not found.
+  /// Throws [ChampionshipException] on error.
+  Future<ChampionshipTeamModel?> getTeamById({
+    required String championshipId,
+    required String teamId,
   });
 }

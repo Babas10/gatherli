@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_message_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
@@ -279,6 +280,146 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       );
     } catch (e) {
       throw ChampionshipException('Failed to verify match result: $e');
+    }
+  }
+
+  @override
+  Stream<ChampionshipMatchModel> getMatch({
+    required String championshipId,
+    required String matchId,
+  }) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('matches')
+          .doc(matchId)
+          .snapshots()
+          .map((doc) {
+        if (!doc.exists) {
+          throw ChampionshipException('Match not found', code: 'NOT_FOUND');
+        }
+        return ChampionshipMatchModel.fromFirestore(doc);
+      }).handleError((e) {
+        throw ChampionshipException(
+          'Failed to load match: $e',
+          code: 'LOAD_MATCH_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(
+          ChampionshipException('Failed to load match: $e', code: 'LOAD_MATCH_ERROR'));
+    }
+  }
+
+  @override
+  Stream<List<ChampionshipMessageModel>> getMatchMessages({
+    required String championshipId,
+    required String matchId,
+  }) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('matches')
+          .doc(matchId)
+          .collection('messages')
+          .orderBy('sentAt')
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipMessageModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load match messages: $e',
+          code: 'LOAD_MESSAGES_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+          'Failed to load match messages: $e', code: 'LOAD_MESSAGES_ERROR'));
+    }
+  }
+
+  @override
+  Future<void> sendMatchMessage({
+    required String championshipId,
+    required String matchId,
+    required String senderId,
+    required String senderDisplayName,
+    required String teamId,
+    required String text,
+  }) async {
+    try {
+      await _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('matches')
+          .doc(matchId)
+          .collection('messages')
+          .add({
+        'senderId': senderId,
+        'senderDisplayName': senderDisplayName,
+        'teamId': teamId,
+        'text': text,
+        'sentAt': FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      throw ChampionshipException(
+        'Failed to send message: ${e.message}',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to send message: $e');
+    }
+  }
+
+  @override
+  Future<void> proposeMatchSchedule({
+    required String championshipId,
+    required String matchId,
+    required DateTime scheduledAt,
+    String? location,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('proposeMatchSchedule');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+        'scheduledAt': scheduledAt.toIso8601String(),
+        if (location != null) 'location': location,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to propose schedule',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to propose schedule: $e');
+    }
+  }
+
+  @override
+  Future<ChampionshipTeamModel?> getTeamById({
+    required String championshipId,
+    required String teamId,
+  }) async {
+    try {
+      final doc = await _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('teams')
+          .doc(teamId)
+          .get();
+      if (!doc.exists) return null;
+      return ChampionshipTeamModel.fromFirestore(doc);
+    } on FirebaseException catch (e) {
+      throw ChampionshipException(
+        'Failed to load team: ${e.message}',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to load team: $e');
     }
   }
 }
