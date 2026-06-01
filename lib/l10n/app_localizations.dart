@@ -4160,6 +4160,42 @@ abstract class AppLocalizations {
   /// **'{count} / {max} teams'**
   String championshipTeamCountOf(int count, int max);
 
+  /// Label for male-only championship gender category
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get championshipGenderMale;
+
+  /// Label for female-only championship gender category
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get championshipGenderFemale;
+
+  /// Message shown when user has no gender set and tries to register
+  ///
+  /// In en, this message translates to:
+  /// **'You must set your gender in your profile to register.'**
+  String get championshipGenderBlockNoGender;
+
+  /// Message shown when female/no-gender user tries to register in a male championship
+  ///
+  /// In en, this message translates to:
+  /// **'This championship is for men only.'**
+  String get championshipGenderBlockMaleOnly;
+
+  /// Message shown when male/no-gender user tries to register in a female championship
+  ///
+  /// In en, this message translates to:
+  /// **'This championship is for women only.'**
+  String get championshipGenderBlockFemaleOnly;
+
+  /// Label for the gender category picker in championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Gender category'**
+  String get championshipCreateGenderLabel;
+
   /// Label for the standings tab on the championship detail screen
   ///
   /// In en, this message translates to:
@@ -4225,6 +4261,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No standings yet.'**
   String get championshipDetailNoStandings;
+
+  /// Tab label shown instead of Standings when championship is in registration phase
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get championshipDetailTeamsTab;
+
+  /// Empty state shown in the teams list before registration phase has any teams
+  ///
+  /// In en, this message translates to:
+  /// **'No teams registered yet.\nBe the first to sign up!'**
+  String get championshipDetailNoTeamsYet;
 
   /// Empty state when a round has no matches
   ///
@@ -4405,6 +4453,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a winner for walkover'**
   String get adminPanelDecisionErrorWinnerRequired;
+
+  /// Page title and FAB tooltip for championship creation
+  ///
+  /// In en, this message translates to:
+  /// **'Create Championship'**
+  String get championshipCreate;
+
+  /// Form field label for championship title
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get championshipCreateTitleLabel;
+
+  /// Hint text for championship title field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer Open 2026'**
+  String get championshipCreateTitleHint;
+
+  /// Validation error when championship title is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get championshipCreateTitleRequired;
+
+  /// Validation error when championship title is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Title must be at least 3 characters'**
+  String get championshipCreateTitleTooShort;
+
+  /// Form field label for registration deadline date picker
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Deadline'**
+  String get championshipCreateDeadlineLabel;
+
+  /// Placeholder shown in deadline picker before a date is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date'**
+  String get championshipCreateDeadlinePlaceholder;
+
+  /// Form field label for optional country code
+  ///
+  /// In en, this message translates to:
+  /// **'Country (optional)'**
+  String get championshipCreateCountryLabel;
+
+  /// Hint text for country code field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. FR'**
+  String get championshipCreateCountryHint;
+
+  /// Form field label for optional region
+  ///
+  /// In en, this message translates to:
+  /// **'Region (optional)'**
+  String get championshipCreateRegionLabel;
+
+  /// Hint text for region field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Alsace'**
+  String get championshipCreateRegionHint;
+
+  /// Submit button label on championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Create Championship'**
+  String get championshipCreateSubmit;
+
+  /// Snackbar message after a championship is created successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Championship created'**
+  String get championshipCreateSuccess;
+
+  /// Form field label for optional championship start date
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date (optional)'**
+  String get championshipCreateStartDateLabel;
+
+  /// Form field label for optional championship end date
+  ///
+  /// In en, this message translates to:
+  /// **'End Date (optional)'**
+  String get championshipCreateEndDateLabel;
+
+  /// Placeholder shown in date pickers before a date is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date'**
+  String get championshipCreateDatePlaceholder;
 }
 
 class _AppLocalizationsDelegate

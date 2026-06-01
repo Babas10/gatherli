@@ -25,6 +25,10 @@ abstract class ChampionshipRepository {
   /// Throws [ChampionshipException] on error.
   Stream<List<ChampionshipStandingsModel>> getStandings(String championshipId);
 
+  /// Real-time stream of all registered teams for [championshipId], ordered by createdAt ascending.
+  /// Throws [ChampionshipException] on error.
+  Stream<List<ChampionshipTeamModel>> getTeams(String championshipId);
+
   /// Real-time stream of matches for [round] in [championshipId].
   /// Throws [ChampionshipException] on error.
   Stream<List<ChampionshipMatchModel>> getMatchesForRound({
@@ -146,4 +150,21 @@ abstract class ChampionshipRepository {
     List<MatchSetScore>? sets,
     required String notes,
   });
+
+  /// Creates a championship via Cloud Function (platform admins only).
+  /// Returns the new championship ID.
+  /// Throws [ChampionshipException] on error.
+  Future<String> createChampionship({
+    required String title,
+    required DateTime registrationDeadline,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? country,
+    String? region,
+    ChampionshipGenderCategory? genderCategory,
+  });
+
+  /// Returns true if [userId] has a document in the platform_admins collection.
+  /// Direct Firestore read — safe because a user only checks their own status.
+  Future<bool> isAdmin(String userId);
 }

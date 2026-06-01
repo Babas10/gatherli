@@ -2316,6 +2316,27 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get championshipGenderMale => 'Männer';
+
+  @override
+  String get championshipGenderFemale => 'Frauen';
+
+  @override
+  String get championshipGenderBlockNoGender =>
+      'Sie müssen Ihr Geschlecht in Ihrem Profil festlegen, um sich anzumelden.';
+
+  @override
+  String get championshipGenderBlockMaleOnly =>
+      'Diese Meisterschaft ist nur für Männer.';
+
+  @override
+  String get championshipGenderBlockFemaleOnly =>
+      'Diese Meisterschaft ist nur für Frauen.';
+
+  @override
+  String get championshipCreateGenderLabel => 'Geschlechtskategorie';
+
+  @override
   String get championshipDetailStandingsTab => 'Tabelle';
 
   @override
@@ -2349,6 +2370,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get championshipDetailNoStandings => 'Noch keine Tabelle.';
+
+  @override
+  String get championshipDetailTeamsTab => 'Teams';
+
+  @override
+  String get championshipDetailNoTeamsYet =>
+      'Noch keine Teams angemeldet.\nSeien Sie das erste Team!';
 
   @override
   String get championshipDetailNoMatchesForRound =>
@@ -2446,4 +2474,53 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get adminPanelDecisionErrorWinnerRequired =>
       'Wählen Sie einen Gewinner für den Walkover';
+
+  @override
+  String get championshipCreate => 'Meisterschaft erstellen';
+
+  @override
+  String get championshipCreateTitleLabel => 'Titel';
+
+  @override
+  String get championshipCreateTitleHint => 'z.B. Sommer Open 2026';
+
+  @override
+  String get championshipCreateTitleRequired => 'Titel ist erforderlich';
+
+  @override
+  String get championshipCreateTitleTooShort =>
+      'Der Titel muss mindestens 3 Zeichen lang sein';
+
+  @override
+  String get championshipCreateDeadlineLabel => 'Anmeldefrist';
+
+  @override
+  String get championshipCreateDeadlinePlaceholder => 'Datum auswählen';
+
+  @override
+  String get championshipCreateCountryLabel => 'Land (optional)';
+
+  @override
+  String get championshipCreateCountryHint => 'z.B. DE';
+
+  @override
+  String get championshipCreateRegionLabel => 'Region (optional)';
+
+  @override
+  String get championshipCreateRegionHint => 'z.B. Bayern';
+
+  @override
+  String get championshipCreateSubmit => 'Meisterschaft erstellen';
+
+  @override
+  String get championshipCreateSuccess => 'Meisterschaft erstellt';
+
+  @override
+  String get championshipCreateStartDateLabel => 'Startdatum (optional)';
+
+  @override
+  String get championshipCreateEndDateLabel => 'Enddatum (optional)';
+
+  @override
+  String get championshipCreateDatePlaceholder => 'Datum auswählen';
 }

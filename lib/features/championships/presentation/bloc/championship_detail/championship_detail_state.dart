@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 
 abstract class ChampionshipDetailState extends Equatable {
   const ChampionshipDetailState();
@@ -22,27 +23,36 @@ class ChampionshipDetailLoading extends ChampionshipDetailState {
 class ChampionshipDetailLoaded extends ChampionshipDetailState {
   final ChampionshipModel championship;
   final List<ChampionshipStandingsModel> standings;
+  final List<ChampionshipTeamModel> teams;
   final List<ChampionshipMatchModel> currentRoundMatches;
   final int selectedRound;
+  /// Current user's gender: 'male', 'female', 'none', or null (unknown).
+  final String? currentUserGender;
 
   const ChampionshipDetailLoaded({
     required this.championship,
     required this.standings,
+    required this.teams,
     required this.currentRoundMatches,
     required this.selectedRound,
+    this.currentUserGender,
   });
 
   ChampionshipDetailLoaded copyWith({
     ChampionshipModel? championship,
     List<ChampionshipStandingsModel>? standings,
+    List<ChampionshipTeamModel>? teams,
     List<ChampionshipMatchModel>? currentRoundMatches,
     int? selectedRound,
+    String? currentUserGender,
   }) {
     return ChampionshipDetailLoaded(
       championship: championship ?? this.championship,
       standings: standings ?? this.standings,
+      teams: teams ?? this.teams,
       currentRoundMatches: currentRoundMatches ?? this.currentRoundMatches,
       selectedRound: selectedRound ?? this.selectedRound,
+      currentUserGender: currentUserGender ?? this.currentUserGender,
     );
   }
 
@@ -50,8 +60,10 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
   List<Object?> get props => [
         championship,
         standings,
+        teams,
         currentRoundMatches,
         selectedRound,
+        currentUserGender,
       ];
 }
 

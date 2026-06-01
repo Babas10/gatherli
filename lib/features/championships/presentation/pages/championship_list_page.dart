@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
@@ -16,11 +15,7 @@ class ChampionshipListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          sl<ChampionshipListBloc>()..add(const LoadChampionships()),
-      child: const _ChampionshipListView(),
-    );
+    return const _ChampionshipListView();
   }
 }
 
@@ -202,6 +197,13 @@ class ChampionshipCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
+                  if (championship.genderCategory != null) ...[
+                    _GenderBadge(
+                      category: championship.genderCategory!,
+                      l10n: l10n,
+                    ),
+                    const SizedBox(width: 6),
+                  ],
                   _StatusBadge(championship: championship, l10n: l10n),
                 ],
               ),
@@ -249,6 +251,38 @@ class ChampionshipCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ── Gender badge ─────────────────────────────────────────────────────────────
+
+class _GenderBadge extends StatelessWidget {
+  final ChampionshipGenderCategory category;
+  final AppLocalizations l10n;
+
+  const _GenderBadge({required this.category, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = category == ChampionshipGenderCategory.male
+        ? l10n.championshipGenderMale
+        : l10n.championshipGenderFemale;
+    const color = Color(0xFF5B8DEF);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
   }

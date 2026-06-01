@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 
 abstract class ChampionshipDetailEvent extends Equatable {
   const ChampionshipDetailEvent();
@@ -51,6 +52,16 @@ class ChampionshipDetailStandingsUpdated extends ChampionshipDetailEvent {
   List<Object?> get props => [standings];
 }
 
+/// Internal — emitted by the teams stream listener.
+class ChampionshipDetailTeamsUpdated extends ChampionshipDetailEvent {
+  final List<ChampionshipTeamModel> teams;
+
+  const ChampionshipDetailTeamsUpdated(this.teams);
+
+  @override
+  List<Object?> get props => [teams];
+}
+
 /// Internal — emitted by the matches stream listener.
 class ChampionshipDetailMatchesUpdated extends ChampionshipDetailEvent {
   final List<ChampionshipMatchModel> matches;
@@ -59,6 +70,16 @@ class ChampionshipDetailMatchesUpdated extends ChampionshipDetailEvent {
 
   @override
   List<Object?> get props => [matches];
+}
+
+/// Internal — emitted when the current user profile updates (for gender check).
+class ChampionshipDetailUserUpdated extends ChampionshipDetailEvent {
+  final String? gender; // 'male', 'female', 'none', or null
+
+  const ChampionshipDetailUserUpdated(this.gender);
+
+  @override
+  List<Object?> get props => [gender];
 }
 
 /// Internal — emitted when the championship stream produces an error.

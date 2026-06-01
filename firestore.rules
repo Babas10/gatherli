@@ -441,6 +441,13 @@ service cloud.firestore {
       }
     }
 
+    // Platform admins — a user may read their own admin status doc to show/hide admin UI.
+    // Writes are only done by super-admins via the Firebase Console or Admin SDK.
+    match /platform_admins/{userId} {
+      allow get: if isAuthenticated() && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+
     // Deny all other access
     match /{document=**} {
       allow read, write: if false;

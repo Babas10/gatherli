@@ -9,8 +9,11 @@ import * as admin from "firebase-admin";
 interface CreateChampionshipRequest {
   title: string;
   registrationDeadline: string; // ISO 8601 date
+  startDate?: string; // ISO 8601 date — when matches begin
+  endDate?: string; // ISO 8601 date — last day of the championship
   country?: string; // ISO 3166-1 alpha-2
   region?: string;
+  genderCategory?: "male" | "female"; // null = no restriction
 }
 
 interface CreateChampionshipResponse {
@@ -129,6 +132,9 @@ export async function createChampionshipHandler(
   const db = admin.firestore();
 
   try {
+    const startDate = data.startDate ? new Date(data.startDate) : null;
+    const endDate = data.endDate ? new Date(data.endDate) : null;
+
     const championshipData = {
       title: data.title.trim(),
       status: "registration",
@@ -139,8 +145,11 @@ export async function createChampionshipHandler(
       totalRounds: 9,
       teamsCount: 0,
       registrationDeadline: admin.firestore.Timestamp.fromDate(deadline),
+      startDate: startDate ? admin.firestore.Timestamp.fromDate(startDate) : null,
+      endDate: endDate ? admin.firestore.Timestamp.fromDate(endDate) : null,
       country: data.country?.toUpperCase() ?? null,
       region: data.region?.trim() ?? null,
+      genderCategory: data.genderCategory ?? null,
       createdBy: userId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };

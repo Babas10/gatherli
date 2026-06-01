@@ -80,6 +80,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/result_sub
 import 'package:play_with_me/features/championships/presentation/bloc/match_verification/match_verification_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 
@@ -283,9 +284,18 @@ Future<void> initializeDependencies() async {
     );
   }
 
+  if (!sl.isRegistered<ChampionshipCreationBloc>()) {
+    sl.registerFactory<ChampionshipCreationBloc>(
+      () => ChampionshipCreationBloc(repository: sl()),
+    );
+  }
+
   if (!sl.isRegistered<ChampionshipDetailBloc>()) {
     sl.registerFactory<ChampionshipDetailBloc>(
-      () => ChampionshipDetailBloc(repository: sl()),
+      () => ChampionshipDetailBloc(
+        repository: sl(),
+        userRepository: sl(),
+      ),
     );
   }
 

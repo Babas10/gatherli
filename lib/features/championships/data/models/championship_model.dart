@@ -17,6 +17,14 @@ enum ChampionshipStatus {
   completed,
 }
 
+/// Gender category for a championship — null means no gender restriction (legacy).
+enum ChampionshipGenderCategory {
+  @JsonValue('male')
+  male,
+  @JsonValue('female')
+  female,
+}
+
 @freezed
 abstract class ChampionshipModel with _$ChampionshipModel {
   const factory ChampionshipModel({
@@ -35,6 +43,7 @@ abstract class ChampionshipModel with _$ChampionshipModel {
     @NullableTimestampConverter() DateTime? startDate,
     String? country,
     String? region,
+    ChampionshipGenderCategory? genderCategory,
   }) = _ChampionshipModel;
 
   const ChampionshipModel._();

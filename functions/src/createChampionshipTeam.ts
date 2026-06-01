@@ -91,7 +91,43 @@ export async function createChampionshipTeamHandler(
     );
   }
 
-  // ── 4. Friendship Check ────────────────────────────────────────────────────
+  // ── 4. Gender Validation ───────────────────────────────────────────────────
+  if (champ.genderCategory) {
+    const [callerDoc, partnerDoc] = await Promise.all([
+      db.collection("users").doc(callerId).get(),
+      db.collection("users").doc(data.partnerId).get(),
+    ]);
+
+    const callerGender = callerDoc.data()?.gender;
+    const partnerGender = partnerDoc.data()?.gender;
+
+    if (!callerGender || callerGender === "none") {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "You must set your gender in your profile before registering for this championship"
+      );
+    }
+    if (!partnerGender || partnerGender === "none") {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Your partner must have a gender set in their profile before registering for this championship"
+      );
+    }
+    if (callerGender !== champ.genderCategory) {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Your gender does not match this championship's category"
+      );
+    }
+    if (partnerGender !== champ.genderCategory) {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Your partner's gender does not match this championship's category"
+      );
+    }
+  }
+
+  // ── 5. Friendship Check ───────────────────────────────────────────────────
   const areFriends = await checkFriendship(callerId, data.partnerId);
   if (!areFriends) {
     throw new functions.https.HttpsError(
@@ -100,7 +136,7 @@ export async function createChampionshipTeamHandler(
     );
   }
 
-  // ── 5. Duplicate Membership Check ─────────────────────────────────────────
+  // ── 6. Duplicate Membership Check ─────────────────────────────────────────
   // Check if caller or partner is already in a team in this championship.
   const teamsRef = db
     .collection("championships")
@@ -126,7 +162,7 @@ export async function createChampionshipTeamHandler(
     );
   }
 
-  // ── 6. Create Team (atomic transaction) ────────────────────────────────────
+  // ── 7. Create Team (atomic transaction) ────────────────────────────────────
   let teamId: string;
 
   try {

@@ -9,13 +9,20 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_state.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class ChampionshipDetailPage extends StatelessWidget {
@@ -75,15 +82,47 @@ class _ChampionshipDetailView extends StatelessWidget {
           : null;
       final isAdmin = currentUserId != null &&
           state.championship.adminIds.contains(currentUserId);
+      final alreadyRegistered = currentUserId != null &&
+          state.teams.any((t) => t.memberIds.contains(currentUserId));
+      final genderAllowed = _genderAllowed(
+        state.championship.genderCategory,
+        state.currentUserGender,
+      );
+      final canRegister = currentUserId != null &&
+          !alreadyRegistered &&
+          genderAllowed &&
+          state.championship.status == ChampionshipStatus.registration &&
+          state.championship.isOpen;
 
       return DefaultTabController(
         length: isAdmin ? 3 : 2,
         child: Column(
           children: [
-            _ChampionshipHeader(championship: state.championship),
+            _ChampionshipHeader(
+              championship: state.championship,
+              onRegister: canRegister
+                  ? () => _openRegistration(context, state.championship.id,
+                      currentUserId!, l10n)
+                  : null,
+              genderBlockReason: !genderAllowed &&
+                      state.championship.status ==
+                          ChampionshipStatus.registration &&
+                      !alreadyRegistered
+                  ? _genderBlockMessage(
+                      state.championship.genderCategory,
+                      state.currentUserGender,
+                      l10n,
+                    )
+                  : null,
+              l10n: l10n,
+            ),
             TabBar(
               tabs: [
-                Tab(text: l10n.championshipDetailStandingsTab),
+                Tab(
+                  text: _isRegistrationPhase(state.championship.status)
+                      ? l10n.championshipDetailTeamsTab
+                      : l10n.championshipDetailStandingsTab,
+                ),
                 Tab(text: l10n.championshipDetailMatchesTab),
                 if (isAdmin) Tab(text: l10n.adminPanelTabLabel),
               ],
@@ -92,7 +131,9 @@ class _ChampionshipDetailView extends StatelessWidget {
               child: TabBarView(
                 children: [
                   _StandingsTab(
+                    championship: state.championship,
                     standings: state.standings,
+                    teams: state.teams,
                     l10n: l10n,
                   ),
                   _MatchesTab(
@@ -118,6 +159,78 @@ class _ChampionshipDetailView extends StatelessWidget {
 
     return const SizedBox.shrink();
   }
+
+  bool _isRegistrationPhase(ChampionshipStatus status) =>
+      status == ChampionshipStatus.registration ||
+      status == ChampionshipStatus.registrationClosed;
+
+  /// Returns true if the user's gender is eligible for the championship.
+  /// If no genderCategory is set on the championship, everyone is allowed.
+  static bool _genderAllowed(
+    ChampionshipGenderCategory? category,
+    String? userGender,
+  ) {
+    if (category == null) return true;
+    if (userGender == null || userGender == 'none') return false;
+    return userGender == category.name;
+  }
+
+  /// Returns a localised reason message why registration is blocked by gender,
+  /// or null if there is no gender restriction.
+  static String? _genderBlockMessage(
+    ChampionshipGenderCategory? category,
+    String? userGender,
+    AppLocalizations l10n,
+  ) {
+    if (category == null) return null;
+    if (userGender == null || userGender == 'none') {
+      return l10n.championshipGenderBlockNoGender;
+    }
+    return category == ChampionshipGenderCategory.male
+        ? l10n.championshipGenderBlockMaleOnly
+        : l10n.championshipGenderBlockFemaleOnly;
+  }
+
+  void _openRegistration(
+    BuildContext context,
+    String championshipId,
+    String userId,
+    AppLocalizations l10n,
+  ) {
+    final teamRegistrationBloc = sl<TeamRegistrationBloc>();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (sheetContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: teamRegistrationBloc),
+          BlocProvider(create: (_) => sl<PartnerPickerBloc>()),
+        ],
+        child: BlocListener<TeamRegistrationBloc, TeamRegistrationState>(
+          listener: (listenerCtx, state) {
+            if (state is TeamCreated) {
+              Navigator.of(sheetContext).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.teamRegisteredSuccess)),
+              );
+              context
+                  .read<ChampionshipListBloc>()
+                  .add(const LoadChampionships());
+            } else if (state is TeamRegistrationError) {
+              ScaffoldMessenger.of(sheetContext).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+          child: CreateTeamBottomSheet(
+            championshipId: championshipId,
+            userId: userId,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 // ============================================================================
@@ -126,35 +239,109 @@ class _ChampionshipDetailView extends StatelessWidget {
 
 class _ChampionshipHeader extends StatelessWidget {
   final ChampionshipModel championship;
+  final VoidCallback? onRegister;
+  final String? genderBlockReason;
+  final AppLocalizations l10n;
 
-  const _ChampionshipHeader({required this.championship});
+  const _ChampionshipHeader({
+    required this.championship,
+    required this.l10n,
+    this.onRegister,
+    this.genderBlockReason,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 4,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _StatusBadge(championship: championship, l10n: l10n),
-          if (championship.country != null)
-            _InfoChip(
-              icon: Icons.location_on_outlined,
-              label: [championship.region, championship.country]
-                  .whereType<String>()
-                  .join(', '),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              _StatusBadge(championship: championship, l10n: l10n),
+              if (championship.genderCategory != null)
+                _GenderBadge(category: championship.genderCategory!, l10n: l10n),
+              if (championship.country != null)
+                _InfoChip(
+                  icon: Icons.location_on_outlined,
+                  label: [championship.region, championship.country]
+                      .whereType<String>()
+                      .join(', '),
+                ),
+              _InfoChip(
+                icon: Icons.group,
+                label: l10n.championshipTeamCountOf(
+                  championship.teamsCount,
+                  championship.maxTeams,
+                ),
+              ),
+            ],
+          ),
+          if (onRegister != null) ...[
+            const SizedBox(height: 10),
+            FilledButton.icon(
+              onPressed: onRegister,
+              icon: const Icon(Icons.how_to_reg_outlined, size: 18),
+              label: Text(l10n.registerTeam),
             ),
-          _InfoChip(
-            icon: Icons.group,
-            label: l10n.championshipTeamCountOf(
-              championship.teamsCount,
-              championship.maxTeams,
+          ],
+          if (genderBlockReason != null) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.info_outline, size: 14, color: AppColors.textMuted),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    genderBlockReason!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                  ),
+                ),
+              ],
             ),
+          ],
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class _GenderBadge extends StatelessWidget {
+  final ChampionshipGenderCategory category;
+  final AppLocalizations l10n;
+
+  const _GenderBadge({required this.category, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = category == ChampionshipGenderCategory.male
+        ? l10n.championshipGenderMale
+        : l10n.championshipGenderFemale;
+    const color = Color(0xFF5B8DEF); // blue accent — neutral gender indicator
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.person_outline, size: 12, color: color),
+          const SizedBox(width: 3),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ],
       ),
@@ -239,13 +426,55 @@ class _StatusBadge extends StatelessWidget {
 // ============================================================================
 
 class _StandingsTab extends StatelessWidget {
+  final ChampionshipModel championship;
   final List<ChampionshipStandingsModel> standings;
+  final List<ChampionshipTeamModel> teams;
   final AppLocalizations l10n;
 
-  const _StandingsTab({required this.standings, required this.l10n});
+  const _StandingsTab({
+    required this.championship,
+    required this.standings,
+    required this.teams,
+    required this.l10n,
+  });
+
+  bool get _isRegistrationPhase =>
+      championship.status == ChampionshipStatus.registration ||
+      championship.status == ChampionshipStatus.registrationClosed;
 
   @override
   Widget build(BuildContext context) {
+    if (_isRegistrationPhase) {
+      return _buildTeamsList(context);
+    }
+    return _buildStandingsTable(context);
+  }
+
+  Widget _buildTeamsList(BuildContext context) {
+    if (teams.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Text(
+            l10n.championshipDetailNoTeamsYet,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textMuted,
+                ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: teams.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemBuilder: (_, i) => _TeamCard(team: teams[i], position: i + 1),
+    );
+  }
+
+  Widget _buildStandingsTable(BuildContext context) {
     if (standings.isEmpty) {
       return Center(
         child: Padding(
@@ -337,6 +566,54 @@ class _StandingsTab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
       child: Text(text, style: style, textAlign: align, maxLines: 1),
+    );
+  }
+}
+
+// ── Team card (registration phase) ───────────────────────────────────────────
+
+class _TeamCard extends StatelessWidget {
+  final ChampionshipTeamModel team;
+  final int position;
+
+  const _TeamCard({required this.team, required this.position});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Text(
+              '$position',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                team.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
+            Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
+            const SizedBox(width: 4),
+            Text(
+              '${team.memberIds.length}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textMuted,
+                  ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

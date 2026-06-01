@@ -155,6 +155,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: const [],
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: 2,
       ));
@@ -178,6 +179,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: const [],
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: 1,
       ));
@@ -194,6 +196,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: const [],
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: 1,
       ));
@@ -211,6 +214,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: standings,
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: 1,
       ));
@@ -227,6 +231,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: const [],
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: 2,
       ));
@@ -241,6 +246,7 @@ void main() {
       when(() => bloc.state).thenReturn(ChampionshipDetailLoaded(
         championship: _makeChamp(),
         standings: const [],
+        teams: const [],
         currentRoundMatches: matches,
         selectedRound: 2,
       ));
@@ -260,6 +266,7 @@ void main() {
       final original = ChampionshipDetailLoaded(
         championship: champ,
         standings: standings,
+        teams: const [],
         currentRoundMatches: matches,
         selectedRound: 3,
       );
@@ -277,6 +284,7 @@ void main() {
       final original = ChampionshipDetailLoaded(
         championship: champ,
         standings: [_makeStanding()],
+        teams: const [],
         currentRoundMatches: [_makeMatch()],
         selectedRound: 3,
       );

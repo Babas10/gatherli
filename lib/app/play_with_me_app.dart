@@ -62,6 +62,10 @@ import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_list_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/create_championship_page.dart';
+import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class PlayWithMeApp extends StatelessWidget {
@@ -98,6 +102,10 @@ class PlayWithMeApp extends StatelessWidget {
           create: (context) => LocalePreferencesBloc(
             repository: sl<LocalePreferencesRepository>(),
           )..add(const LocalePreferencesEvent.loadPreferences()),
+        ),
+        BlocProvider<ChampionshipListBloc>(
+          create: (context) =>
+              sl<ChampionshipListBloc>()..add(const LoadChampionships()),
         ),
       ],
       child: MultiBlocListener(
@@ -298,6 +306,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   int _selectedIndex = 0;
+  bool _isPlatformAdmin = false;
 
   // Pages for bottom navigation: Home, Stats, Groups, Community
   late final List<Widget> _pages;
@@ -338,6 +347,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
       // Initialize notification service
       _initializeNotifications();
+
+      // Check platform admin status for championship creation FAB
+      _loadAdminStatus(authState.user.uid);
     }
 
     _pages = [
@@ -350,6 +362,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       const MyCommunityPage(),
       const ChampionshipListPage(),
     ];
+  }
+
+  Future<void> _loadAdminStatus(String uid) async {
+    final isAdmin = await sl<ChampionshipRepository>().isAdmin(uid);
+    if (mounted) setState(() => _isPlatformAdmin = isAdmin);
   }
 
   Future<void> _initializeNotifications() async {
@@ -521,31 +538,61 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 );
               },
             ),
-        floatingActionButton: _selectedIndex == 0
-            ? FloatingActionButton(
-                heroTag: 'pickup_game_fab',
-                onPressed: () {
-                  final groupState = _groupBloc.state;
-                  final userGroups = groupState is GroupsLoaded
-                      ? {for (final g in groupState.groups) g.id: g.name}
-                      : <String, String>{};
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider<AuthenticationBloc>.value(
-                        value: context.read<AuthenticationBloc>(),
-                        child: PickupGameCreationPage(userGroups: userGroups),
-                      ),
-                    ),
-                  );
-                },
-                backgroundColor: AppColors.secondary,
-                tooltip: AppLocalizations.of(context)!.createPickupGame,
-                child: const Icon(Icons.flash_on, color: Colors.white),
-              )
-            : null,
+        floatingActionButton: _buildFab(context),
       ),
     );
+  }
+
+  Widget? _buildFab(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (_selectedIndex == 0) {
+      return FloatingActionButton(
+        heroTag: 'pickup_game_fab',
+        onPressed: () {
+          final groupState = _groupBloc.state;
+          final userGroups = groupState is GroupsLoaded
+              ? {for (final g in groupState.groups) g.id: g.name}
+              : <String, String>{};
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider<AuthenticationBloc>.value(
+                value: context.read<AuthenticationBloc>(),
+                child: PickupGameCreationPage(userGroups: userGroups),
+              ),
+            ),
+          );
+        },
+        backgroundColor: AppColors.secondary,
+        tooltip: l10n.createPickupGame,
+        child: const Icon(Icons.flash_on, color: Colors.white),
+      );
+    }
+
+    if (_selectedIndex == 4 && _isPlatformAdmin) {
+      return FloatingActionButton(
+        heroTag: 'championship_create_fab',
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CreateChampionshipPage(),
+            ),
+          );
+          if (context.mounted) {
+            context
+                .read<ChampionshipListBloc>()
+                .add(const LoadChampionships());
+          }
+        },
+        backgroundColor: AppColors.primary,
+        tooltip: l10n.championshipCreate,
+        child: const Icon(Icons.add, color: Colors.white),
+      );
+    }
+
+    return null;
   }
 }
 

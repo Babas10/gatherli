@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
+import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 
 import 'championship_detail_event.dart';
@@ -11,20 +12,28 @@ import 'championship_detail_state.dart';
 class ChampionshipDetailBloc
     extends Bloc<ChampionshipDetailEvent, ChampionshipDetailState> {
   final ChampionshipRepository _repository;
+  final UserRepository _userRepository;
   String? _championshipId;
 
   StreamSubscription? _champSub;
   StreamSubscription? _standingsSub;
+  StreamSubscription? _teamsSub;
   StreamSubscription? _matchesSub;
+  StreamSubscription? _userSub;
 
-  ChampionshipDetailBloc({required ChampionshipRepository repository})
-      : _repository = repository,
+  ChampionshipDetailBloc({
+    required ChampionshipRepository repository,
+    required UserRepository userRepository,
+  })  : _repository = repository,
+        _userRepository = userRepository,
         super(const ChampionshipDetailInitial()) {
     on<LoadChampionshipDetail>(_onLoad);
     on<ChangeDetailRound>(_onChangeRound);
     on<ChampionshipDetailDataUpdated>(_onChampionshipUpdated);
     on<ChampionshipDetailStandingsUpdated>(_onStandingsUpdated);
+    on<ChampionshipDetailTeamsUpdated>(_onTeamsUpdated);
     on<ChampionshipDetailMatchesUpdated>(_onMatchesUpdated);
+    on<ChampionshipDetailUserUpdated>(_onUserUpdated);
     on<ChampionshipDetailLoadError>(_onError);
   }
 
@@ -37,8 +46,15 @@ class ChampionshipDetailBloc
 
     await _champSub?.cancel();
     await _standingsSub?.cancel();
+    await _teamsSub?.cancel();
     await _matchesSub?.cancel();
+    await _userSub?.cancel();
     _matchesSub = null;
+
+    _userSub = _userRepository.currentUser.listen(
+      (user) => add(ChampionshipDetailUserUpdated(user?.gender?.name)),
+      onError: (_) {},
+    );
 
     _champSub = _repository
         .getChampionshipById(event.championshipId)
@@ -58,6 +74,13 @@ class ChampionshipDetailBloc
           (standings) => add(ChampionshipDetailStandingsUpdated(standings)),
           onError: (_) {}, // standings may not exist yet
         );
+
+    _teamsSub = _repository
+        .getTeams(event.championshipId)
+        .listen(
+          (teams) => add(ChampionshipDetailTeamsUpdated(teams)),
+          onError: (_) {}, // no teams yet is normal
+        );
   }
 
   void _onChampionshipUpdated(
@@ -74,6 +97,7 @@ class ChampionshipDetailBloc
       emit(ChampionshipDetailLoaded(
         championship: champ,
         standings: const [],
+        teams: const [],
         currentRoundMatches: const [],
         selectedRound: round,
       ));
@@ -91,6 +115,34 @@ class ChampionshipDetailBloc
         (state as ChampionshipDetailLoaded)
             .copyWith(standings: event.standings),
       );
+    }
+  }
+
+  void _onTeamsUpdated(
+    ChampionshipDetailTeamsUpdated event,
+    Emitter<ChampionshipDetailState> emit,
+  ) {
+    if (state is ChampionshipDetailLoaded) {
+      emit(
+        (state as ChampionshipDetailLoaded).copyWith(teams: event.teams),
+      );
+    }
+  }
+
+  void _onUserUpdated(
+    ChampionshipDetailUserUpdated event,
+    Emitter<ChampionshipDetailState> emit,
+  ) {
+    if (state is ChampionshipDetailLoaded) {
+      final current = state as ChampionshipDetailLoaded;
+      emit(ChampionshipDetailLoaded(
+        championship: current.championship,
+        standings: current.standings,
+        teams: current.teams,
+        currentRoundMatches: current.currentRoundMatches,
+        selectedRound: current.selectedRound,
+        currentUserGender: event.gender, // explicitly set, may be null
+      ));
     }
   }
 
@@ -146,7 +198,9 @@ class ChampionshipDetailBloc
   Future<void> close() async {
     await _champSub?.cancel();
     await _standingsSub?.cancel();
+    await _teamsSub?.cancel();
     await _matchesSub?.cancel();
+    await _userSub?.cancel();
     return super.close();
   }
 }

@@ -26,6 +26,7 @@ import 'package:play_with_me/core/domain/repositories/group_invite_link_reposito
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import '../features/auth/data/mock_auth_repository.dart';
 import '../core/data/repositories/mock_group_repository.dart';
@@ -267,11 +268,24 @@ Future<void> initializeTestDependencies({
       .thenAnswer((_) => Stream.value([]));
   when(() => mockChampionshipRepo.getOpenChampionships())
       .thenAnswer((_) => Stream.value([]));
+  when(() => mockChampionshipRepo.isAdmin(any()))
+      .thenAnswer((_) async => false);
+  when(() => mockChampionshipRepo.createChampionship(
+        title: any(named: 'title'),
+        registrationDeadline: any(named: 'registrationDeadline'),
+        startDate: any(named: 'startDate'),
+        endDate: any(named: 'endDate'),
+        country: any(named: 'country'),
+        region: any(named: 'region'),
+      )).thenAnswer((_) async => 'mock-champ-id');
   sl.registerLazySingleton<ChampionshipRepository>(
     () => mockChampionshipRepo,
   );
   sl.registerFactory<ChampionshipListBloc>(
     () => ChampionshipListBloc(repository: sl<ChampionshipRepository>()),
+  );
+  sl.registerFactory<ChampionshipCreationBloc>(
+    () => ChampionshipCreationBloc(repository: sl<ChampionshipRepository>()),
   );
 }
 

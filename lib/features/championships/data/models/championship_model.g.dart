@@ -30,6 +30,10 @@ _ChampionshipModel _$ChampionshipModelFromJson(
   startDate: const NullableTimestampConverter().fromJson(json['startDate']),
   country: json['country'] as String?,
   region: json['region'] as String?,
+  genderCategory: $enumDecodeNullable(
+    _$ChampionshipGenderCategoryEnumMap,
+    json['genderCategory'],
+  ),
 );
 
 Map<String, dynamic> _$ChampionshipModelToJson(
@@ -52,6 +56,8 @@ Map<String, dynamic> _$ChampionshipModelToJson(
   'startDate': const NullableTimestampConverter().toJson(instance.startDate),
   'country': instance.country,
   'region': instance.region,
+  'genderCategory':
+      _$ChampionshipGenderCategoryEnumMap[instance.genderCategory],
 };
 
 const _$ChampionshipStatusEnumMap = {
@@ -59,4 +65,9 @@ const _$ChampionshipStatusEnumMap = {
   ChampionshipStatus.registrationClosed: 'registration_closed',
   ChampionshipStatus.active: 'active',
   ChampionshipStatus.completed: 'completed',
+};
+
+const _$ChampionshipGenderCategoryEnumMap = {
+  ChampionshipGenderCategory.male: 'male',
+  ChampionshipGenderCategory.female: 'female',
 };

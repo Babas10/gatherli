@@ -5,6 +5,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
+import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
@@ -15,6 +16,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/championsh
 
 class MockChampionshipRepository extends Mock
     implements ChampionshipRepository {}
+
+class MockUserRepository extends Mock implements UserRepository {}
 
 // ── Factories ────────────────────────────────────────────────────────────────
 
@@ -69,13 +72,19 @@ ChampionshipMatchModel _makeMatch({
 
 void main() {
   late MockChampionshipRepository mockRepo;
+  late MockUserRepository mockUserRepo;
 
   setUp(() {
     mockRepo = MockChampionshipRepository();
+    mockUserRepo = MockUserRepository();
+    when(() => mockUserRepo.currentUser)
+        .thenAnswer((_) => const Stream.empty());
   });
 
-  ChampionshipDetailBloc makeBloc() =>
-      ChampionshipDetailBloc(repository: mockRepo);
+  ChampionshipDetailBloc makeBloc() => ChampionshipDetailBloc(
+        repository: mockRepo,
+        userRepository: mockUserRepo,
+      );
 
   group('LoadChampionshipDetail', () {
     blocTest<ChampionshipDetailBloc, ChampionshipDetailState>(
@@ -94,6 +103,8 @@ void main() {
         when(() => mockRepo.getChampionshipById('c1'))
             .thenAnswer((_) => Stream.value(champ));
         when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
             .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
@@ -118,6 +129,8 @@ void main() {
         when(() => mockRepo.getChampionshipById('c1'))
             .thenAnswer((_) => Stream.value(champ));
         when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
             .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
@@ -147,6 +160,8 @@ void main() {
             .thenAnswer((_) => Stream.value(champ));
         when(() => mockRepo.getStandings('c1'))
             .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
             championshipId: any(named: 'championshipId'),
@@ -172,6 +187,8 @@ void main() {
                 ));
         when(() => mockRepo.getStandings('c1'))
             .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
         return makeBloc();
       },
       act: (bloc) => bloc.add(const LoadChampionshipDetail('c1')),
@@ -195,6 +212,8 @@ void main() {
             .thenAnswer((_) => champCtrl.stream);
         when(() => mockRepo.getStandings('c1'))
             .thenAnswer((_) => standingsCtrl.stream);
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
             championshipId: any(named: 'championshipId'),
@@ -233,6 +252,8 @@ void main() {
             .thenAnswer((_) => champCtrl.stream);
         when(() => mockRepo.getStandings('c1'))
             .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
             championshipId: any(named: 'championshipId'),
@@ -268,6 +289,8 @@ void main() {
             .thenAnswer((_) => Stream.value(champ));
         when(() => mockRepo.getStandings('c1'))
             .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
             championshipId: any(named: 'championshipId'),
@@ -295,6 +318,8 @@ void main() {
         when(() => mockRepo.getChampionshipById('c1'))
             .thenAnswer((_) => Stream.value(champ));
         when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
             .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
@@ -336,6 +361,8 @@ void main() {
         when(() => mockRepo.getChampionshipById('c1'))
             .thenAnswer((_) => ctrl.stream);
         when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
             .thenAnswer((_) => const Stream.empty());
         when(
           () => mockRepo.getMatchesForRound(
