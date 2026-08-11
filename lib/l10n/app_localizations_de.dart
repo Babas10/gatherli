@@ -2523,4 +2523,60 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get championshipCreateDatePlaceholder => 'Datum auswählen';
+
+  @override
+  String get myTeamSectionTitle => 'Mein Team';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Partner: $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'Du hast die Meisterschaft verlassen.';
+
+  @override
+  String get startChampionshipButton => 'Meisterschaft starten';
+
+  @override
+  String get startChampionshipConfirmTitle => 'Meisterschaft starten?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'Dies generiert alle Spiele und kann nicht rückgängig gemacht werden. Stelle sicher, dass alle Teams registriert sind.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Meisterschaft gestartet — $count Spiele erstellt.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'Spielfenster beginnt';
+
+  @override
+  String get completeChampionshipButton => 'Als abgeschlossen markieren';
+
+  @override
+  String get completeChampionshipConfirmTitle => 'Meisterschaft abschließen?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'Nur verwenden, wenn alle Spiele abgeschlossen sind. Kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get completeChampionshipSuccess =>
+      'Meisterschaft als abgeschlossen markiert.';
+
+  @override
+  String get championshipChampionLabel => 'Champion';
+
+  @override
+  String get championshipMyMatch => 'Mein Spiel';
+
+  @override
+  String get matchDisputedTitle => 'Strittiges Spiel';
+
+  @override
+  String get matchDisputedExplanation =>
+      'Dieses Ergebnis wurde angefochten. Ein Administrator wird die Punkte prüfen und eine endgültige Entscheidung treffen. Das Ranking wird nach der Entscheidung aktualisiert.';
 }

@@ -164,6 +164,10 @@ abstract class ChampionshipRepository {
     ChampionshipGenderCategory? genderCategory,
   });
 
+  /// Marks the championship as completed (admin only).
+  /// Throws [ChampionshipException] on error.
+  Future<void> completeChampionship({required String championshipId});
+
   /// Returns true if [userId] has a document in the platform_admins collection.
   /// Direct Firestore read — safe because a user only checks their own status.
   Future<bool> isAdmin(String userId);

@@ -58,3 +58,27 @@ class AdminMatchesError extends AdminPanelEvent {
   @override
   List<Object?> get props => [message];
 }
+
+/// Admin triggers the championship active phase (generates round-robin fixtures).
+class StartChampionship extends AdminPanelEvent {
+  final String championshipId;
+  final DateTime startDate;
+
+  const StartChampionship({
+    required this.championshipId,
+    required this.startDate,
+  });
+
+  @override
+  List<Object?> get props => [championshipId, startDate];
+}
+
+/// Admin manually marks the championship as complete.
+class CompleteChampionship extends AdminPanelEvent {
+  final String championshipId;
+
+  const CompleteChampionship({required this.championshipId});
+
+  @override
+  List<Object?> get props => [championshipId];
+}

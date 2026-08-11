@@ -2511,4 +2511,60 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get championshipCreateDatePlaceholder => 'Seleccionar fecha';
+
+  @override
+  String get myTeamSectionTitle => 'Mi equipo';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Compañero: $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'Has abandonado el campeonato.';
+
+  @override
+  String get startChampionshipButton => 'Iniciar campeonato';
+
+  @override
+  String get startChampionshipConfirmTitle => '¿Iniciar el campeonato?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'Esto generará todos los partidos y no se podrá deshacer. Asegúrate de que todos los equipos estén inscritos.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Campeonato iniciado — $count partidos generados.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'Inicio de los partidos';
+
+  @override
+  String get completeChampionshipButton => 'Marcar como completado';
+
+  @override
+  String get completeChampionshipConfirmTitle => '¿Completar el campeonato?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'Úsalo solo cuando todos los partidos estén resueltos. Esta acción es irreversible.';
+
+  @override
+  String get completeChampionshipSuccess =>
+      'Campeonato marcado como completado.';
+
+  @override
+  String get championshipChampionLabel => 'Campeón';
+
+  @override
+  String get championshipMyMatch => 'Mi partido';
+
+  @override
+  String get matchDisputedTitle => 'Partido en disputa';
+
+  @override
+  String get matchDisputedExplanation =>
+      'Este resultado fue disputado. Un administrador revisará los marcadores y tomará una decisión final. La clasificación se actualizará tras la resolución.';
 }

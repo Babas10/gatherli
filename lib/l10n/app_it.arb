@@ -873,4 +873,20 @@
   "championshipCreateStartDateLabel": "Data di inizio (opzionale)",
   "championshipCreateEndDateLabel": "Data di fine (opzionale)",
   "championshipCreateDatePlaceholder": "Seleziona una data"
-}
+,
+  "myTeamSectionTitle": "Il mio team",
+  "myTeamPartnerLabel": "Partner: {name}",
+  "leaveTeamSuccess": "Hai abbandonato il campionato.",
+  "startChampionshipButton": "Avvia campionato",
+  "startChampionshipConfirmTitle": "Avviare il campionato?",
+  "startChampionshipConfirmBody": "Verranno generati tutti i match e l'operazione non potrà essere annullata. Assicurati che tutti i team siano iscritti.",
+  "startChampionshipSuccess": "Campionato avviato — {count} match generati.",
+  "startChampionshipStartDateLabel": "Inizio dei match",
+  "completeChampionshipButton": "Segna come completato",
+  "completeChampionshipConfirmTitle": "Completare il campionato?",
+  "completeChampionshipConfirmBody": "Usa questa opzione solo quando tutti i match sono stati risolti. L'operazione è irreversibile.",
+  "completeChampionshipSuccess": "Campionato segnato come completato.",
+  "championshipChampionLabel": "Campione",
+  "championshipMyMatch": "Il mio match",
+  "matchDisputedTitle": "Match contestato",
+  "matchDisputedExplanation": "Questo risultato è stato contestato. Un amministratore esaminerà i punteggi e prenderà una decisione finale. La classifica verrà aggiornata dopo la risoluzione."}

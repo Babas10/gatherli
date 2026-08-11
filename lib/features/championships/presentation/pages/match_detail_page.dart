@@ -119,6 +119,10 @@ class _MatchDetailBody extends StatelessWidget {
             teamB: state.teamB,
             l10n: l10n,
           ),
+          if (match.status == ChampionshipMatchStatus.disputed) ...[
+            const SizedBox(height: 12),
+            _DisputedStateSection(match: match, l10n: l10n),
+          ],
           if (_canProposeSchedule(match, state)) ...[
             const SizedBox(height: 12),
             _ProposeScheduleSection(
@@ -652,6 +656,70 @@ class _ResultSummaryCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+// ============================================================================
+// Disputed state section (Story 30.23)
+// ============================================================================
+
+class _DisputedStateSection extends StatelessWidget {
+  final ChampionshipMatchModel match;
+  final AppLocalizations l10n;
+
+  const _DisputedStateSection({required this.match, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final result = match.result;
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.orange.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.orange.withValues(alpha: 0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.warning_amber_outlined,
+                  color: Colors.orange, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                l10n.matchDisputedTitle,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Colors.orange.shade800,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.matchDisputedExplanation,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: Colors.orange.shade800),
+          ),
+          if (result != null) ...[
+            const SizedBox(height: 10),
+            Text(
+              result.sets
+                  .map((s) => '${s.teamAPoints} – ${s.teamBPoints}')
+                  .join('   '),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.orange.shade700,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ],
+        ],
       ),
     );
   }

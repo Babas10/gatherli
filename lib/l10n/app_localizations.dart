@@ -4549,6 +4549,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a date'**
   String get championshipCreateDatePlaceholder;
+
+  /// Section header for the user's registered championship team
+  ///
+  /// In en, this message translates to:
+  /// **'My Team'**
+  String get myTeamSectionTitle;
+
+  /// Shows the user's partner name in the my team section
+  ///
+  /// In en, this message translates to:
+  /// **'Partner: {name}'**
+  String myTeamPartnerLabel(String name);
+
+  /// Snackbar message after successfully leaving a championship team
+  ///
+  /// In en, this message translates to:
+  /// **'You have left the championship.'**
+  String get leaveTeamSuccess;
+
+  /// Admin button to launch the active phase of a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Start Championship'**
+  String get startChampionshipButton;
+
+  /// Confirmation dialog title when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Start championship?'**
+  String get startChampionshipConfirmTitle;
+
+  /// Confirmation dialog body when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'This will generate all round-robin fixtures and cannot be undone. Make sure all teams are registered.'**
+  String get startChampionshipConfirmBody;
+
+  /// Snackbar after a championship is successfully started
+  ///
+  /// In en, this message translates to:
+  /// **'Championship started — {count} matches generated.'**
+  String startChampionshipSuccess(int count);
+
+  /// Label for the start date picker when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'First match window starts'**
+  String get startChampionshipStartDateLabel;
+
+  /// Admin button to mark a championship as complete
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Complete'**
+  String get completeChampionshipButton;
+
+  /// Confirmation dialog title when completing a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Mark championship complete?'**
+  String get completeChampionshipConfirmTitle;
+
+  /// Confirmation dialog body when completing a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Use this only when all matches have been resolved. This cannot be undone.'**
+  String get completeChampionshipConfirmBody;
+
+  /// Snackbar after a championship is successfully marked complete
+  ///
+  /// In en, this message translates to:
+  /// **'Championship marked as complete.'**
+  String get completeChampionshipSuccess;
+
+  /// Label shown above the winning team name on a completed championship
+  ///
+  /// In en, this message translates to:
+  /// **'Champion'**
+  String get championshipChampionLabel;
+
+  /// Badge shown on the current user's match in the matches list
+  ///
+  /// In en, this message translates to:
+  /// **'My match'**
+  String get championshipMyMatch;
+
+  /// Section title shown in match detail when match is disputed
+  ///
+  /// In en, this message translates to:
+  /// **'Match Disputed'**
+  String get matchDisputedTitle;
+
+  /// Explanation text shown in match detail when match is in disputed state
+  ///
+  /// In en, this message translates to:
+  /// **'This result was disputed. An admin will review the scores and make a final decision. Standings will update once resolved.'**
+  String get matchDisputedExplanation;
 }
 
 class _AppLocalizationsDelegate

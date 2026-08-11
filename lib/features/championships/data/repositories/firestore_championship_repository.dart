@@ -524,6 +524,21 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
+  Future<void> completeChampionship({required String championshipId}) async {
+    try {
+      final callable = _functions.httpsCallable('completeChampionship');
+      await callable.call({'championshipId': championshipId});
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to complete championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to complete championship: $e');
+    }
+  }
+
+  @override
   Future<bool> isAdmin(String userId) async {
     try {
       final doc = await _firestore

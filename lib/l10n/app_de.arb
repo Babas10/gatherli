@@ -873,4 +873,20 @@
   "championshipCreateStartDateLabel": "Startdatum (optional)",
   "championshipCreateEndDateLabel": "Enddatum (optional)",
   "championshipCreateDatePlaceholder": "Datum auswählen"
-}
+,
+  "myTeamSectionTitle": "Mein Team",
+  "myTeamPartnerLabel": "Partner: {name}",
+  "leaveTeamSuccess": "Du hast die Meisterschaft verlassen.",
+  "startChampionshipButton": "Meisterschaft starten",
+  "startChampionshipConfirmTitle": "Meisterschaft starten?",
+  "startChampionshipConfirmBody": "Dies generiert alle Spiele und kann nicht rückgängig gemacht werden. Stelle sicher, dass alle Teams registriert sind.",
+  "startChampionshipSuccess": "Meisterschaft gestartet — {count} Spiele erstellt.",
+  "startChampionshipStartDateLabel": "Spielfenster beginnt",
+  "completeChampionshipButton": "Als abgeschlossen markieren",
+  "completeChampionshipConfirmTitle": "Meisterschaft abschließen?",
+  "completeChampionshipConfirmBody": "Nur verwenden, wenn alle Spiele abgeschlossen sind. Kann nicht rückgängig gemacht werden.",
+  "completeChampionshipSuccess": "Meisterschaft als abgeschlossen markiert.",
+  "championshipChampionLabel": "Champion",
+  "championshipMyMatch": "Mein Spiel",
+  "matchDisputedTitle": "Strittiges Spiel",
+  "matchDisputedExplanation": "Dieses Ergebnis wurde angefochten. Ein Administrator wird die Punkte prüfen und eine endgültige Entscheidung treffen. Das Ranking wird nach der Entscheidung aktualisiert."}

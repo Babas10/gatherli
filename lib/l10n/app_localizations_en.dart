@@ -2482,4 +2482,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get championshipCreateDatePlaceholder => 'Select a date';
+
+  @override
+  String get myTeamSectionTitle => 'My Team';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Partner: $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'You have left the championship.';
+
+  @override
+  String get startChampionshipButton => 'Start Championship';
+
+  @override
+  String get startChampionshipConfirmTitle => 'Start championship?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'This will generate all round-robin fixtures and cannot be undone. Make sure all teams are registered.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Championship started — $count matches generated.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'First match window starts';
+
+  @override
+  String get completeChampionshipButton => 'Mark as Complete';
+
+  @override
+  String get completeChampionshipConfirmTitle => 'Mark championship complete?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'Use this only when all matches have been resolved. This cannot be undone.';
+
+  @override
+  String get completeChampionshipSuccess => 'Championship marked as complete.';
+
+  @override
+  String get championshipChampionLabel => 'Champion';
+
+  @override
+  String get championshipMyMatch => 'My match';
+
+  @override
+  String get matchDisputedTitle => 'Match Disputed';
+
+  @override
+  String get matchDisputedExplanation =>
+      'This result was disputed. An admin will review the scores and make a final decision. Standings will update once resolved.';
 }

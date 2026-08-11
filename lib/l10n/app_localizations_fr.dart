@@ -2528,4 +2528,59 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get championshipCreateDatePlaceholder => 'Sélectionner une date';
+
+  @override
+  String get myTeamSectionTitle => 'Mon équipe';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Partenaire : $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'Vous avez quitté le championnat.';
+
+  @override
+  String get startChampionshipButton => 'Démarrer le championnat';
+
+  @override
+  String get startChampionshipConfirmTitle => 'Démarrer le championnat ?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'Cela générera tous les matchs et ne pourra pas être annulé. Vérifiez que toutes les équipes sont inscrites.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Championnat démarré — $count matchs générés.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'Début des matchs';
+
+  @override
+  String get completeChampionshipButton => 'Marquer comme terminé';
+
+  @override
+  String get completeChampionshipConfirmTitle => 'Terminer le championnat ?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'À utiliser uniquement lorsque tous les matchs sont résolus. Irréversible.';
+
+  @override
+  String get completeChampionshipSuccess => 'Championnat marqué comme terminé.';
+
+  @override
+  String get championshipChampionLabel => 'Champion';
+
+  @override
+  String get championshipMyMatch => 'Mon match';
+
+  @override
+  String get matchDisputedTitle => 'Match contesté';
+
+  @override
+  String get matchDisputedExplanation =>
+      'Ce résultat est contesté. Un administrateur examinera les scores et rendra une décision. Le classement sera mis à jour après résolution.';
 }

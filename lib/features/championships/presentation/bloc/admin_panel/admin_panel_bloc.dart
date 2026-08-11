@@ -28,6 +28,8 @@ class AdminPanelBloc extends Bloc<AdminPanelEvent, AdminPanelState> {
     on<DecideMatch>(_onDecideMatch);
     on<AdminMatchesUpdated>(_onMatchesUpdated);
     on<AdminMatchesError>(_onMatchesError);
+    on<StartChampionship>(_onStartChampionship);
+    on<CompleteChampionship>(_onCompleteChampionship);
   }
 
   Future<void> _onLoadAdminPanel(
@@ -120,6 +122,81 @@ class AdminPanelBloc extends Bloc<AdminPanelEvent, AdminPanelState> {
           isDeciding: false,
           decisionError: e.toString(),
           lastDecidedMatchId: null,
+        ));
+      }
+    }
+  }
+
+  Future<void> _onStartChampionship(
+    StartChampionship event,
+    Emitter<AdminPanelState> emit,
+  ) async {
+    if (state is! AdminPanelLoaded) return;
+    final current = state as AdminPanelLoaded;
+
+    emit(current.copyWith(isStarting: true, startError: null, matchesGenerated: null));
+
+    try {
+      final matchCount = await _repository.startChampionship(
+        championshipId: event.championshipId,
+        startDate: event.startDate,
+      );
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isStarting: false,
+          matchesGenerated: matchCount,
+          startError: null,
+        ));
+      }
+    } on ChampionshipException catch (e) {
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isStarting: false,
+          startError: e.message,
+        ));
+      }
+    } catch (e) {
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isStarting: false,
+          startError: e.toString(),
+        ));
+      }
+    }
+  }
+
+  Future<void> _onCompleteChampionship(
+    CompleteChampionship event,
+    Emitter<AdminPanelState> emit,
+  ) async {
+    if (state is! AdminPanelLoaded) return;
+    final current = state as AdminPanelLoaded;
+
+    emit(current.copyWith(isCompleting: true, completeError: null, isCompleted: false));
+
+    try {
+      await _repository.completeChampionship(
+        championshipId: event.championshipId,
+      );
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isCompleting: false,
+          isCompleted: true,
+          completeError: null,
+        ));
+      }
+    } on ChampionshipException catch (e) {
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isCompleting: false,
+          completeError: e.message,
+        ));
+      }
+    } catch (e) {
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(
+          isCompleting: false,
+          completeError: e.toString(),
         ));
       }
     }

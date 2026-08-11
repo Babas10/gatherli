@@ -23,12 +23,24 @@ class AdminPanelLoaded extends AdminPanelState {
   final bool isDeciding;
   final String? decisionError;
   final String? lastDecidedMatchId;
+  final bool isStarting;
+  final String? startError;
+  final int? matchesGenerated;
+  final bool isCompleting;
+  final String? completeError;
+  final bool isCompleted;
 
   const AdminPanelLoaded({
     required this.matches,
     this.isDeciding = false,
     this.decisionError,
     this.lastDecidedMatchId,
+    this.isStarting = false,
+    this.startError,
+    this.matchesGenerated,
+    this.isCompleting = false,
+    this.completeError,
+    this.isCompleted = false,
   });
 
   AdminPanelLoaded copyWith({
@@ -36,6 +48,12 @@ class AdminPanelLoaded extends AdminPanelState {
     bool? isDeciding,
     Object? decisionError = _sentinel,
     Object? lastDecidedMatchId = _sentinel,
+    bool? isStarting,
+    Object? startError = _sentinel,
+    Object? matchesGenerated = _sentinel,
+    bool? isCompleting,
+    Object? completeError = _sentinel,
+    bool? isCompleted,
   }) {
     return AdminPanelLoaded(
       matches: matches ?? this.matches,
@@ -46,12 +64,33 @@ class AdminPanelLoaded extends AdminPanelState {
       lastDecidedMatchId: lastDecidedMatchId == _sentinel
           ? this.lastDecidedMatchId
           : lastDecidedMatchId as String?,
+      isStarting: isStarting ?? this.isStarting,
+      startError:
+          startError == _sentinel ? this.startError : startError as String?,
+      matchesGenerated: matchesGenerated == _sentinel
+          ? this.matchesGenerated
+          : matchesGenerated as int?,
+      isCompleting: isCompleting ?? this.isCompleting,
+      completeError: completeError == _sentinel
+          ? this.completeError
+          : completeError as String?,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [matches, isDeciding, decisionError, lastDecidedMatchId];
+  List<Object?> get props => [
+        matches,
+        isDeciding,
+        decisionError,
+        lastDecidedMatchId,
+        isStarting,
+        startError,
+        matchesGenerated,
+        isCompleting,
+        completeError,
+        isCompleted,
+      ];
 }
 
 class AdminPanelError extends AdminPanelState {

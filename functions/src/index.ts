@@ -164,3 +164,9 @@ export {sendInvitation} from "./sendInvitation";
 // Story 30.x: List all championships via Admin SDK (bypasses Firestore rules for regular users)
 export {getChampionships} from "./getChampionships";
 
+
+// Story 30.16: Mark championship as completed (admin-only)
+export {completeChampionship} from "./completeChampionship";
+
+// Story 30.19: Enforce registration deadlines (scheduled — hourly)
+export {enforceRegistrationDeadlines} from "./enforceRegistrationDeadlines";

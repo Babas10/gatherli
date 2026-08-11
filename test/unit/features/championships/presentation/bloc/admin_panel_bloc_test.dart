@@ -273,4 +273,113 @@ void main() {
       expect: () => [],
     );
   });
+  group('StartChampionship', () {
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits isStarting=true then matchesGenerated on success',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.startChampionship(
+              championshipId: any(named: 'championshipId'),
+              startDate: any(named: 'startDate'),
+            )).thenAnswer((_) async => 45);
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(StartChampionship(
+          championshipId: championshipId,
+          startDate: DateTime(2027, 1, 1),
+        ));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isStarting, isFalse);
+        expect(state.matchesGenerated, 45);
+        expect(state.startError, isNull);
+      },
+    );
+
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits startError on ChampionshipException',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.startChampionship(
+              championshipId: any(named: 'championshipId'),
+              startDate: any(named: 'startDate'),
+            )).thenThrow(ChampionshipException('Not enough teams'));
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(StartChampionship(
+          championshipId: championshipId,
+          startDate: DateTime(2027, 1, 1),
+        ));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isStarting, isFalse);
+        expect(state.startError, isNotNull);
+        expect(state.matchesGenerated, isNull);
+      },
+    );
+
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'StartChampionship is ignored when state is not Loaded',
+      build: makeBloc,
+      act: (bloc) => bloc.add(StartChampionship(
+        championshipId: championshipId,
+        startDate: DateTime(2027, 1, 1),
+      )),
+      expect: () => [],
+    );
+  });
+
+  group('CompleteChampionship', () {
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits isCompleted=true on success',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.completeChampionship(
+              championshipId: any(named: 'championshipId'),
+            )).thenAnswer((_) async {});
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(CompleteChampionship(championshipId: championshipId));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isCompleting, isFalse);
+        expect(state.isCompleted, isTrue);
+        expect(state.completeError, isNull);
+      },
+    );
+
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits completeError on ChampionshipException',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.completeChampionship(
+              championshipId: any(named: 'championshipId'),
+            )).thenThrow(ChampionshipException('Already completed'));
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(CompleteChampionship(championshipId: championshipId));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isCompleting, isFalse);
+        expect(state.completeError, isNotNull);
+        expect(state.isCompleted, isFalse);
+      },
+    );
+  });
 }

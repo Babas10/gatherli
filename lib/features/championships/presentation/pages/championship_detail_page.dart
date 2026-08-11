@@ -1,8 +1,10 @@
 // Championship detail screen: header info, standings table, per-round matches,
 // and an admin panel tab (visible to championship admins only).
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
@@ -20,6 +22,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/championsh
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart' hide LoadChampionships;
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
@@ -102,7 +105,7 @@ class _ChampionshipDetailView extends StatelessWidget {
               championship: state.championship,
               onRegister: canRegister
                   ? () => _openRegistration(context, state.championship.id,
-                      currentUserId!, l10n)
+                      currentUserId, l10n)
                   : null,
               genderBlockReason: !genderAllowed &&
                       state.championship.status ==
@@ -113,6 +116,25 @@ class _ChampionshipDetailView extends StatelessWidget {
                       state.currentUserGender,
                       l10n,
                     )
+                  : null,
+              myTeam: alreadyRegistered
+                  ? state.teams.where((t) =>
+                      t.memberIds.contains(currentUserId)).firstOrNull
+                  : null,
+              onLeaveTeam: () {
+                final myT = state.teams.where((t) =>
+                    currentUserId != null &&
+                        t.memberIds.contains(currentUserId)).firstOrNull;
+                if (alreadyRegistered &&
+                    myT != null &&
+                    state.championship.status == ChampionshipStatus.registration) {
+                  _confirmLeaveTeam(context, state.championship.id, myT.id, l10n);
+                }
+              },
+              championTeamName: state.standings.isNotEmpty
+                  ? state.standings
+                      .reduce((a, b) => a.position < b.position ? a : b)
+                      .teamName
                   : null,
               l10n: l10n,
             ),
@@ -141,6 +163,12 @@ class _ChampionshipDetailView extends StatelessWidget {
                     matches: state.currentRoundMatches,
                     standings: state.standings,
                     selectedRound: state.selectedRound,
+                    myTeamId: currentUserId != null
+                        ? state.teams
+                            .where((t) => t.memberIds.contains(currentUserId))
+                            .map((t) => t.id)
+                            .firstOrNull
+                        : null,
                     l10n: l10n,
                   ),
                   if (isAdmin)
@@ -231,6 +259,73 @@ class _ChampionshipDetailView extends StatelessWidget {
       ),
     );
   }
+
+  void _confirmLeaveTeam(
+    BuildContext context,
+    String championshipId,
+    String teamId,
+    AppLocalizations l10n,
+  ) {
+    final leaveBloc = sl<TeamRegistrationBloc>();
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => BlocProvider.value(
+        value: leaveBloc,
+        child: BlocListener<TeamRegistrationBloc, TeamRegistrationState>(
+          listener: (_, state) {
+            if (state is TeamLeft) {
+              Navigator.of(dialogCtx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.leaveTeamSuccess)),
+              );
+            } else if (state is TeamRegistrationError) {
+              Navigator.of(dialogCtx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: AppColors.danger,
+                ),
+              );
+            }
+          },
+          child: BlocBuilder<TeamRegistrationBloc, TeamRegistrationState>(
+            builder: (builderCtx, state) => AlertDialog(
+              title: Text(l10n.leaveTeamConfirmTitle),
+              content: Text(l10n.leaveTeamConfirmBody),
+              actions: [
+                TextButton(
+                  onPressed: state is TeamRegistrationSubmitting
+                      ? null
+                      : () => Navigator.of(dialogCtx).pop(),
+                  child: Text(l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: state is TeamRegistrationSubmitting
+                      ? null
+                      : () => leaveBloc.add(
+                            LeaveTeam(
+                              championshipId: championshipId,
+                              teamId: teamId,
+                            ),
+                          ),
+                  style:
+                      TextButton.styleFrom(foregroundColor: AppColors.danger),
+                  child: state is TeamRegistrationSubmitting
+                      ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(l10n.leaveTeam),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 // ============================================================================
@@ -241,6 +336,9 @@ class _ChampionshipHeader extends StatelessWidget {
   final ChampionshipModel championship;
   final VoidCallback? onRegister;
   final String? genderBlockReason;
+  final ChampionshipTeamModel? myTeam;
+  final VoidCallback? onLeaveTeam;
+  final String? championTeamName;
   final AppLocalizations l10n;
 
   const _ChampionshipHeader({
@@ -248,6 +346,9 @@ class _ChampionshipHeader extends StatelessWidget {
     required this.l10n,
     this.onRegister,
     this.genderBlockReason,
+    this.myTeam,
+    this.onLeaveTeam,
+    this.championTeamName,
   });
 
   @override
@@ -280,6 +381,10 @@ class _ChampionshipHeader extends StatelessWidget {
               ),
             ],
           ),
+          if (championship.status == ChampionshipStatus.completed) ...[
+            const SizedBox(height: 10),
+            _ChampionBanner(championTeamName: championTeamName, l10n: l10n),
+          ],
           if (onRegister != null) ...[
             const SizedBox(height: 10),
             FilledButton.icon(
@@ -305,7 +410,143 @@ class _ChampionshipHeader extends StatelessWidget {
               ],
             ),
           ],
+          if (myTeam != null) ...[
+            const SizedBox(height: 10),
+            _MyTeamSection(
+              team: myTeam!,
+              championship: championship,
+              onLeave: onLeaveTeam,
+              l10n: l10n,
+            ),
+          ],
           const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+// ── Champion banner (completed championships) ─────────────────────────────────
+
+class _ChampionBanner extends StatelessWidget {
+  final String? championTeamName;
+  final AppLocalizations l10n;
+
+  const _ChampionBanner({required this.l10n, this.championTeamName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFEACE6A), Color(0xFFD4A017)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          const Text('🏆', style: TextStyle(fontSize: 24)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.championshipChampionLabel,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF5C3900),
+                  ),
+                ),
+                Text(
+                  championTeamName ?? '—',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF3D2400),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── My Team section ───────────────────────────────────────────────────────────
+
+class _MyTeamSection extends StatelessWidget {
+  final ChampionshipTeamModel team;
+  final ChampionshipModel championship;
+  final VoidCallback? onLeave;
+  final AppLocalizations l10n;
+
+  const _MyTeamSection({
+    required this.team,
+    required this.championship,
+    required this.l10n,
+    this.onLeave,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final partnerCount = team.memberIds.length;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.group, size: 18, color: AppColors.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.myTeamSectionTitle,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                Text(
+                  team.name,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                if (partnerCount > 1)
+                  Text(
+                    l10n.myTeamPartnerLabel(
+                      team.memberIds.length == 2 ? 'Partner' : '${partnerCount - 1} partners',
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                  ),
+              ],
+            ),
+          ),
+          if (onLeave != null)
+            TextButton.icon(
+              onPressed: onLeave,
+              icon: const Icon(Icons.exit_to_app_outlined, size: 16),
+              label: Text(l10n.leaveTeam),
+              style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+            ),
         ],
       ),
     );
@@ -539,20 +780,46 @@ class _StandingsTab extends StatelessWidget {
 
   TableRow _standingsRow(
       BuildContext context, ChampionshipStandingsModel row) {
+    final isChampion = row.position == 1 &&
+        championship.status == ChampionshipStatus.completed;
     final baseStyle = Theme.of(context).textTheme.bodySmall;
     final boldStyle = baseStyle?.copyWith(fontWeight: FontWeight.w600);
+    final champStyle = baseStyle?.copyWith(
+      fontWeight: FontWeight.w700,
+      color: const Color(0xFFB8860B), // dark gold
+    );
 
     final sr = row.setRatio;
     final srText = sr > 0 ? '+$sr' : '$sr';
 
+    // ── Story 30.24: expanded win/loss breakdown ─────────────────────────────
+    final winsText = '${row.wins20 + row.wins21}';
+    final winsDetail = row.wins20 > 0 || row.wins21 > 0
+        ? ' (${row.wins20}+${row.wins21})'
+        : '';
+    final lossText = '${row.losses12 + row.losses02}';
+
     return TableRow(
+      decoration: isChampion
+          ? BoxDecoration(
+              color: const Color(0xFFEACE6A).withValues(alpha: 0.18),
+              border: const Border(
+                left: BorderSide(color: Color(0xFFEACE6A), width: 3),
+              ),
+            )
+          : null,
       children: [
-        _cell('${row.position}', baseStyle?.copyWith(color: AppColors.textMuted)),
-        _cell(row.teamName, boldStyle, align: TextAlign.left),
+        _cell('${row.position}',
+            isChampion ? champStyle : baseStyle?.copyWith(color: AppColors.textMuted)),
+        _cell(row.teamName, isChampion ? champStyle : boldStyle,
+            align: TextAlign.left),
         _cell('${row.played}', baseStyle),
-        _cell('${row.points}', boldStyle?.copyWith(color: AppColors.primary)),
-        _cell('${row.wins20 + row.wins21}', baseStyle),
-        _cell('${row.losses12 + row.losses02}', baseStyle),
+        _cell('${row.points}',
+            isChampion
+                ? champStyle?.copyWith(color: const Color(0xFFB8860B))
+                : boldStyle?.copyWith(color: AppColors.primary)),
+        _cell('$winsText$winsDetail', isChampion ? champStyle : baseStyle),
+        _cell(lossText, baseStyle),
         _cell(
           srText,
           baseStyle?.copyWith(color: sr >= 0 ? Colors.green : Colors.red),
@@ -627,6 +894,7 @@ class _MatchesTab extends StatelessWidget {
   final List<ChampionshipMatchModel> matches;
   final List<ChampionshipStandingsModel> standings;
   final int selectedRound;
+  final String? myTeamId;
   final AppLocalizations l10n;
 
   const _MatchesTab({
@@ -635,6 +903,7 @@ class _MatchesTab extends StatelessWidget {
     required this.standings,
     required this.selectedRound,
     required this.l10n,
+    this.myTeamId,
   });
 
   void _navigateToMatch(BuildContext context, ChampionshipMatchModel match) {
@@ -725,6 +994,9 @@ class _MatchesTab extends StatelessWidget {
                     match: matches[i],
                     teamAName: _teamName(matches[i].teamAId),
                     teamBName: _teamName(matches[i].teamBId),
+                    isMyMatch: myTeamId != null &&
+                        (matches[i].teamAId == myTeamId ||
+                            matches[i].teamBId == myTeamId),
                     l10n: l10n,
                     onTap: () => _navigateToMatch(ctx, matches[i]),
                   ),
@@ -743,6 +1015,7 @@ class _MatchCard extends StatelessWidget {
   final ChampionshipMatchModel match;
   final String teamAName;
   final String teamBName;
+  final bool isMyMatch;
   final AppLocalizations l10n;
   final VoidCallback? onTap;
 
@@ -751,13 +1024,14 @@ class _MatchCard extends StatelessWidget {
     required this.teamAName,
     required this.teamBName,
     required this.l10n,
+    this.isMyMatch = false,
     this.onTap,
   });
 
   String _statusLabel() {
     return switch (match.status) {
       ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
-      ChampionshipMatchStatus.scheduled => l10n.championshipMatchStatusPending,
+      ChampionshipMatchStatus.scheduled => l10n.championshipMatchStatusScheduled,
       ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
       ChampionshipMatchStatus.disputed =>
         l10n.championshipMatchStatusDisputed,
@@ -770,7 +1044,7 @@ class _MatchCard extends StatelessWidget {
   Color _statusColor() {
     return switch (match.status) {
       ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => AppColors.textMuted,
+      ChampionshipMatchStatus.scheduled => AppColors.secondary,
       ChampionshipMatchStatus.played => Colors.blue,
       ChampionshipMatchStatus.disputed => Colors.orange,
       ChampionshipMatchStatus.adminDecided => Colors.purple,
@@ -793,6 +1067,12 @@ class _MatchCard extends StatelessWidget {
 
     return Card(
       margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isMyMatch
+            ? const BorderSide(color: AppColors.primary, width: 2)
+            : BorderSide.none,
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -801,6 +1081,16 @@ class _MatchCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (isMyMatch) ...[
+              Text(
+                l10n.championshipMyMatch,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 4),
+            ],
             Row(
               children: [
                 Expanded(
@@ -847,6 +1137,16 @@ class _MatchCard extends StatelessWidget {
                     _setScores(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textMuted,
+                        ),
+                  ),
+                  const Spacer(),
+                ] else if (match.scheduledAt != null) ...[
+                  Icon(Icons.schedule, size: 12, color: AppColors.secondary),
+                  const SizedBox(width: 3),
+                  Text(
+                    DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.secondary,
                         ),
                   ),
                   const Spacer(),
@@ -912,6 +1212,34 @@ class _AdminTab extends StatelessWidget {
               SnackBar(content: Text(l10n.adminPanelDecisionSuccess)),
             );
           }
+          if (state is AdminPanelLoaded && state.matchesGenerated != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.startChampionshipSuccess(state.matchesGenerated!)),
+              ),
+            );
+          }
+          if (state is AdminPanelLoaded && state.startError != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.startError!),
+                backgroundColor: AppColors.danger,
+              ),
+            );
+          }
+          if (state is AdminPanelLoaded && state.isCompleted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.completeChampionshipSuccess)),
+            );
+          }
+          if (state is AdminPanelLoaded && state.completeError != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.completeError!),
+                backgroundColor: AppColors.danger,
+              ),
+            );
+          }
         },
         builder: (context, state) {
           if (state is AdminPanelLoading || state is AdminPanelInitial) {
@@ -923,40 +1251,141 @@ class _AdminTab extends StatelessWidget {
           }
 
           if (state is AdminPanelLoaded) {
-            if (state.matches.isEmpty) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Text(
-                    l10n.adminPanelNoMatchesNeedingAttention,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              itemCount: state.matches.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (ctx, i) {
-                final match = state.matches[i];
-                return _AdminMatchCard(
-                  match: match,
-                  teamAName: _teamName(match.teamAId),
-                  teamBName: _teamName(match.teamBId),
+            return Column(
+              children: [
+                // ── Start / Complete actions ──────────────────────────────
+                _AdminActions(
+                  championship: championship,
+                  state: state,
                   l10n: l10n,
-                  onDecide: () => _showDecisionSheet(ctx, match),
-                );
-              },
+                  onStart: () => _showStartDialog(context),
+                  onComplete: () => _showCompleteDialog(context),
+                ),
+                // ── Matches needing attention ─────────────────────────────
+                Expanded(
+                  child: state.matches.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Text(
+                              l10n.adminPanelNoMatchesNeedingAttention,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: AppColors.textMuted),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          itemCount: state.matches.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 8),
+                          itemBuilder: (ctx, i) {
+                            final match = state.matches[i];
+                            return _AdminMatchCard(
+                              match: match,
+                              teamAName: _teamName(match.teamAId),
+                              teamBName: _teamName(match.teamBId),
+                              l10n: l10n,
+                              onDecide: () =>
+                                  _showDecisionSheet(ctx, match),
+                            );
+                          },
+                        ),
+                ),
+              ],
             );
           }
 
           return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+
+  void _showStartDialog(BuildContext context) {
+    final adminBloc = context.read<AdminPanelBloc>();
+    DateTime selectedDate = DateTime.now();
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => StatefulBuilder(
+        builder: (ctx, setDialogState) => AlertDialog(
+          title: Text(l10n.startChampionshipConfirmTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.startChampionshipConfirmBody),
+              const SizedBox(height: 16),
+              Text(
+                l10n.startChampionshipStartDateLabel,
+                style: Theme.of(ctx).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 6),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  final picked = await showAppStyledDatePicker(
+                    context: ctx,
+                    initialDate: selectedDate,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (picked != null) {
+                    setDialogState(() => selectedDate = picked);
+                  }
+                },
+                icon: const Icon(Icons.calendar_today_outlined, size: 16),
+                label: Text(DateFormat.yMMMd().format(selectedDate)),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop(),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(dialogCtx).pop();
+                adminBloc.add(StartChampionship(
+                  championshipId: championship.id,
+                  startDate: selectedDate,
+                ));
+              },
+              child: Text(l10n.startChampionshipButton),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCompleteDialog(BuildContext context) {
+    final adminBloc = context.read<AdminPanelBloc>();
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: Text(l10n.completeChampionshipConfirmTitle),
+        content: Text(l10n.completeChampionshipConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogCtx).pop();
+              adminBloc.add(
+                  CompleteChampionship(championshipId: championship.id));
+            },
+            child: Text(l10n.completeChampionshipButton),
+          ),
+        ],
       ),
     );
   }
@@ -982,6 +1411,73 @@ class _AdminTab extends StatelessWidget {
               .firstOrNull ?? match.teamBId,
           l10n: l10n,
         ),
+      ),
+    );
+  }
+}
+
+
+// ── Admin actions panel ───────────────────────────────────────────────────────
+
+class _AdminActions extends StatelessWidget {
+  final ChampionshipModel championship;
+  final AdminPanelLoaded state;
+  final AppLocalizations l10n;
+  final VoidCallback onStart;
+  final VoidCallback onComplete;
+
+  const _AdminActions({
+    required this.championship,
+    required this.state,
+    required this.l10n,
+    required this.onStart,
+    required this.onComplete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final canStart =
+        championship.status == ChampionshipStatus.registrationClosed &&
+            !state.isStarting;
+    final canComplete = championship.status == ChampionshipStatus.active &&
+        !state.isCompleting;
+
+    if (!canStart && !canComplete) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (canStart || state.isStarting)
+            FilledButton.icon(
+              onPressed: state.isStarting ? null : onStart,
+              icon: state.isStarting
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.play_arrow_outlined),
+              label: Text(l10n.startChampionshipButton),
+            ),
+          if (canComplete || state.isCompleting) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: state.isCompleting ? null : onComplete,
+              icon: state.isCompleting
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.check_circle_outline),
+              label: Text(l10n.completeChampionshipButton),
+            ),
+          ],
+          const SizedBox(height: 8),
+          const Divider(height: 1),
+        ],
       ),
     );
   }
