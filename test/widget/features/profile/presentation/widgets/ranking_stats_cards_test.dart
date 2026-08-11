@@ -1,25 +1,15 @@
 // Validates RankingStatsCards widget displays correct ranking stats (Story 302.5).
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/user_ranking.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/ranking_stats_cards.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('RankingStatsCards', () {
     testWidgets('shows dash for all ranking cards when ranking is null', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: null)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: null))),
       );
 
       // All three ranking cards (global rank, percentile, friends rank) show '-'
@@ -38,16 +28,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       expect(find.text('Global Rank'), findsOneWidget);
@@ -64,16 +45,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       expect(find.text('Percentile'), findsOneWidget);
@@ -92,16 +64,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       expect(find.text('Friends Rank'), findsOneWidget);
@@ -118,16 +81,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       expect(find.text('Friends Rank'), findsOneWidget);
@@ -148,23 +102,14 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: Center(
               child: SizedBox(
                 width: 600, // Wide screen
                 child: RankingStatsCards(ranking: ranking),
               ),
             ),
-          ),
-        ),
+          )),
       );
 
       // Check that a Row widget is used (horizontal layout)
@@ -184,23 +129,14 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: Center(
               child: SizedBox(
                 width: 250, // Very narrow screen (< 280px threshold)
                 child: RankingStatsCards(ranking: ranking),
               ),
             ),
-          ),
-        ),
+          )),
       );
 
       // Check that a Column widget is used (vertical layout)
@@ -218,16 +154,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       // Find all icon widgets (trending_up now appears twice: percentile→ssid_chart, streak→trending_up)
@@ -249,18 +176,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: RankingStatsCards(ranking: ranking, currentStreak: 5),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('Streak'), findsOneWidget);
@@ -277,18 +195,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: RankingStatsCards(ranking: ranking, currentStreak: -3),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('Streak'), findsOneWidget);
@@ -304,18 +213,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: RankingStatsCards(ranking: ranking, currentStreak: 0),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('Streak'), findsOneWidget);
@@ -336,16 +236,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: RankingStatsCards(ranking: ranking)),
-        ),
+        testApp(child: Scaffold(body: RankingStatsCards(ranking: ranking))),
       );
 
       expect(find.text('Global Rank'), findsOneWidget);

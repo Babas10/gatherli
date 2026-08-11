@@ -2,10 +2,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/group_activity_item.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
@@ -16,6 +14,7 @@ import 'package:play_with_me/features/games/presentation/bloc/games_list/games_l
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_state.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_list_item.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockGamesListBloc extends MockBloc<GamesListEvent, GamesListState>
     implements GamesListBloc {}
@@ -64,15 +63,7 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<GamesListBloc>.value(value: mockGamesListBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
@@ -197,8 +188,7 @@ void main() {
             label: const Text('Create Game'),
           ),
         ),
-      ),
-    );
+      ));
   }
 
   group('GamesListPage Widget Tests', () {

@@ -1,11 +1,10 @@
 // Widget tests for GameChatSection verifying message rendering and send interaction.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
 import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_chat_section.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 // Minimal fake repository for widget tests — no streams, no Firebase.
 class _FakeMessageRepository implements MessageRepository {
@@ -39,15 +38,7 @@ Widget _buildWidget({
   required _FakeMessageRepository repo,
   bool isPlayer = true,
 }) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Scaffold(
+  return testApp(child: Scaffold(
       body: SingleChildScrollView(
         child: GameChatSection(
           gameId: 'game-1',
@@ -57,8 +48,7 @@ Widget _buildWidget({
           messageRepository: repo,
         ),
       ),
-    ),
-  );
+    ));
 }
 
 void main() {

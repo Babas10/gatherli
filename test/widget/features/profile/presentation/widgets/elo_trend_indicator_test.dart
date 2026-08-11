@@ -1,10 +1,9 @@
 // Widget tests for ELOTrendIndicator
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/elo_trend_indicator.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('ELOTrendIndicator Widget Tests', () {
@@ -12,18 +11,9 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1650.0, recentHistory: []),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -69,18 +59,9 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1660.0, recentHistory: history),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -125,18 +106,9 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1620.0, recentHistory: history),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -200,22 +172,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(
               currentElo: 1660.0,
               recentHistory: history,
               lookbackGames: 3, // Only look at last 3 games
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -249,18 +212,9 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1660.0, recentHistory: history),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -272,18 +226,9 @@ void main() {
 
     testWidgets('displays card with correct structure', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1650.0, recentHistory: []),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -294,18 +239,9 @@ void main() {
 
     testWidgets('formats ELO as integer (no decimals)', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: ELOTrendIndicator(currentElo: 1649.7, recentHistory: []),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 

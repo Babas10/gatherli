@@ -1,10 +1,9 @@
 // Tests for RoleBasedPerformanceCard widget - validates UI rendering for role-based stats.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/role_based_performance_card.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('RoleBasedPerformanceCard Widget Tests', () {
@@ -55,16 +54,7 @@ void main() {
       );
     });
 
-    Widget buildWidget(UserModel user) => MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(body: RoleBasedPerformanceCard(user: user)),
-    );
+    Widget buildWidget(UserModel user) => testApp(child: Scaffold(body: RoleBasedPerformanceCard(user: user)));
 
     testWidgets('displays section label', (tester) async {
       await tester.pumpWidget(buildWidget(userWithNoData));

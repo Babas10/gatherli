@@ -19,36 +19,35 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
         _functions = functions;
 
   @override
-  Stream<List<ChampionshipModel>> getChampionships() async* {
+  Stream<List<ChampionshipModel>> getChampionships() {
     try {
-      final callable = _functions.httpsCallable('getChampionships');
-      final result = await callable.call<Map<String, dynamic>>();
-      final data = Map<String, dynamic>.from(result.data as Map);
-      final items = (data['championships'] as List<dynamic>)
-          .map((item) => ChampionshipModel.fromJson(
-              Map<String, dynamic>.from(item as Map)))
-          .toList();
-      yield items;
-    } on FirebaseFunctionsException catch (e) {
-      throw ChampionshipException(
-        'Failed to load championships: ${e.message}',
-        code: e.code,
-      );
+      return _firestore
+          .collection('championships')
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load championships: $e',
+          code: 'LOAD_CHAMPIONSHIPS_ERROR',
+        );
+      });
     } catch (e) {
-      throw ChampionshipException(
+      return Stream.error(ChampionshipException(
         'Failed to load championships: $e',
         code: 'LOAD_CHAMPIONSHIPS_ERROR',
-      );
+      ));
     }
   }
 
   @override
-  Stream<List<ChampionshipModel>> getOpenChampionships() async* {
-    await for (final all in getChampionships()) {
-      yield all
-          .where((c) => c.status == ChampionshipStatus.registration)
-          .toList();
-    }
+  Stream<List<ChampionshipModel>> getOpenChampionships() {
+    return getChampionships().map(
+      (all) =>
+          all.where((c) => c.status == ChampionshipStatus.registration).toList(),
+    );
   }
 
   @override

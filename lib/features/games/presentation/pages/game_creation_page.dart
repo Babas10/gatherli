@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
+import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -64,75 +65,15 @@ class _GameCreationPageState extends State<GameCreationPage> {
     final now = DateTime.now();
     final initialDate = now.add(const Duration(days: 1));
     const blue = AppColors.secondary;
-
     final l10n = AppLocalizations.of(context)!;
     final bloc = context.read<GameCreationBloc>();
 
-    final date = await showDatePicker(
+    final date = await showAppStyledDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: now,
       lastDate: now.add(const Duration(days: 365)),
       helpText: l10n.selectGameDate,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            datePickerTheme: DatePickerThemeData(
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.transparent,
-              headerBackgroundColor: Colors.white,
-              headerForegroundColor: blue,
-              dayForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              dayShape: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: blue, width: 2),
-                  );
-                }
-                return null;
-              }),
-              todayForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              todayBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              todayBorder: const BorderSide(color: Colors.transparent),
-              yearForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              yearBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              yearShape: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: blue, width: 2),
-                  );
-                }
-                return null;
-              }),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: blue),
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (date == null || !context.mounted) return;

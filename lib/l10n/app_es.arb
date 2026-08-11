@@ -811,7 +811,7 @@
   "championshipGenderBlockNoGender": "Debes establecer tu género en tu perfil para registrarte.",
   "championshipGenderBlockMaleOnly": "Este campeonato es solo para hombres.",
   "championshipGenderBlockFemaleOnly": "Este campeonato es solo para mujeres.",
-  "championshipCreateGenderLabel": "Categoría de género",
+  "championshipCreateGenderLabel": "Categoría de género (opcional)",
   "championshipDetailStandingsTab": "Clasificación",
   "championshipDetailMatchesTab": "Partidos",
   "championshipDetailRound": "Ronda {round}",

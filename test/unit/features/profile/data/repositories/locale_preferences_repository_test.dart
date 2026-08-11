@@ -7,10 +7,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/profile/data/repositories/locale_preferences_repository_impl.dart';
 import 'package:play_with_me/features/profile/domain/entities/locale_preferences_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../helpers/mocks.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
-
-class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 // ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock

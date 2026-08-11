@@ -1,8 +1,6 @@
 // Widget tests for RecordResultsPage verifying UI and interaction.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,6 +16,7 @@ import 'package:play_with_me/features/games/presentation/pages/record_results_pa
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
+import '../../../../../helpers/test_app.dart';
 
 // Mock classes
 class MockGameRepository extends Mock implements GameRepository {}
@@ -112,16 +111,7 @@ void main() {
         BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
       ],
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        home: RecordResultsPage(gameId: gameId),
-      ),
+      child: testApp(child: RecordResultsPage(gameId: gameId)),
     );
   }
 
@@ -175,17 +165,8 @@ void main() {
             BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
             BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           ],
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: RecordResultsPage(gameId: testGameId),
-            navigatorObservers: [mockObserver],
-          ),
+          child: testApp(child: RecordResultsPage(gameId: testGameId),
+            navigatorObserver: mockObserver),
         ),
       );
       await tester.pumpAndSettle();

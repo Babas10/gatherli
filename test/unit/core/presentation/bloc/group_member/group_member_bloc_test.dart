@@ -3,12 +3,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
-import 'package:play_with_me/core/domain/repositories/group_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/group_member/group_member_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/group_member/group_member_event.dart';
 import 'package:play_with_me/core/presentation/bloc/group_member/group_member_state.dart';
-
-class MockGroupRepository extends Mock implements GroupRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late GroupMemberBloc bloc;

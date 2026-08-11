@@ -4,12 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 
-class MockChampionshipRepository extends Mock implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 ChampionshipModel _championship({
   String id = 'champ-1',

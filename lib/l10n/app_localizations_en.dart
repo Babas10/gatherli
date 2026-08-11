@@ -2295,7 +2295,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This championship is for women only.';
 
   @override
-  String get championshipCreateGenderLabel => 'Gender category';
+  String get championshipCreateGenderLabel => 'Gender category (optional)';
 
   @override
   String get championshipDetailStandingsTab => 'Standings';

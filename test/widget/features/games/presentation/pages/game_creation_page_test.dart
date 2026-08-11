@@ -2,10 +2,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_event.dart';
@@ -18,6 +16,7 @@ import 'package:play_with_me/features/games/presentation/bloc/game_creation/game
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_state.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/games/presentation/pages/game_creation_page.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockGameCreationBloc
     extends MockBloc<GameCreationEvent, GameCreationState>
@@ -84,15 +83,7 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<GameCreationBloc>.value(value: mockGameCreationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
@@ -102,8 +93,7 @@ void main() {
           ),
         ],
         child: GameCreationPage(groupId: testGroupId, groupName: testGroupName),
-      ),
-    );
+      ));
   }
 
   group('GameCreationPage Widget Tests', () {

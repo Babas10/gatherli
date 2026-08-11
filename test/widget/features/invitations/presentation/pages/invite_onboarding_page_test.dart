@@ -3,7 +3,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,7 +16,7 @@ import 'package:play_with_me/features/invitations/presentation/bloc/invite_regis
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_event.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_state.dart';
 import 'package:play_with_me/features/invitations/presentation/pages/invite_onboarding_page.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockInviteJoinBloc extends MockBloc<InviteJoinEvent, InviteJoinState>
     implements InviteJoinBloc {}
@@ -66,22 +65,13 @@ void main() {
   });
 
   Widget createTestWidget({String token = 'test-token'}) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<InviteJoinBloc>.value(value: mockBloc),
           BlocProvider<DeepLinkBloc>.value(value: mockDeepLinkBloc),
         ],
         child: InviteOnboardingPage(token: token),
-      ),
-    );
+      ));
   }
 
   group('InviteOnboardingPage', () {
@@ -148,22 +138,13 @@ void main() {
         when(() => mockBloc.state).thenReturn(validatedState);
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: MultiBlocProvider(
+          testApp(child: MultiBlocProvider(
               providers: [
                 BlocProvider<InviteJoinBloc>.value(value: mockBloc),
                 BlocProvider<DeepLinkBloc>.value(value: mockDeepLinkBloc),
               ],
               child: const InviteOnboardingPage(token: 'test-token'),
-            ),
-          ),
+            )),
         );
 
         await tester.tap(find.text('Create Account'));
@@ -180,15 +161,7 @@ void main() {
         // Build with a root page and push InviteOnboardingPage on top,
         // so popUntil(isFirst) pops back to the root.
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: MultiBlocProvider(
+          testApp(child: MultiBlocProvider(
               providers: [
                 BlocProvider<InviteJoinBloc>.value(value: mockBloc),
                 BlocProvider<DeepLinkBloc>.value(value: mockDeepLinkBloc),
@@ -216,8 +189,7 @@ void main() {
                   return const Scaffold(body: Text('Root Page'));
                 },
               ),
-            ),
-          ),
+            )),
         );
 
         await tester.pumpAndSettle();
@@ -256,15 +228,7 @@ void main() {
         // Build with a root page and push InviteOnboardingPage on top,
         // so popUntil(isFirst) pops back to the root.
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: MultiBlocProvider(
+          testApp(child: MultiBlocProvider(
               providers: [
                 BlocProvider<InviteJoinBloc>.value(value: mockBloc),
                 BlocProvider<DeepLinkBloc>.value(value: mockDeepLinkBloc),
@@ -291,8 +255,7 @@ void main() {
                   return const Scaffold(body: Text('Root Page'));
                 },
               ),
-            ),
-          ),
+            )),
         );
 
         await tester.pumpAndSettle();

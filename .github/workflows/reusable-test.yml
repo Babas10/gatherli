@@ -60,6 +60,12 @@ jobs:
       - name: 🧪 Run Unit & Widget Tests
         run: flutter test --coverage --reporter=github --exclude-tags=integration test/unit/ test/widget/
 
+      - name: 📊 Check Coverage Threshold (BLoC + Repository ≥ 60%)
+        # Regression gate: fails if BLoC/Repository coverage drops below 60%.
+        # Current measured coverage: ~62%. Target from CLAUDE.md: 80%.
+        # Raise threshold gradually as test coverage improves.
+        run: bash tools/check_coverage.sh 60
+
       - name: 📈 Upload Coverage to Codecov
         if: inputs.upload-coverage
         uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457  # v3.1.6

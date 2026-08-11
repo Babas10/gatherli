@@ -2,19 +2,14 @@
 // ignore_for_file: invalid_use_of_protected_member
 import 'dart:async';
 
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocktail mocks
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockFirebaseFunctions extends Mock implements FirebaseFunctions {}
-
-class MockUser extends Mock implements User {}
 
 class FakeActionCodeSettings extends Fake implements ActionCodeSettings {}
 
@@ -29,6 +24,7 @@ FirebaseAuthException createAuthException(String code, {String? message}) {
 
 void main() {
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeActionCodeSettings());
   });
 
@@ -445,8 +441,6 @@ void main() {
         );
       });
     });
-
-
 
     group('sendPasswordResetEmail', () {
       const testEmail = 'test@example.com';

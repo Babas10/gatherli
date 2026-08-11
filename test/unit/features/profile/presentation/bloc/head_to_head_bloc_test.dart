@@ -2,13 +2,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/data/models/head_to_head_stats.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/head_to_head/head_to_head_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/head_to_head/head_to_head_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/head_to_head/head_to_head_state.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;

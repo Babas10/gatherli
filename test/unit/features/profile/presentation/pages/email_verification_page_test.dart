@@ -15,13 +15,10 @@ import 'package:play_with_me/features/profile/presentation/bloc/email_verificati
 import 'package:play_with_me/features/profile/presentation/bloc/email_verification/email_verification_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/email_verification/email_verification_state.dart';
 import 'package:play_with_me/features/profile/presentation/pages/email_verification_page.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mock classes
 class MockEmailVerificationBloc extends Mock implements EmailVerificationBloc {}
-
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
 
 // Fake classes for mocktail
 class FakeEmailVerificationEvent extends Fake
@@ -36,6 +33,7 @@ void main() {
   late MockAuthenticationBloc mockAuthBloc;
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeEmailVerificationEvent());
     registerFallbackValue(FakeEmailVerificationState());
   });

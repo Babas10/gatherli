@@ -7,13 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_state.dart';
 
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 // ── Factories ─────────────────────────────────────────────────────────────────
 
@@ -37,6 +35,7 @@ void main() {
   const championshipId = 'champ-1';
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(_makeMatch());
   });
 

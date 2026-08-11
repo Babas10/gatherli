@@ -5,21 +5,13 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/image_storage_repository.dart';
-import 'package:play_with_me/core/services/image_picker_service.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/avatar_upload/avatar_upload_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/avatar_upload/avatar_upload_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/avatar_upload/avatar_upload_state.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocktail mocks
-class MockImageStorageRepository extends Mock
-    implements ImageStorageRepository {}
-
-class MockImagePickerService extends Mock implements ImagePickerService {}
-
-class MockAuthRepository extends Mock implements AuthRepository {}
 
 class MockFile extends Mock implements File {}
 

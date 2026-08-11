@@ -2,12 +2,11 @@
 // Validates tile rendering, status badge, and tap handler.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/my_game_item.dart';
 import 'package:play_with_me/features/games/presentation/widgets/my_game_tile.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 MyGameItem _makeItem({
   GameStatus status = GameStatus.scheduled,
@@ -28,18 +27,9 @@ MyGameItem _makeItem({
 }
 
 Widget _build(MyGameItem item, {VoidCallback? onTap}) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Scaffold(
+  return testApp(child: Scaffold(
       body: MyGameTile(item: item, onTap: onTap ?? () {}),
-    ),
-  );
+    ));
 }
 
 void main() {

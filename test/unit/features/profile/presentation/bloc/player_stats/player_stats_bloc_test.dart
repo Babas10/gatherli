@@ -4,12 +4,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/data/models/user_ranking.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_state.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../../helpers/mocks.dart';
 
 class FakeUserModel extends Fake implements UserModel {}
 

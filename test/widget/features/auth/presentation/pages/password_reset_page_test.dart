@@ -2,8 +2,6 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,6 +11,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/password_reset/pass
 import 'package:play_with_me/features/auth/presentation/pages/password_reset_page.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_form_field.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockPasswordResetBloc
     extends MockBloc<PasswordResetEvent, PasswordResetState>
@@ -42,19 +41,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider<PasswordResetBloc>.value(
+    return testApp(child: BlocProvider<PasswordResetBloc>.value(
         value: mockPasswordResetBloc,
         child: const PasswordResetPage(),
-      ),
-    );
+      ));
   }
 
   group('PasswordResetPage Widget Tests', () {
@@ -382,15 +372,7 @@ void main() {
     group('Navigation', () {
       testWidgets('back to login button navigates back', (tester) async {
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: BlocProvider<PasswordResetBloc>.value(
+          testApp(child: BlocProvider<PasswordResetBloc>.value(
               value: mockPasswordResetBloc,
               child: Navigator(
                 onGenerateRoute: (settings) {
@@ -399,8 +381,7 @@ void main() {
                   );
                 },
               ),
-            ),
-          ),
+            )),
         );
         await tester.pumpAndSettle();
 

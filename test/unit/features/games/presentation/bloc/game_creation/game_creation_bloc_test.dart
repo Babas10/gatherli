@@ -1,7 +1,6 @@
 // Validates GameCreationBloc correctly manages form state, validation, and game creation logic.
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -11,10 +10,7 @@ import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_state.dart';
-
-class MockGameRepository extends Mock implements GameRepository {}
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
+import '../../../../../../helpers/mocks.dart';
 
 class FakeGameModel extends Fake implements GameModel {}
 
@@ -24,6 +20,7 @@ void main() {
   late GameCreationBloc gameCreationBloc;
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeGameModel());
   });
 

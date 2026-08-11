@@ -3,7 +3,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
@@ -17,7 +16,7 @@ import 'package:play_with_me/features/training/presentation/bloc/feedback/traini
 import 'package:play_with_me/features/training/presentation/bloc/feedback/training_feedback_event.dart';
 import 'package:play_with_me/features/training/presentation/bloc/feedback/training_feedback_state.dart';
 import 'package:play_with_me/features/training/presentation/pages/training_session_feedback_page.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockTrainingFeedbackBloc
     extends MockBloc<TrainingFeedbackEvent, TrainingFeedbackState>
@@ -70,15 +69,7 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<TrainingFeedbackBloc>.value(value: mockFeedbackBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
@@ -88,8 +79,7 @@ void main() {
           trainingSessionId: testSessionId,
           sessionTitle: testSessionTitle,
         ),
-      ),
-    );
+      ));
   }
 
   group('TrainingSessionFeedbackPage Widget Tests', () {

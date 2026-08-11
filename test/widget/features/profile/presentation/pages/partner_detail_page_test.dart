@@ -2,11 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -14,14 +13,10 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
 
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
+import '../../../../../helpers/mocks.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;
@@ -132,22 +127,13 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
         child: PartnerDetailPage(userId: testUserId, partnerId: testPartnerId),
-      ),
-    );
+      ));
   }
 
   group('PartnerDetailPage Widget Tests', () {

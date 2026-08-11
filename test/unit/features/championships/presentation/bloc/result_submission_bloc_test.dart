@@ -4,12 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/result_submission/result_submission_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/result_submission/result_submission_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/result_submission/result_submission_state.dart';
 
-class MockChampionshipRepository extends Mock implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockChampionshipRepository mockRepo;
@@ -20,6 +19,7 @@ void main() {
   ];
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(sets2_0);
   });
 

@@ -1,11 +1,10 @@
 // Widget tests for HomeStatsSection with Performance Overview title and 4 stat cards.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/home_stats_section.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('HomeStatsSection Widget Tests', () {
@@ -71,21 +70,12 @@ void main() {
       List<RatingHistoryEntry>? history,
     }) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: HomeStatsSection(
               user: user ?? testUser,
               ratingHistory: history ?? testHistory,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
     }

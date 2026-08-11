@@ -1,7 +1,6 @@
 // Widget tests for NotificationSettingsPage - validates UI rendering and user interactions
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,10 +9,10 @@ import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/notifications/domain/entities/notification_preferences_entity.dart';
 import 'package:play_with_me/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:play_with_me/features/notifications/presentation/pages/notification_settings_page.dart';
+import '../../../../../helpers/test_app.dart';
 
 // Mocks
 class MockNotificationRepository extends Mock
@@ -76,22 +75,13 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
         child: const NotificationSettingsPage(),
-      ),
-    );
+      ));
   }
 
   group('NotificationSettingsPage - Basic Rendering', () {

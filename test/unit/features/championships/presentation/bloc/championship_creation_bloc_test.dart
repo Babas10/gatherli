@@ -3,13 +3,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_state.dart';
 
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockChampionshipRepository mockRepo;

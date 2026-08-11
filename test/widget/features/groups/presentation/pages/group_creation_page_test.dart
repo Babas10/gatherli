@@ -2,10 +2,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_event.dart';
@@ -18,6 +16,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_event.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/groups/presentation/pages/group_creation_page.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockGroupBloc extends MockBloc<GroupEvent, GroupState>
     implements GroupBloc {}
@@ -71,23 +70,14 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<GroupBloc>.value(value: mockGroupBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
         ],
         child: const GroupCreationPage(),
-      ),
-    );
+      ));
   }
 
   group('GroupCreationPage Widget Tests', () {
@@ -464,15 +454,7 @@ void main() {
     group('Cancel Button', () {
       testWidgets('cancel button navigates back', (tester) async {
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Builder(
+          testApp(child: Builder(
               builder: (context) => Scaffold(
                 body: TextButton(
                   onPressed: () {
@@ -496,8 +478,7 @@ void main() {
                   child: const Text('Go to Create Group'),
                 ),
               ),
-            ),
-          ),
+            )),
         );
 
         // Navigate to group creation page

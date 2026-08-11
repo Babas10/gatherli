@@ -4193,7 +4193,7 @@ abstract class AppLocalizations {
   /// Label for the gender category picker in championship creation form
   ///
   /// In en, this message translates to:
-  /// **'Gender category'**
+  /// **'Gender category (optional)'**
   String get championshipCreateGenderLabel;
 
   /// Label for the standings tab on the championship detail screen

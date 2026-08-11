@@ -1,58 +1,18 @@
 // Validates MatchDetailPage renders header, chat section, and result section
 // based on MatchDetailBloc state.
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
-import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 
-class MockMatchDetailBloc
-    extends MockBloc<MatchDetailEvent, MatchDetailState>
-    implements MatchDetailBloc {}
-
-class FakeMatchDetailEvent extends Fake implements MatchDetailEvent {}
-class FakeMatchDetailState extends Fake implements MatchDetailState {}
+import '../../../helpers/mocks.dart';
+import '../../../helpers/test_app.dart';
+import '../../../helpers/fixtures.dart';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-
-ChampionshipMatchModel _makeMatch({
-  String id = 'm1',
-  ChampionshipMatchStatus status = ChampionshipMatchStatus.pending,
-  String? submittedByTeamId,
-  DateTime? scheduledAt,
-}) {
-  return ChampionshipMatchModel(
-    id: id,
-    round: 1,
-    teamAId: 'teamA',
-    teamBId: 'teamB',
-    deadline: DateTime(2026, 9, 1),
-    status: status,
-    submittedByTeamId: submittedByTeamId,
-    scheduledAt: scheduledAt,
-  );
-}
-
-ChampionshipTeamModel _makeTeam({
-  String id = 'teamA',
-  String name = 'Team A',
-  List<String>? memberIds,
-}) {
-  return ChampionshipTeamModel(
-    id: id,
-    name: name,
-    captainId: 'user-1',
-    memberIds: memberIds ?? ['user-1', 'user-2'],
-    createdAt: DateTime(2026, 1, 1),
-  );
-}
 
 MatchDetailLoaded _makeLoadedState({
   ChampionshipMatchStatus status = ChampionshipMatchStatus.pending,
@@ -63,27 +23,23 @@ MatchDetailLoaded _makeLoadedState({
 }) {
   return MatchDetailLoaded(
     championshipId: 'champ-1',
-    match: _makeMatch(status: status, submittedByTeamId: submittedByTeamId),
-    teamA: _makeTeam(id: 'teamA', name: 'Team A'),
-    teamB: _makeTeam(id: 'teamB', name: 'Team B'),
+    match: makeMatch(
+      teamAId: 'teamA',
+      teamBId: 'teamB',
+      status: status,
+      submittedByTeamId: submittedByTeamId,
+    ),
+    teamA: makeTeam(id: 'teamA', name: 'Team A'),
+    teamB: makeTeam(id: 'teamB', name: 'Team B'),
     myTeamId: myTeamId,
     isProposingSchedule: isProposingSchedule,
     scheduleError: scheduleError,
   );
 }
 
-// ── Widget helpers ────────────────────────────────────────────────────────────
-
 Widget _buildTestWidget(MockMatchDetailBloc bloc) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: BlocProvider<MatchDetailBloc>.value(
+  return testApp(
+    child: BlocProvider<MatchDetailBloc>.value(
       value: bloc,
       child: Scaffold(
         body: BlocBuilder<MatchDetailBloc, MatchDetailState>(
@@ -98,17 +54,11 @@ Widget _buildTestWidget(MockMatchDetailBloc bloc) {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Team names
                     Text(state.teamA.name),
                     Text(state.teamB.name),
-                    // Status
                     Text(state.match.status.name),
-                    // myTeamId indicator
                     if (state.myTeamId != null) const Text('IS_MEMBER'),
-                    // isProposing indicator
-                    if (state.isProposingSchedule)
-                      const Text('IS_PROPOSING'),
-                    // scheduleError indicator
+                    if (state.isProposingSchedule) const Text('IS_PROPOSING'),
                     if (state.scheduleError != null)
                       Text('ERROR: ${state.scheduleError}'),
                   ],
@@ -128,10 +78,7 @@ Widget _buildTestWidget(MockMatchDetailBloc bloc) {
 void main() {
   late MockMatchDetailBloc bloc;
 
-  setUpAll(() {
-    registerFallbackValue(FakeMatchDetailEvent());
-    registerFallbackValue(FakeMatchDetailState());
-  });
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     bloc = MockMatchDetailBloc();
@@ -170,8 +117,7 @@ void main() {
 
     testWidgets('shows IS_MEMBER indicator when user is a team member',
         (tester) async {
-      when(() => bloc.state)
-          .thenReturn(_makeLoadedState(myTeamId: 'teamA'));
+      when(() => bloc.state).thenReturn(_makeLoadedState(myTeamId: 'teamA'));
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pumpAndSettle();
       expect(find.text('IS_MEMBER'), findsOneWidget);
@@ -179,8 +125,7 @@ void main() {
 
     testWidgets('does not show IS_MEMBER when user is not a team member',
         (tester) async {
-      when(() => bloc.state)
-          .thenReturn(_makeLoadedState(myTeamId: null));
+      when(() => bloc.state).thenReturn(_makeLoadedState(myTeamId: null));
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pumpAndSettle();
       expect(find.text('IS_MEMBER'), findsNothing);

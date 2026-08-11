@@ -2,14 +2,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_state.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import '../bloc/championship_creation/championship_creation_bloc.dart';
@@ -47,84 +49,9 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
     super.dispose();
   }
 
-  /// Shows a date picker with the same styling as the game creation form.
-  Future<DateTime?> _showStyledDatePicker({
-    required BuildContext context,
-    required DateTime initialDate,
-    required DateTime firstDate,
-    required DateTime lastDate,
-  }) {
-    const blue = Color(0xFF004E64);
-    return showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            datePickerTheme: DatePickerThemeData(
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.transparent,
-              headerBackgroundColor: Colors.white,
-              headerForegroundColor: blue,
-              dayForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              dayShape: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: blue, width: 2),
-                  );
-                }
-                return null;
-              }),
-              todayForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              todayBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              todayBorder: const BorderSide(color: Colors.transparent),
-              yearForegroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return blue;
-                return null;
-              }),
-              yearBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) return Colors.white;
-                return null;
-              }),
-              yearShape: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: blue, width: 2),
-                  );
-                }
-                return null;
-              }),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: blue),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-  }
-
   Future<void> _pickDeadline(BuildContext context) async {
     final now = DateTime.now();
-    final picked = await _showStyledDatePicker(
+    final picked = await showAppStyledDatePicker(
       context: context,
       initialDate: _registrationDeadline ?? now.add(const Duration(days: 30)),
       firstDate: now.add(const Duration(days: 1)),
@@ -138,7 +65,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
     final earliest = _registrationDeadline != null
         ? _registrationDeadline!.add(const Duration(days: 1))
         : now.add(const Duration(days: 1));
-    final picked = await _showStyledDatePicker(
+    final picked = await showAppStyledDatePicker(
       context: context,
       initialDate: _startDate ?? earliest,
       firstDate: earliest,
@@ -152,7 +79,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
     final earliest = _startDate != null
         ? _startDate!.add(const Duration(days: 1))
         : now.add(const Duration(days: 2));
-    final picked = await _showStyledDatePicker(
+    final picked = await showAppStyledDatePicker(
       context: context,
       initialDate: _endDate ?? earliest,
       firstDate: earliest,
@@ -197,7 +124,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: AppColors.danger,
             ),
           );
         }

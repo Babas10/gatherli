@@ -3,7 +3,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_bloc.dart';
@@ -14,9 +13,9 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/groups/presentation/pages/group_list_page.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/group_list_item.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/empty_group_list.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:mocktail/mocktail.dart';
 import '../../../../../unit/core/data/repositories/mock_group_repository.dart';
+import '../../../../../helpers/test_app.dart';
 
 // Mock classes
 class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
@@ -69,19 +68,10 @@ void main() {
   });
 
   Widget createApp() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider<AuthenticationBloc>.value(
+    return testApp(child: BlocProvider<AuthenticationBloc>.value(
         value: mockAuthBloc,
         child: GroupListPage(blocOverride: groupBloc),
-      ),
-    );
+      ));
   }
 
   group('GroupListPage Widget Tests', () {

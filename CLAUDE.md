@@ -640,463 +640,134 @@ When creating a new repository:
 ## 🧪 4. Testing (Unified and Deterministic)
 
 All tests must **pass 100%**, with no skipped or commented-out sections.
-The project uses a **single, consistent testing stack** to ensure clarity, maintainability, and CI reliability.
 
 ---
 
 ### **4.1 Core Testing Stack**
 
-| Layer                 | Purpose                                                    | Frameworks                                          |
-| --------------------- | ---------------------------------------------------------- | --------------------------------------------------- |
-| **Unit tests**        | Validate logic in BLoCs, repositories, and services        | `flutter_test`, `bloc_test`, `mocktail`             |
-| **Widget tests**      | Verify UI rendering and state transitions                  | `flutter_test`, `mocktail`                          |
-| **Integration tests** | End-to-end flow validation using real Firebase Emulator    | `integration_test`, Firebase Emulator (auth, firestore) |
+| Layer | Purpose | Frameworks |
+|---|---|---|
+| **Unit tests** | BLoC state transitions, repository contracts | `flutter_test`, `bloc_test`, `mocktail` |
+| **Widget tests** | UI rendering and user interactions | `flutter_test`, `mocktail` |
+| **Integration tests** | End-to-end flows with real Firebase Emulator | `integration_test`, Firebase Emulator |
 
-**Key principles:**
-
-* ❌ **Do not use `mockito`** → it introduces codegen overhead and maintenance burden.
-* ✅ **Use only `mocktail`** for mocking, stubbing, and verification in unit/widget tests.
-* ✅ **Use Firebase Emulator** for integration tests with real Firebase SDK behavior.
-* ✅ **Use `bloc_test`** for BLoC state assertions.
-* ✅ **Use `flutter drive`** to run integration tests on web in CI.
+- ❌ **Never `mockito`** — no codegen, no generated `.mocks.dart` files.
+- ❌ **Never `fake_cloud_firestore`** — does not support Timestamp queries or compound indexes.
+- ✅ **`mocktail`** for all unit/widget mocking.
+- ✅ **Firebase Emulator** for all Firestore/Auth behavior tests.
 
 ---
 
-### **4.2 Mocking Policy**
+### **4.2 Where Should This Test Go? (Decision Tree)**
 
-All mocks are written using **Mocktail**:
+1. Does it test Firestore queries, timestamps, or real-time streams? → **Integration test** (Firebase Emulator)
+2. Does it test a complete user flow across multiple screens? → **Integration test** (Firebase Emulator)
+3. Does it test BLoC state transitions or event handling? → **Unit test** (mock repository)
+4. Does it test UI rendering or user interaction? → **Widget test** (fake/mock data)
+5. Does it test a simple function/utility with no dependencies? → **Unit test** (no mocks needed)
+
+---
+
+### **4.3 The Golden Rules**
+
+1. **Firestore = Emulator** — Never mock Firestore query behavior.
+2. **Repositories = Mock Interface** — Don’t replicate data layer logic in unit tests.
+3. **BLoCs = Mock Dependencies** — Test state transitions only, not Firestore.
+4. **Widgets = Fake Data** — Simple synchronous values, no real streams.
+5. **E2E = Real Backend** — Use emulator for complete flows.
+6. **Never `fake_cloud_firestore`** — Timestamp queries and compound indexes are not supported.
+7. **Never `await Future.delayed()`** — Wrong test layer. Move the test to the emulator.
+
+---
+
+### **4.4 Test Hygiene**
+
+- Each test file begins with a one-line purpose comment.
+- Mirror source file paths: `foo_bloc.dart` → `test/unit/.../foo_bloc_test.dart`.
+- Never skip tests without a GitHub issue reference.
+- Coverage target: **80%+** for BLoC and repository layers (current measured: ~62%; CI gate at 60%).
+
+---
+
+### **4.5 Shared Test Helpers (use these — do not duplicate)**
+
+Three files in `test/helpers/` eliminate per-file boilerplate:
+
+| File | What it provides |
+|---|---|
+| `test/helpers/mocks.dart` | All mock/fake class definitions + `registerFallbackValues()` |
+| `test/helpers/test_app.dart` | `testApp({required Widget child})` — MaterialApp with localization |
+| `test/helpers/fixtures.dart` | Model factories: `makeChampionship()`, `makeMatch()`, `makeStandings()`, etc. |
+
+**Widget test template:**
 
 ```dart
-class MockAuthRepository extends Mock implements AuthRepository {}
-
-setUp(() {
-  mockAuthRepository = MockAuthRepository();
-});
-
-when(() => mockAuthRepository.updateUserProfile(
-  displayName: any(named: 'displayName'),
-  photoUrl: any(named: 'photoUrl'),
-)).thenAnswer((_) async {});
-```
-
-**Rationale:**
-
-* No code generation or `build_runner` required.
-* Consistent null-safe matchers and verification.
-* Fast test execution in both local and CI environments.
-
----
-
-### **4.3 Folder Structure**
-
-```
-test/
-├── unit/                # Logic & BLoC tests (mocked dependencies)
-│   ├── features/
-│   ├── core/
-│   └── helpers/
-├── widget/              # Screen/widget rendering tests (mocked dependencies)
-integration_test/        # End-to-end flow tests (real Firebase Emulator)
-├── helpers/             # Firebase Emulator test helpers
-│   └── firebase_emulator_helper.dart
-└── *_test.dart          # Integration test files
-test_driver/             # Test driver for flutter drive
-└── integration_test.dart
-```
-
----
-
-### **4.4 Test Hygiene Rules**
-
-✅ Each test file begins with a one-line purpose comment
-
-```dart
-// Validates ProfileEditBloc emits correct states during profile update.
-```
-
-✅ Each test mirrors its source file
-`profile_edit_bloc.dart` → `profile_edit_bloc_test.dart`
-
-✅ No skipped or commented-out tests
-If a feature isn’t ready, mark `skip: true` *only with a GitHub issue reference*.
-
-✅ No mixing frameworks
-Never import both `mockito` and `mocktail`.
-
-✅ Fast inner loop
-All `unit/` and `widget/` tests should complete in under **60 seconds total**.
-
-✅ Minimum coverage
-Maintain **≥ 90% coverage** for BLoC and repository layers.
-
----
-
-### **4.5 What to Test Where: The Critical Testing Strategy**
-
-**⚠️ CRITICAL: This section prevents 90% of recurring test failures.**
-
-The biggest source of test failures comes from testing the wrong thing in the wrong place. Follow this guide **exactly** to avoid flaky, timing-dependent, or impossible-to-mock tests.
-
----
-
-#### **🚫 The Root Cause of Recurring Test Problems**
-
-**DO NOT** attempt to unit test Firestore behavior with `fake_cloud_firestore`. This causes:
-
-- ❌ Stream timing issues ("listener not ready", "initial value not emitted")
-- ❌ Timestamp comparison errors (`type 'Timestamp' is not a subtype of type 'String'`)
-- ❌ Unsupported Firestore features (range queries, compound indexes, `orderBy` + `where`)
-- ❌ Race conditions depending on machine/CI speed
-- ❌ Tests that pass locally but fail in CI
-- ❌ Tests that fail randomly and require arbitrary delays
-
-**Why `fake_cloud_firestore` fails:**
-
-- Does NOT support Timestamp comparisons in `.where()` clauses
-- Does NOT support range filters with DateTime/Timestamp
-- Does NOT support compound queries with `orderBy` + `where` on Timestamp
-- Does NOT replicate real Firestore snapshot emission timing
-- Does NOT emit initial snapshots like real Firestore
-
-**Example of what BREAKS with `fake_cloud_firestore`:**
-
-```dart
-// ❌ This WILL fail in fake_cloud_firestore
-return _firestore
-  .collection('games')
-  .where('groupId', isEqualTo: groupId)
-  .where('scheduledAt', isGreaterThan: Timestamp.now())  // 💥 BREAKS
-  .where('status', isEqualTo: 'scheduled')
-  .snapshots();
-```
-
----
-
-#### **✅ The Correct Testing Strategy**
-
-| What to Test | Where to Test It | How to Test It | Why |
-|-------------|-----------------|----------------|-----|
-| **Firestore queries** (filtering, sorting, timestamps) | 🔥 **Integration tests** with Firebase Emulator | Real Firestore SDK + emulator | Emulator supports ALL Firestore features correctly |
-| **Repository interface** (method contracts, error handling) | ✅ **Unit tests** | Mock entire repository with `mocktail` | Tests business logic, not Firestore internals |
-| **BLoC logic** (state transitions, event handling) | ✅ **Unit tests** | Mock repositories with `mocktail` or `bloc_test` | Tests state management, not data layer |
-| **Widget behavior** (UI rendering, user interaction) | ✅ **Widget tests** | Fake/mock repositories with simple synchronous data | Tests UI, not real-time streams |
-| **End-to-end flows** (multi-step user journeys) | 🔥 **Integration tests** | Real Firebase Emulator + `flutter_driver` | Tests complete user flows with real backend |
-
----
-
-#### **📋 Detailed Testing Rules by Layer**
-
-##### **1. Repository Layer**
-
-**🔥 Integration Tests (Firebase Emulator) - Test HERE:**
-
-- ✅ Firestore query correctness (filters, sorting, pagination)
-- ✅ Timestamp comparisons and range queries
-- ✅ Real-time stream emission and updates
-- ✅ Compound queries with multiple conditions
-- ✅ Document creation/update/delete operations
-- ✅ Transaction and batch operations
-
-**Example:**
-```dart
-// integration_test/repositories/firestore_game_repository_test.dart
-testWidgets('getUpcomingGamesCount returns correct count', (tester) async {
-  await FirebaseEmulatorHelper.initialize();
-  final repository = FirestoreGameRepository(firestore: FirebaseFirestore.instance);
-
-  // Create test games with real Timestamps
-  await createTestGame(scheduledAt: DateTime.now().add(Duration(days: 1)));
-
-  final stream = repository.getUpcomingGamesCount('group-123');
-
-  await expectLater(stream, emits(1));
-});
-```
-
-**❌ Unit Tests - DO NOT test Firestore queries here:**
-
-- ❌ NO Firestore query logic
-- ❌ NO `fake_cloud_firestore`
-- ❌ NO stream emission timing
-
-**If you need to test repository methods in unit tests:**
-
-Mock the ENTIRE repository interface, don't try to replicate Firestore:
-
-```dart
-// ✅ CORRECT - Mock the repository
-class MockGameRepository extends Mock implements GameRepository {}
-
-test('should return game count', () {
-  when(() => mockRepo.getUpcomingGamesCount('group-123'))
-    .thenAnswer((_) => Stream.value(5));
-
-  // Test code that USES the repository
-});
-```
-
----
-
-##### **2. BLoC Layer**
-
-**✅ Unit Tests - Test HERE:**
-
-- ✅ State transitions (initial → loading → loaded → error)
-- ✅ Event handling logic
-- ✅ Error handling and edge cases
-- ✅ Business logic and validation
-
-**How to test:**
-
-Use **mocked repositories** (NOT fake_cloud_firestore):
-
-```dart
-// ✅ CORRECT
-class MockGameRepository extends Mock implements GameRepository {}
-
-blocTest<GameBloc, GameState>(
-  'emits [loading, loaded] when games are fetched',
-  build: () {
-    when(() => mockRepo.getUpcomingGamesCount('group-123'))
-      .thenAnswer((_) => Stream.value(3));
-    return GameBloc(repository: mockRepo);
-  },
-  act: (bloc) => bloc.add(LoadGames('group-123')),
-  expect: () => [
-    GameState.loading(),
-    GameState.loaded(count: 3),
-  ],
-);
-```
-
-**❌ DO NOT:**
-- ❌ Use `fake_cloud_firestore` in BLoC tests
-- ❌ Add delays or timers to "wait for streams"
-- ❌ Test Firestore query correctness here
-
----
-
-##### **3. Widget Layer**
-
-**✅ Widget Tests - Test HERE:**
-
-- ✅ UI rendering with different states
-- ✅ User interactions (taps, scrolls, input)
-- ✅ Widget composition and layout
-- ✅ State-dependent UI changes
-
-**How to test:**
-
-Use **fake repositories** with simple synchronous data:
-
-```dart
-// ✅ CORRECT - Simple fake repository
-class FakeGameRepository implements GameRepository {
-  final int _count;
-  FakeGameRepository(this._count);
-
-  @override
-  Stream<int> getUpcomingGamesCount(String groupId) {
-    return Stream.value(_count);  // Simple synchronous stream
-  }
+import ‘../../helpers/mocks.dart’;   // adjust relative depth
+import ‘../../helpers/test_app.dart’;
+import ‘../../helpers/fixtures.dart’;
+
+void main() {
+  late MockXxxBloc bloc;
+
+  setUpAll(registerFallbackValues);
+
+  setUp(() {
+    bloc = MockXxxBloc();
+    when(() => bloc.stream).thenAnswer((_) => const Stream.empty());
+    when(() => bloc.state).thenReturn(XxxInitial());
+  });
+
+  tearDown(() => bloc.close());
+
+  testWidgets(‘shows loading’, (tester) async {
+    when(() => bloc.state).thenReturn(XxxLoading());
+    await tester.pumpWidget(testApp(
+      child: BlocProvider.value(value: bloc, child: XxxPage()),
+    ));
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 }
-
-testWidgets('badge shows count', (tester) async {
-  await tester.pumpWidget(
-    MaterialApp(
-      home: GroupBottomNavBar(
-        upcomingGamesCount: 5,  // Direct value, no streams
-      ),
-    ),
-  );
-
-  expect(find.text('5'), findsOneWidget);
-});
 ```
 
-**❌ DO NOT:**
-- ❌ Use real Firestore or Firebase Emulator
-- ❌ Use `fake_cloud_firestore`
-- ❌ Test stream timing or emission order
-- ❌ Add `await Future.delayed()` hacks
-
----
-
-##### **4. Integration Tests**
-
-**🔥 Integration Tests (Firebase Emulator) - Test HERE:**
-
-- ✅ Complete user flows (login → create group → create game → RSVP)
-- ✅ Multi-screen navigation
-- ✅ Real-time updates across widgets
-- ✅ Cloud Function triggers and side effects
-- ✅ Security rules validation
-- ✅ Cross-user interactions
-
-**How to test:**
-
-Use Firebase Emulator with `flutter_driver`:
+**BLoC unit test template:**
 
 ```dart
-// integration_test/game_creation_flow_test.dart
-testWidgets('user can create game and see it in list', (tester) async {
-  await FirebaseEmulatorHelper.initialize();
+import ‘../../helpers/mocks.dart’;
+import ‘../../helpers/fixtures.dart’;
 
-  // Create test user and group
-  final user = await FirebaseEmulatorHelper.createCompleteTestUser(
-    email: 'test@example.com',
-    password: 'password123',
-    displayName: 'Test User',
+void main() {
+  late MockXxxRepository mockRepo;
+
+  setUp(() => mockRepo = MockXxxRepository());
+
+  blocTest<XxxBloc, XxxState>(
+    ‘emits [loading, loaded] on success’,
+    build: () {
+      when(() => mockRepo.getItems()).thenAnswer((_) async => [makeChampionship()]);
+      return XxxBloc(repository: mockRepo);
+    },
+    act: (bloc) => bloc.add(LoadItems()),
+    expect: () => [XxxLoading(), isA<XxxLoaded>()],
   );
-
-  // Navigate and create game
-  await tester.tap(find.text('Create Game'));
-  await tester.pumpAndSettle();
-
-  // Verify game appears in Firestore
-  final games = await FirebaseFirestore.instance
-    .collection('games')
-    .where('createdBy', isEqualTo: user.uid)
-    .get();
-
-  expect(games.docs.length, 1);
-});
+}
 ```
-
----
-
-#### **🎯 Decision Tree: Where Should This Test Go?**
-
-Ask yourself these questions **in order**:
-
-1. **Does it test Firestore queries, timestamps, or real-time streams?**
-   → 🔥 **Integration test** with Firebase Emulator
-
-2. **Does it test a complete user flow across multiple screens?**
-   → 🔥 **Integration test** with Firebase Emulator
-
-3. **Does it test BLoC state transitions or event handling?**
-   → ✅ **Unit test** with mocked repository
-
-4. **Does it test UI rendering or user interaction?**
-   → ✅ **Widget test** with fake/mock data
-
-5. **Does it test a simple function/utility with no dependencies?**
-   → ✅ **Unit test** (no mocks needed)
-
----
-
-#### **🚨 Common Anti-Patterns to AVOID**
-
-| ❌ Anti-Pattern | ✅ Correct Approach |
-|----------------|---------------------|
-| Unit testing Firestore queries with `fake_cloud_firestore` | Integration test with Firebase Emulator |
-| Adding `await Future.delayed()` to wait for streams | Use synchronous fakes in tests, or use emulator |
-| Mocking `StreamController` to replicate Firestore timing | Mock repository interface, not stream internals |
-| Widget tests with real Firebase SDK | Use fake repositories with simple values |
-| Skipping tests because they're "too flaky" | Move to correct test layer (usually integration) |
-| Testing UI in integration tests | Separate into widget tests + integration tests |
-
----
-
-#### **📊 Coverage Expectations**
-
-| Layer | Target Coverage | Test Location |
-|-------|----------------|---------------|
-| BLoC | 90%+ | Unit tests |
-| Repository interface | 90%+ | Unit tests (mocked) |
-| Repository implementation | Not in unit tests | Integration tests |
-| Widgets | 80%+ | Widget tests |
-| End-to-end flows | All critical paths | Integration tests |
-
----
-
-#### **🔍 Examples from This Project**
-
-**✅ CORRECT Example: Game Count Badge**
-
-```dart
-// ✅ Widget test - tests badge display logic
-testWidgets('badge shows "9+" for 10+ games', (tester) async {
-  await tester.pumpWidget(
-    MaterialApp(
-      home: GroupBottomNavBar(
-        upcomingGamesCount: 15,  // Simple int, no streams
-      ),
-    ),
-  );
-  expect(find.text('9+'), findsOneWidget);
-});
-
-// 🔥 Integration test would test - Firestore query correctness
-// (This would go in integration_test/, not test/unit/)
-testWidgets('getUpcomingGamesCount filters correctly', (tester) async {
-  await FirebaseEmulatorHelper.initialize();
-  final repo = FirestoreGameRepository(firestore: FirebaseFirestore.instance);
-
-  // Create games with real Timestamps
-  await createScheduledGame(DateTime.now().add(Duration(days: 1)));
-  await createPastGame(DateTime.now().subtract(Duration(days: 1)));
-
-  final count = await repo.getUpcomingGamesCount('group-123').first;
-  expect(count, 1);  // Only future game counted
-});
-```
-
----
-
-#### **📚 Summary: The Golden Rules**
-
-1. **🔥 Firestore = Emulator** - Never mock Firestore query behavior
-2. **✅ Repositories = Mock Interface** - Don't replicate data layer logic
-3. **✅ BLoCs = Mock Dependencies** - Test state transitions only
-4. **✅ Widgets = Fake Data** - Simple synchronous values only
-5. **🔥 E2E = Real Backend** - Use emulator for complete flows
-6. **❌ Never use `fake_cloud_firestore` for Timestamp queries**
-7. **❌ Never add delays to "fix" timing issues** - wrong test layer
-
-Following these rules eliminates 90% of flaky, failing, and unmaintainable tests.
 
 ---
 
 ### **4.6 Running Tests**
 
-**Local (inner loop - fast):**
-
 ```bash
-# Run only unit + widget tests (with mocks)
-flutter test test/unit/
-flutter test test/widget/
-```
-
-**Integration tests (local with Firebase Emulator):**
-
-```bash
-# Step 1: Start Firebase Emulators
-firebase emulators:start --only auth,firestore --project gatherli-dev
-
-# Step 2: Run integration tests (in another terminal)
-flutter drive \
-  --driver=test_driver/integration_test.dart \
-  --target=integration_test/invitation_acceptance_test.dart \
-  -d chrome
-
-# Or run all integration tests
-for test in integration_test/*_test.dart; do
-  flutter drive --driver=test_driver/integration_test.dart --target="$test" -d chrome
-done
-```
-
-**Full suite (CI pipeline):**
-
-```bash
-# CI runs unit + widget tests only (integration tests run in separate workflow)
+# Unit + widget tests (fast, local and CI)
 flutter test test/unit/ test/widget/
+
+# Integration tests (requires emulator running)
+firebase emulators:start --only auth,firestore --project gatherli-dev
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/some_test.dart -d chrome
 ```
 
 ---
 
-### **4.6 dev_dependencies (Required)**
+### **4.7 dev_dependencies**
 
 ```yaml
 dev_dependencies:
@@ -1104,88 +775,12 @@ dev_dependencies:
   bloc_test:
   mocktail:
   integration_test:
-  # Firebase dependencies (for integration tests)
   firebase_core:
   cloud_firestore:
   firebase_auth:
 ```
 
-**Note**: Remove `mockito`, `build_runner`, `fake_cloud_firestore`, and any generated `.mocks.dart` files.
-
----
-
-### **4.7 Shared Test Helpers**
-
-**For unit/widget tests** - Centralize reusable fakes and mocks under `test/helpers/`:
-
-```dart
-class FakeUserEntity extends Fake implements UserEntity {}
-class MockAuthRepository extends Mock implements AuthRepository {}
-```
-
-**For integration tests** - Use `FirebaseEmulatorHelper` in `integration_test/helpers/`:
-
-```dart
-// integration_test/helpers/firebase_emulator_helper.dart
-class FirebaseEmulatorHelper {
-  static Future<void> initialize() async {
-    // Initialize Firebase with emulator configuration
-    await Firebase.initializeApp(options: const FirebaseOptions(...));
-    FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  }
-
-  static Future<void> clearFirestore() async {
-    // Clear all test data between tests
-  }
-
-  static Future<User> createCompleteTestUser({
-    required String email,
-    required String password,
-    required String displayName,
-  }) async {
-    // Create authenticated user + Firestore profile
-  }
-}
-```
-
----
-
-### **4.8 Optional Enhancements**
-
-**Automated Coverage Gate**
-
-```bash
-dart run test_cov_tool check --threshold 90
-```
-
-→ Blocks PRs if coverage drops below 90%.
-
-**Pre-commit Hook**
-
-```bash
-# .husky/pre-commit
-flutter analyze && flutter test --coverage
-```
-
-**Testing Guide**
-Document reusable patterns in:
-`docs/testing/TESTING_STACK_GUIDE.md`
-
----
-
-### **4.9 Why This Approach**
-
-| Problem                                    | Solution                                    |
-| ------------------------------------------ | ------------------------------------------- |
-| Conflicts between `mockito` and `mocktail` | Use only Mocktail for unit/widget tests     |
-| Slow CI due to build_runner                | Eliminate code generation entirely          |
-| Inconsistent matcher behavior              | Standardize with Mocktail                   |
-| Fake Firebase doesn't match real behavior  | Use real Firebase Emulator for integration  |
-| Platform channel errors in tests           | Use `flutter drive` with web for CI         |
-| Duplicate stubs or mocks                   | Centralize in helpers/                      |
-| Unpredictable coverage                     | Single pipeline with defined layers         |
-| Integration tests too slow                 | Parallelize with matrix strategy (optional) |
+Remove `mockito`, `build_runner`, `fake_cloud_firestore`, and any generated `.mocks.dart` files.
 
 ---
 
@@ -1328,6 +923,16 @@ When working on a Story:
 
 ---
 
+### **Strict Behavioral Rules (Non-Negotiable)**
+
+* **Verify before presenting** — never state something as fact without having read or confirmed it in the codebase.
+* **No summaries after edits** — after making file changes, do not produce a prose recap of what was changed. The diff is the record.
+* **Never repeat a disproven hypothesis** — if an approach was shown to be wrong, do not reintroduce it in a later message.
+* **No silent completions** — after every task, explicitly confirm what was done and flag any open items. Never silently finish and move on.
+* **NEVER post to GitHub** (issues, PRs, comments, reviews) without explicit user approval in that session. A prior approval does not carry over.
+
+---
+
 ### **When to Create Subtasks**
 
 Claude must propose a new subtask (GitHub Issue) if:
@@ -1390,6 +995,44 @@ Claude may proceed **without approval** if:
 ---
 
 **In short:** Claude should behave like a meticulous, security-conscious, test-obsessed engineer — one who documents every decision, asks when uncertain, and never leaves broken or untested code behind.
+
+---
+
+## 🎨 9b. UI & Theme Standards (Non-Negotiable)
+
+Before building any UI, Claude **must** check this section and existing pages for established patterns. Never invent colors or use Material 3 generated surface colors.
+
+### Theme Configuration
+
+The global theme is defined in `lib/app/play_with_me_app.dart` (ThemeData) and `lib/core/theme/app_colors.dart`.
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `AppColors.scaffoldBackground` | `Color(0xFFF4F6F8)` | All scaffold backgrounds — set globally, never override |
+| `AppColors.appBarBackground` | `Colors.white` | AppBar background |
+| `AppColors.bottomNavBackground` | `Colors.white` | Bottom nav bar |
+| `AppColors.primary` | `Color(0xFFEACE6A)` | Brand gold — buttons, selected states |
+| `AppColors.secondary` | `Color(0xFF004E64)` | Brand dark teal — date picker selection, secondary actions |
+| `AppColors.textMuted` | `Color(0xFF64748B)` | Secondary / hint text |
+| `AppColors.danger` | `Color(0xFFEF476F)` | Errors |
+| `AppColors.divider` | `Color(0xFFE2E8F0)` | Dividers, borders |
+| Card background | `Colors.white` | Global cardTheme: elevation 0, radius 16 |
+
+### Rules
+
+* **NEVER** use `Theme.of(context).colorScheme.surfaceContainerLow`, `surfaceContainer`, `surfaceVariant`, or any other Material 3 generated tinted surface — they produce wrong bluish/greyish tints that don't match the app.
+* **NEVER** set an explicit `color` on a section `Container` unless it is `Colors.white` (card-like) or `AppColors.scaffoldBackground`.
+* Section headers and info rows: use `Padding` only — let the scaffold background show through.
+* Cards already inherit `Colors.white` from the global `cardTheme` — do not set `color` on `Card`.
+* Before adding any background to a widget, open a nearby existing page (e.g. `game_details_page.dart`, `championship_list_page.dart`) and match its pattern exactly.
+
+### Date Pickers
+
+All `showDatePicker` calls must use the styled theme from `game_creation_page.dart`:
+- `backgroundColor: Colors.white`, `headerBackgroundColor: Colors.white`
+- Selected day/year: `foregroundColor: AppColors.secondary`, outlined circle border `side: BorderSide(color: AppColors.secondary, width: 2)`
+- Text buttons: `foregroundColor: AppColors.secondary`
+- Use `const blue = Color(0xFF004E64)` (inlined — `AppColors.secondary` is not a `const` expression in local scope)
 
 ---
 

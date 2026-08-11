@@ -3,20 +3,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/training_feedback_model.dart';
 import 'package:play_with_me/core/data/repositories/firestore_training_feedback_repository.dart';
 import 'package:play_with_me/core/domain/repositories/training_feedback_repository.dart';
-
-class MockFirebaseFunctions extends Mock implements FirebaseFunctions {}
-
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockUser extends Mock implements User {}
-
-class MockHttpsCallable extends Mock implements HttpsCallable {}
+import '../../../../helpers/mocks.dart';
 
 class MockHttpsCallableResult<T> extends Mock
     implements HttpsCallableResult<T> {}

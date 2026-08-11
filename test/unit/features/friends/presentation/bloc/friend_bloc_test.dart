@@ -7,14 +7,10 @@ import 'package:play_with_me/core/domain/entities/friendship_status_result.dart'
 import 'package:play_with_me/core/domain/entities/user_search_result.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_event.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_state.dart';
-
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-class MockAuthRepository extends Mock implements AuthRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late FriendBloc friendBloc;

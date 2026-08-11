@@ -1,7 +1,6 @@
 // Tests GroupBloc functionality and validates all group management operations work correctly.
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_bloc.dart';
@@ -11,8 +10,8 @@ import 'package:play_with_me/core/data/models/group_model.dart';
 
 import '../../../data/repositories/mock_group_repository.dart';
 import '../../../data/repositories/mock_invitation_repository.dart';
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
+import '../../../../../helpers/mocks.dart'
+    hide MockGroupRepository, MockInvitationRepository;
 
 void main() {
   group('GroupBloc', () {

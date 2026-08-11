@@ -5,15 +5,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_state.dart';
-
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../../helpers/mocks.dart';
 
 UserEntity _makeUserEntity(String uid, {String? displayName}) => UserEntity(
       uid: uid,

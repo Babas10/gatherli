@@ -3138,7 +3138,7 @@
   "@championshipGenderBlockMaleOnly": {"description": "Message shown when female/no-gender user tries to register in a male championship"},
   "championshipGenderBlockFemaleOnly": "This championship is for women only.",
   "@championshipGenderBlockFemaleOnly": {"description": "Message shown when male/no-gender user tries to register in a female championship"},
-  "championshipCreateGenderLabel": "Gender category",
+  "championshipCreateGenderLabel": "Gender category (optional)",
   "@championshipCreateGenderLabel": {"description": "Label for the gender category picker in championship creation form"},
 
   "championshipDetailStandingsTab": "Standings",

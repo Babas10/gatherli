@@ -2,34 +2,24 @@
 // Validates that all 3 combinations are shown and selection works.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_team_picker_widget.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 Widget _buildWidget({
   required List<String> playerIds,
   GameTeams? selectedTeams,
   ValueChanged<GameTeams>? onTeamsSelected,
 }) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Scaffold(
+  return testApp(child: Scaffold(
       body: GameTeamPickerWidget(
         playerIds: playerIds,
         players: const {},
         selectedTeams: selectedTeams,
         onTeamsSelected: onTeamsSelected ?? (_) {},
       ),
-    ),
-  );
+    ));
 }
 
 void main() {
@@ -105,15 +95,7 @@ void main() {
       GameTeams? selectedTeams;
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: StatefulBuilder(
               builder: (context, setState) {
                 return GameTeamPickerWidget(
@@ -126,8 +108,7 @@ void main() {
                 );
               },
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 

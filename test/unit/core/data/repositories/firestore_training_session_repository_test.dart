@@ -8,16 +8,10 @@ import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
 import 'package:play_with_me/core/data/repositories/firestore_training_session_repository.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/group_repository.dart';
-
-class MockFirebaseFunctions extends Mock implements FirebaseFunctions {}
-
-class MockHttpsCallable extends Mock implements HttpsCallable {}
+import '../../../../helpers/mocks.dart';
 
 class MockHttpsCallableResult<T> extends Mock
     implements HttpsCallableResult<T> {}
-
-class MockGroupRepository extends Mock implements GroupRepository {}
 
 void main() {
   group('FirestoreTrainingSessionRepository', () {

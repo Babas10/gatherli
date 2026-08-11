@@ -1,40 +1,18 @@
 // Validates the admin panel tab renders correctly based on AdminPanelBloc state.
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_state.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
-class MockAdminPanelBloc
-    extends MockBloc<AdminPanelEvent, AdminPanelState>
-    implements AdminPanelBloc {}
-
-class FakeAdminPanelEvent extends Fake implements AdminPanelEvent {}
-class FakeAdminPanelState extends Fake implements AdminPanelState {}
+import '../../../helpers/mocks.dart';
+import '../../../helpers/test_app.dart';
+import '../../../helpers/fixtures.dart';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-
-ChampionshipMatchModel _makeMatch({
-  String id = 'm1',
-  ChampionshipMatchStatus status = ChampionshipMatchStatus.disputed,
-  String teamAId = 'teamA',
-  String teamBId = 'teamB',
-}) {
-  return ChampionshipMatchModel(
-    id: id,
-    round: 1,
-    teamAId: teamAId,
-    teamBId: teamBId,
-    deadline: DateTime(2025, 1, 1),
-    status: status,
-  );
-}
 
 AdminPanelLoaded _makeLoadedState({
   List<ChampionshipMatchModel>? matches,
@@ -43,7 +21,7 @@ AdminPanelLoaded _makeLoadedState({
   String? lastDecidedMatchId,
 }) {
   return AdminPanelLoaded(
-    matches: matches ?? [_makeMatch()],
+    matches: matches ?? [makeMatch(teamAId: 'teamA', teamBId: 'teamB', status: ChampionshipMatchStatus.disputed)],
     isDeciding: isDeciding,
     decisionError: decisionError,
     lastDecidedMatchId: lastDecidedMatchId,
@@ -51,15 +29,8 @@ AdminPanelLoaded _makeLoadedState({
 }
 
 Widget _buildTestWidget(MockAdminPanelBloc bloc) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: BlocProvider<AdminPanelBloc>.value(
+  return testApp(
+    child: BlocProvider<AdminPanelBloc>.value(
       value: bloc,
       child: Scaffold(
         body: BlocBuilder<AdminPanelBloc, AdminPanelState>(
@@ -101,10 +72,7 @@ Widget _buildTestWidget(MockAdminPanelBloc bloc) {
 void main() {
   late MockAdminPanelBloc bloc;
 
-  setUpAll(() {
-    registerFallbackValue(FakeAdminPanelEvent());
-    registerFallbackValue(FakeAdminPanelState());
-  });
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     bloc = MockAdminPanelBloc();
@@ -144,8 +112,8 @@ void main() {
     testWidgets('shows match entries when matches need attention',
         (tester) async {
       when(() => bloc.state).thenReturn(_makeLoadedState(matches: [
-        _makeMatch(id: 'm1', status: ChampionshipMatchStatus.disputed),
-        _makeMatch(id: 'm2', status: ChampionshipMatchStatus.played),
+        makeMatch(id: 'm1', teamAId: 'teamA', teamBId: 'teamB', status: ChampionshipMatchStatus.disputed),
+        makeMatch(id: 'm2', teamAId: 'teamA', teamBId: 'teamB', status: ChampionshipMatchStatus.played),
       ]));
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pumpAndSettle();

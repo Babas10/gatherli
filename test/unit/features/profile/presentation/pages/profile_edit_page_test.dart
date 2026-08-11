@@ -21,29 +21,13 @@ import 'package:play_with_me/features/profile/presentation/bloc/locale_preferenc
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_state.dart';
 import 'package:play_with_me/features/profile/presentation/pages/profile_edit_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocktail mocks
-class MockAuthRepository extends Mock implements AuthRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
-
-class MockImageStorageRepository extends Mock
-    implements ImageStorageRepository {}
-
-class MockImagePickerService extends Mock implements ImagePickerService {}
-
-class MockLocalePreferencesRepository extends Mock
-    implements LocalePreferencesRepository {}
 
 class MockLocalePreferencesBloc extends Mock implements LocalePreferencesBloc {}
 
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
 // Fakes for fallback values
-class FakeLocalePreferencesEntity extends Fake
-    implements LocalePreferencesEntity {}
 
 class FakeLocalePreferencesEvent extends Fake
     implements LocalePreferencesEvent {}

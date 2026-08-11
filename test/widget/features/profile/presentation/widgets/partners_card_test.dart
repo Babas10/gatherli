@@ -1,10 +1,9 @@
 // Widget tests for PartnersCard displaying teammate display names.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/partners_card.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('PartnersCard Widget Tests', () {
@@ -31,16 +30,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: PartnersCard(user: user)),
-        ),
+        testApp(child: Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify display name is shown
@@ -78,16 +68,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: PartnersCard(user: user)),
-        ),
+        testApp(child: Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify fallback to "Unknown Player"
@@ -119,16 +100,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: PartnersCard(user: user)),
-        ),
+        testApp(child: Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify empty state is shown
@@ -168,16 +140,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: PartnersCard(user: user)),
-        ),
+        testApp(child: Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify the teammate with highest win rate is shown
@@ -209,21 +172,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: SizedBox(
               width: 400, // Constrained width to test ellipsis
               child: PartnersCard(user: user),
             ),
-          ),
-        ),
+          )),
       );
 
       // Verify text widget exists (may be truncated with ellipsis)

@@ -22,6 +22,7 @@ interface ChampionshipData {
   startDate: string | null; // ISO 8601
   country: string | null;
   region: string | null;
+  genderCategory: string | null;
 }
 
 interface GetChampionshipsResponse {
@@ -74,6 +75,7 @@ export async function getChampionshipsHandler(
       startDate: d.startDate?.toDate?.()?.toISOString() ?? null,
       country: (d.country as string | null) ?? null,
       region: (d.region as string | null) ?? null,
+      genderCategory: (d.genderCategory as string | null) ?? null,
     };
   });
 

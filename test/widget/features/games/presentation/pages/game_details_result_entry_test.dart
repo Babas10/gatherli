@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -25,6 +23,7 @@ import 'package:play_with_me/features/games/presentation/pages/score_entry_page.
 
 import '../../../../../unit/core/data/repositories/mock_game_repository.dart';
 import '../../../../../unit/core/data/repositories/mock_user_repository.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>
@@ -122,20 +121,11 @@ void main() {
         BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
       ],
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        home: GameDetailsPage(
+      child: testApp(child: GameDetailsPage(
           gameId: gameId,
           gameRepository: mockGameRepository,
           userRepository: mockUserRepository,
-        ),
-      ),
+        )),
     );
   }
 

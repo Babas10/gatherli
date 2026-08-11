@@ -1,60 +1,25 @@
 // Widget tests for PickupGameCreationPage verifying step navigation and UI.
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
-import 'package:play_with_me/core/presentation/bloc/invitation/invitation_event.dart';
-import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
-import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_event.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_creation/game_creation_state.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_bloc.dart';
-import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_state.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+
+import '../../../../../helpers/mocks.dart';
+import '../../../../../helpers/test_app.dart';
 
 // ── Mocks ────────────────────────────────────────────────────────────────────
-
-class MockGameCreationBloc
-    extends MockBloc<GameCreationEvent, GameCreationState>
-    implements GameCreationBloc {}
-
-class MockInviteeSelectionBloc
-    extends MockBloc<InviteeSelectionEvent, InviteeSelectionState>
-    implements InviteeSelectionBloc {}
-
-class MockAuthenticationBloc
-    extends MockBloc<AuthenticationEvent, AuthenticationState>
-    implements AuthenticationBloc {}
-
-class MockInvitationBloc extends MockBloc<InvitationEvent, InvitationState>
-    implements InvitationBloc {}
-
-class MockGameInvitationsBloc
-    extends MockBloc<GameInvitationsEvent, GameInvitationsState>
-    implements GameInvitationsBloc {}
-
-class FakeGameCreationEvent extends Fake implements GameCreationEvent {}
-
-class FakeGameCreationState extends Fake implements GameCreationState {}
-
-class FakeInviteeSelectionEvent extends Fake implements InviteeSelectionEvent {}
-
-class FakeInviteeSelectionState extends Fake implements InviteeSelectionState {}
-
-class FakeAuthenticationEvent extends Fake implements AuthenticationEvent {}
-
-class FakeAuthenticationState extends Fake implements AuthenticationState {}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -77,16 +42,9 @@ Widget _buildTestWidget({
       BlocProvider<GameInvitationsBloc>.value(
           value: gameInvitationsBloc ?? MockGameInvitationsBloc()),
     ],
-    child: MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
+    child: testApp(
       // Inject pre-built blocs so PickupGameCreationPage does not call sl<>().
-      home: MultiBlocProvider(
+      child: MultiBlocProvider(
         providers: [
           BlocProvider<GameCreationBloc>.value(value: gameCreationBloc),
           BlocProvider<InviteeSelectionBloc>.value(value: inviteeSelectionBloc),

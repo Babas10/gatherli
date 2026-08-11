@@ -3,20 +3,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
-import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_event.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_state.dart';
-
-class MockAuthRepository extends Mock implements AuthRepository {}
-
-class MockGroupInviteLinkRepository extends Mock
-    implements GroupInviteLinkRepository {}
-
-class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
+import '../../../../../../helpers/mocks.dart';
 
 class FakeUserEntity extends Fake implements UserEntity {
   @override

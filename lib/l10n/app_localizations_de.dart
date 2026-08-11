@@ -2334,7 +2334,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Diese Meisterschaft ist nur für Frauen.';
 
   @override
-  String get championshipCreateGenderLabel => 'Geschlechtskategorie';
+  String get championshipCreateGenderLabel => 'Geschlechtskategorie (optional)';
 
   @override
   String get championshipDetailStandingsTab => 'Tabelle';

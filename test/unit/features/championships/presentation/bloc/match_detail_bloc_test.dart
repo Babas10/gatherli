@@ -7,13 +7,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
 
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 // ── Factories ────────────────────────────────────────────────────────────────
 
@@ -86,6 +84,7 @@ void main() {
   }
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(_makeMatch());
     registerFallbackValue(_makeTeam());
   });
