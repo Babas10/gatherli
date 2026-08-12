@@ -4634,6 +4634,42 @@ abstract class AppLocalizations {
   /// **'My match'**
   String get championshipMyMatch;
 
+  /// Banner title shown to the proposer while awaiting the opponent's response
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Confirmation'**
+  String get matchScheduleWaitingTitle;
+
+  /// Banner body shown to the proposer
+  ///
+  /// In en, this message translates to:
+  /// **'Your proposal ({datetime}) is awaiting the other team\'s response.'**
+  String matchScheduleWaitingBody(String datetime);
+
+  /// Card title shown to the opposing team when a schedule proposal is pending
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule Proposed'**
+  String get matchScheduleConfirmTitle;
+
+  /// Card body showing who proposed and the date/time
+  ///
+  /// In en, this message translates to:
+  /// **'{teamName} proposed: {datetime}'**
+  String matchScheduleConfirmBody(String teamName, String datetime);
+
+  /// Button to accept the proposed schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get matchScheduleAcceptButton;
+
+  /// Button to reject the proposed schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get matchScheduleRejectButton;
+
   /// Section title shown in match detail when match is disputed
   ///
   /// In en, this message translates to:
@@ -4645,6 +4681,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This result was disputed. An admin will review the scores and make a final decision. Standings will update once resolved.'**
   String get matchDisputedExplanation;
+
+  /// AppBar title for the notification settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationSettingsTitle;
+
+  /// Section header above the 4 category toggles
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Categories'**
+  String get notificationSettingsCategories;
+
+  /// Category toggle label — social notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get notifCategorySocial;
+
+  /// Subtitle for the social category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Friend requests, group invitations'**
+  String get notifCategorySocialSubtitle;
+
+  /// Category toggle label — game notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get notifCategoryGames;
+
+  /// Subtitle for the games category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'New games, results, cancellations, chat'**
+  String get notifCategoryGamesSubtitle;
+
+  /// Category toggle label — training notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get notifCategoryTraining;
+
+  /// Subtitle for the training category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions created, cancelled, feedback'**
+  String get notifCategoryTrainingSubtitle;
+
+  /// Category toggle label — championship notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Championships'**
+  String get notifCategoryChampionships;
+
+  /// Subtitle for the championships category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Results, deadlines, disputes, schedule'**
+  String get notifCategoryChampionshipsSubtitle;
+
+  /// Section header for quiet hours
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet Hours'**
+  String get notifQuietHoursTitle;
+
+  /// Toggle label to enable quiet hours
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Quiet Hours'**
+  String get notifQuietHoursEnable;
+
+  /// Subtitle shown when quiet hours are disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Pause notifications during specific times'**
+  String get notifQuietHoursSubtitle;
+
+  /// Subtitle shown when quiet hours are enabled
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications from {start} to {end}'**
+  String notifQuietHoursRange(String start, String end);
+
+  /// List tile label to open the quiet hours time picker
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Quiet Hours'**
+  String get notifQuietHoursAdjust;
+
+  /// Generic retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryButton;
 }
 
 class _AppLocalizationsDelegate

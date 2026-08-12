@@ -55,15 +55,17 @@ import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/domain/repositories/training_session_repository.dart';
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
+import 'package:play_with_me/features/groups/presentation/pages/group_details_page.dart';
 import 'package:play_with_me/features/training/presentation/pages/training_session_details_page.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_list_page.dart';
 import 'package:play_with_me/features/championships/presentation/pages/create_championship_page.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -306,7 +308,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   int _selectedIndex = 0;
-  bool _isPlatformAdmin = false;
 
   // Pages for bottom navigation: Home, Stats, Groups, Community
   late final List<Widget> _pages;
@@ -347,9 +348,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
       // Initialize notification service
       _initializeNotifications();
-
-      // Check platform admin status for championship creation FAB
-      _loadAdminStatus(authState.user.uid);
     }
 
     _pages = [
@@ -362,11 +360,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       const MyCommunityPage(),
       const ChampionshipListPage(),
     ];
-  }
-
-  Future<void> _loadAdminStatus(String uid) async {
-    final isAdmin = await sl<ChampionshipRepository>().isAdmin(uid);
-    if (mounted) setState(() => _isPlatformAdmin = isAdmin);
   }
 
   Future<void> _initializeNotifications() async {
@@ -416,14 +409,136 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
         );
         break;
+      // Group membership events — navigate to the group detail (Story N.1).
       case 'member_joined':
       case 'member_left':
       case 'role_changed':
-        debugPrint('Group event notification tapped for group: $groupId');
+        if (groupId != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GroupDetailsPage(groupId: groupId),
+            ),
+          );
+        }
         break;
+
+      // Social — navigate to MyCommunityPage for friend events (Story N.1).
+      case 'friend_request':
+      case 'friend_accepted':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const MyCommunityPage()),
+        );
+        break;
+
+      // Game-level events — navigate to the specific game detail (Story N.1).
+      case 'player_joined':
+      case 'player_left':
+      case 'waitlist_promoted':
+      case 'waitlist_joined':
+      case 'game_result_submitted':
+      case 'game_cancelled':
+      case 'chat_message':
+        _navigateToGame(data);
+        break;
+
+      // Training session events — navigate to the session detail (Story N.1).
+      case 'training_session_created':
+      case 'training_session_cancelled':
+      case 'training_min_participants_reached':
+      case 'training_feedback_received':
+      case 'training_participant_joined':
+      case 'training_participant_left':
+        _navigateToTrainingSession(data);
+        break;
+
+      // Championship match notification — navigate directly to the match (Story 30.22).
+      case 'championship_match':
+        _navigateToMatch(data);
+        break;
+
+      // Championship-level notification — navigate to the championship detail (Story 30.22).
+      case 'championship':
+        _navigateToChampionship(data);
+        break;
+
       default:
         debugPrint('Unknown notification type: $type');
     }
+  }
+
+  /// Deep-links into [GameDetailsPage] from a game-level notification.
+  void _navigateToGame(Map<String, dynamic> data) {
+    final gameId = data['gameId'] as String?;
+    if (gameId == null) {
+      debugPrint('[notification] game payload missing gameId');
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => GameDetailsPage(gameId: gameId)),
+    );
+  }
+
+  /// Deep-links into [TrainingSessionDetailsPage] from a training notification.
+  void _navigateToTrainingSession(Map<String, dynamic> data) {
+    final sessionId = data['sessionId'] as String?;
+    if (sessionId == null) {
+      debugPrint('[notification] training payload missing sessionId');
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            TrainingSessionDetailsPage(trainingSessionId: sessionId),
+      ),
+    );
+  }
+
+  /// Deep-links into [MatchDetailPage] from a championship_match notification.
+  void _navigateToMatch(Map<String, dynamic> data) {
+    final champId = data['championshipId'] as String?;
+    final matchId = data['matchId'] as String?;
+
+    if (champId == null || matchId == null) {
+      debugPrint('[notification] championship_match payload missing IDs');
+      return;
+    }
+
+    final authState = context.read<AuthenticationBloc>().state;
+    if (authState is! AuthenticationAuthenticated) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MatchDetailPage(
+          championshipId: champId,
+          matchId: matchId,
+          currentUserId: authState.user.uid,
+          currentUserDisplayName:
+              authState.user.displayName ?? authState.user.email,
+        ),
+      ),
+    );
+  }
+
+  /// Deep-links into [ChampionshipDetailPage] from a championship notification.
+  void _navigateToChampionship(Map<String, dynamic> data) {
+    final champId = data['championshipId'] as String?;
+
+    if (champId == null) {
+      debugPrint('[notification] championship payload missing championshipId');
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChampionshipDetailPage(championshipId: champId),
+      ),
+    );
   }
 
   @override
@@ -570,7 +685,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
     }
 
-    if (_selectedIndex == 4 && _isPlatformAdmin) {
+    if (_selectedIndex == 4) {
       return FloatingActionButton(
         heroTag: 'championship_create_fab',
         onPressed: () async {

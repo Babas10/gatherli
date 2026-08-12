@@ -236,8 +236,6 @@ Future<void> initializeTestDependencies({
       .thenAnswer((_) => Stream.value([]));
   when(() => mockChampionshipRepo.getOpenChampionships())
       .thenAnswer((_) => Stream.value([]));
-  when(() => mockChampionshipRepo.isAdmin(any()))
-      .thenAnswer((_) async => false);
   when(() => mockChampionshipRepo.createChampionship(
         title: any(named: 'title'),
         registrationDeadline: any(named: 'registrationDeadline'),

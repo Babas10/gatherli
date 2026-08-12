@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
+import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -8,7 +10,7 @@ import '../bloc/notification_bloc.dart';
 import '../bloc/notification_event.dart';
 import '../bloc/notification_state.dart';
 
-/// Screen for managing notification preferences
+/// Screen for managing notification preferences — 4 category toggles (Story N.3).
 class NotificationSettingsPage extends StatelessWidget {
   const NotificationSettingsPage({super.key});
 
@@ -28,253 +30,34 @@ class _NotificationSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: PlayWithMeAppBar.build(
         context: context,
-        title: 'Notification Settings',
+        title: l10n.notificationSettingsTitle,
       ),
       body: BlocBuilder<NotificationBloc, NotificationState>(
         builder: (context, state) {
           return state.when(
-            initial: () => const Center(child: Text('Initializing...')),
+            initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (preferences) => ListView(
-              children: [
-                // Group Events Section
-                _SectionHeader(title: 'Group Events'),
-                SwitchListTile(
-                  title: const Text('Group Invitations'),
-                  subtitle: const Text('When someone invites you to a group'),
-                  value: preferences.groupInvitations,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleGroupInvitations(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Invitation Accepted'),
-                  subtitle: const Text('When someone accepts your invitation'),
-                  value: preferences.invitationAccepted,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleInvitationAccepted(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('New Games'),
-                  subtitle: const Text(
-                    'When a new game is created in your groups',
-                  ),
-                  value: preferences.gameCreated,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleGameCreated(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Role Changes'),
-                  subtitle: const Text('When you are promoted to admin'),
-                  value: preferences.roleChanged,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleRoleChanged(value),
-                    );
-                  },
-                ),
-
-                const Divider(height: 32),
-
-                // Training Sessions Section (Story 15.13)
-                _SectionHeader(title: 'Training Sessions'),
-                SwitchListTile(
-                  title: const Text('New Training Sessions'),
-                  subtitle: const Text(
-                    'When a training session is created in your groups',
-                  ),
-                  value: preferences.trainingSessionCreated,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleTrainingSessionCreated(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Minimum Participants Reached'),
-                  subtitle: const Text(
-                    'When a training session has enough participants',
-                  ),
-                  value: preferences.trainingMinParticipantsReached,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleTrainingMinParticipantsReached(
-                        value,
-                      ),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Feedback Received'),
-                  subtitle: const Text(
-                    'When someone leaves feedback on a training session',
-                  ),
-                  value: preferences.trainingFeedbackReceived,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleTrainingFeedbackReceived(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Session Cancelled'),
-                  subtitle: const Text(
-                    'When a training session you joined is cancelled',
-                  ),
-                  value: preferences.trainingSessionCancelled,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleTrainingSessionCancelled(value),
-                    );
-                  },
-                ),
-
-                const Divider(height: 32),
-
-                // Championships Section (Story 30.13)
-                _SectionHeader(title: 'Championships'),
-                SwitchListTile(
-                  title: const Text('Championship Events'),
-                  subtitle: const Text(
-                    'Result submissions, verifications, disputes and deadline warnings',
-                  ),
-                  value: preferences.championship,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleChampionship(value),
-                    );
-                  },
-                ),
-
-                const Divider(height: 32),
-
-                // Admin Notifications Section
-                _SectionHeader(title: 'Admin Notifications'),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text(
-                    'Only receive these if you are an admin',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ),
-                SwitchListTile(
-                  title: const Text('Member Joined'),
-                  subtitle: const Text('When someone joins your group'),
-                  value: preferences.memberJoined,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleMemberJoined(value),
-                    );
-                  },
-                ),
-                SwitchListTile(
-                  title: const Text('Member Left'),
-                  subtitle: const Text('When someone leaves your group'),
-                  value: preferences.memberLeft,
-                  onChanged: (value) {
-                    context.read<NotificationBloc>().add(
-                      NotificationEvent.toggleMemberLeft(value),
-                    );
-                  },
-                ),
-
-                const Divider(height: 32),
-
-                // Quiet Hours Section
-                _SectionHeader(title: 'Quiet Hours'),
-                SwitchListTile(
-                  title: const Text('Enable Quiet Hours'),
-                  subtitle: preferences.quietHoursEnabled
-                      ? Text(
-                          'No notifications from ${preferences.quietHoursStart ?? "22:00"} to ${preferences.quietHoursEnd ?? "08:00"}',
-                        )
-                      : const Text('Pause notifications during specific times'),
-                  value: preferences.quietHoursEnabled,
-                  onChanged: (value) {
-                    if (value) {
-                      // If enabling, show time picker dialog
-                      _showQuietHoursDialog(
-                        context,
-                        preferences.quietHoursStart ?? '22:00',
-                        preferences.quietHoursEnd ?? '08:00',
-                      );
-                    } else {
-                      // If disabling, just toggle off
-                      context.read<NotificationBloc>().add(
-                        NotificationEvent.toggleQuietHours(
-                          enabled: false,
-                          start: preferences.quietHoursStart,
-                          end: preferences.quietHoursEnd,
-                        ),
-                      );
-                    }
-                  },
-                ),
-                if (preferences.quietHoursEnabled)
-                  ListTile(
-                    leading: const Icon(Icons.access_time),
-                    title: const Text('Adjust Quiet Hours'),
-                    trailing: Text(
-                      '${preferences.quietHoursStart} - ${preferences.quietHoursEnd}',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    onTap: () {
-                      _showQuietHoursDialog(
-                        context,
-                        preferences.quietHoursStart ?? '22:00',
-                        preferences.quietHoursEnd ?? '08:00',
-                      );
-                    },
-                  ),
-
-                const SizedBox(height: 16),
-              ],
-            ),
-            updating: (preferences) => ListView(
-              children: [
-                const LinearProgressIndicator(),
-                _SectionHeader(title: 'Group Events'),
-                SwitchListTile(
-                  title: const Text('Group Invitations'),
-                  subtitle: const Text('When someone invites you to a group'),
-                  value: preferences.groupInvitations,
-                  onChanged: null, // Disabled during update
-                ),
-                // Show other switches but disabled
-                SwitchListTile(
-                  title: const Text('Invitation Accepted'),
-                  subtitle: const Text('When someone accepts your invitation'),
-                  value: preferences.invitationAccepted,
-                  onChanged: null,
-                ),
-              ],
-            ),
+            loaded: (prefs) => _buildList(context, l10n, prefs, enabled: true),
+            updating: (prefs) =>
+                _buildList(context, l10n, prefs, enabled: false),
             error: (message) => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  const Icon(Icons.error_outline,
+                      size: 48, color: AppColors.danger),
                   const SizedBox(height: 16),
-                  Text('Error: $message'),
+                  Text(message),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      context.read<NotificationBloc>().add(
-                        const NotificationEvent.loadPreferences(),
-                      );
-                    },
-                    child: const Text('Retry'),
+                    onPressed: () => context
+                        .read<NotificationBloc>()
+                        .add(const NotificationEvent.loadPreferences()),
+                    child: Text(l10n.retryButton),
                   ),
                 ],
               ),
@@ -282,6 +65,108 @@ class _NotificationSettingsView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildList(
+    BuildContext context,
+    AppLocalizations l10n,
+    dynamic prefs, {
+    required bool enabled,
+  }) {
+    final bloc = context.read<NotificationBloc>();
+    return ListView(
+      children: [
+        if (!enabled) const LinearProgressIndicator(),
+        // ── Category toggles ──────────────────────────────────────────────
+        _SectionHeader(title: l10n.notificationSettingsCategories),
+        _CategoryTile(
+          icon: Icons.people_outline,
+          title: l10n.notifCategorySocial,
+          subtitle: l10n.notifCategorySocialSubtitle,
+          value: prefs.social,
+          enabled: enabled,
+          onChanged: (v) =>
+              bloc.add(NotificationEvent.toggleSocial(v)),
+        ),
+        _CategoryTile(
+          icon: Icons.sports_volleyball_outlined,
+          title: l10n.notifCategoryGames,
+          subtitle: l10n.notifCategoryGamesSubtitle,
+          value: prefs.games,
+          enabled: enabled,
+          onChanged: (v) =>
+              bloc.add(NotificationEvent.toggleGames(v)),
+        ),
+        _CategoryTile(
+          icon: Icons.fitness_center_outlined,
+          title: l10n.notifCategoryTraining,
+          subtitle: l10n.notifCategoryTrainingSubtitle,
+          value: prefs.training,
+          enabled: enabled,
+          onChanged: (v) =>
+              bloc.add(NotificationEvent.toggleTraining(v)),
+        ),
+        _CategoryTile(
+          icon: Icons.emoji_events_outlined,
+          title: l10n.notifCategoryChampionships,
+          subtitle: l10n.notifCategoryChampionshipsSubtitle,
+          value: prefs.championship,
+          enabled: enabled,
+          onChanged: (v) =>
+              bloc.add(NotificationEvent.toggleChampionship(v)),
+        ),
+
+        const Divider(height: 32),
+
+        // ── Quiet Hours ───────────────────────────────────────────────────
+        _SectionHeader(title: l10n.notifQuietHoursTitle),
+        SwitchListTile(
+          title: Text(l10n.notifQuietHoursEnable),
+          subtitle: prefs.quietHoursEnabled
+              ? Text(l10n.notifQuietHoursRange(
+                  prefs.quietHoursStart ?? '22:00',
+                  prefs.quietHoursEnd ?? '08:00',
+                ))
+              : Text(l10n.notifQuietHoursSubtitle),
+          value: prefs.quietHoursEnabled,
+          onChanged: enabled
+              ? (value) {
+                  if (value) {
+                    _showQuietHoursDialog(
+                      context,
+                      prefs.quietHoursStart ?? '22:00',
+                      prefs.quietHoursEnd ?? '08:00',
+                    );
+                  } else {
+                    bloc.add(NotificationEvent.toggleQuietHours(
+                      enabled: false,
+                      start: prefs.quietHoursStart,
+                      end: prefs.quietHoursEnd,
+                    ));
+                  }
+                }
+              : null,
+        ),
+        if (prefs.quietHoursEnabled)
+          ListTile(
+            leading: const Icon(Icons.access_time),
+            title: Text(l10n.notifQuietHoursAdjust),
+            trailing: Text(
+              '${prefs.quietHoursStart} – ${prefs.quietHoursEnd}',
+              style: const TextStyle(color: AppColors.textMuted),
+            ),
+            onTap: enabled
+                ? () => _showQuietHoursDialog(
+                      context,
+                      prefs.quietHoursStart ?? '22:00',
+                      prefs.quietHoursEnd ?? '08:00',
+                    )
+                : null,
+          ),
+
+        const SizedBox(height: 24),
+      ],
     );
   }
 
@@ -376,12 +261,42 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).primaryColor,
+          color: AppColors.secondary,
         ),
       ),
+    );
+  }
+}
+
+class _CategoryTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final bool enabled;
+  final ValueChanged<bool> onChanged;
+
+  const _CategoryTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      secondary: Icon(icon,
+          color: value ? AppColors.secondary : AppColors.textMuted),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      value: value,
+      onChanged: enabled ? onChanged : null,
     );
   }
 }

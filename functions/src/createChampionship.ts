@@ -1,4 +1,4 @@
-// Cloud Function for creating championships — admin-only callable (Story 30.2)
+// Cloud Function for creating championships — any authenticated user (Story 30.2, updated)
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
@@ -23,16 +23,6 @@ interface CreateChampionshipResponse {
 // ============================================================================
 // Helper Functions
 // ============================================================================
-
-/**
- * Checks whether the given uid is a platform admin.
- * Looks up the `platform_admins/{uid}` document — if it exists the caller is an admin.
- */
-async function isPlatformAdmin(uid: string): Promise<boolean> {
-  const db = admin.firestore();
-  const adminDoc = await db.collection("platform_admins").doc(uid).get();
-  return adminDoc.exists;
-}
 
 /**
  * Validates the championship title.
@@ -95,19 +85,7 @@ export async function createChampionshipHandler(
   });
 
   // ========================================
-  // 2. Admin Permission Check
-  // ========================================
-  const adminCheck = await isPlatformAdmin(userId);
-  if (!adminCheck) {
-    functions.logger.warn("Non-admin attempted to create championship", { userId });
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "Only platform admins can create championships"
-    );
-  }
-
-  // ========================================
-  // 3. Input Validation
+  // 2. Input Validation
   // ========================================
   if (!data || !data.title || !data.registrationDeadline) {
     throw new functions.https.HttpsError(
@@ -127,7 +105,7 @@ export async function createChampionshipHandler(
   }
 
   // ========================================
-  // 4. Create Championship Document
+  // 3. Create Championship Document
   // ========================================
   const db = admin.firestore();
 
@@ -172,11 +150,11 @@ export async function createChampionshipHandler(
 }
 
 /**
- * Creates a new championship. Only platform admins may call this function.
+ * Creates a new championship. Any authenticated user may call this function.
+ * The caller becomes the championship admin (stored in adminIds and createdBy).
  *
  * Security:
  * - Validates authentication
- * - Validates caller is a platform admin (platform_admins/{uid} doc must exist)
  * - Validates all input parameters
  * - Uses Admin SDK to write to Firestore (bypasses security rules)
  */

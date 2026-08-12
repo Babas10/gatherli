@@ -18,6 +18,8 @@ class MatchDetailBloc extends Bloc<MatchDetailEvent, MatchDetailState> {
         super(const MatchDetailInitial()) {
     on<LoadMatchDetail>(_onLoad);
     on<ProposeSchedule>(_onProposeSchedule);
+    on<AcceptSchedule>(_onAcceptSchedule);
+    on<RejectSchedule>(_onRejectSchedule);
     on<MatchDetailMatchUpdated>(_onMatchUpdated);
     on<MatchDetailLoadError>(_onLoadError);
   }
@@ -131,6 +133,74 @@ class MatchDetailBloc extends Bloc<MatchDetailEvent, MatchDetailState> {
       emit(loaded.copyWith(
         isProposingSchedule: false,
         scheduleError: 'Failed to propose schedule: $e',
+      ));
+    }
+  }
+
+  Future<void> _onAcceptSchedule(
+    AcceptSchedule event,
+    Emitter<MatchDetailState> emit,
+  ) async {
+    if (state is! MatchDetailLoaded) return;
+    final loaded = state as MatchDetailLoaded;
+
+    emit(loaded.copyWith(
+      isAcceptingSchedule: true,
+      scheduleConfirmError: null,
+    ));
+
+    try {
+      await _repository.confirmMatchSchedule(
+        championshipId: loaded.championshipId,
+        matchId: loaded.match.id,
+      );
+      // Stream update will deliver the cleared scheduledByTeamId automatically.
+      if (state is MatchDetailLoaded) {
+        emit((state as MatchDetailLoaded).copyWith(isAcceptingSchedule: false));
+      }
+    } on ChampionshipException catch (e) {
+      emit(loaded.copyWith(
+        isAcceptingSchedule: false,
+        scheduleConfirmError: e.message,
+      ));
+    } catch (e) {
+      emit(loaded.copyWith(
+        isAcceptingSchedule: false,
+        scheduleConfirmError: 'Failed to confirm schedule: $e',
+      ));
+    }
+  }
+
+  Future<void> _onRejectSchedule(
+    RejectSchedule event,
+    Emitter<MatchDetailState> emit,
+  ) async {
+    if (state is! MatchDetailLoaded) return;
+    final loaded = state as MatchDetailLoaded;
+
+    emit(loaded.copyWith(
+      isRejectingSchedule: true,
+      scheduleConfirmError: null,
+    ));
+
+    try {
+      await _repository.rejectMatchSchedule(
+        championshipId: loaded.championshipId,
+        matchId: loaded.match.id,
+      );
+      // Stream update will deliver the reset status automatically.
+      if (state is MatchDetailLoaded) {
+        emit((state as MatchDetailLoaded).copyWith(isRejectingSchedule: false));
+      }
+    } on ChampionshipException catch (e) {
+      emit(loaded.copyWith(
+        isRejectingSchedule: false,
+        scheduleConfirmError: e.message,
+      ));
+    } catch (e) {
+      emit(loaded.copyWith(
+        isRejectingSchedule: false,
+        scheduleConfirmError: 'Failed to reject schedule: $e',
       ));
     }
   }

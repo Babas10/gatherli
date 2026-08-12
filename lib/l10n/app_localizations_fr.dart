@@ -2578,9 +2578,86 @@ class AppLocalizationsFr extends AppLocalizations {
   String get championshipMyMatch => 'Mon match';
 
   @override
+  String get matchScheduleWaitingTitle => 'En attente de confirmation';
+
+  @override
+  String matchScheduleWaitingBody(String datetime) {
+    return 'Votre proposition ($datetime) attend la réponse de l\'équipe adverse.';
+  }
+
+  @override
+  String get matchScheduleConfirmTitle => 'Horaire proposé';
+
+  @override
+  String matchScheduleConfirmBody(String teamName, String datetime) {
+    return '$teamName a proposé : $datetime';
+  }
+
+  @override
+  String get matchScheduleAcceptButton => 'Accepter';
+
+  @override
+  String get matchScheduleRejectButton => 'Refuser';
+
+  @override
   String get matchDisputedTitle => 'Match contesté';
 
   @override
   String get matchDisputedExplanation =>
       'Ce résultat est contesté. Un administrateur examinera les scores et rendra une décision. Le classement sera mis à jour après résolution.';
+
+  @override
+  String get notificationSettingsTitle => 'Notifications';
+
+  @override
+  String get notificationSettingsCategories => 'Catégories de notifications';
+
+  @override
+  String get notifCategorySocial => 'Social';
+
+  @override
+  String get notifCategorySocialSubtitle =>
+      'Demandes d\'amis, invitations de groupe';
+
+  @override
+  String get notifCategoryGames => 'Matchs';
+
+  @override
+  String get notifCategoryGamesSubtitle =>
+      'Nouveaux matchs, résultats, annulations, chat';
+
+  @override
+  String get notifCategoryTraining => 'Entraînements';
+
+  @override
+  String get notifCategoryTrainingSubtitle =>
+      'Sessions créées, annulées, retours';
+
+  @override
+  String get notifCategoryChampionships => 'Championnats';
+
+  @override
+  String get notifCategoryChampionshipsSubtitle =>
+      'Résultats, délais, litiges, planning';
+
+  @override
+  String get notifQuietHoursTitle => 'Heures de silence';
+
+  @override
+  String get notifQuietHoursEnable => 'Activer les heures de silence';
+
+  @override
+  String get notifQuietHoursSubtitle =>
+      'Suspendre les notifications à des heures précises';
+
+  @override
+  String notifQuietHoursRange(String start, String end) {
+    return 'Pas de notifications de $start à $end';
+  }
+
+  @override
+  String get notifQuietHoursAdjust => 'Modifier les heures de silence';
+
+  @override
+  String get retryButton => 'Réessayer';
 }

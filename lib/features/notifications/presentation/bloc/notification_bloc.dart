@@ -71,6 +71,19 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           emit,
           (prefs) => prefs.copyWith(championship: enabled),
         ),
+        // Consolidated category toggle handlers (Story N.3)
+        toggleSocial: (enabled) => _handleToggle(
+          emit,
+          (prefs) => prefs.copyWith(social: enabled),
+        ),
+        toggleGames: (enabled) => _handleToggle(
+          emit,
+          (prefs) => prefs.copyWith(games: enabled),
+        ),
+        toggleTraining: (enabled) => _handleToggle(
+          emit,
+          (prefs) => prefs.copyWith(training: enabled),
+        ),
       );
     });
   }

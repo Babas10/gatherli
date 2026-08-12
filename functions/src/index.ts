@@ -32,7 +32,9 @@ export {leaveChampionshipTeam} from "./leaveChampionshipTeam"; // Story 30.3 (Te
 export {startChampionship} from "./startChampionship"; // Story 30.4 (Fixture Generation)
 export {submitChampionshipMatchResult} from "./submitChampionshipMatchResult"; // Story 30.6 (Result Submission)
 export {verifyChampionshipMatchResult} from "./verifyChampionshipMatchResult"; // Story 30.7 (Result Verification)
-export {proposeMatchSchedule} from "./proposeMatchSchedule"; // Story 30.5/30.11 (Schedule Proposal)
+export {proposeMatchSchedule} from "./proposeMatchSchedule"; // Story 30.5/30.11/30.20 (Schedule Proposal)
+export {confirmMatchSchedule} from "./confirmMatchSchedule"; // Story 30.20 (Schedule Confirm)
+export {rejectMatchSchedule} from "./rejectMatchSchedule"; // Story 30.20 (Schedule Reject)
 export {onChampionshipMatchVerified} from "./onChampionshipMatchVerified"; // Story 30.8 (Standings Recalculation)
 export {adminDecideChampionshipMatch} from "./adminDecideChampionshipMatch"; // Story 30.12 (Admin Match Decision)
 export {

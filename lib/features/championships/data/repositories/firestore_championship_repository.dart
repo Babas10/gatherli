@@ -412,6 +412,48 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
+  Future<void> confirmMatchSchedule({
+    required String championshipId,
+    required String matchId,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('confirmMatchSchedule');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to confirm schedule',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to confirm schedule: $e');
+    }
+  }
+
+  @override
+  Future<void> rejectMatchSchedule({
+    required String championshipId,
+    required String matchId,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('rejectMatchSchedule');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to reject schedule',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to reject schedule: $e');
+    }
+  }
+
+  @override
   Future<ChampionshipTeamModel?> getTeamById({
     required String championshipId,
     required String teamId,
@@ -538,16 +580,4 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     }
   }
 
-  @override
-  Future<bool> isAdmin(String userId) async {
-    try {
-      final doc = await _firestore
-          .collection('platform_admins')
-          .doc(userId)
-          .get();
-      return doc.exists;
-    } catch (_) {
-      return false;
-    }
-  }
 }

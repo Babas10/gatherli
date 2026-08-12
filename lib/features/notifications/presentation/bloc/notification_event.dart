@@ -44,4 +44,9 @@ abstract class NotificationEvent with _$NotificationEvent {
   // Championship notification toggle event (Story 30.13)
   const factory NotificationEvent.toggleChampionship(bool enabled) =
       _ToggleChampionship;
+  // Consolidated category toggles (Story N.3)
+  const factory NotificationEvent.toggleSocial(bool enabled) = _ToggleSocial;
+  const factory NotificationEvent.toggleGames(bool enabled) = _ToggleGames;
+  const factory NotificationEvent.toggleTraining(bool enabled) =
+      _ToggleTraining;
 }

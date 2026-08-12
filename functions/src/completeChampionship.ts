@@ -38,16 +38,7 @@ export async function completeChampionshipHandler(
 
   const db = admin.firestore();
 
-  // ── 3. Check admin permission ─────────────────────────────────────────────
-  const adminDoc = await db.collection("platform_admins").doc(uid).get();
-  if (!adminDoc.exists) {
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "Only platform admins can complete a championship."
-    );
-  }
-
-  // ── 4. Fetch championship ─────────────────────────────────────────────────
+  // ── 3. Fetch championship ─────────────────────────────────────────────────
   const champRef = db.collection("championships").doc(data.championshipId);
   const champSnap = await champRef.get();
   if (!champSnap.exists) {
@@ -58,6 +49,16 @@ export async function completeChampionshipHandler(
   }
 
   const champ = champSnap.data()!;
+
+  // ── 4. Check admin permission — only the championship creator/admin ────────
+  const adminIds: string[] = champ.adminIds ?? [];
+  if (!adminIds.includes(uid)) {
+    throw new functions.https.HttpsError(
+      "permission-denied",
+      "Only the championship admin can complete it."
+    );
+  }
+
   if (champ.status !== "active") {
     throw new functions.https.HttpsError(
       "failed-precondition",

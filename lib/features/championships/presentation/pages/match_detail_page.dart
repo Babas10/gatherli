@@ -123,6 +123,16 @@ class _MatchDetailBody extends StatelessWidget {
             const SizedBox(height: 12),
             _DisputedStateSection(match: match, l10n: l10n),
           ],
+          // Proposer: show waiting banner while opponent hasn't confirmed yet.
+          if (_isWaitingForConfirmation(match, state)) ...[
+            const SizedBox(height: 12),
+            _ScheduleWaitingSection(match: match, l10n: l10n),
+          ],
+          // Opponent: show accept / reject UI when a schedule is pending.
+          if (_isAwaitingMyConfirmation(match, state)) ...[
+            const SizedBox(height: 12),
+            _ScheduleConfirmationSection(state: state, l10n: l10n),
+          ],
           if (_canProposeSchedule(match, state)) ...[
             const SizedBox(height: 12),
             _ProposeScheduleSection(
@@ -149,11 +159,34 @@ class _MatchDetailBody extends StatelessWidget {
     );
   }
 
-  bool _canProposeSchedule(
+  /// True when the current user proposed the current schedule and is waiting
+  /// for the opposing team to accept or reject it.
+  bool _isWaitingForConfirmation(
       ChampionshipMatchModel match, MatchDetailLoaded state) {
     return state.isTeamMember &&
+        match.scheduledByTeamId != null &&
+        match.scheduledByTeamId == state.myTeamId;
+  }
+
+  /// True when the opposing team proposed a schedule and the current user
+  /// (opposing team member) can accept or reject it.
+  bool _isAwaitingMyConfirmation(
+      ChampionshipMatchModel match, MatchDetailLoaded state) {
+    return state.isTeamMember &&
+        match.scheduledByTeamId != null &&
+        match.scheduledByTeamId != state.myTeamId;
+  }
+
+  /// True when the current user may propose (or re-propose) a schedule.
+  /// The proposer is hidden from the form while awaiting confirmation.
+  bool _canProposeSchedule(
+      ChampionshipMatchModel match, MatchDetailLoaded state) {
+    final isProposer = match.scheduledByTeamId != null &&
+        match.scheduledByTeamId == state.myTeamId;
+    return state.isTeamMember &&
         (match.status == ChampionshipMatchStatus.pending ||
-            match.status == ChampionshipMatchStatus.scheduled);
+            match.status == ChampionshipMatchStatus.scheduled) &&
+        !isProposer;
   }
 }
 
@@ -661,6 +694,206 @@ class _ResultSummaryCard extends StatelessWidget {
   }
 }
 
+
+// ============================================================================
+// Schedule waiting section — shown to the proposer (Story 30.20)
+// ============================================================================
+
+class _ScheduleWaitingSection extends StatelessWidget {
+  final ChampionshipMatchModel match;
+  final AppLocalizations l10n;
+
+  const _ScheduleWaitingSection({required this.match, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheduledAt = match.scheduledAt;
+    final dateTimeStr = scheduledAt != null
+        ? DateFormat('d MMM yyyy · HH:mm').format(scheduledAt)
+        : '';
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.secondary.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(10),
+        border:
+            Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: AppColors.secondary,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.matchScheduleWaitingTitle,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                if (dateTimeStr.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.matchScheduleWaitingBody(dateTimeStr),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// Schedule confirmation section — shown to the opposing team (Story 30.20)
+// ============================================================================
+
+class _ScheduleConfirmationSection extends StatelessWidget {
+  final MatchDetailLoaded state;
+  final AppLocalizations l10n;
+
+  const _ScheduleConfirmationSection(
+      {required this.state, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    final match = state.match;
+    final scheduledAt = match.scheduledAt;
+    final proposingTeamId = match.scheduledByTeamId;
+
+    final proposingTeamName = proposingTeamId == match.teamAId
+        ? state.teamA.name
+        : state.teamB.name;
+
+    final dateTimeStr = scheduledAt != null
+        ? DateFormat('d MMM yyyy · HH:mm').format(scheduledAt)
+        : '';
+
+    final locationStr = match.location;
+
+    final isAccepting = state.isAcceptingSchedule;
+    final isRejecting = state.isRejectingSchedule;
+    final isBusy = isAccepting || isRejecting;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.event_available,
+                    size: 18, color: AppColors.secondary),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.matchScheduleConfirmTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.secondary,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.matchScheduleConfirmBody(proposingTeamName, dateTimeStr),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            if (locationStr != null && locationStr.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(Icons.location_on_outlined,
+                      size: 14, color: AppColors.textMuted),
+                  const SizedBox(width: 4),
+                  Text(
+                    locationStr,
+                    style:
+                        Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textMuted,
+                            ),
+                  ),
+                ],
+              ),
+            ],
+            if (state.scheduleConfirmError != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                state.scheduleConfirmError!,
+                style: const TextStyle(color: Colors.red, fontSize: 13),
+              ),
+            ],
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: isBusy
+                        ? null
+                        : () => context
+                            .read<MatchDetailBloc>()
+                            .add(const RejectSchedule()),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                    ),
+                    child: isRejecting
+                        ? const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.red,
+                            ),
+                          )
+                        : Text(l10n.matchScheduleRejectButton),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: isBusy
+                        ? null
+                        : () => context
+                            .read<MatchDetailBloc>()
+                            .add(const AcceptSchedule()),
+                    child: isAccepting
+                        ? const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text(l10n.matchScheduleAcceptButton),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 // ============================================================================
 // Disputed state section (Story 30.23)

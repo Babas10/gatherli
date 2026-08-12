@@ -198,52 +198,51 @@ export async function onChampionshipMatchVerifiedHandler(
     throw err;
   }
 
-  // ── 11. Send push notification to both teams (Story 30.13) ────────────────
-  // Only for the 'verified' status (admin_decided notifications sent by onChampionshipAdminDecision)
+  // ── 11. Notify the SUBMITTING team only (Story 30.13, refined) ───────────
+  // The verifying team just did the verification — they don't need a push.
+  // Only the submitting team needs to know their result was accepted.
   if (afterData.status === "verified") {
     try {
-      const [teamAMembers, teamBMembers, teamAName, teamBName] =
-        await Promise.all([
-          db
-            .collection("championships")
-            .doc(championshipId)
-            .collection("teams")
-            .doc(afterData.teamAId)
-            .get()
-            .then((s) => (s.exists ? (s.data()?.memberIds ?? []) : [])),
-          db
-            .collection("championships")
-            .doc(championshipId)
-            .collection("teams")
-            .doc(afterData.teamBId)
-            .get()
-            .then((s) => (s.exists ? (s.data()?.memberIds ?? []) : [])),
-          getTeamName(db, championshipId, afterData.teamAId),
-          getTeamName(db, championshipId, afterData.teamBId),
-        ]);
+      const submittedByTeamId: string | undefined = afterData.submittedByTeamId;
+      if (!submittedByTeamId) {
+        functions.logger.warn(
+          "[onChampionshipMatchVerified] submittedByTeamId missing — skipping notification",
+          { matchId }
+        );
+      } else {
+        const [submittingMembers, submittingTeamName, opposingTeamName] =
+          await Promise.all([
+            db
+              .collection("championships")
+              .doc(championshipId)
+              .collection("teams")
+              .doc(submittedByTeamId)
+              .get()
+              .then((s) => (s.exists ? (s.data()?.memberIds ?? []) : [])),
+            getTeamName(db, championshipId, afterData.teamAId),
+            getTeamName(db, championshipId, afterData.teamBId),
+          ]);
 
-      const winner =
-        result.winner === "teamA" ? teamAName : teamBName;
-      const loser =
-        result.winner === "teamA" ? teamBName : teamAName;
-      const scoreText = result.sets
-        .map((s: { teamAPoints: number; teamBPoints: number }) =>
-          `${s.teamAPoints}-${s.teamBPoints}`
-        )
-        .join(", ");
+        const winner =
+          result.winner === "teamA" ? submittingTeamName : opposingTeamName;
+        const loser =
+          result.winner === "teamA" ? opposingTeamName : submittingTeamName;
+        const scoreText = result.sets
+          .map((s: { teamAPoints: number; teamBPoints: number }) =>
+            `${s.teamAPoints}-${s.teamBPoints}`
+          )
+          .join(", ");
 
-      const allMembers = [
-        ...new Set([...teamAMembers, ...teamBMembers]),
-      ];
-      await sendChampionshipNotificationToUsers(db, allMembers, {
-        title: "Result confirmed ✓",
-        body: `${winner} defeated ${loser} (${scoreText}) — standings updated.`,
-        data: {
-          type: "championship_result_verified",
-          championshipId,
-          matchId,
-        },
-      });
+        await sendChampionshipNotificationToUsers(db, submittingMembers, {
+          title: "Result confirmed ✓",
+          body: `${winner} defeated ${loser} (${scoreText}) — standings updated.`,
+          data: {
+            type: "championship_match",
+            championshipId,
+            matchId,
+          },
+        });
+      }
     } catch (notifErr) {
       // Notification failure must not fail the standings update
       functions.logger.error(

@@ -116,13 +116,30 @@ abstract class ChampionshipRepository {
   });
 
   /// Proposes a match schedule (date/time/location) via Cloud Function.
-  /// Sets match status to 'scheduled' and adds a system message to chat.
+  /// Sets match status to 'scheduled', stores scheduledByTeamId, and
+  /// adds a system message to chat. Notifies the opposing team.
   /// Throws [ChampionshipException] on error.
   Future<void> proposeMatchSchedule({
     required String championshipId,
     required String matchId,
     required DateTime scheduledAt,
     String? location,
+  });
+
+  /// Confirms a proposed schedule as the opposing team via Cloud Function.
+  /// Clears scheduledByTeamId (marks schedule as confirmed).
+  /// Throws [ChampionshipException] on error.
+  Future<void> confirmMatchSchedule({
+    required String championshipId,
+    required String matchId,
+  });
+
+  /// Rejects a proposed schedule as the opposing team via Cloud Function.
+  /// Resets match to 'pending' and clears scheduledAt/location/scheduledByTeamId.
+  /// Throws [ChampionshipException] on error.
+  Future<void> rejectMatchSchedule({
+    required String championshipId,
+    required String matchId,
   });
 
   /// Loads a team by ID. Returns null if not found.
@@ -168,7 +185,4 @@ abstract class ChampionshipRepository {
   /// Throws [ChampionshipException] on error.
   Future<void> completeChampionship({required String championshipId});
 
-  /// Returns true if [userId] has a document in the platform_admins collection.
-  /// Direct Firestore read — safe because a user only checks their own status.
-  Future<bool> isAdmin(String userId);
 }

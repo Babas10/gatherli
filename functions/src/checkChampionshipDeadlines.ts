@@ -101,7 +101,7 @@ export async function checkChampionshipDeadlinesHandler(
               title: "Match deadline in 48h ⚠️",
               body: `You have 48 hours to play your match vs ${teamBName}.`,
               data: {
-                type: "championship_deadline_warning",
+                type: "championship_match",
                 championshipId,
                 matchId,
               },
@@ -112,7 +112,7 @@ export async function checkChampionshipDeadlinesHandler(
               title: "Match deadline in 48h ⚠️",
               body: `You have 48 hours to play your match vs ${teamAName}.`,
               data: {
-                type: "championship_deadline_warning",
+                type: "championship_match",
                 championshipId,
                 matchId,
               },

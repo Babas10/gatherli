@@ -835,7 +835,9 @@ as DateTime,
 /// @nodoc
 mixin _$ChampionshipMatchModel {
 
- String get id; int get round; String get teamAId; String get teamBId;@TimestampConverter() DateTime get deadline; ChampionshipMatchStatus get status;@NullableTimestampConverter() DateTime? get scheduledAt; String? get location;@MatchResultConverter() MatchResult? get result; String? get submittedByTeamId; String? get submittedByUserId; String? get verifiedByTeamId; String? get verifiedByUserId;@NullableTimestampConverter() DateTime? get verifiedAt;@AdminDecisionConverter() AdminDecision? get adminDecision;/// Idempotency guard — set to true by the standings trigger (Story 30.8).
+ String get id; int get round; String get teamAId; String get teamBId;@TimestampConverter() DateTime get deadline; ChampionshipMatchStatus get status;@NullableTimestampConverter() DateTime? get scheduledAt; String? get location;/// The team ID that proposed the current schedule. Null once the opposing
+/// team accepts (confirmed). Reset to null when the schedule is rejected.
+ String? get scheduledByTeamId;@MatchResultConverter() MatchResult? get result; String? get submittedByTeamId; String? get submittedByUserId; String? get verifiedByTeamId; String? get verifiedByUserId;@NullableTimestampConverter() DateTime? get verifiedAt;@AdminDecisionConverter() AdminDecision? get adminDecision;/// Idempotency guard — set to true by the standings trigger (Story 30.8).
  bool get standingsUpdated;
 /// Create a copy of ChampionshipMatchModel
 /// with the given fields replaced by the non-null parameter values.
@@ -849,16 +851,16 @@ $ChampionshipMatchModelCopyWith<ChampionshipMatchModel> get copyWith => _$Champi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChampionshipMatchModel&&(identical(other.id, id) || other.id == id)&&(identical(other.round, round) || other.round == round)&&(identical(other.teamAId, teamAId) || other.teamAId == teamAId)&&(identical(other.teamBId, teamBId) || other.teamBId == teamBId)&&(identical(other.deadline, deadline) || other.deadline == deadline)&&(identical(other.status, status) || other.status == status)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.result, result) || other.result == result)&&(identical(other.submittedByTeamId, submittedByTeamId) || other.submittedByTeamId == submittedByTeamId)&&(identical(other.submittedByUserId, submittedByUserId) || other.submittedByUserId == submittedByUserId)&&(identical(other.verifiedByTeamId, verifiedByTeamId) || other.verifiedByTeamId == verifiedByTeamId)&&(identical(other.verifiedByUserId, verifiedByUserId) || other.verifiedByUserId == verifiedByUserId)&&(identical(other.verifiedAt, verifiedAt) || other.verifiedAt == verifiedAt)&&(identical(other.adminDecision, adminDecision) || other.adminDecision == adminDecision)&&(identical(other.standingsUpdated, standingsUpdated) || other.standingsUpdated == standingsUpdated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChampionshipMatchModel&&(identical(other.id, id) || other.id == id)&&(identical(other.round, round) || other.round == round)&&(identical(other.teamAId, teamAId) || other.teamAId == teamAId)&&(identical(other.teamBId, teamBId) || other.teamBId == teamBId)&&(identical(other.deadline, deadline) || other.deadline == deadline)&&(identical(other.status, status) || other.status == status)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.scheduledByTeamId, scheduledByTeamId) || other.scheduledByTeamId == scheduledByTeamId)&&(identical(other.result, result) || other.result == result)&&(identical(other.submittedByTeamId, submittedByTeamId) || other.submittedByTeamId == submittedByTeamId)&&(identical(other.submittedByUserId, submittedByUserId) || other.submittedByUserId == submittedByUserId)&&(identical(other.verifiedByTeamId, verifiedByTeamId) || other.verifiedByTeamId == verifiedByTeamId)&&(identical(other.verifiedByUserId, verifiedByUserId) || other.verifiedByUserId == verifiedByUserId)&&(identical(other.verifiedAt, verifiedAt) || other.verifiedAt == verifiedAt)&&(identical(other.adminDecision, adminDecision) || other.adminDecision == adminDecision)&&(identical(other.standingsUpdated, standingsUpdated) || other.standingsUpdated == standingsUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,round,teamAId,teamBId,deadline,status,scheduledAt,location,result,submittedByTeamId,submittedByUserId,verifiedByTeamId,verifiedByUserId,verifiedAt,adminDecision,standingsUpdated);
+int get hashCode => Object.hash(runtimeType,id,round,teamAId,teamBId,deadline,status,scheduledAt,location,scheduledByTeamId,result,submittedByTeamId,submittedByUserId,verifiedByTeamId,verifiedByUserId,verifiedAt,adminDecision,standingsUpdated);
 
 @override
 String toString() {
-  return 'ChampionshipMatchModel(id: $id, round: $round, teamAId: $teamAId, teamBId: $teamBId, deadline: $deadline, status: $status, scheduledAt: $scheduledAt, location: $location, result: $result, submittedByTeamId: $submittedByTeamId, submittedByUserId: $submittedByUserId, verifiedByTeamId: $verifiedByTeamId, verifiedByUserId: $verifiedByUserId, verifiedAt: $verifiedAt, adminDecision: $adminDecision, standingsUpdated: $standingsUpdated)';
+  return 'ChampionshipMatchModel(id: $id, round: $round, teamAId: $teamAId, teamBId: $teamBId, deadline: $deadline, status: $status, scheduledAt: $scheduledAt, location: $location, scheduledByTeamId: $scheduledByTeamId, result: $result, submittedByTeamId: $submittedByTeamId, submittedByUserId: $submittedByUserId, verifiedByTeamId: $verifiedByTeamId, verifiedByUserId: $verifiedByUserId, verifiedAt: $verifiedAt, adminDecision: $adminDecision, standingsUpdated: $standingsUpdated)';
 }
 
 
@@ -869,7 +871,7 @@ abstract mixin class $ChampionshipMatchModelCopyWith<$Res>  {
   factory $ChampionshipMatchModelCopyWith(ChampionshipMatchModel value, $Res Function(ChampionshipMatchModel) _then) = _$ChampionshipMatchModelCopyWithImpl;
 @useResult
 $Res call({
- String id, int round, String teamAId, String teamBId,@TimestampConverter() DateTime deadline, ChampionshipMatchStatus status,@NullableTimestampConverter() DateTime? scheduledAt, String? location,@MatchResultConverter() MatchResult? result, String? submittedByTeamId, String? submittedByUserId, String? verifiedByTeamId, String? verifiedByUserId,@NullableTimestampConverter() DateTime? verifiedAt,@AdminDecisionConverter() AdminDecision? adminDecision, bool standingsUpdated
+ String id, int round, String teamAId, String teamBId,@TimestampConverter() DateTime deadline, ChampionshipMatchStatus status,@NullableTimestampConverter() DateTime? scheduledAt, String? location, String? scheduledByTeamId,@MatchResultConverter() MatchResult? result, String? submittedByTeamId, String? submittedByUserId, String? verifiedByTeamId, String? verifiedByUserId,@NullableTimestampConverter() DateTime? verifiedAt,@AdminDecisionConverter() AdminDecision? adminDecision, bool standingsUpdated
 });
 
 
@@ -886,7 +888,7 @@ class _$ChampionshipMatchModelCopyWithImpl<$Res>
 
 /// Create a copy of ChampionshipMatchModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? round = null,Object? teamAId = null,Object? teamBId = null,Object? deadline = null,Object? status = null,Object? scheduledAt = freezed,Object? location = freezed,Object? result = freezed,Object? submittedByTeamId = freezed,Object? submittedByUserId = freezed,Object? verifiedByTeamId = freezed,Object? verifiedByUserId = freezed,Object? verifiedAt = freezed,Object? adminDecision = freezed,Object? standingsUpdated = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? round = null,Object? teamAId = null,Object? teamBId = null,Object? deadline = null,Object? status = null,Object? scheduledAt = freezed,Object? location = freezed,Object? scheduledByTeamId = freezed,Object? result = freezed,Object? submittedByTeamId = freezed,Object? submittedByUserId = freezed,Object? verifiedByTeamId = freezed,Object? verifiedByUserId = freezed,Object? verifiedAt = freezed,Object? adminDecision = freezed,Object? standingsUpdated = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,round: null == round ? _self.round : round // ignore: cast_nullable_to_non_nullable
@@ -896,6 +898,7 @@ as String,deadline: null == deadline ? _self.deadline : deadline // ignore: cast
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ChampionshipMatchStatus,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,scheduledByTeamId: freezed == scheduledByTeamId ? _self.scheduledByTeamId : scheduledByTeamId // ignore: cast_nullable_to_non_nullable
 as String?,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
 as MatchResult?,submittedByTeamId: freezed == submittedByTeamId ? _self.submittedByTeamId : submittedByTeamId // ignore: cast_nullable_to_non_nullable
 as String?,submittedByUserId: freezed == submittedByUserId ? _self.submittedByUserId : submittedByUserId // ignore: cast_nullable_to_non_nullable
@@ -1013,10 +1016,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location,  String? scheduledByTeamId, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChampionshipMatchModel() when $default != null:
-return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
+return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.scheduledByTeamId,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
   return orElse();
 
 }
@@ -1034,10 +1037,10 @@ return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location,  String? scheduledByTeamId, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)  $default,) {final _that = this;
 switch (_that) {
 case _ChampionshipMatchModel():
-return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
+return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.scheduledByTeamId,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1054,10 +1057,10 @@ return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int round,  String teamAId,  String teamBId, @TimestampConverter()  DateTime deadline,  ChampionshipMatchStatus status, @NullableTimestampConverter()  DateTime? scheduledAt,  String? location,  String? scheduledByTeamId, @MatchResultConverter()  MatchResult? result,  String? submittedByTeamId,  String? submittedByUserId,  String? verifiedByTeamId,  String? verifiedByUserId, @NullableTimestampConverter()  DateTime? verifiedAt, @AdminDecisionConverter()  AdminDecision? adminDecision,  bool standingsUpdated)?  $default,) {final _that = this;
 switch (_that) {
 case _ChampionshipMatchModel() when $default != null:
-return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
+return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,_that.status,_that.scheduledAt,_that.location,_that.scheduledByTeamId,_that.result,_that.submittedByTeamId,_that.submittedByUserId,_that.verifiedByTeamId,_that.verifiedByUserId,_that.verifiedAt,_that.adminDecision,_that.standingsUpdated);case _:
   return null;
 
 }
@@ -1069,7 +1072,7 @@ return $default(_that.id,_that.round,_that.teamAId,_that.teamBId,_that.deadline,
 @JsonSerializable()
 
 class _ChampionshipMatchModel extends ChampionshipMatchModel {
-  const _ChampionshipMatchModel({required this.id, required this.round, required this.teamAId, required this.teamBId, @TimestampConverter() required this.deadline, this.status = ChampionshipMatchStatus.pending, @NullableTimestampConverter() this.scheduledAt, this.location, @MatchResultConverter() this.result, this.submittedByTeamId, this.submittedByUserId, this.verifiedByTeamId, this.verifiedByUserId, @NullableTimestampConverter() this.verifiedAt, @AdminDecisionConverter() this.adminDecision, this.standingsUpdated = false}): super._();
+  const _ChampionshipMatchModel({required this.id, required this.round, required this.teamAId, required this.teamBId, @TimestampConverter() required this.deadline, this.status = ChampionshipMatchStatus.pending, @NullableTimestampConverter() this.scheduledAt, this.location, this.scheduledByTeamId, @MatchResultConverter() this.result, this.submittedByTeamId, this.submittedByUserId, this.verifiedByTeamId, this.verifiedByUserId, @NullableTimestampConverter() this.verifiedAt, @AdminDecisionConverter() this.adminDecision, this.standingsUpdated = false}): super._();
   factory _ChampionshipMatchModel.fromJson(Map<String, dynamic> json) => _$ChampionshipMatchModelFromJson(json);
 
 @override final  String id;
@@ -1080,6 +1083,9 @@ class _ChampionshipMatchModel extends ChampionshipMatchModel {
 @override@JsonKey() final  ChampionshipMatchStatus status;
 @override@NullableTimestampConverter() final  DateTime? scheduledAt;
 @override final  String? location;
+/// The team ID that proposed the current schedule. Null once the opposing
+/// team accepts (confirmed). Reset to null when the schedule is rejected.
+@override final  String? scheduledByTeamId;
 @override@MatchResultConverter() final  MatchResult? result;
 @override final  String? submittedByTeamId;
 @override final  String? submittedByUserId;
@@ -1103,16 +1109,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChampionshipMatchModel&&(identical(other.id, id) || other.id == id)&&(identical(other.round, round) || other.round == round)&&(identical(other.teamAId, teamAId) || other.teamAId == teamAId)&&(identical(other.teamBId, teamBId) || other.teamBId == teamBId)&&(identical(other.deadline, deadline) || other.deadline == deadline)&&(identical(other.status, status) || other.status == status)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.result, result) || other.result == result)&&(identical(other.submittedByTeamId, submittedByTeamId) || other.submittedByTeamId == submittedByTeamId)&&(identical(other.submittedByUserId, submittedByUserId) || other.submittedByUserId == submittedByUserId)&&(identical(other.verifiedByTeamId, verifiedByTeamId) || other.verifiedByTeamId == verifiedByTeamId)&&(identical(other.verifiedByUserId, verifiedByUserId) || other.verifiedByUserId == verifiedByUserId)&&(identical(other.verifiedAt, verifiedAt) || other.verifiedAt == verifiedAt)&&(identical(other.adminDecision, adminDecision) || other.adminDecision == adminDecision)&&(identical(other.standingsUpdated, standingsUpdated) || other.standingsUpdated == standingsUpdated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChampionshipMatchModel&&(identical(other.id, id) || other.id == id)&&(identical(other.round, round) || other.round == round)&&(identical(other.teamAId, teamAId) || other.teamAId == teamAId)&&(identical(other.teamBId, teamBId) || other.teamBId == teamBId)&&(identical(other.deadline, deadline) || other.deadline == deadline)&&(identical(other.status, status) || other.status == status)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.scheduledByTeamId, scheduledByTeamId) || other.scheduledByTeamId == scheduledByTeamId)&&(identical(other.result, result) || other.result == result)&&(identical(other.submittedByTeamId, submittedByTeamId) || other.submittedByTeamId == submittedByTeamId)&&(identical(other.submittedByUserId, submittedByUserId) || other.submittedByUserId == submittedByUserId)&&(identical(other.verifiedByTeamId, verifiedByTeamId) || other.verifiedByTeamId == verifiedByTeamId)&&(identical(other.verifiedByUserId, verifiedByUserId) || other.verifiedByUserId == verifiedByUserId)&&(identical(other.verifiedAt, verifiedAt) || other.verifiedAt == verifiedAt)&&(identical(other.adminDecision, adminDecision) || other.adminDecision == adminDecision)&&(identical(other.standingsUpdated, standingsUpdated) || other.standingsUpdated == standingsUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,round,teamAId,teamBId,deadline,status,scheduledAt,location,result,submittedByTeamId,submittedByUserId,verifiedByTeamId,verifiedByUserId,verifiedAt,adminDecision,standingsUpdated);
+int get hashCode => Object.hash(runtimeType,id,round,teamAId,teamBId,deadline,status,scheduledAt,location,scheduledByTeamId,result,submittedByTeamId,submittedByUserId,verifiedByTeamId,verifiedByUserId,verifiedAt,adminDecision,standingsUpdated);
 
 @override
 String toString() {
-  return 'ChampionshipMatchModel(id: $id, round: $round, teamAId: $teamAId, teamBId: $teamBId, deadline: $deadline, status: $status, scheduledAt: $scheduledAt, location: $location, result: $result, submittedByTeamId: $submittedByTeamId, submittedByUserId: $submittedByUserId, verifiedByTeamId: $verifiedByTeamId, verifiedByUserId: $verifiedByUserId, verifiedAt: $verifiedAt, adminDecision: $adminDecision, standingsUpdated: $standingsUpdated)';
+  return 'ChampionshipMatchModel(id: $id, round: $round, teamAId: $teamAId, teamBId: $teamBId, deadline: $deadline, status: $status, scheduledAt: $scheduledAt, location: $location, scheduledByTeamId: $scheduledByTeamId, result: $result, submittedByTeamId: $submittedByTeamId, submittedByUserId: $submittedByUserId, verifiedByTeamId: $verifiedByTeamId, verifiedByUserId: $verifiedByUserId, verifiedAt: $verifiedAt, adminDecision: $adminDecision, standingsUpdated: $standingsUpdated)';
 }
 
 
@@ -1123,7 +1129,7 @@ abstract mixin class _$ChampionshipMatchModelCopyWith<$Res> implements $Champion
   factory _$ChampionshipMatchModelCopyWith(_ChampionshipMatchModel value, $Res Function(_ChampionshipMatchModel) _then) = __$ChampionshipMatchModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int round, String teamAId, String teamBId,@TimestampConverter() DateTime deadline, ChampionshipMatchStatus status,@NullableTimestampConverter() DateTime? scheduledAt, String? location,@MatchResultConverter() MatchResult? result, String? submittedByTeamId, String? submittedByUserId, String? verifiedByTeamId, String? verifiedByUserId,@NullableTimestampConverter() DateTime? verifiedAt,@AdminDecisionConverter() AdminDecision? adminDecision, bool standingsUpdated
+ String id, int round, String teamAId, String teamBId,@TimestampConverter() DateTime deadline, ChampionshipMatchStatus status,@NullableTimestampConverter() DateTime? scheduledAt, String? location, String? scheduledByTeamId,@MatchResultConverter() MatchResult? result, String? submittedByTeamId, String? submittedByUserId, String? verifiedByTeamId, String? verifiedByUserId,@NullableTimestampConverter() DateTime? verifiedAt,@AdminDecisionConverter() AdminDecision? adminDecision, bool standingsUpdated
 });
 
 
@@ -1140,7 +1146,7 @@ class __$ChampionshipMatchModelCopyWithImpl<$Res>
 
 /// Create a copy of ChampionshipMatchModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? round = null,Object? teamAId = null,Object? teamBId = null,Object? deadline = null,Object? status = null,Object? scheduledAt = freezed,Object? location = freezed,Object? result = freezed,Object? submittedByTeamId = freezed,Object? submittedByUserId = freezed,Object? verifiedByTeamId = freezed,Object? verifiedByUserId = freezed,Object? verifiedAt = freezed,Object? adminDecision = freezed,Object? standingsUpdated = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? round = null,Object? teamAId = null,Object? teamBId = null,Object? deadline = null,Object? status = null,Object? scheduledAt = freezed,Object? location = freezed,Object? scheduledByTeamId = freezed,Object? result = freezed,Object? submittedByTeamId = freezed,Object? submittedByUserId = freezed,Object? verifiedByTeamId = freezed,Object? verifiedByUserId = freezed,Object? verifiedAt = freezed,Object? adminDecision = freezed,Object? standingsUpdated = null,}) {
   return _then(_ChampionshipMatchModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,round: null == round ? _self.round : round // ignore: cast_nullable_to_non_nullable
@@ -1150,6 +1156,7 @@ as String,deadline: null == deadline ? _self.deadline : deadline // ignore: cast
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ChampionshipMatchStatus,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,scheduledByTeamId: freezed == scheduledByTeamId ? _self.scheduledByTeamId : scheduledByTeamId // ignore: cast_nullable_to_non_nullable
 as String?,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
 as MatchResult?,submittedByTeamId: freezed == submittedByTeamId ? _self.submittedByTeamId : submittedByTeamId // ignore: cast_nullable_to_non_nullable
 as String?,submittedByUserId: freezed == submittedByUserId ? _self.submittedByUserId : submittedByUserId // ignore: cast_nullable_to_non_nullable

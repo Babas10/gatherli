@@ -34,6 +34,16 @@ class ProposeSchedule extends MatchDetailEvent {
   List<Object?> get props => [scheduledAt, location];
 }
 
+/// Confirms the schedule proposed by the opposing team.
+class AcceptSchedule extends MatchDetailEvent {
+  const AcceptSchedule();
+}
+
+/// Rejects the schedule proposed by the opposing team, resetting to pending.
+class RejectSchedule extends MatchDetailEvent {
+  const RejectSchedule();
+}
+
 /// Internal event emitted when the match stream delivers a new snapshot.
 class MatchDetailMatchUpdated extends MatchDetailEvent {
   final ChampionshipMatchModel match;

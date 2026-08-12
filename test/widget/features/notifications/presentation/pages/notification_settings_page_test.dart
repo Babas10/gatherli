@@ -1,4 +1,4 @@
-// Widget tests for NotificationSettingsPage - validates UI rendering and user interactions
+// Widget tests for NotificationSettingsPage — 4-category UI (Story N.3)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +14,6 @@ import 'package:play_with_me/features/notifications/domain/repositories/notifica
 import 'package:play_with_me/features/notifications/presentation/pages/notification_settings_page.dart';
 import '../../../../../helpers/test_app.dart';
 
-// Mocks
 class MockNotificationRepository extends Mock
     implements NotificationRepository {}
 
@@ -22,7 +21,6 @@ class MockInvitationBloc extends Mock implements InvitationBloc {}
 
 class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
 
-// Fakes
 class FakeNotificationPreferencesEntity extends Fake
     implements NotificationPreferencesEntity {}
 
@@ -40,9 +38,8 @@ void main() {
     mockInvitationBloc = MockInvitationBloc();
     mockAuthBloc = MockAuthenticationBloc();
     when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
-    when(
-      () => mockInvitationBloc.stream,
-    ).thenAnswer((_) => const Stream.empty());
+    when(() => mockInvitationBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
       AuthenticationAuthenticated(
         UserEntity(
@@ -54,20 +51,16 @@ void main() {
     );
     when(() => mockAuthBloc.stream).thenAnswer((_) => const Stream.empty());
 
-    // Register mock repository in GetIt
     final getIt = GetIt.instance;
     if (getIt.isRegistered<NotificationRepository>()) {
       getIt.unregister<NotificationRepository>();
     }
     getIt.registerSingleton<NotificationRepository>(mockRepository);
 
-    // Default stub
-    when(
-      () => mockRepository.getPreferences(),
-    ).thenAnswer((_) async => const NotificationPreferencesEntity());
-    when(
-      () => mockRepository.preferencesStream(),
-    ).thenAnswer((_) => Stream.value(const NotificationPreferencesEntity()));
+    when(() => mockRepository.getPreferences())
+        .thenAnswer((_) async => const NotificationPreferencesEntity());
+    when(() => mockRepository.preferencesStream())
+        .thenAnswer((_) => Stream.value(const NotificationPreferencesEntity()));
   });
 
   tearDown(() {
@@ -75,223 +68,137 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return testApp(child: MultiBlocProvider(
+    return testApp(
+      child: MultiBlocProvider(
         providers: [
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
         child: const NotificationSettingsPage(),
-      ));
+      ),
+    );
   }
 
   group('NotificationSettingsPage - Basic Rendering', () {
-    testWidgets('displays app bar with title', (WidgetTester tester) async {
-      // Arrange & Act
+    testWidgets('displays app bar with title', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump(); // Trigger initial build
-
-      // Assert
-      expect(find.text('Notification Settings'), findsOneWidget);
+      await tester.pump();
+      expect(find.text('Notifications'), findsOneWidget);
       expect(find.byType(AppBar), findsOneWidget);
     });
 
-    testWidgets('initially shows initializing state', (
-      WidgetTester tester,
-    ) async {
-      // Arrange & Act
+    testWidgets('initially shows loading indicator', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
-
-      // Assert - Initial state before async load completes
-      expect(find.text('Initializing...'), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('loads and displays preferences after initialization', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      const testPreferences = NotificationPreferencesEntity(
-        groupInvitations: true,
-        invitationAccepted: false,
-      );
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => testPreferences);
-
-      // Act
+    testWidgets('loads and displays 4 category toggles', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump(); // Initial build
-      await tester.pump(); // Process load event
-      await tester.pump(); // Process async result
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
 
-      // Assert - Should have loaded preferences
-      expect(find.text('Group Invitations'), findsOneWidget);
-      expect(find.text('Invitation Accepted'), findsOneWidget);
+      expect(find.text('Social'), findsOneWidget);
+      expect(find.text('Games'), findsOneWidget);
+      expect(find.text('Training'), findsOneWidget);
+      expect(find.text('Championships'), findsOneWidget);
     });
   });
 
-  group('NotificationSettingsPage - Toggle Switches', () {
-    testWidgets('displays notification toggle switches', (
-      WidgetTester tester,
-    ) async {
-      // Arrange & Act
+  group('NotificationSettingsPage - Category Toggles', () {
+    testWidgets('displays all 4 category switches', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Assert - Check main toggle switches exist
-      expect(find.text('Group Invitations'), findsOneWidget);
-      expect(find.text('Invitation Accepted'), findsOneWidget);
-      expect(find.text('New Games'), findsOneWidget);
-      expect(find.text('Role Changes'), findsOneWidget);
+      expect(find.byType(SwitchListTile), findsWidgets);
+      expect(find.text('Social'), findsOneWidget);
+      expect(find.text('Games'), findsOneWidget);
+      expect(find.text('Training'), findsOneWidget);
+      expect(find.text('Championships'), findsOneWidget);
     });
 
-    testWidgets('displays admin notification toggles', (
-      WidgetTester tester,
-    ) async {
-      // Arrange & Act
+    testWidgets('displays category subtitles', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Admin Notifications section (after Training Sessions + Championships)
-      await tester.drag(find.byType(ListView), const Offset(0, -700));
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(find.text('Member Joined'), findsOneWidget);
-      expect(find.text('Member Left'), findsOneWidget);
+      expect(
+        find.text('Friend requests, group invitations'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('New games, results, cancellations, chat'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('displays quiet hours toggle', (WidgetTester tester) async {
-      // Arrange & Act
+    testWidgets('quiet hours toggle is visible after scroll', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Quiet Hours section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
-      // Assert
       expect(find.text('Enable Quiet Hours'), findsOneWidget);
     });
   });
 
-  group('NotificationSettingsPage - Section Headers', () {
-    testWidgets('displays section headers', (WidgetTester tester) async {
-      // Arrange & Act
-      await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump();
-      await tester.pump();
-      await tester.pump();
-
-      // Assert - Group Events and Training Sessions are visible at the top
-      expect(find.text('Group Events'), findsOneWidget);
-      expect(find.text('Training Sessions'), findsOneWidget);
-
-      // Scroll down to find Admin Notifications and Quiet Hours
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
-      await tester.pumpAndSettle();
-      expect(find.text('Admin Notifications'), findsOneWidget);
-      expect(find.text('Quiet Hours'), findsOneWidget);
-    });
-
-    testWidgets('displays admin notification description', (
-      WidgetTester tester,
-    ) async {
-      // Arrange & Act
-      await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump();
-      await tester.pump();
-      await tester.pump();
-
-      // Scroll down to find Admin Notifications section (after Training Sessions + Championships)
-      await tester.drag(find.byType(ListView), const Offset(0, -700));
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(
-        find.text('Only receive these if you are an admin'),
-        findsOneWidget,
-      );
-    });
-  });
-
   group('NotificationSettingsPage - Error Handling', () {
-    testWidgets('displays error message when loading fails', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenThrow(Exception('Failed to load preferences'));
+    testWidgets('displays error icon and retry button when loading fails',
+        (tester) async {
+      when(() => mockRepository.getPreferences())
+          .thenThrow(Exception('Failed to load'));
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump(); // Initial build
-      await tester.pump(); // Process load event
-      await tester.pump(); // Process error
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
 
-      // Assert
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
       expect(find.text('Retry'), findsOneWidget);
     });
 
-    testWidgets('retry button reloads preferences', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenThrow(Exception('Failed to load preferences'));
+    testWidgets('retry button reloads preferences', (tester) async {
+      when(() => mockRepository.getPreferences())
+          .thenThrow(Exception('Failed'));
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Tap retry button
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => const NotificationPreferencesEntity());
+      when(() => mockRepository.getPreferences())
+          .thenAnswer((_) async => const NotificationPreferencesEntity());
 
       await tester.tap(find.text('Retry'));
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Assert - Should now show the settings
-      expect(find.text('Group Invitations'), findsOneWidget);
+      expect(find.text('Social'), findsOneWidget);
     });
   });
 
-  group('NotificationSettingsPage - Quiet Hours Display', () {
-    testWidgets('shows default quiet hours message when disabled', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      const preferences = NotificationPreferencesEntity(
-        quietHoursEnabled: false,
+  group('NotificationSettingsPage - Quiet Hours', () {
+    testWidgets('shows subtitle when quiet hours disabled', (tester) async {
+      when(() => mockRepository.getPreferences()).thenAnswer(
+        (_) async =>
+            const NotificationPreferencesEntity(quietHoursEnabled: false),
       );
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => preferences);
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Quiet Hours section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
-      // Assert
       expect(
         find.text('Pause notifications during specific times'),
         findsOneWidget,
@@ -299,114 +206,74 @@ void main() {
       expect(find.text('Adjust Quiet Hours'), findsNothing);
     });
 
-    testWidgets('shows time range when quiet hours enabled', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      const preferences = NotificationPreferencesEntity(
-        quietHoursEnabled: true,
-        quietHoursStart: '22:00',
-        quietHoursEnd: '08:00',
+    testWidgets('shows time range when quiet hours enabled', (tester) async {
+      when(() => mockRepository.getPreferences()).thenAnswer(
+        (_) async => const NotificationPreferencesEntity(
+          quietHoursEnabled: true,
+          quietHoursStart: '22:00',
+          quietHoursEnd: '08:00',
+        ),
       );
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => preferences);
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Scroll down to find Quiet Hours section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
-      // Assert
-      expect(find.text('No notifications from 22:00 to 08:00'), findsOneWidget);
+      expect(
+        find.text('No notifications from 22:00 to 08:00'),
+        findsOneWidget,
+      );
       expect(find.text('Adjust Quiet Hours'), findsOneWidget);
     });
   });
 
-  group('NotificationSettingsPage - Switch Values', () {
-    testWidgets('switches reflect preference values', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      const preferences = NotificationPreferencesEntity(
-        groupInvitations: true,
-        invitationAccepted: false,
-        gameCreated: true,
-        memberJoined: false,
+  group('NotificationSettingsPage - Category Switch Values', () {
+    testWidgets('social toggle reflects preference value', (tester) async {
+      when(() => mockRepository.getPreferences()).thenAnswer(
+        (_) async => const NotificationPreferencesEntity(social: false),
       );
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => preferences);
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Assert - Find switches and check their values
-      final groupInvitationsSwitch = tester.widget<SwitchListTile>(
+      final socialSwitch = tester.widget<SwitchListTile>(
         find.ancestor(
-          of: find.text('Group Invitations'),
+          of: find.text('Social'),
           matching: find.byType(SwitchListTile),
         ),
       );
-      expect(groupInvitationsSwitch.value, true);
-
-      final invitationAcceptedSwitch = tester.widget<SwitchListTile>(
-        find.ancestor(
-          of: find.text('Invitation Accepted'),
-          matching: find.byType(SwitchListTile),
-        ),
-      );
-      expect(invitationAcceptedSwitch.value, false);
-
-      final gameCreatedSwitch = tester.widget<SwitchListTile>(
-        find.ancestor(
-          of: find.text('New Games'),
-          matching: find.byType(SwitchListTile),
-        ),
-      );
-      expect(gameCreatedSwitch.value, true);
+      expect(socialSwitch.value, false);
     });
   });
 
   group('NotificationSettingsPage - Update Operations', () {
-    testWidgets('updates repository when switch is toggled', (
-      WidgetTester tester,
-    ) async {
-      // Arrange
-      const initialPreferences = NotificationPreferencesEntity(
-        groupInvitations: false,
+    testWidgets('updates repository when Social switch is toggled',
+        (tester) async {
+      when(() => mockRepository.getPreferences()).thenAnswer(
+        (_) async => const NotificationPreferencesEntity(social: false),
       );
-      when(
-        () => mockRepository.getPreferences(),
-      ).thenAnswer((_) async => initialPreferences);
-      when(
-        () => mockRepository.updatePreferences(any()),
-      ).thenAnswer((_) async {});
+      when(() => mockRepository.updatePreferences(any()))
+          .thenAnswer((_) async {});
 
-      // Act
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
       await tester.pump();
       await tester.pump();
 
-      // Find and tap the group invitations switch
       await tester.tap(
         find.ancestor(
-          of: find.text('Group Invitations'),
+          of: find.text('Social'),
           matching: find.byType(SwitchListTile),
         ),
       );
       await tester.pump();
 
-      // Assert - Verify update was called
       verify(() => mockRepository.updatePreferences(any())).called(1);
     });
   });

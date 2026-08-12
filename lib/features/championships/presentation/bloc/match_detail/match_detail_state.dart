@@ -29,7 +29,10 @@ class MatchDetailLoaded extends MatchDetailState {
   final String? myTeamId;
 
   final bool isProposingSchedule;
+  final bool isAcceptingSchedule;
+  final bool isRejectingSchedule;
   final String? scheduleError;
+  final String? scheduleConfirmError;
 
   const MatchDetailLoaded({
     required this.championshipId,
@@ -38,7 +41,10 @@ class MatchDetailLoaded extends MatchDetailState {
     required this.teamB,
     required this.myTeamId,
     this.isProposingSchedule = false,
+    this.isAcceptingSchedule = false,
+    this.isRejectingSchedule = false,
     this.scheduleError,
+    this.scheduleConfirmError,
   });
 
   bool get isTeamMember => myTeamId != null;
@@ -49,8 +55,11 @@ class MatchDetailLoaded extends MatchDetailState {
     ChampionshipTeamModel? teamB,
     String? myTeamId,
     bool? isProposingSchedule,
-    // Allows explicitly resetting scheduleError to null via copyWith.
+    bool? isAcceptingSchedule,
+    bool? isRejectingSchedule,
+    // Allows explicitly resetting nullable fields to null via copyWith.
     Object? scheduleError = _sentinel,
+    Object? scheduleConfirmError = _sentinel,
   }) {
     return MatchDetailLoaded(
       championshipId: championshipId,
@@ -58,11 +67,15 @@ class MatchDetailLoaded extends MatchDetailState {
       teamA: teamA ?? this.teamA,
       teamB: teamB ?? this.teamB,
       myTeamId: myTeamId ?? this.myTeamId,
-      isProposingSchedule:
-          isProposingSchedule ?? this.isProposingSchedule,
+      isProposingSchedule: isProposingSchedule ?? this.isProposingSchedule,
+      isAcceptingSchedule: isAcceptingSchedule ?? this.isAcceptingSchedule,
+      isRejectingSchedule: isRejectingSchedule ?? this.isRejectingSchedule,
       scheduleError: scheduleError == _sentinel
           ? this.scheduleError
           : scheduleError as String?,
+      scheduleConfirmError: scheduleConfirmError == _sentinel
+          ? this.scheduleConfirmError
+          : scheduleConfirmError as String?,
     );
   }
 
@@ -74,7 +87,10 @@ class MatchDetailLoaded extends MatchDetailState {
         teamB,
         myTeamId,
         isProposingSchedule,
+        isAcceptingSchedule,
+        isRejectingSchedule,
         scheduleError,
+        scheduleConfirmError,
       ];
 }
 
