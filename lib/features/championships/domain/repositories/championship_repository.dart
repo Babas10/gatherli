@@ -190,6 +190,14 @@ abstract class ChampionshipRepository {
   /// Throws [ChampionshipException] on error.
   Future<void> completeChampionship({required String championshipId});
 
+  /// Renames a championship team (captain only, registration phase only).
+  /// Throws [ChampionshipException] on error.
+  Future<void> renameTeam({
+    required String championshipId,
+    required String teamId,
+    required String newName,
+  });
+
   /// Updates the championship title and/or registration deadline (admin only).
   /// Only allowed when status is registration or registration_closed.
   /// Throws [ChampionshipException] on error.

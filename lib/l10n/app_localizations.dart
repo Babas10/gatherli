@@ -4658,6 +4658,42 @@ abstract class AppLocalizations {
   /// **'Mark as Complete'**
   String get completeChampionshipButton;
 
+  /// Dialog title for renaming a team
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Team'**
+  String get teamRenameTitle;
+
+  /// Text field label in the rename dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Team name'**
+  String get teamRenameLabel;
+
+  /// Snackbar shown after successful rename
+  ///
+  /// In en, this message translates to:
+  /// **'Team renamed successfully.'**
+  String get teamRenameSuccess;
+
+  /// Snackbar prefix shown when rename fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to rename team'**
+  String get teamRenameError;
+
+  /// Title of the tiebreaker info dialog
+  ///
+  /// In en, this message translates to:
+  /// **'How standings work'**
+  String get standingsTiebreakerTitle;
+
+  /// Explanation of the championship scoring and tiebreaker rules
+  ///
+  /// In en, this message translates to:
+  /// **'Points: Win 2-0 = 3pts · Win 2-1 = 2pts · Loss 1-2 = 1pt · Loss 0-2 = 0pts\n\nTiebreaker 1: Head-to-head result\nTiebreaker 2: Set ratio (sets won − sets lost)'**
+  String get standingsTiebreakerBody;
+
   /// Admin panel button to open the edit championship dialog
   ///
   /// In en, this message translates to:

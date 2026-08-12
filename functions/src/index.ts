@@ -173,5 +173,8 @@ export {completeChampionship} from "./completeChampionship";
 // Story 30.28: Edit championship title/deadline (admin-only, before start)
 export {editChampionship} from "./editChampionship";
 
+// Story 30.33: Team captain can rename their team during registration
+export {renameChampionshipTeam} from "./renameChampionshipTeam";
+
 // Story 30.19: Enforce registration deadlines (scheduled — hourly)
 export {enforceRegistrationDeadlines} from "./enforceRegistrationDeadlines";

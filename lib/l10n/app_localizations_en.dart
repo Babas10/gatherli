@@ -2548,6 +2548,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeChampionshipButton => 'Mark as Complete';
 
   @override
+  String get teamRenameTitle => 'Rename Team';
+
+  @override
+  String get teamRenameLabel => 'Team name';
+
+  @override
+  String get teamRenameSuccess => 'Team renamed successfully.';
+
+  @override
+  String get teamRenameError => 'Failed to rename team';
+
+  @override
+  String get standingsTiebreakerTitle => 'How standings work';
+
+  @override
+  String get standingsTiebreakerBody =>
+      'Points: Win 2-0 = 3pts · Win 2-1 = 2pts · Loss 1-2 = 1pt · Loss 0-2 = 0pts\n\nTiebreaker 1: Head-to-head result\nTiebreaker 2: Set ratio (sets won − sets lost)';
+
+  @override
   String get editChampionshipButton => 'Edit Details';
 
   @override

@@ -585,6 +585,29 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
+  Future<void> renameTeam({
+    required String championshipId,
+    required String teamId,
+    required String newName,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('renameChampionshipTeam');
+      await callable.call({
+        'championshipId': championshipId,
+        'teamId': teamId,
+        'newName': newName,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to rename team',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to rename team: $e');
+    }
+  }
+
+  @override
   Future<void> editChampionship({
     required String championshipId,
     String? title,

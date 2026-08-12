@@ -1,6 +1,7 @@
 // Cloud Function to manually mark a championship as completed — admin-only (Story 30.16)
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { sendChampionshipNotificationToUsers } from "./championshipNotifications";
 
 interface CompleteChampionshipRequest {
   championshipId: string;
@@ -92,6 +93,33 @@ export async function completeChampionshipHandler(
     championTeamId,
     uid,
   });
+
+  // ── 7. Notify all registered teams (non-fatal) ─────────────────────────────
+  try {
+    const teamsSnap = await champRef.collection("teams").get();
+    for (const teamDoc of teamsSnap.docs) {
+      const memberIds: string[] = teamDoc.data().memberIds ?? [];
+      if (memberIds.length === 0) continue;
+
+      const isChampion = teamDoc.id === championTeamId;
+      await sendChampionshipNotificationToUsers(db, memberIds, {
+        title: isChampion ? "🏆 You are champions!" : "Championship complete",
+        body: isChampion
+          ? "Congratulations! You won the championship. Check the final standings."
+          : "The championship has ended. See the final standings.",
+        data: {
+          type: "championship",
+          championshipId: data.championshipId,
+        },
+      });
+    }
+  } catch (notifErr) {
+    // Non-fatal — completion is already recorded.
+    functions.logger.error("completeChampionship: notification failed (non-fatal)", {
+      notifErr,
+      championshipId: data.championshipId,
+    });
+  }
 
   return { status: "completed" };
 }

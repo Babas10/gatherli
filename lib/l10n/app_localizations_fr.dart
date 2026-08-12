@@ -2595,6 +2595,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get completeChampionshipButton => 'Marquer comme terminé';
 
   @override
+  String get teamRenameTitle => 'Renommer l\'équipe';
+
+  @override
+  String get teamRenameLabel => 'Nom de l\'équipe';
+
+  @override
+  String get teamRenameSuccess => 'Équipe renommée avec succès.';
+
+  @override
+  String get teamRenameError => 'Impossible de renommer l\'équipe';
+
+  @override
+  String get standingsTiebreakerTitle => 'Comment fonctionne le classement';
+
+  @override
+  String get standingsTiebreakerBody =>
+      'Points : Victoire 2-0 = 3pts · Victoire 2-1 = 2pts · Défaite 1-2 = 1pt · Défaite 0-2 = 0pt\n\nDépartage 1 : Résultat entre les équipes\nDépartage 2 : Ratio de sets (sets gagnés − sets perdus)';
+
+  @override
   String get editChampionshipButton => 'Modifier les détails';
 
   @override

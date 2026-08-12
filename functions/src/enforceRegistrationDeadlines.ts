@@ -1,8 +1,9 @@
 // Scheduled Cloud Function — closes registration for expired championships (Story 30.19)
-// Runs every hour. Transitions championships from `registration` to `registration_closed`
-// when their registrationDeadline has passed.
+// and auto-completes active championships whose endDate has passed (Story 30.32).
+// Runs every hour.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { sendChampionshipNotificationToUsers } from "./championshipNotifications";
 
 /**
  * Inner handler — exported separately for unit testing.
@@ -42,7 +43,74 @@ export async function enforceRegistrationDeadlinesHandler(): Promise<{
 
   await batch.commit();
   functions.logger.info(`enforceRegistrationDeadlines: closed ${count} championship(s)`);
-  return { processed: count };
+
+  // ── Story 30.32: auto-complete active championships past their endDate ──────
+  const expiredSnap = await db
+    .collection("championships")
+    .where("status", "==", "active")
+    .where("endDate", "<=", now)
+    .get();
+
+  let completed = 0;
+  for (const doc of expiredSnap.docs) {
+    const champRef = doc.ref;
+    const championshipId = doc.id;
+
+    try {
+      // Determine champion (position 1 in standings)
+      const standingsSnap = await champRef
+        .collection("standings")
+        .orderBy("position")
+        .limit(1)
+        .get();
+      const championTeamId = standingsSnap.empty ? null : standingsSnap.docs[0].id;
+
+      await champRef.update({
+        status: "completed",
+        championTeamId: championTeamId ?? admin.firestore.FieldValue.delete(),
+        completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        completedBy: "system:endDate",
+      });
+
+      functions.logger.info("enforceRegistrationDeadlines: auto-completed championship", {
+        championshipId,
+        championTeamId,
+      });
+
+      // Notify all team members (non-fatal)
+      try {
+        const teamsSnap = await champRef.collection("teams").get();
+        for (const teamDoc of teamsSnap.docs) {
+          const memberIds: string[] = teamDoc.data().memberIds ?? [];
+          if (memberIds.length === 0) continue;
+          const isChampion = teamDoc.id === championTeamId;
+          await sendChampionshipNotificationToUsers(db, memberIds, {
+            title: isChampion ? "🏆 You are champions!" : "Championship complete",
+            body: isChampion
+              ? "Congratulations! You won the championship."
+              : "The championship has ended. See the final standings.",
+            data: { type: "championship", championshipId },
+          });
+        }
+      } catch (notifErr) {
+        functions.logger.error("enforceRegistrationDeadlines: completion notification failed", {
+          notifErr, championshipId,
+        });
+      }
+
+      completed++;
+    } catch (err) {
+      functions.logger.error("enforceRegistrationDeadlines: failed to auto-complete championship", {
+        err, championshipId,
+      });
+    }
+  }
+
+  if (completed > 0) {
+    functions.logger.info(`enforceRegistrationDeadlines: auto-completed ${completed} championship(s)`);
+  }
+
+  return { processed: count + completed };
 }
 
 /**

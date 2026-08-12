@@ -2590,6 +2590,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get completeChampionshipButton => 'Als abgeschlossen markieren';
 
   @override
+  String get teamRenameTitle => 'Team umbenennen';
+
+  @override
+  String get teamRenameLabel => 'Teamname';
+
+  @override
+  String get teamRenameSuccess => 'Team erfolgreich umbenannt.';
+
+  @override
+  String get teamRenameError => 'Team konnte nicht umbenannt werden';
+
+  @override
+  String get standingsTiebreakerTitle => 'So funktioniert das Ranking';
+
+  @override
+  String get standingsTiebreakerBody =>
+      'Punkte: Sieg 2-0 = 3Pkt · Sieg 2-1 = 2Pkt · Niederlage 1-2 = 1Pkt · Niederlage 0-2 = 0Pkt\n\nKriterium 1: Direktes Duell\nKriterium 2: Satzverhältnis (Sätze gewonnen − verloren)';
+
+  @override
   String get editChampionshipButton => 'Details bearbeiten';
 
   @override

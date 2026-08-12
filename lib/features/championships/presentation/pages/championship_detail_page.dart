@@ -24,6 +24,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/partner_pi
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart' hide LoadChampionships;
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
+import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -146,6 +147,7 @@ class _ChampionshipDetailView extends StatelessWidget {
                       .reduce((a, b) => a.position < b.position ? a : b)
                       .teamName
                   : null,
+              currentUserId: currentUserId,
               l10n: l10n,
             ),
             TabBar(
@@ -360,6 +362,7 @@ class _ChampionshipHeader extends StatelessWidget {
   final ChampionshipTeamModel? myTeam;
   final VoidCallback? onLeaveTeam;
   final String? championTeamName;
+  final String? currentUserId;
   final AppLocalizations l10n;
 
   const _ChampionshipHeader({
@@ -370,6 +373,7 @@ class _ChampionshipHeader extends StatelessWidget {
     this.myTeam,
     this.onLeaveTeam,
     this.championTeamName,
+    this.currentUserId,
   });
 
   @override
@@ -437,6 +441,7 @@ class _ChampionshipHeader extends StatelessWidget {
               team: myTeam!,
               championship: championship,
               onLeave: onLeaveTeam,
+              currentUserId: currentUserId,
               l10n: l10n,
             ),
           ],
@@ -509,6 +514,7 @@ class _MyTeamSection extends StatelessWidget {
   final ChampionshipTeamModel team;
   final ChampionshipModel championship;
   final VoidCallback? onLeave;
+  final String? currentUserId;
   final AppLocalizations l10n;
 
   const _MyTeamSection({
@@ -516,7 +522,68 @@ class _MyTeamSection extends StatelessWidget {
     required this.championship,
     required this.l10n,
     this.onLeave,
+    this.currentUserId,
   });
+
+  bool get _isRegistrationPhase =>
+      championship.status == ChampionshipStatus.registration ||
+      championship.status == ChampionshipStatus.registrationClosed;
+
+  bool get _isCaptain => currentUserId != null && team.captainId == currentUserId;
+
+  Future<void> _showRenameDialog(BuildContext context) async {
+    final controller = TextEditingController(text: team.name);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: Text(l10n.teamRenameTitle),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          maxLength: 30,
+          decoration: InputDecoration(
+            labelText: l10n.teamRenameLabel,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(true),
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) return;
+    final newName = controller.text.trim();
+    if (newName.length < 2 || newName == team.name) return;
+
+    try {
+      await sl<ChampionshipRepository>().renameTeam(
+        championshipId: championship.id,
+        teamId: team.id,
+        newName: newName,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.teamRenameSuccess)),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.teamRenameError}: $e'),
+            backgroundColor: AppColors.danger,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -543,16 +610,37 @@ class _MyTeamSection extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                Text(
-                  team.name,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        team.name,
+                        style:
+                            Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                       ),
+                    ),
+                    if (_isCaptain && _isRegistrationPhase) ...[
+                      const SizedBox(width: 4),
+                      InkWell(
+                        onTap: () => _showRenameDialog(context),
+                        borderRadius: BorderRadius.circular(12),
+                        child: const Padding(
+                          padding: EdgeInsets.all(2),
+                          child: Icon(Icons.edit_outlined,
+                              size: 14, color: AppColors.primary),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 if (partnerCount > 1)
                   Text(
                     l10n.myTeamPartnerLabel(
-                      team.memberIds.length == 2 ? 'Partner' : '${partnerCount - 1} partners',
+                      team.memberIds.length == 2
+                          ? 'Partner'
+                          : '${partnerCount - 1} partners',
                     ),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textMuted,
@@ -755,19 +843,46 @@ class _StandingsTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Table(
-          columnWidths: const {
-            0: FixedColumnWidth(32), // #
-            1: FlexColumnWidth(), // Team
-            2: FixedColumnWidth(32), // P
-            3: FixedColumnWidth(40), // Pts
-            4: FixedColumnWidth(32), // W
-            5: FixedColumnWidth(32), // L
-            6: FixedColumnWidth(40), // SR
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _headerRow(context),
-            ...standings.map((s) => _standingsRow(context, s)),
+            // ── Tiebreaker info icon ────────────────────────────────────────
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: const Icon(Icons.info_outline,
+                    size: 18, color: AppColors.textMuted),
+                tooltip: l10n.standingsTiebreakerTitle,
+                onPressed: () => showDialog<void>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text(l10n.standingsTiebreakerTitle),
+                    content: Text(l10n.standingsTiebreakerBody),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(ctx).pop(),
+                        child: Text(l10n.ok),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Table(
+              columnWidths: const {
+                0: FixedColumnWidth(32), // #
+                1: FlexColumnWidth(), // Team
+                2: FixedColumnWidth(32), // P
+                3: FixedColumnWidth(40), // Pts
+                4: FixedColumnWidth(32), // W
+                5: FixedColumnWidth(32), // L
+                6: FixedColumnWidth(40), // SR
+              },
+              children: [
+                _headerRow(context),
+                ...standings.map((s) => _standingsRow(context, s)),
+              ],
+            ),
           ],
         ),
       ),
