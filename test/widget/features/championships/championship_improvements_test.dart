@@ -5,13 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
-import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
-import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_state.dart';
@@ -153,12 +149,6 @@ void main() {
 
   group('Story 30.18 — match status labels', () {
     Widget buildMatchCard(ChampionshipMatchStatus status, {DateTime? scheduledAt}) {
-      final match = makeMatch(
-        teamAId: 'teamA',
-        teamBId: 'teamB',
-        status: status,
-      ).copyWith(scheduledAt: scheduledAt);
-
       // Just render a Text with the status name to verify it differs from pending
       return testApp(
         child: Scaffold(
