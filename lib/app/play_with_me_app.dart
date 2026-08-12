@@ -106,8 +106,7 @@ class PlayWithMeApp extends StatelessWidget {
           )..add(const LocalePreferencesEvent.loadPreferences()),
         ),
         BlocProvider<ChampionshipListBloc>(
-          create: (context) =>
-              sl<ChampionshipListBloc>()..add(const LoadChampionships()),
+          create: (context) => sl<ChampionshipListBloc>(),
         ),
       ],
       child: MultiBlocListener(
@@ -120,6 +119,11 @@ class PlayWithMeApp extends StatelessWidget {
                 );
                 context.read<GameInvitationsBloc>().add(
                   const LoadGameInvitations(),
+                );
+                // Championships are loaded after auth — firing before auth
+                // is ready causes PERMISSION_DENIED on the Firestore query.
+                context.read<ChampionshipListBloc>().add(
+                  const LoadChampionships(),
                 );
                 // Check for pending invite token (from "I Have an Account" flow).
                 // If found, navigate to join confirmation and clear the stack.
