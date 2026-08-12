@@ -2297,6 +2297,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get championshipStatusBadgeCompleted => 'Abgeschlossen';
 
   @override
+  String get championshipMyMatchesTab => 'Meine Spiele';
+
+  @override
+  String get championshipMyMatchesEmpty =>
+      'Deine Spiele erscheinen hier, sobald die Meisterschaft beginnt.';
+
+  @override
+  String championshipMyMatchesVs(String opponent) {
+    return 'vs $opponent';
+  }
+
+  @override
+  String get championshipTabActive => 'Aktiv';
+
+  @override
+  String get championshipTabCompleted => 'Abgeschlossen';
+
+  @override
+  String get championshipNoCompletedYet =>
+      'Noch keine abgeschlossenen Meisterschaften.';
+
+  @override
   String get championshipNoResults => 'Derzeit keine Meisterschaften.';
 
   @override
@@ -2508,6 +2530,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get championshipCreateRegionHint => 'z.B. Bayern';
+
+  @override
+  String get championshipCreateMaxTeamsLabel => 'Max. Mannschaften';
+
+  @override
+  String get championshipCreateTeamSizeLabel => 'Spieler pro Team';
+
+  @override
+  String championshipCreateTeamSizeOption(int count) {
+    return '$count Spieler';
+  }
 
   @override
   String get championshipCreateSubmit => 'Meisterschaft erstellen';

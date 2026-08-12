@@ -542,6 +542,8 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     String? country,
     String? region,
     ChampionshipGenderCategory? genderCategory,
+    int maxTeams = 10,
+    int teamSize = 2,
   }) async {
     try {
       final callable = _functions.httpsCallable('createChampionship');
@@ -553,6 +555,8 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
         if (country != null && country.isNotEmpty) 'country': country,
         if (region != null && region.isNotEmpty) 'region': region,
         if (genderCategory != null) 'genderCategory': genderCategory.name,
+        'maxTeams': maxTeams,
+        'teamSize': teamSize,
       });
       return result.data['championshipId'] as String;
     } on FirebaseFunctionsException catch (e) {

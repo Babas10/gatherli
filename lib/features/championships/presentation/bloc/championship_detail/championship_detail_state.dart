@@ -26,6 +26,8 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
   final List<ChampionshipTeamModel> teams;
   final List<ChampionshipMatchModel> currentRoundMatches;
   final int selectedRound;
+  /// All matches across all rounds — used by the My Matches tab.
+  final List<ChampionshipMatchModel> allMatches;
   /// Current user's gender: 'male', 'female', 'none', or null (unknown).
   final String? currentUserGender;
 
@@ -35,6 +37,7 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
     required this.teams,
     required this.currentRoundMatches,
     required this.selectedRound,
+    this.allMatches = const [],
     this.currentUserGender,
   });
 
@@ -44,6 +47,7 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
     List<ChampionshipTeamModel>? teams,
     List<ChampionshipMatchModel>? currentRoundMatches,
     int? selectedRound,
+    List<ChampionshipMatchModel>? allMatches,
     String? currentUserGender,
   }) {
     return ChampionshipDetailLoaded(
@@ -52,6 +56,7 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
       teams: teams ?? this.teams,
       currentRoundMatches: currentRoundMatches ?? this.currentRoundMatches,
       selectedRound: selectedRound ?? this.selectedRound,
+      allMatches: allMatches ?? this.allMatches,
       currentUserGender: currentUserGender ?? this.currentUserGender,
     );
   }
@@ -63,6 +68,7 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
         teams,
         currentRoundMatches,
         selectedRound,
+        allMatches,
         currentUserGender,
       ];
 }

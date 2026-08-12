@@ -19,6 +19,7 @@ class ChampionshipDetailBloc
   StreamSubscription? _standingsSub;
   StreamSubscription? _teamsSub;
   StreamSubscription? _matchesSub;
+  StreamSubscription? _allMatchesSub;
   StreamSubscription? _userSub;
 
   ChampionshipDetailBloc({
@@ -33,6 +34,7 @@ class ChampionshipDetailBloc
     on<ChampionshipDetailStandingsUpdated>(_onStandingsUpdated);
     on<ChampionshipDetailTeamsUpdated>(_onTeamsUpdated);
     on<ChampionshipDetailMatchesUpdated>(_onMatchesUpdated);
+    on<ChampionshipDetailAllMatchesUpdated>(_onAllMatchesUpdated);
     on<ChampionshipDetailUserUpdated>(_onUserUpdated);
     on<ChampionshipDetailLoadError>(_onError);
   }
@@ -48,6 +50,7 @@ class ChampionshipDetailBloc
     await _standingsSub?.cancel();
     await _teamsSub?.cancel();
     await _matchesSub?.cancel();
+    await _allMatchesSub?.cancel();
     await _userSub?.cancel();
     _matchesSub = null;
 
@@ -80,6 +83,13 @@ class ChampionshipDetailBloc
         .listen(
           (teams) => add(ChampionshipDetailTeamsUpdated(teams)),
           onError: (_) {}, // no teams yet is normal
+        );
+
+    _allMatchesSub = _repository
+        .getAllMatches(event.championshipId)
+        .listen(
+          (matches) => add(ChampionshipDetailAllMatchesUpdated(matches)),
+          onError: (_) {}, // no matches yet is normal before championship starts
         );
   }
 
@@ -158,6 +168,18 @@ class ChampionshipDetailBloc
     }
   }
 
+  void _onAllMatchesUpdated(
+    ChampionshipDetailAllMatchesUpdated event,
+    Emitter<ChampionshipDetailState> emit,
+  ) {
+    if (state is ChampionshipDetailLoaded) {
+      emit(
+        (state as ChampionshipDetailLoaded)
+            .copyWith(allMatches: event.matches),
+      );
+    }
+  }
+
   Future<void> _onChangeRound(
     ChangeDetailRound event,
     Emitter<ChampionshipDetailState> emit,
@@ -200,6 +222,7 @@ class ChampionshipDetailBloc
     await _standingsSub?.cancel();
     await _teamsSub?.cancel();
     await _matchesSub?.cancel();
+    await _allMatchesSub?.cancel();
     await _userSub?.cancel();
     return super.close();
   }

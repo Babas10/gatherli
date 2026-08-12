@@ -74,6 +74,9 @@ void main() {
     mockUserRepo = MockUserRepository();
     when(() => mockUserRepo.currentUser)
         .thenAnswer((_) => const Stream.empty());
+    // getAllMatches now subscribed by the bloc for My Matches tab.
+    when(() => mockRepo.getAllMatches(any()))
+        .thenAnswer((_) => const Stream.empty());
   });
 
   ChampionshipDetailBloc makeBloc() => ChampionshipDetailBloc(

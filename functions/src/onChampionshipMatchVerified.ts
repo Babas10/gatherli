@@ -198,7 +198,52 @@ export async function onChampionshipMatchVerifiedHandler(
     throw err;
   }
 
-  // ── 11. Notify the SUBMITTING team only (Story 30.13, refined) ───────────
+  // ── 11. Auto-advance currentRound when all matches in this round complete ──
+  // A match counts as "done" when standingsUpdated === true (verified with a
+  // result) OR when it is admin_decided (covers cancelled matches whose
+  // standingsUpdated stays false because there is no result to process).
+  try {
+    const matchRound: number = afterData.round;
+    const roundMatchesSnap = await champRef
+      .collection("matches")
+      .where("round", "==", matchRound)
+      .get();
+
+    const allDone = roundMatchesSnap.docs.every((doc) => {
+      const d = doc.data();
+      return d.standingsUpdated === true || d.status === "admin_decided";
+    });
+
+    if (allDone) {
+      const champSnap = await champRef.get();
+      if (champSnap.exists) {
+        const champ = champSnap.data()!;
+        const totalRounds: number = champ.totalRounds ?? 9;
+        const nextRound = matchRound + 1;
+
+        if (nextRound <= totalRounds) {
+          await champRef.update({ currentRound: nextRound });
+          functions.logger.info(
+            "[onChampionshipMatchVerified] Round advanced",
+            { championshipId, from: matchRound, to: nextRound }
+          );
+        } else {
+          functions.logger.info(
+            "[onChampionshipMatchVerified] Final round complete",
+            { championshipId, round: matchRound }
+          );
+        }
+      }
+    }
+  } catch (advanceErr) {
+    // Non-fatal — standings are already saved; round pointer is cosmetic.
+    functions.logger.error(
+      "[onChampionshipMatchVerified] Round advancement failed (non-fatal)",
+      { advanceErr, matchId }
+    );
+  }
+
+  // ── 12. Notify the SUBMITTING team only (Story 30.13, refined) ───────────
   // The verifying team just did the verification — they don't need a push.
   // Only the submitting team needs to know their result was accepted.
   if (afterData.status === "verified") {

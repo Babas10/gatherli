@@ -14,6 +14,8 @@ interface CreateChampionshipRequest {
   country?: string; // ISO 3166-1 alpha-2
   region?: string;
   genderCategory?: "male" | "female"; // null = no restriction
+  maxTeams?: number; // allowed: 4, 6, 8, 10 — default 10
+  teamSize?: number; // allowed: 2 or 3 — default 2
 }
 
 interface CreateChampionshipResponse {
@@ -87,6 +89,24 @@ export async function createChampionshipHandler(
   // ========================================
   // 2. Input Validation
   // ========================================
+  const allowedMaxTeams = [4, 6, 8, 10];
+  const allowedTeamSizes = [2, 3];
+  const maxTeams = data?.maxTeams ?? 10;
+  const teamSize = data?.teamSize ?? 2;
+
+  if (!allowedMaxTeams.includes(maxTeams)) {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      `maxTeams must be one of: ${allowedMaxTeams.join(", ")}`
+    );
+  }
+  if (!allowedTeamSizes.includes(teamSize)) {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      `teamSize must be 2 or 3`
+    );
+  }
+
   if (!data || !data.title || !data.registrationDeadline) {
     throw new functions.https.HttpsError(
       "invalid-argument",
@@ -113,14 +133,17 @@ export async function createChampionshipHandler(
     const startDate = data.startDate ? new Date(data.startDate) : null;
     const endDate = data.endDate ? new Date(data.endDate) : null;
 
+    // Round-robin: N teams → N-1 rounds, N/2 matches per round.
+    const totalRounds = maxTeams - 1;
+
     const championshipData = {
       title: data.title.trim(),
       status: "registration",
-      maxTeams: 10,
-      teamSize: 2,
+      maxTeams,
+      teamSize,
       adminIds: [userId],
       currentRound: 0,
-      totalRounds: 9,
+      totalRounds,
       teamsCount: 0,
       registrationDeadline: admin.firestore.Timestamp.fromDate(deadline),
       startDate: startDate ? admin.firestore.Timestamp.fromDate(startDate) : null,

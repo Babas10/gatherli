@@ -97,8 +97,18 @@ class _ChampionshipDetailView extends StatelessWidget {
           state.championship.status == ChampionshipStatus.registration &&
           state.championship.isOpen;
 
+      // Tab count: Standings + Matches + My Matches (if registered) + Admin (if admin)
+      final myTeamId = currentUserId != null
+          ? state.teams
+              .where((t) => t.memberIds.contains(currentUserId))
+              .map((t) => t.id)
+              .firstOrNull
+          : null;
+      final tabCount =
+          2 + (alreadyRegistered ? 1 : 0) + (isAdmin ? 1 : 0);
+
       return DefaultTabController(
-        length: isAdmin ? 3 : 2,
+        length: tabCount,
         child: Column(
           children: [
             _ChampionshipHeader(
@@ -146,6 +156,8 @@ class _ChampionshipDetailView extends StatelessWidget {
                       : l10n.championshipDetailStandingsTab,
                 ),
                 Tab(text: l10n.championshipDetailMatchesTab),
+                if (alreadyRegistered)
+                  Tab(text: l10n.championshipMyMatchesTab),
                 if (isAdmin) Tab(text: l10n.adminPanelTabLabel),
               ],
             ),
@@ -163,14 +175,23 @@ class _ChampionshipDetailView extends StatelessWidget {
                     matches: state.currentRoundMatches,
                     standings: state.standings,
                     selectedRound: state.selectedRound,
-                    myTeamId: currentUserId != null
-                        ? state.teams
-                            .where((t) => t.memberIds.contains(currentUserId))
-                            .map((t) => t.id)
-                            .firstOrNull
-                        : null,
+                    myTeamId: myTeamId,
                     l10n: l10n,
                   ),
+                  if (alreadyRegistered)
+                    _MyMatchesTab(
+                      championshipId: state.championship.id,
+                      allMatches: state.allMatches,
+                      teams: state.teams,
+                      myTeamId: myTeamId ?? '',
+                      currentUserId: currentUserId,
+                      currentUserDisplayName:
+                          (context.read<AuthenticationBloc>().state
+                                  as AuthenticationAuthenticated)
+                              .user
+                              .displayName ?? '',
+                      l10n: l10n,
+                    ),
                   if (isAdmin)
                     _AdminTab(
                       championship: state.championship,
@@ -1762,6 +1783,205 @@ class _DecisionSheetState extends State<_DecisionSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ============================================================================
+// My Matches tab (Story 30.26) — shows only the current user's team's matches
+// ============================================================================
+
+class _MyMatchesTab extends StatelessWidget {
+  final String championshipId;
+  final List<ChampionshipMatchModel> allMatches;
+  final List<ChampionshipTeamModel> teams;
+  final String myTeamId;
+  final String currentUserId;
+  final String currentUserDisplayName;
+  final AppLocalizations l10n;
+
+  const _MyMatchesTab({
+    required this.championshipId,
+    required this.allMatches,
+    required this.teams,
+    required this.myTeamId,
+    required this.currentUserId,
+    required this.currentUserDisplayName,
+    required this.l10n,
+  });
+
+  String _teamName(String teamId) {
+    try {
+      return teams.firstWhere((t) => t.id == teamId).name;
+    } catch (_) {
+      return teamId;
+    }
+  }
+
+  Color _statusColor(ChampionshipMatchStatus status) {
+    return switch (status) {
+      ChampionshipMatchStatus.pending => AppColors.textMuted,
+      ChampionshipMatchStatus.scheduled => Colors.blue,
+      ChampionshipMatchStatus.played => Colors.orange,
+      ChampionshipMatchStatus.disputed => Colors.deepOrange,
+      ChampionshipMatchStatus.adminDecided => Colors.purple,
+      ChampionshipMatchStatus.verified => Colors.green,
+    };
+  }
+
+  String _statusLabel(ChampionshipMatchStatus status) {
+    return switch (status) {
+      ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
+      ChampionshipMatchStatus.scheduled =>
+        l10n.championshipMatchStatusScheduled,
+      ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
+      ChampionshipMatchStatus.disputed =>
+        l10n.championshipMatchStatusDisputed,
+      ChampionshipMatchStatus.adminDecided =>
+        l10n.championshipMatchStatusAdminDecided,
+      ChampionshipMatchStatus.verified =>
+        l10n.championshipMatchStatusVerified,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final myMatches = allMatches
+        .where((m) => m.teamAId == myTeamId || m.teamBId == myTeamId)
+        .toList()
+      ..sort((a, b) => a.round.compareTo(b.round));
+
+    if (myMatches.isEmpty) {
+      return Center(
+        child: Text(
+          l10n.championshipMyMatchesEmpty,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: AppColors.textMuted),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      itemCount: myMatches.length,
+      itemBuilder: (context, index) {
+        final match = myMatches[index];
+        final opponentId =
+            match.teamAId == myTeamId ? match.teamBId : match.teamAId;
+        final opponentName = _teamName(opponentId);
+        final statusColor = _statusColor(match.status);
+        final statusLabel = _statusLabel(match.status);
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MatchDetailPage(
+                  championshipId: championshipId,
+                  matchId: match.id,
+                  currentUserId: currentUserId,
+                  currentUserDisplayName: currentUserDisplayName,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                children: [
+                  // Round badge
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'R${match.round}',
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: AppColors.secondary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Opponent + scheduled date
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.championshipMyMatchesVs(opponentName),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        if (match.scheduledAt != null) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            DateFormat('d MMM · HH:mm')
+                                .format(match.scheduledAt!),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: AppColors.textMuted),
+                          ),
+                        ],
+                        if (match.result != null) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            match.result!.sets
+                                .map((s) =>
+                                    '${s.teamAPoints}–${s.teamBPoints}')
+                                .join('  '),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: AppColors.textMuted),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  // Status badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusColor.withValues(alpha: 0.10),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: statusColor.withValues(alpha: 0.4)),
+                    ),
+                    child: Text(
+                      statusLabel,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(
+                            color: statusColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.chevron_right,
+                      size: 18, color: AppColors.textMuted),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

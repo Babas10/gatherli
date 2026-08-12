@@ -2258,6 +2258,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get championshipStatusBadgeCompleted => 'Completed';
 
   @override
+  String get championshipMyMatchesTab => 'My Matches';
+
+  @override
+  String get championshipMyMatchesEmpty =>
+      'Your matches will appear here once the championship starts.';
+
+  @override
+  String championshipMyMatchesVs(String opponent) {
+    return 'vs $opponent';
+  }
+
+  @override
+  String get championshipTabActive => 'Active';
+
+  @override
+  String get championshipTabCompleted => 'Completed';
+
+  @override
+  String get championshipNoCompletedYet => 'No completed championships yet.';
+
+  @override
   String get championshipNoResults => 'No championships at the moment.';
 
   @override
@@ -2467,6 +2488,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get championshipCreateRegionHint => 'e.g. Alsace';
+
+  @override
+  String get championshipCreateMaxTeamsLabel => 'Max teams';
+
+  @override
+  String get championshipCreateTeamSizeLabel => 'Players per team';
+
+  @override
+  String championshipCreateTeamSizeOption(int count) {
+    return '$count players';
+  }
 
   @override
   String get championshipCreateSubmit => 'Create Championship';

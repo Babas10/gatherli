@@ -1,11 +1,10 @@
-// Lists all championships with status filtering. Entry point to the championships section.
+// Lists championships in two tabs: Active (registration/active) and Completed.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_state.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -19,59 +18,27 @@ class ChampionshipListPage extends StatelessWidget {
   }
 }
 
-class _ChampionshipListView extends StatelessWidget {
+class _ChampionshipListView extends StatefulWidget {
   const _ChampionshipListView();
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  State<_ChampionshipListView> createState() => _ChampionshipListViewState();
+}
 
-    return Column(
-      children: [
-        _FilterRow(l10n: l10n),
-        Expanded(
-          child: BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
-            builder: (context, state) {
-              if (state is ChampionshipListLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
+class _ChampionshipListViewState extends State<_ChampionshipListView>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
 
-              if (state is ChampionshipListError) {
-                return Center(child: Text(state.message));
-              }
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
 
-              if (state is ChampionshipListLoaded) {
-                final items = state.championships;
-                if (items.isEmpty) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Text(
-                        l10n.championshipNoResults,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textMuted,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                  itemCount: items.length,
-                  itemBuilder: (_, i) => ChampionshipCard(
-                    championship: items[i],
-                    onTap: () => _onTap(context, items[i]),
-                  ),
-                );
-              }
-
-              return const SizedBox.shrink();
-            },
-          ),
-        ),
-      ],
-    );
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   void _onTap(BuildContext context, ChampionshipModel championship) {
@@ -83,75 +50,106 @@ class _ChampionshipListView extends StatelessWidget {
       ),
     );
   }
-}
-
-// ============================================================================
-// Filter row
-// ============================================================================
-
-class _FilterRow extends StatelessWidget {
-  final AppLocalizations l10n;
-
-  const _FilterRow({required this.l10n});
-
-  static const _filters = <String?>[null, 'registration', 'active', 'completed'];
-
-  String _label(AppLocalizations l10n, String? filter) {
-    switch (filter) {
-      case null:
-        return l10n.championshipFilterAll;
-      case 'registration':
-        return l10n.championshipFilterRegistration;
-      case 'active':
-        return l10n.championshipFilterActive;
-      case 'completed':
-        return l10n.championshipFilterCompleted;
-      default:
-        return filter;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
-      buildWhen: (prev, curr) =>
-          curr is ChampionshipListLoaded || prev is ChampionshipListLoaded,
-      builder: (context, state) {
-        final activeFilter =
-            state is ChampionshipListLoaded ? state.activeFilter : null;
+    final l10n = AppLocalizations.of(context)!;
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Row(
-            children: _filters
-                .map(
-                  (filter) => Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Text(_label(l10n, filter)),
-                      selected: activeFilter == filter,
-                      onSelected: (_) => context
-                          .read<ChampionshipListBloc>()
-                          .add(FilterChampionships(status: filter)),
-                      selectedColor:
-                          AppColors.primary.withValues(alpha: 0.15),
-                      checkmarkColor: AppColors.primary,
-                      labelStyle: TextStyle(
-                        color: activeFilter == filter
-                            ? AppColors.primary
-                            : AppColors.textMuted,
-                        fontWeight: activeFilter == filter
-                            ? FontWeight.w600
-                            : FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+    return Column(
+      children: [
+        // ── Tab bar ──────────────────────────────────────────────────────────
+        Container(
+          color: Colors.white,
+          child: TabBar(
+            controller: _tabController,
+            labelColor: AppColors.secondary,
+            unselectedLabelColor: AppColors.textMuted,
+            indicatorColor: AppColors.secondary,
+            tabs: [
+              Tab(text: l10n.championshipTabActive),
+              Tab(text: l10n.championshipTabCompleted),
+            ],
           ),
-        );
-      },
+        ),
+        // ── Tab content ──────────────────────────────────────────────────────
+        Expanded(
+          child: BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
+            builder: (context, state) {
+              if (state is ChampionshipListLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is ChampionshipListError) {
+                return Center(child: Text(state.message));
+              }
+              if (state is ChampionshipListLoaded) {
+                final all = state.championships;
+                final active = all
+                    .where((c) => c.status != ChampionshipStatus.completed)
+                    .toList();
+                final completed = all
+                    .where((c) => c.status == ChampionshipStatus.completed)
+                    .toList();
+
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _ChampionshipList(
+                      items: active,
+                      emptyLabel: l10n.championshipNoResults,
+                      onTap: (c) => _onTap(context, c),
+                    ),
+                    _ChampionshipList(
+                      items: completed,
+                      emptyLabel: l10n.championshipNoCompletedYet,
+                      onTap: (c) => _onTap(context, c),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ChampionshipList extends StatelessWidget {
+  final List<ChampionshipModel> items;
+  final String emptyLabel;
+  final void Function(ChampionshipModel) onTap;
+
+  const _ChampionshipList({
+    required this.items,
+    required this.emptyLabel,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Text(
+            emptyLabel,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: AppColors.textMuted),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      itemCount: items.length,
+      itemBuilder: (_, i) => ChampionshipCard(
+        championship: items[i],
+        onTap: () => onTap(items[i]),
+      ),
     );
   }
 }

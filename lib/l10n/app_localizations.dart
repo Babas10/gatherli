@@ -4142,6 +4142,42 @@ abstract class AppLocalizations {
   /// **'Completed'**
   String get championshipStatusBadgeCompleted;
 
+  /// Tab label showing the current user's team matches
+  ///
+  /// In en, this message translates to:
+  /// **'My Matches'**
+  String get championshipMyMatchesTab;
+
+  /// Empty state in the My Matches tab
+  ///
+  /// In en, this message translates to:
+  /// **'Your matches will appear here once the championship starts.'**
+  String get championshipMyMatchesEmpty;
+
+  /// Match row label: vs opponent
+  ///
+  /// In en, this message translates to:
+  /// **'vs {opponent}'**
+  String championshipMyMatchesVs(String opponent);
+
+  /// Tab label for active championships (registration / in-progress)
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get championshipTabActive;
+
+  /// Tab label for completed championships
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get championshipTabCompleted;
+
+  /// Empty state shown in the Completed tab
+  ///
+  /// In en, this message translates to:
+  /// **'No completed championships yet.'**
+  String get championshipNoCompletedYet;
+
   /// Empty state message on the championship list screen
   ///
   /// In en, this message translates to:
@@ -4519,6 +4555,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. Alsace'**
   String get championshipCreateRegionHint;
+
+  /// Label for the max teams segmented selector on the championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Max teams'**
+  String get championshipCreateMaxTeamsLabel;
+
+  /// Label for the team size segmented selector on the championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Players per team'**
+  String get championshipCreateTeamSizeLabel;
+
+  /// Label for a team size option
+  ///
+  /// In en, this message translates to:
+  /// **'{count} players'**
+  String championshipCreateTeamSizeOption(int count);
 
   /// Submit button label on championship creation form
   ///

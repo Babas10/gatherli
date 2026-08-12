@@ -40,6 +40,8 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
   DateTime? _startDate;
   DateTime? _endDate;
   ChampionshipGenderCategory? _genderCategory;
+  int _maxTeams = 10;
+  int _teamSize = 2;
 
   @override
   void dispose() {
@@ -104,6 +106,8 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
             country: country.isNotEmpty ? country : null,
             region: region.isNotEmpty ? region : null,
             genderCategory: _genderCategory,
+            maxTeams: _maxTeams,
+            teamSize: _teamSize,
           ),
         );
   }
@@ -187,6 +191,27 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 16),
+
+              // Max teams
+              const SizedBox(height: 4),
+              _SegmentedField<int>(
+                label: l10n.championshipCreateMaxTeamsLabel,
+                options: const [4, 6, 8, 10],
+                selected: _maxTeams,
+                labelFor: (v) => v.toString(),
+                onChanged: (v) => setState(() => _maxTeams = v),
+              ),
+              const SizedBox(height: 16),
+
+              // Team size
+              _SegmentedField<int>(
+                label: l10n.championshipCreateTeamSizeLabel,
+                options: const [2, 3],
+                selected: _teamSize,
+                labelFor: (v) => l10n.championshipCreateTeamSizeOption(v),
+                onChanged: (v) => setState(() => _teamSize = v),
               ),
               const SizedBox(height: 16),
 
@@ -311,6 +336,78 @@ class _GenderOption extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Generic segmented button row for selecting one value from a small option set.
+class _SegmentedField<T> extends StatelessWidget {
+  final String label;
+  final List<T> options;
+  final T selected;
+  final String Function(T) labelFor;
+  final ValueChanged<T> onChanged;
+
+  const _SegmentedField({
+    required this.label,
+    required this.options,
+    required this.selected,
+    required this.labelFor,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const blue = Color(0xFF004E64);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: options.map((option) {
+            final isSelected = option == selected;
+            return Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: option == options.last ? 0 : 8,
+                ),
+                child: InkWell(
+                  onTap: () => onChanged(option),
+                  borderRadius: BorderRadius.circular(10),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isSelected ? blue : Colors.grey.shade300,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      color: isSelected
+                          ? blue.withValues(alpha: 0.06)
+                          : Colors.transparent,
+                    ),
+                    child: Text(
+                      labelFor(option),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: isSelected ? blue : AppColors.textMuted,
+                            fontWeight: isSelected
+                                ? FontWeight.w700
+                                : FontWeight.normal,
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

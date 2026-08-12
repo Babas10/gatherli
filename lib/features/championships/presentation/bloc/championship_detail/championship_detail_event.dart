@@ -82,6 +82,16 @@ class ChampionshipDetailUserUpdated extends ChampionshipDetailEvent {
   List<Object?> get props => [gender];
 }
 
+/// Internal — emitted by the all-matches stream listener (used for My Matches).
+class ChampionshipDetailAllMatchesUpdated extends ChampionshipDetailEvent {
+  final List<ChampionshipMatchModel> matches;
+
+  const ChampionshipDetailAllMatchesUpdated(this.matches);
+
+  @override
+  List<Object?> get props => [matches];
+}
+
 /// Internal — emitted when the championship stream produces an error.
 class ChampionshipDetailLoadError extends ChampionshipDetailEvent {
   final String message;
