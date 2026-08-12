@@ -328,10 +328,12 @@ export const onGameCreated = functions.region('europe-west6').firestore
 
         const prefs = memberData.notificationPreferences || {};
 
-        const shouldNotify = prefs.games !== false;
+        // Per-group mute: groupSpecific[groupId] === false means this group is muted.
+        const groupMuted = prefs.groupSpecific?.[groupId] === false;
+        const shouldNotify = !groupMuted && prefs.games !== false;
 
         if (!shouldNotify) {
-          functions.logger.debug("Member has disabled game notifications", {
+          functions.logger.debug("Member has disabled game notifications or muted this group", {
             memberId,
             groupId,
             gameId,
@@ -905,23 +907,7 @@ export const onWaitlistPromoted = functions.region('europe-west6').firestore
 
         const promotedUserData = promotedUserDoc.data();
 
-        // Try to get player name in order of preference: firstName + lastName, displayName, email, or "Someone"
-        let playerName = "Someone";
-        if (promotedUserData) {
-          if (promotedUserData.firstName && promotedUserData.lastName) {
-            playerName = `${promotedUserData.firstName} ${promotedUserData.lastName}`;
-          } else if (promotedUserData.displayName) {
-            playerName = promotedUserData.displayName;
-          } else if (promotedUserData.email) {
-            playerName = promotedUserData.email;
-          }
-        }
-
-        // Calculate current player count
-        const currentPlayers = afterPlayers.length;
-        const maxPlayers = after.maxPlayers || 8;
-
-        // 1. Notify the promoted user with "You's In!" message
+        // 1. Notify the promoted user with "You're In!" message
         const promotedUserTokens = promotedUserData?.fcmTokens || [];
         if (promotedUserTokens.length > 0 && promotedUserData) {
           const promotedUserPrefs = promotedUserData.notificationPreferences || {};
@@ -1007,189 +993,7 @@ export const onWaitlistPromoted = functions.region('europe-west6').firestore
           }
         }
 
-        // 2. Notify existing players (excluding the promoted user)
-        const existingPlayers = afterPlayers.filter((id: string) => id !== promotedId);
-
-        if (existingPlayers.length === 0) {
-          functions.logger.info("No existing players to notify (promoted user is first player)", {
-            groupId,
-            gameId,
-            promotedId,
-          });
-          continue;
-        }
-
-        // Track tokens per user for cleanup
-        const userTokenMap = new Map<string, string[]>();
-        const allTokens: string[] = [];
-
-        // Collect FCM tokens from existing players
-        for (const existingPlayerId of existingPlayers) {
-          const playerDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(existingPlayerId)
-            .get();
-
-          const playerData = playerDoc.data();
-          if (!playerData) {
-            functions.logger.debug("Player not found", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const fcmTokens = playerData.fcmTokens || [];
-          if (fcmTokens.length === 0) {
-            functions.logger.debug("Player has no FCM tokens", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const prefs = playerData.notificationPreferences || {};
-
-          const shouldNotify = prefs.games !== false;
-
-          if (!shouldNotify) {
-            functions.logger.debug("Player has disabled waitlist joined notifications", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Check quiet hours
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Player is in quiet hours", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Add tokens to map for later cleanup if needed
-          userTokenMap.set(existingPlayerId, fcmTokens);
-          allTokens.push(...fcmTokens);
-        }
-
-        if (allTokens.length === 0) {
-          functions.logger.info("No existing players to notify for this promotion", {
-            groupId,
-            gameId,
-            promotedId,
-          });
-          continue;
-        }
-
-        // Send notification to existing players
-        const message: admin.messaging.MulticastMessage = {
-          tokens: allTokens,
-          notification: {
-            title: "Waitlist Player Joined!",
-            body: `${playerName} was moved from waitlist to ${after.title || "the game"} (${currentPlayers}/${maxPlayers} players)`,
-          },
-          data: {
-            type: "waitlist_joined",
-            groupId: groupId,
-            gameId: gameId,
-            playerId: promotedId,
-            playerName: playerName,
-            currentPlayers: currentPlayers.toString(),
-            maxPlayers: maxPlayers.toString(),
-          },
-          android: {
-            priority: "high",
-            notification: {
-              channelId: "high_importance_channel",
-              clickAction: "FLUTTER_NOTIFICATION_CLICK",
-            },
-          },
-          apns: {
-            payload: {
-              aps: {
-                badge: 1,
-                sound: "default",
-              },
-            },
-          },
-        };
-
-        const response = await admin.messaging().sendEachForMulticast(message);
-
-        functions.logger.info("Waitlist promotion notification sent to existing players", {
-          groupId,
-          gameId,
-          promotedId,
-          successCount: response.successCount,
-          failureCount: response.failureCount,
-        });
-
-        // Log failures for debugging
-        if (response.failureCount > 0) {
-          response.responses.forEach((resp, idx) => {
-            if (!resp.success) {
-              functions.logger.error("Failed to send notification to token", {
-                groupId,
-                gameId,
-                promotedId,
-                tokenIndex: idx,
-                error: resp.error?.code,
-                errorMessage: resp.error?.message,
-              });
-            }
-          });
-        }
-
-        // Remove invalid tokens
-        if (response.failureCount > 0) {
-          const invalidTokensByUser = new Map<string, string[]>();
-
-          response.responses.forEach((resp, idx) => {
-            if (
-              !resp.success &&
-              (resp.error?.code === "messaging/invalid-registration-token" ||
-                resp.error?.code === "messaging/registration-token-not-registered")
-            ) {
-              const invalidToken = allTokens[idx];
-
-              // Find which user this token belongs to
-              for (const [userId, tokens] of userTokenMap.entries()) {
-                if (tokens.includes(invalidToken)) {
-                  if (!invalidTokensByUser.has(userId)) {
-                    invalidTokensByUser.set(userId, []);
-                  }
-                  invalidTokensByUser.get(userId)!.push(invalidToken);
-                  break;
-                }
-              }
-            }
-          });
-
-          // Clean up invalid tokens per user
-          for (const [userId, tokensToRemove] of invalidTokensByUser.entries()) {
-            await admin
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .update({
-                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-              });
-
-            functions.logger.info("Removed invalid FCM tokens", {
-              userId,
-              groupId,
-              gameId,
-              removedCount: tokensToRemove.length,
-            });
-          }
-        }
+        // Existing-player broadcast removed — only the promoted user is notified.
       }
 
       await writeAnalyticsEvent("waitlist_promoted", { groupId, gameId });

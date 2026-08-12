@@ -22,9 +22,14 @@ import 'package:play_with_me/features/games/presentation/bloc/games_list/games_l
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
 import 'package:play_with_me/features/groups/presentation/pages/group_details_page.dart';
+import 'package:play_with_me/features/notifications/domain/entities/notification_preferences_entity.dart';
+import 'package:play_with_me/features/notifications/domain/repositories/notification_repository.dart';
 
 import '../../../../../helpers/mocks.dart';
 import '../../../../../helpers/test_app.dart';
+
+class _MockNotificationRepository extends Mock
+    implements NotificationRepository {}
 
 void main() {
   late MockGroupMemberBloc mockGroupMemberBloc;
@@ -35,6 +40,7 @@ void main() {
   late MockFriendRepository mockFriendRepository;
   late MockGroupInviteLinkBloc mockGroupInviteLinkBloc;
   late MockGamesListBloc mockGamesListBloc;
+  late _MockNotificationRepository mockNotificationRepository;
 
   const testUserId = 'test-user-123';
   const testGroupId = 'test-group-123';
@@ -79,6 +85,7 @@ void main() {
     registerFallbackValue(FakeGroupMemberEvent());
     registerFallbackValue(FakeGroupMemberState());
     registerFallbackValue(FakeGamesListEvent());
+    registerFallbackValue(const NotificationPreferencesEntity());
   });
 
   setUp(() {
@@ -133,7 +140,18 @@ void main() {
       () => mockFriendRepository.batchCheckFriendRequestStatus(any()),
     ).thenAnswer((_) async => {'member-3': FriendRequestStatus.none});
 
+    mockNotificationRepository = _MockNotificationRepository();
+    when(() => mockNotificationRepository.getPreferences())
+        .thenAnswer((_) async => const NotificationPreferencesEntity());
+    when(() => mockNotificationRepository.updatePreferences(any()))
+        .thenAnswer((_) async {});
+
     // Register service locator mocks
+    if (sl.isRegistered<NotificationRepository>()) {
+      sl.unregister<NotificationRepository>();
+    }
+    sl.registerSingleton<NotificationRepository>(mockNotificationRepository);
+
     if (sl.isRegistered<GroupMemberBloc>()) {
       sl.unregister<GroupMemberBloc>();
     }
@@ -170,6 +188,9 @@ void main() {
     }
     if (sl.isRegistered<FriendRepository>()) {
       sl.unregister<FriendRepository>();
+    }
+    if (sl.isRegistered<NotificationRepository>()) {
+      sl.unregister<NotificationRepository>();
     }
   });
 

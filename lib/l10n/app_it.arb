@@ -913,4 +913,6 @@
   "notifQuietHoursSubtitle": "Sospendi le notifiche in orari specifici",
   "notifQuietHoursRange": "Nessuna notifica dalle {start} alle {end}",
   "notifQuietHoursAdjust": "Modifica ore silenziose",
-  "retryButton": "Riprova"}
+  "retryButton": "Riprova",
+  "groupMuteNotifications": "Silenzia le notifiche",
+  "groupUnmuteNotifications": "Attiva le notifiche"}

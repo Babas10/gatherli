@@ -4777,6 +4777,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retryButton;
+
+  /// Popup menu item to mute notifications for a group
+  ///
+  /// In en, this message translates to:
+  /// **'Mute notifications'**
+  String get groupMuteNotifications;
+
+  /// Popup menu item to unmute notifications for a group
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute notifications'**
+  String get groupUnmuteNotifications;
 }
 
 class _AppLocalizationsDelegate

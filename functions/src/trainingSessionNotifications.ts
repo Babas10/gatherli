@@ -148,9 +148,11 @@ async function collectEligibleTokens(
 
     const prefs = userData.notificationPreferences ?? {};
 
+    // Per-group mute: groupSpecific[groupId] === false means this group is muted.
+    const groupMuted = prefs.groupSpecific?.[groupId] === false;
     // Check the unified 'training' category preference (Story N.3).
     // Missing key defaults to true (enabled).
-    const shouldNotify = prefs.training !== false;
+    const shouldNotify = !groupMuted && prefs.training !== false;
 
     if (!shouldNotify) {
       functions.logger.debug("User has disabled this notification type", {

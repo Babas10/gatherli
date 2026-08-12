@@ -3338,5 +3338,10 @@
   "notifQuietHoursAdjust": "Adjust Quiet Hours",
   "@notifQuietHoursAdjust": {"description": "List tile label to open the quiet hours time picker"},
   "retryButton": "Retry",
-  "@retryButton": {"description": "Generic retry button label"}
+  "@retryButton": {"description": "Generic retry button label"},
+
+  "groupMuteNotifications": "Mute notifications",
+  "@groupMuteNotifications": {"description": "Popup menu item to mute notifications for a group"},
+  "groupUnmuteNotifications": "Unmute notifications",
+  "@groupUnmuteNotifications": {"description": "Popup menu item to unmute notifications for a group"}
 }

@@ -913,4 +913,6 @@
   "notifQuietHoursSubtitle": "Benachrichtigungen zu bestimmten Zeiten pausieren",
   "notifQuietHoursRange": "Keine Benachrichtigungen von {start} bis {end}",
   "notifQuietHoursAdjust": "Ruhezeiten anpassen",
-  "retryButton": "Erneut versuchen"}
+  "retryButton": "Erneut versuchen",
+  "groupMuteNotifications": "Benachrichtigungen stummschalten",
+  "groupUnmuteNotifications": "Benachrichtigungen aktivieren"}

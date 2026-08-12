@@ -2644,4 +2644,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get retryButton => 'Reintentar';
+
+  @override
+  String get groupMuteNotifications => 'Silenciar notificaciones';
+
+  @override
+  String get groupUnmuteNotifications => 'Activar notificaciones';
 }

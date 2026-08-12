@@ -2656,4 +2656,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get retryButton => 'Erneut versuchen';
+
+  @override
+  String get groupMuteNotifications => 'Benachrichtigungen stummschalten';
+
+  @override
+  String get groupUnmuteNotifications => 'Benachrichtigungen aktivieren';
 }

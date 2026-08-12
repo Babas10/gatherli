@@ -2660,4 +2660,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get retryButton => 'Réessayer';
+
+  @override
+  String get groupMuteNotifications => 'Désactiver les notifications';
+
+  @override
+  String get groupUnmuteNotifications => 'Activer les notifications';
 }

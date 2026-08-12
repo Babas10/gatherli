@@ -3,9 +3,6 @@
 // Clears scheduledByTeamId (marks schedule as confirmed) and notifies proposer.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {
-  sendChampionshipNotificationToUsers,
-} from "./championshipNotifications";
 
 interface ConfirmMatchScheduleRequest {
   championshipId: string;
@@ -159,20 +156,8 @@ export async function confirmMatchScheduleHandler(
     );
   }
 
-  // ── 8. Notify the proposing team ───────────────────────────────────────────
-  const proposingTeamId = match.scheduledByTeamId as string;
-  const proposingMembers: string[] =
-    proposingTeamId === match.teamAId ? teamAMembers : teamBMembers;
-
-  await sendChampionshipNotificationToUsers(db, proposingMembers, {
-    title: "Schedule Confirmed ✓",
-    body: `${confirmingTeamName} confirmed the match schedule.`,
-    data: {
-      type: "championship_match",
-      championshipId: data.championshipId,
-      matchId: data.matchId,
-    },
-  });
+  // Schedule confirmed notification removed — the proposing team sees the
+  // confirmed date the next time they open the match. Not worth a push.
 
   functions.logger.info("[confirmMatchSchedule] Schedule confirmed", {
     matchId: data.matchId,

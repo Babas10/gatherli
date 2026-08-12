@@ -913,4 +913,6 @@
   "notifQuietHoursSubtitle": "Pausar notificaciones en horarios específicos",
   "notifQuietHoursRange": "Sin notificaciones de {start} a {end}",
   "notifQuietHoursAdjust": "Ajustar horas de silencio",
-  "retryButton": "Reintentar"}
+  "retryButton": "Reintentar",
+  "groupMuteNotifications": "Silenciar notificaciones",
+  "groupUnmuteNotifications": "Activar notificaciones"}
