@@ -4658,6 +4658,24 @@ abstract class AppLocalizations {
   /// **'Mark as Complete'**
   String get completeChampionshipButton;
 
+  /// Admin panel button to open the edit championship dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Details'**
+  String get editChampionshipButton;
+
+  /// Title of the edit championship dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Championship'**
+  String get editChampionshipTitle;
+
+  /// Placeholder shown on the deadline button in the edit dialog when no new deadline is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Change deadline'**
+  String get editChampionshipChangeDeadline;
+
   /// Confirmation dialog title when completing a championship
   ///
   /// In en, this message translates to:

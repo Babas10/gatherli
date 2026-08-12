@@ -170,5 +170,8 @@ export {getChampionships} from "./getChampionships";
 // Story 30.16: Mark championship as completed (admin-only)
 export {completeChampionship} from "./completeChampionship";
 
+// Story 30.28: Edit championship title/deadline (admin-only, before start)
+export {editChampionship} from "./editChampionship";
+
 // Story 30.19: Enforce registration deadlines (scheduled — hourly)
 export {enforceRegistrationDeadlines} from "./enforceRegistrationDeadlines";

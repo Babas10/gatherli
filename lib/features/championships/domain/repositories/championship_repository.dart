@@ -190,4 +190,13 @@ abstract class ChampionshipRepository {
   /// Throws [ChampionshipException] on error.
   Future<void> completeChampionship({required String championshipId});
 
+  /// Updates the championship title and/or registration deadline (admin only).
+  /// Only allowed when status is registration or registration_closed.
+  /// Throws [ChampionshipException] on error.
+  Future<void> editChampionship({
+    required String championshipId,
+    String? title,
+    DateTime? registrationDeadline,
+  });
+
 }

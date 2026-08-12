@@ -82,3 +82,19 @@ class CompleteChampionship extends AdminPanelEvent {
   @override
   List<Object?> get props => [championshipId];
 }
+
+/// Admin updates the championship title and/or registration deadline.
+class EditChampionship extends AdminPanelEvent {
+  final String championshipId;
+  final String? title;
+  final DateTime? registrationDeadline;
+
+  const EditChampionship({
+    required this.championshipId,
+    this.title,
+    this.registrationDeadline,
+  });
+
+  @override
+  List<Object?> get props => [championshipId, title, registrationDeadline];
+}

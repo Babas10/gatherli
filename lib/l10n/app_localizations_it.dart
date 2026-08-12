@@ -2571,6 +2571,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get completeChampionshipButton => 'Segna come completato';
 
   @override
+  String get editChampionshipButton => 'Modifica dettagli';
+
+  @override
+  String get editChampionshipTitle => 'Modifica campionato';
+
+  @override
+  String get editChampionshipChangeDeadline => 'Cambia scadenza';
+
+  @override
   String get completeChampionshipConfirmTitle => 'Completare il campionato?';
 
   @override

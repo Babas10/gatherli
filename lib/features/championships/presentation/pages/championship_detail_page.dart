@@ -1281,6 +1281,7 @@ class _AdminTab extends StatelessWidget {
                   l10n: l10n,
                   onStart: () => _showStartDialog(context),
                   onComplete: () => _showCompleteDialog(context),
+                  onEdit: () => _showEditDialog(context, state),
                 ),
                 // ── Matches needing attention ─────────────────────────────
                 Expanded(
@@ -1411,6 +1412,77 @@ class _AdminTab extends StatelessWidget {
     );
   }
 
+  void _showEditDialog(BuildContext context, AdminPanelLoaded state) {
+    final adminBloc = context.read<AdminPanelBloc>();
+    final titleController =
+        TextEditingController(text: championship.title);
+    DateTime? newDeadline;
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => StatefulBuilder(
+        builder: (dialogCtx, setDialogState) => AlertDialog(
+          title: Text(l10n.editChampionshipTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: l10n.championshipCreateTitleLabel,
+                ),
+                maxLength: 100,
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.calendar_today_outlined, size: 16),
+                label: Text(
+                  newDeadline != null
+                      ? DateFormat('d MMM yyyy').format(newDeadline!)
+                      : l10n.editChampionshipChangeDeadline,
+                ),
+                onPressed: () async {
+                  final picked = await showAppStyledDatePicker(
+                    context: dialogCtx,
+                    initialDate: newDeadline ??
+                        championship.registrationDeadline.add(
+                          const Duration(days: 1),
+                        ),
+                    firstDate:
+                        DateTime.now().add(const Duration(days: 1)),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (picked != null) {
+                    setDialogState(() => newDeadline = picked);
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop(),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () {
+                final newTitle = titleController.text.trim();
+                if (newTitle.length < 3) return;
+                Navigator.of(dialogCtx).pop();
+                adminBloc.add(EditChampionship(
+                  championshipId: championship.id,
+                  title: newTitle != championship.title ? newTitle : null,
+                  registrationDeadline: newDeadline,
+                ));
+              },
+              child: Text(l10n.save),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showDecisionSheet(BuildContext context, ChampionshipMatchModel match) {
     showModalBottomSheet<void>(
       context: context,
@@ -1446,6 +1518,7 @@ class _AdminActions extends StatelessWidget {
   final AppLocalizations l10n;
   final VoidCallback onStart;
   final VoidCallback onComplete;
+  final VoidCallback onEdit;
 
   const _AdminActions({
     required this.championship,
@@ -1453,6 +1526,7 @@ class _AdminActions extends StatelessWidget {
     required this.l10n,
     required this.onStart,
     required this.onComplete,
+    required this.onEdit,
   });
 
   @override
@@ -1462,8 +1536,10 @@ class _AdminActions extends StatelessWidget {
             !state.isStarting;
     final canComplete = championship.status == ChampionshipStatus.active &&
         !state.isCompleting;
+    final canEdit = championship.status == ChampionshipStatus.registration ||
+        championship.status == ChampionshipStatus.registrationClosed;
 
-    if (!canStart && !canComplete) return const SizedBox.shrink();
+    if (!canStart && !canComplete && !canEdit) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
@@ -1494,6 +1570,27 @@ class _AdminActions extends StatelessWidget {
                     )
                   : const Icon(Icons.check_circle_outline),
               label: Text(l10n.completeChampionshipButton),
+            ),
+          ],
+          if (canEdit) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: state.isEditing ? null : onEdit,
+              icon: state.isEditing
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.edit_outlined),
+              label: Text(l10n.editChampionshipButton),
+            ),
+          ],
+          if (state.editError != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              state.editError!,
+              style: const TextStyle(color: AppColors.danger, fontSize: 13),
             ),
           ],
           const SizedBox(height: 8),

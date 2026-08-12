@@ -584,4 +584,27 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     }
   }
 
+  @override
+  Future<void> editChampionship({
+    required String championshipId,
+    String? title,
+    DateTime? registrationDeadline,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('editChampionship');
+      await callable.call({
+        'championshipId': championshipId,
+        if (title != null) 'title': title,
+        if (registrationDeadline != null)
+          'registrationDeadline': registrationDeadline.toIso8601String(),
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to edit championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to edit championship: $e');
+    }
+  }
 }

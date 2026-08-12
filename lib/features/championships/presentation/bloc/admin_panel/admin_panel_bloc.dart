@@ -30,6 +30,7 @@ class AdminPanelBloc extends Bloc<AdminPanelEvent, AdminPanelState> {
     on<AdminMatchesError>(_onMatchesError);
     on<StartChampionship>(_onStartChampionship);
     on<CompleteChampionship>(_onCompleteChampionship);
+    on<EditChampionship>(_onEditChampionship);
   }
 
   Future<void> _onLoadAdminPanel(
@@ -199,6 +200,34 @@ class AdminPanelBloc extends Bloc<AdminPanelEvent, AdminPanelState> {
           completeError: e.toString(),
         ));
       }
+    }
+  }
+
+  Future<void> _onEditChampionship(
+    EditChampionship event,
+    Emitter<AdminPanelState> emit,
+  ) async {
+    if (state is! AdminPanelLoaded) return;
+    final loaded = state as AdminPanelLoaded;
+
+    emit(loaded.copyWith(isEditing: true, editError: null));
+
+    try {
+      await _repository.editChampionship(
+        championshipId: event.championshipId,
+        title: event.title,
+        registrationDeadline: event.registrationDeadline,
+      );
+      if (state is AdminPanelLoaded) {
+        emit((state as AdminPanelLoaded).copyWith(isEditing: false));
+      }
+    } on ChampionshipException catch (e) {
+      emit(loaded.copyWith(isEditing: false, editError: e.message));
+    } catch (e) {
+      emit(loaded.copyWith(
+        isEditing: false,
+        editError: 'Failed to edit championship: $e',
+      ));
     }
   }
 
