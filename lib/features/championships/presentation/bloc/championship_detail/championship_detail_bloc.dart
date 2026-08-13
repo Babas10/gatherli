@@ -145,13 +145,17 @@ class ChampionshipDetailBloc
   ) {
     if (state is ChampionshipDetailLoaded) {
       final current = state as ChampionshipDetailLoaded;
+      // Use copyWith so new fields (allMatches etc.) are preserved.
+      // currentUserGender may be null — pass it explicitly via a wrapper
+      // because copyWith uses a sentinel to distinguish "not provided" from null.
       emit(ChampionshipDetailLoaded(
         championship: current.championship,
         standings: current.standings,
         teams: current.teams,
         currentRoundMatches: current.currentRoundMatches,
         selectedRound: current.selectedRound,
-        currentUserGender: event.gender, // explicitly set, may be null
+        allMatches: current.allMatches,
+        currentUserGender: event.gender,
       ));
     }
   }
