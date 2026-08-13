@@ -19,7 +19,6 @@ class SubmitChampionshipCreation extends ChampionshipCreationEvent {
   final String? region;
   final ChampionshipGenderCategory? genderCategory;
   final int maxTeams;
-  final int teamSize;
 
   const SubmitChampionshipCreation({
     required this.title,
@@ -30,12 +29,11 @@ class SubmitChampionshipCreation extends ChampionshipCreationEvent {
     this.region,
     this.genderCategory,
     this.maxTeams = 10,
-    this.teamSize = 2,
   });
 
   @override
   List<Object?> get props => [
         title, registrationDeadline, startDate, endDate,
-        country, region, genderCategory, maxTeams, teamSize,
+        country, region, genderCategory, maxTeams,
       ];
 }

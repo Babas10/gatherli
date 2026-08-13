@@ -43,7 +43,6 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
   DateTime? _endDate;
   ChampionshipGenderCategory? _genderCategory;
   int _maxTeams = 10;
-  int _teamSize = 2;
 
   @override
   void dispose() {
@@ -109,7 +108,6 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
             region: region.isNotEmpty ? region : null,
             genderCategory: _genderCategory,
             maxTeams: _maxTeams,
-            teamSize: _teamSize,
           ),
         );
   }
@@ -211,16 +209,6 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 selected: _maxTeams,
                 labelFor: (v) => v.toString(),
                 onChanged: (v) => setState(() => _maxTeams = v),
-              ),
-              const SizedBox(height: 16),
-
-              // Team size
-              _SegmentedField<int>(
-                label: l10n.championshipCreateTeamSizeLabel,
-                options: const [2, 3],
-                selected: _teamSize,
-                labelFor: (v) => l10n.championshipCreateTeamSizeOption(v),
-                onChanged: (v) => setState(() => _teamSize = v),
               ),
               const SizedBox(height: 16),
 

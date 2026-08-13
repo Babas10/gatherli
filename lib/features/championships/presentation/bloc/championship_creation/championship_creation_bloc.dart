@@ -30,7 +30,6 @@ class ChampionshipCreationBloc
         region: event.region,
         genderCategory: event.genderCategory,
         maxTeams: event.maxTeams,
-        teamSize: event.teamSize,
       );
       emit(ChampionshipCreationSuccess(championshipId: id));
     } on ChampionshipException catch (e) {

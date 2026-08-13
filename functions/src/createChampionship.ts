@@ -15,7 +15,6 @@ interface CreateChampionshipRequest {
   region?: string;
   genderCategory?: "male" | "female"; // null = no restriction
   maxTeams?: number; // allowed: 4, 6, 8, 10 — default 10
-  teamSize?: number; // allowed: 2 or 3 — default 2
 }
 
 interface CreateChampionshipResponse {
@@ -90,20 +89,13 @@ export async function createChampionshipHandler(
   // 2. Input Validation
   // ========================================
   const allowedMaxTeams = [4, 6, 8, 10];
-  const allowedTeamSizes = [2, 3];
   const maxTeams = data?.maxTeams ?? 10;
-  const teamSize = data?.teamSize ?? 2;
+  const teamSize = 2; // beach volleyball is always 2 players per team
 
   if (!allowedMaxTeams.includes(maxTeams)) {
     throw new functions.https.HttpsError(
       "invalid-argument",
       `maxTeams must be one of: ${allowedMaxTeams.join(", ")}`
-    );
-  }
-  if (!allowedTeamSizes.includes(teamSize)) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      `teamSize must be 2 or 3`
     );
   }
 

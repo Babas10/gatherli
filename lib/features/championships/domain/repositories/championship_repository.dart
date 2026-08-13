@@ -171,7 +171,7 @@ abstract class ChampionshipRepository {
   /// Creates a championship via Cloud Function (any authenticated user).
   /// The caller becomes the championship admin.
   /// [maxTeams] must be 4, 6, 8, or 10 (default 10).
-  /// [teamSize] must be 2 or 3 (default 2).
+  /// Beach volleyball is always 2 players per team (teamSize fixed at 2).
   /// Returns the new championship ID.
   /// Throws [ChampionshipException] on error.
   Future<String> createChampionship({
@@ -183,7 +183,6 @@ abstract class ChampionshipRepository {
     String? region,
     ChampionshipGenderCategory? genderCategory,
     int maxTeams = 10,
-    int teamSize = 2,
   });
 
   /// Marks the championship as completed (admin only).
