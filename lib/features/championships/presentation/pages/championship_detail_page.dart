@@ -24,6 +24,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/partner_pi
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart' hide LoadChampionships;
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
+import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
@@ -59,6 +61,13 @@ class _ChampionshipDetailView extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(title: Text(title)),
+          bottomNavigationBar: GlobalBottomNavBar(
+            selectedIndex: 4,
+            onTabSelected: (index) {
+              HomePage.onNavigateToTab?.call(index);
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          ),
           body: _buildBody(context, state, l10n),
         );
       },

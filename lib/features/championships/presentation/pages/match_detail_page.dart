@@ -13,6 +13,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/match_deta
 import 'package:play_with_me/features/championships/presentation/widgets/match_chat_section.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_result_entry_widget.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_verification_widget.dart';
+import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class MatchDetailPage extends StatelessWidget {
@@ -61,6 +63,13 @@ class _MatchDetailView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.matchDetailTitle)),
+      bottomNavigationBar: GlobalBottomNavBar(
+        selectedIndex: 4,
+        onTabSelected: (index) {
+          HomePage.onNavigateToTab?.call(index);
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+      ),
       body: BlocBuilder<MatchDetailBloc, MatchDetailState>(
         builder: (context, state) {
           if (state is MatchDetailLoading || state is MatchDetailInitial) {

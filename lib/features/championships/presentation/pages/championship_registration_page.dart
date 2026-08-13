@@ -9,6 +9,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
+import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 
@@ -90,6 +92,13 @@ class _ChampionshipRegistrationPageState
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.championshipsTitle)),
+      bottomNavigationBar: GlobalBottomNavBar(
+        selectedIndex: 4,
+        onTabSelected: (index) {
+          HomePage.onNavigateToTab?.call(index);
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+      ),
       body: BlocConsumer<TeamRegistrationBloc, TeamRegistrationState>(
         listener: (context, state) {
           if (state is TeamCreated) {

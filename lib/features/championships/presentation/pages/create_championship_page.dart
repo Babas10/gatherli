@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
+import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import '../bloc/championship_creation/championship_creation_bloc.dart';
@@ -135,6 +137,13 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
       },
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.championshipCreate)),
+        bottomNavigationBar: GlobalBottomNavBar(
+          selectedIndex: 4,
+          onTabSelected: (index) {
+            HomePage.onNavigateToTab?.call(index);
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+        ),
         body: Form(
           key: _formKey,
           child: ListView(
