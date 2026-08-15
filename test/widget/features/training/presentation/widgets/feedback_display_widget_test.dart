@@ -24,7 +24,7 @@ void main() {
 
     // Register fallback values for events
     registerFallbackValue(const FeedbackInitial());
-    registerFallbackValue(LoadAggregatedFeedback('session-123'));
+    registerFallbackValue(const LoadAggregatedFeedback('session-123'));
   });
 
   Widget createWidgetUnderTest() {

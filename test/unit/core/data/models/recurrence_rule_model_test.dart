@@ -92,7 +92,7 @@ void main() {
       });
 
       test('isValid returns false when interval < 1', () {
-        final rule = RecurrenceRuleModel(
+        const rule = RecurrenceRuleModel(
           frequency: RecurrenceFrequency.weekly,
           interval: 0,
           count: 10,
@@ -102,7 +102,7 @@ void main() {
       });
 
       test('isValid returns false when count < 1', () {
-        final rule = RecurrenceRuleModel(
+        const rule = RecurrenceRuleModel(
           frequency: RecurrenceFrequency.weekly,
           interval: 1,
           count: 0,
@@ -114,7 +114,7 @@ void main() {
       test(
         'isValid returns false when neither count nor endDate is provided',
         () {
-          final rule = RecurrenceRuleModel(
+          const rule = RecurrenceRuleModel(
             frequency: RecurrenceFrequency.weekly,
             interval: 1,
           );
@@ -124,7 +124,7 @@ void main() {
       );
 
       test('isValid returns false when daysOfWeek contains invalid day', () {
-        final rule = RecurrenceRuleModel(
+        const rule = RecurrenceRuleModel(
           frequency: RecurrenceFrequency.weekly,
           interval: 1,
           count: 10,
@@ -135,7 +135,7 @@ void main() {
       });
 
       test('isValid returns false when daysOfWeek is empty for weekly', () {
-        final rule = RecurrenceRuleModel(
+        const rule = RecurrenceRuleModel(
           frequency: RecurrenceFrequency.weekly,
           interval: 1,
           count: 10,

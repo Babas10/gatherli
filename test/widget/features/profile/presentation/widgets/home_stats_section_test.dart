@@ -8,7 +8,7 @@ import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('HomeStatsSection Widget Tests', () {
-    final testUser = UserModel(
+    const testUser = UserModel(
       uid: 'user-123',
       email: 'test@example.com',
       displayName: 'Test User',

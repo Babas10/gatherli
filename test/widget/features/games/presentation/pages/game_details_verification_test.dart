@@ -129,7 +129,7 @@ void main() {
   ) async {
     mockGameRepository.addGame(verificationGame);
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: submitterId,
           email: '',
@@ -151,7 +151,7 @@ void main() {
     (tester) async {
       mockGameRepository.addGame(verificationGame);
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: verifierId,
             email: '',
@@ -178,7 +178,7 @@ void main() {
       mockGameRepository.addGame(confirmedGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: verifierId,
             email: '',

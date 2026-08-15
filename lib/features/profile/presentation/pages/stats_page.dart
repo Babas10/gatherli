@@ -22,6 +22,7 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, statsState) {
         if (statsState is PlayerStatsLoading) {
           return const Center(child: CircularProgressIndicator());

@@ -138,6 +138,7 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return Scaffold(

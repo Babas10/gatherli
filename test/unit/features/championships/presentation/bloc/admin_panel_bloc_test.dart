@@ -350,7 +350,7 @@ void main() {
       },
       act: (bloc) async {
         await Future<void>.delayed(const Duration(milliseconds: 20));
-        bloc.add(CompleteChampionship(championshipId: championshipId));
+        bloc.add(const CompleteChampionship(championshipId: championshipId));
       },
       verify: (bloc) {
         final state = bloc.state as AdminPanelLoaded;
@@ -372,7 +372,7 @@ void main() {
       },
       act: (bloc) async {
         await Future<void>.delayed(const Duration(milliseconds: 20));
-        bloc.add(CompleteChampionship(championshipId: championshipId));
+        bloc.add(const CompleteChampionship(championshipId: championshipId));
       },
       verify: (bloc) {
         final state = bloc.state as AdminPanelLoaded;

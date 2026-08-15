@@ -14,6 +14,7 @@ class PlayerStatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, state) {
         if (state is PlayerStatsLoading) {
           return const Center(child: CircularProgressIndicator());

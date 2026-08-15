@@ -261,13 +261,13 @@ void main() {
         playerIds: ['user-1', 'user-2', 'user-3', 'user-4'],
       );
 
-      final teams = GameTeams(
+      const teams = GameTeams(
         teamAPlayerIds: ['user-1', 'user-3'],
 
         teamBPlayerIds: ['user-2', 'user-4'],
       );
 
-      final result = GameResult(
+      const result = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -291,7 +291,7 @@ void main() {
         },
 
         act: (bloc) => bloc.add(
-          SaveGameResult(
+          const SaveGameResult(
             gameId: 'game-1',
 
             userId: 'user-1',
@@ -702,9 +702,9 @@ void main() {
           mockGameRepository.addGame(game);
           return gameBloc;
         },
-        act: (bloc) => bloc.add(UpdateGameScores(
+        act: (bloc) => bloc.add(const UpdateGameScores(
           gameId: 'game-1',
-          scores: [const GameScore(playerId: 'user-1', score: 21)],
+          scores: [GameScore(playerId: 'user-1', score: 21)],
         )),
         expect: () => [const GameLoading(), isA<GameUpdated>()],
       );
@@ -712,9 +712,9 @@ void main() {
       blocTest<GameBloc, GameState>(
         'emits GameError when repository throws',
         build: () => GameBloc(gameRepository: _ThrowingRepository()),
-        act: (bloc) => bloc.add(UpdateGameScores(
+        act: (bloc) => bloc.add(const UpdateGameScores(
           gameId: 'game-1',
-          scores: [const GameScore(playerId: 'user-1', score: 21)],
+          scores: [GameScore(playerId: 'user-1', score: 21)],
         )),
         expect: () => [const GameLoading(), isA<GameError>()],
       );
@@ -730,15 +730,15 @@ void main() {
     });
 
     group('SaveGameResult error', () {
-      final teams = GameTeams(
-        teamAPlayerIds: const ['user-1'],
-        teamBPlayerIds: const ['user-2'],
+      const teams = GameTeams(
+        teamAPlayerIds: ['user-1'],
+        teamBPlayerIds: ['user-2'],
       );
-      final result = GameResult(
+      const result = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
-            sets: [const SetScore(teamAPoints: 21, teamBPoints: 15, setNumber: 1)],
+            sets: [SetScore(teamAPoints: 21, teamBPoints: 15, setNumber: 1)],
             winner: 'teamA',
           ),
         ],
@@ -748,7 +748,7 @@ void main() {
       blocTest<GameBloc, GameState>(
         'emits GameError when repository throws',
         build: () => GameBloc(gameRepository: _ThrowingRepository()),
-        act: (bloc) => bloc.add(SaveGameResult(
+        act: (bloc) => bloc.add(const SaveGameResult(
           gameId: 'game-1',
           userId: 'user-1',
           teams: teams,

@@ -80,7 +80,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });
@@ -106,7 +106,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
 
       // Use runAsync to properly handle async stream emissions
       await tester.runAsync(() async {
@@ -159,7 +159,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });
@@ -199,7 +199,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });
@@ -225,7 +225,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });
@@ -250,7 +250,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });
@@ -264,7 +264,7 @@ void main() {
     testWidgets('displays FAB for creating groups', (tester) async {
       // Act
       await tester.pumpWidget(createApp());
-      groupBloc.add(LoadGroupsForUser(userId: testUserId));
+      groupBloc.add(const LoadGroupsForUser(userId: testUserId));
       await tester.runAsync(() async {
         await Future.delayed(const Duration(milliseconds: 100));
       });

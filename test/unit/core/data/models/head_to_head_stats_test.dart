@@ -46,7 +46,7 @@ void main() {
       });
 
       test('creates instance with default values', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-456',
           gamesPlayed: 5,
@@ -69,7 +69,7 @@ void main() {
 
     group('winRate', () {
       test('calculates win rate correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 20,
@@ -81,7 +81,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 0,
@@ -93,7 +93,7 @@ void main() {
       });
 
       test('calculates 100% win rate', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -105,7 +105,7 @@ void main() {
       });
 
       test('calculates 0% win rate', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -119,7 +119,7 @@ void main() {
 
     group('lossRate', () {
       test('calculates loss rate correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 20,
@@ -131,7 +131,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 0,
@@ -145,7 +145,7 @@ void main() {
 
     group('avgPointsScored', () {
       test('calculates average points scored correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -158,7 +158,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 0,
@@ -172,7 +172,7 @@ void main() {
 
     group('avgPointsAllowed', () {
       test('calculates average points allowed correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -187,7 +187,7 @@ void main() {
 
     group('avgPointDifferential', () {
       test('calculates positive point differential', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -201,7 +201,7 @@ void main() {
       });
 
       test('calculates negative point differential', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -217,7 +217,7 @@ void main() {
 
     group('avgEloChange', () {
       test('calculates average ELO change correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -230,7 +230,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 0,
@@ -320,7 +320,7 @@ void main() {
       });
 
       test('returns 0 when no recent matchups', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 0,
@@ -383,7 +383,7 @@ void main() {
 
     group('recordString', () {
       test('formats record correctly', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 15,
@@ -397,7 +397,7 @@ void main() {
 
     group('formattedPointDifferential', () {
       test('formats positive differential with plus sign', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -411,7 +411,7 @@ void main() {
       });
 
       test('formats negative differential without plus sign', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -427,7 +427,7 @@ void main() {
 
     group('formattedEloChange', () {
       test('formats positive ELO change with plus sign', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -440,7 +440,7 @@ void main() {
       });
 
       test('formats negative ELO change without plus sign', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -455,7 +455,7 @@ void main() {
 
     group('matchupAdvantage', () {
       test('returns "Not enough data" for less than 5 games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 4,
@@ -467,7 +467,7 @@ void main() {
       });
 
       test('returns "Strong advantage" for win rate > 60%', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -479,7 +479,7 @@ void main() {
       });
 
       test('returns "Slight advantage" for win rate 50-60%', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -491,7 +491,7 @@ void main() {
       });
 
       test('returns "Even matchup" for win rate 40-50%', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -503,7 +503,7 @@ void main() {
       });
 
       test('returns "Disadvantage" for win rate < 40%', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -517,7 +517,7 @@ void main() {
 
     group('isRivalry', () {
       test('returns true for 10+ games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 10,
@@ -529,7 +529,7 @@ void main() {
       });
 
       test('returns false for less than 10 games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 9,
@@ -543,7 +543,7 @@ void main() {
 
     group('rivalryIntensity', () {
       test('returns "New matchup" for less than 5 games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 4,
@@ -555,7 +555,7 @@ void main() {
       });
 
       test('returns "Developing rivalry" for 5-9 games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 7,
@@ -567,7 +567,7 @@ void main() {
       });
 
       test('returns "Active rivalry" for 10-19 games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 15,
@@ -579,7 +579,7 @@ void main() {
       });
 
       test('returns "Intense rivalry" for 20+ games', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 25,
@@ -593,7 +593,7 @@ void main() {
 
     group('opponentDisplayName', () {
       test('returns opponentName when available', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           opponentName: 'John Doe',
@@ -607,7 +607,7 @@ void main() {
       });
 
       test('returns opponentEmail when name is null', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           opponentEmail: 'john@example.com',
@@ -620,7 +620,7 @@ void main() {
       });
 
       test('returns "Unknown" when both name and email are null', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-1',
           opponentId: 'opponent-1',
           gamesPlayed: 5,
@@ -730,7 +730,7 @@ void main() {
 
     group('toFirestore', () {
       test('returns JSON representation for Firestore', () {
-        final stats = HeadToHeadStats(
+        const stats = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-456',
           gamesPlayed: 10,
@@ -770,7 +770,7 @@ void main() {
       });
 
       test('two stats with different opponentId are not equal', () {
-        final stats1 = HeadToHeadStats(
+        const stats1 = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-456',
           gamesPlayed: 15,
@@ -778,7 +778,7 @@ void main() {
           gamesLost: 6,
         );
 
-        final stats2 = HeadToHeadStats(
+        const stats2 = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-789',
           gamesPlayed: 15,
@@ -792,7 +792,7 @@ void main() {
 
     group('copyWith', () {
       test('creates copy with updated gamesWon', () {
-        final original = HeadToHeadStats(
+        const original = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-456',
           gamesPlayed: 15,
@@ -808,7 +808,7 @@ void main() {
       });
 
       test('creates identical copy when no parameters provided', () {
-        final original = HeadToHeadStats(
+        const original = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-456',
           gamesPlayed: 15,

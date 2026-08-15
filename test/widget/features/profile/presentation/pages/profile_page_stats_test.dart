@@ -22,7 +22,7 @@ void main() {
 
   const userId = 'test-uid';
 
-  final testUserModel = UserModel(
+  const testUserModel = UserModel(
     uid: userId,
     email: 'test@example.com',
     isEmailVerified: true,
@@ -78,7 +78,7 @@ void main() {
     return testApp(child: BlocProvider<PlayerStatsBloc>(
         create: (_) =>
             PlayerStatsBloc(userRepository: mockUserRepository)
-              ..add(LoadPlayerStats(userId)),
+              ..add(const LoadPlayerStats(userId)),
         child: const Scaffold(body: StatsPage()),
       ));
   }

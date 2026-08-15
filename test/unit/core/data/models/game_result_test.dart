@@ -6,52 +6,52 @@ import 'package:play_with_me/core/data/models/game_model.dart';
 void main() {
   group('SetScore', () {
     test('isValid returns true for 21-19', () {
-      final set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
+      const set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
       expect(set.isValid(), true);
     });
 
     test('isValid returns true for 21-0', () {
-      final set = SetScore(teamAPoints: 21, teamBPoints: 0, setNumber: 1);
+      const set = SetScore(teamAPoints: 21, teamBPoints: 0, setNumber: 1);
       expect(set.isValid(), true);
     });
 
     test('isValid returns true for extended set 22-20', () {
-      final set = SetScore(teamAPoints: 22, teamBPoints: 20, setNumber: 1);
+      const set = SetScore(teamAPoints: 22, teamBPoints: 20, setNumber: 1);
       expect(set.isValid(), true);
     });
 
     test('isValid returns true for extended set 25-23', () {
-      final set = SetScore(teamAPoints: 25, teamBPoints: 23, setNumber: 1);
+      const set = SetScore(teamAPoints: 25, teamBPoints: 23, setNumber: 1);
       expect(set.isValid(), true);
     });
 
     test('isValid returns false for 21-20 (not win by 2)', () {
-      final set = SetScore(teamAPoints: 21, teamBPoints: 20, setNumber: 1);
+      const set = SetScore(teamAPoints: 21, teamBPoints: 20, setNumber: 1);
       expect(set.isValid(), false);
     });
 
     test('isValid returns false for incomplete set 20-18', () {
-      final set = SetScore(teamAPoints: 20, teamBPoints: 18, setNumber: 1);
+      const set = SetScore(teamAPoints: 20, teamBPoints: 18, setNumber: 1);
       expect(set.isValid(), false);
     });
 
     test('winner returns teamA when teamA wins', () {
-      final set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
+      const set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
       expect(set.winner, 'teamA');
     });
 
     test('winner returns teamB when teamB wins', () {
-      final set = SetScore(teamAPoints: 18, teamBPoints: 21, setNumber: 1);
+      const set = SetScore(teamAPoints: 18, teamBPoints: 21, setNumber: 1);
       expect(set.winner, 'teamB');
     });
 
     test('winner returns null for invalid set', () {
-      final set = SetScore(teamAPoints: 20, teamBPoints: 18, setNumber: 1);
+      const set = SetScore(teamAPoints: 20, teamBPoints: 18, setNumber: 1);
       expect(set.winner, null);
     });
 
     test('toJson and fromJson work correctly', () {
-      final set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
+      const set = SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1);
       final json = set.toJson();
       final fromJson = SetScore.fromJson(json);
 
@@ -64,7 +64,7 @@ void main() {
   group('IndividualGame', () {
     group('Single Set Games', () {
       test('isValid returns true for valid single set game', () {
-        final game = IndividualGame(
+        const game = IndividualGame(
           gameNumber: 1,
           sets: [SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1)],
           winner: 'teamA',
@@ -74,7 +74,7 @@ void main() {
       });
 
       test('isValid returns false when winner does not match', () {
-        final game = IndividualGame(
+        const game = IndividualGame(
           gameNumber: 1,
           sets: [SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1)],
           winner: 'teamB', // Wrong winner
@@ -86,7 +86,7 @@ void main() {
 
     group('Best of 2 Sets Games', () {
       test('isValid returns true for 2-0 win', () {
-        final game = IndividualGame(
+        const game = IndividualGame(
           gameNumber: 1,
           sets: [
             SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1),
@@ -101,7 +101,7 @@ void main() {
 
     group('Best of 3 Sets Games', () {
       test('isValid returns true for 2-1 win', () {
-        final game = IndividualGame(
+        const game = IndividualGame(
           gameNumber: 1,
           sets: [
             SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1),
@@ -116,7 +116,7 @@ void main() {
     });
 
     test('setsWon returns correct count', () {
-      final game = IndividualGame(
+      const game = IndividualGame(
         gameNumber: 1,
         sets: [
           SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1),
@@ -132,7 +132,7 @@ void main() {
     });
 
     test('toJson and fromJson work correctly', () {
-      final game = IndividualGame(
+      const game = IndividualGame(
         gameNumber: 1,
         sets: [SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1)],
         winner: 'teamA',
@@ -150,7 +150,7 @@ void main() {
   group('GameResult - Play Session', () {
     group('Valid Session Results', () {
       test('isValid returns true for single game session', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -165,7 +165,7 @@ void main() {
       });
 
       test('isValid returns true for multi-game session (Team A wins 4-2)', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -207,7 +207,7 @@ void main() {
       });
 
       test('isValid returns true for tied session with Team B winning 4-3', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -256,7 +256,7 @@ void main() {
 
     group('Tied Session Results', () {
       test('isValid returns true for 2-game session with 1-1 tie', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -278,7 +278,7 @@ void main() {
       });
 
       test('isValid returns true for 4-game session with 2-2 tie', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -313,7 +313,7 @@ void main() {
       test(
         'isValid returns false for tied result with non-null overallWinner',
         () {
-          final result = GameResult(
+          const result = GameResult(
             games: [
               IndividualGame(
                 gameNumber: 1,
@@ -338,7 +338,7 @@ void main() {
       );
 
       test('toJson and fromJson work correctly for tied session', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -366,13 +366,13 @@ void main() {
 
     group('Invalid Session Results', () {
       test('isValid returns false for empty games list', () {
-        final result = GameResult(games: [], overallWinner: 'teamA');
+        const result = GameResult(games: [], overallWinner: 'teamA');
 
         expect(result.isValid(), false);
       });
 
       test('isValid returns false when overall winner is incorrect', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -392,7 +392,7 @@ void main() {
       });
 
       test('isValid returns false when game has invalid score', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -409,7 +409,7 @@ void main() {
       });
 
       test('isValid returns false when game numbers are not sequential', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -431,7 +431,7 @@ void main() {
 
     group('Session Statistics', () {
       test('gamesWon returns correct count', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -458,7 +458,7 @@ void main() {
       });
 
       test('totalGames returns correct count', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -483,7 +483,7 @@ void main() {
       });
 
       test('scoreDescription returns correct format', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -510,7 +510,7 @@ void main() {
 
     group('JSON Serialization', () {
       test('toJson and fromJson work correctly for single game session', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,
@@ -530,7 +530,7 @@ void main() {
       });
 
       test('toJson and fromJson work correctly for multi-game session', () {
-        final result = GameResult(
+        const result = GameResult(
           games: [
             IndividualGame(
               gameNumber: 1,

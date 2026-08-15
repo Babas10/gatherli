@@ -29,7 +29,7 @@ void main() {
 
   const userId = 'test-uid';
 
-  final testUserModel = UserModel(
+  const testUserModel = UserModel(
     uid: userId,
     email: 'test@example.com',
     isEmailVerified: true,

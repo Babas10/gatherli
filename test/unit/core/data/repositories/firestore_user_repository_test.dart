@@ -166,7 +166,7 @@ void main() {
 
     group('createOrUpdateUser', () {
       test('creates new user document', () async {
-        final user = UserModel(
+        const user = UserModel(
           uid: testUserId,
           email: testEmail,
           displayName: 'New User',
@@ -192,7 +192,7 @@ void main() {
           'isEmailVerified': true,
         });
 
-        final updatedUser = UserModel(
+        const updatedUser = UserModel(
           uid: testUserId,
           email: testEmail,
           displayName: 'New Name',

@@ -85,15 +85,15 @@ void main() {
       loading: () => const Center(child: CircularProgressIndicator()),
       loaded: (games, hasMore, filter, startDate, endDate, isLoadingMore) {
         if (games.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.history, size: 64),
-                const SizedBox(height: 16),
-                const Text('No completed games yet'),
-                const SizedBox(height: 8),
-                const Text('Games will appear here after they are completed'),
+                Icon(Icons.history, size: 64),
+                SizedBox(height: 16),
+                Text('No completed games yet'),
+                SizedBox(height: 8),
+                Text('Games will appear here after they are completed'),
               ],
             ),
           );

@@ -9,7 +9,7 @@ import '../../../../../helpers/test_app.dart';
 void main() {
   group('PerformanceOverviewCard Widget Tests', () {
     testWidgets('shows empty state for user with 0 games', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -21,7 +21,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -74,7 +74,7 @@ void main() {
     });
 
     testWidgets('shows performance stats for user with 1 game', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -86,7 +86,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -182,7 +182,7 @@ void main() {
     );
 
     testWidgets('shows placeholder when user has no best win', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -195,7 +195,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -260,7 +260,7 @@ void main() {
     testWidgets('shows point differential for wins and losses separately', (
       tester,
     ) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -278,7 +278,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -302,7 +302,7 @@ void main() {
     testWidgets('shows point differential with only winning sets', (
       tester,
     ) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -320,7 +320,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -339,7 +339,7 @@ void main() {
     testWidgets('shows point differential with only losing sets', (
       tester,
     ) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -357,7 +357,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -374,7 +374,7 @@ void main() {
     });
 
     testWidgets('shows placeholder when no sets played', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -387,7 +387,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 
@@ -412,7 +412,7 @@ void main() {
     testWidgets('shows correct decimal precision for point differential', (
       tester,
     ) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -430,7 +430,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PerformanceOverviewCard(user: user))),
+        testApp(child: const Scaffold(body: PerformanceOverviewCard(user: user))),
       );
       await tester.pumpAndSettle();
 

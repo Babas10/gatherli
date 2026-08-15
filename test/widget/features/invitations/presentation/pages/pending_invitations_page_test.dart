@@ -36,7 +36,7 @@ void main() {
   late MockInvitationBloc mockInvitationBloc;
   late MockAuthenticationBloc mockAuthBloc;
 
-  final testUser = UserEntity(
+  const testUser = UserEntity(
     uid: 'test-user-123',
     email: 'test@example.com',
     displayName: 'Test User',
@@ -79,7 +79,7 @@ void main() {
     when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
     when(
       () => mockAuthBloc.state,
-    ).thenReturn(AuthenticationAuthenticated(testUser));
+    ).thenReturn(const AuthenticationAuthenticated(testUser));
   });
 
   tearDown(() {

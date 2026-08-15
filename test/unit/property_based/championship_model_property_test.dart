@@ -108,8 +108,6 @@ void main() {
 
   group('Gender eligibility — all combinations', () {
     const genders = [null, 'male', 'female', 'none', ''];
-    const categories = [null, ChampionshipGenderCategory.male, ChampionshipGenderCategory.female];
-
     test('no gender restriction allows all users', () async {
       for (final gender in genders) {
         final result = await useCase(ChampionshipEligibilityInput(

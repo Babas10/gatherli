@@ -31,14 +31,14 @@ void main() {
   });
 
   group('FriendBloc', () {
-    final testUser = UserEntity(
+    const testUser = UserEntity(
       uid: 'test-user-id',
       email: 'test@example.com',
       displayName: 'Test User',
       isEmailVerified: true,
     );
 
-    final testFriend = UserEntity(
+    const testFriend = UserEntity(
       uid: 'friend-user-id',
       email: 'friend@example.com',
       displayName: 'Friend User',
@@ -271,7 +271,7 @@ void main() {
         act: (bloc) => bloc.add(const FriendEvent.loadRequested()),
         expect: () => [
           const FriendState.loading(),
-          FriendState.loaded(
+          const FriendState.loaded(
             friends: [testFriend],
             receivedRequests: [],
             sentRequests: [],
@@ -411,7 +411,7 @@ void main() {
         expect: () => [
           const FriendState.actionSuccess(message: 'Friend request accepted'),
           const FriendState.loading(),
-          FriendState.loaded(
+          const FriendState.loaded(
             friends: [testFriend],
             receivedRequests: [],
             sentRequests: [],
@@ -594,7 +594,7 @@ void main() {
           when(
             () => mockFriendRepository.searchUserByEmail('friend@example.com'),
           ).thenAnswer(
-            (_) async => UserSearchResult(
+            (_) async => const UserSearchResult(
               user: testFriend,
               isFriend: false,
               hasPendingRequest: false,
@@ -607,7 +607,7 @@ void main() {
         ),
         expect: () => [
           const FriendState.searchLoading(),
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: testFriend,
             isFriend: false,
             hasPendingRequest: false,
@@ -646,7 +646,7 @@ void main() {
           when(
             () => mockFriendRepository.searchUserByEmail('unknown@example.com'),
           ).thenAnswer(
-            (_) async => UserSearchResult(
+            (_) async => const UserSearchResult(
               user: null,
               isFriend: false,
               hasPendingRequest: false,

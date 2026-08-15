@@ -199,8 +199,8 @@ void main() {
       });
 
       test('creates copy with null timeZone', () {
-        final entity = LocalePreferencesEntity(
-          locale: const Locale('en'),
+        const entity = LocalePreferencesEntity(
+          locale: Locale('en'),
           country: 'United States',
           timeZone: 'America/New_York',
         );

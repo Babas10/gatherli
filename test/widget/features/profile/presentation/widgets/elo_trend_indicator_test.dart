@@ -11,7 +11,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: ELOTrendIndicator(currentElo: 1650.0, recentHistory: []),
           )),
       );
@@ -226,7 +226,7 @@ void main() {
 
     testWidgets('displays card with correct structure', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: ELOTrendIndicator(currentElo: 1650.0, recentHistory: []),
           )),
       );
@@ -239,7 +239,7 @@ void main() {
 
     testWidgets('formats ELO as integer (no decimals)', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: ELOTrendIndicator(currentElo: 1649.7, recentHistory: []),
           )),
       );

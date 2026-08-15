@@ -10,7 +10,7 @@ void main() {
   group('RivalsCard Widget Tests', () {
     group('Empty State', () {
       testWidgets('shows empty state when nemesis is null', (tester) async {
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -18,7 +18,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -39,14 +39,14 @@ void main() {
       });
 
       testWidgets('empty state shows correct unlock message', (tester) async {
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -56,7 +56,7 @@ void main() {
 
     group('Nemesis Display', () {
       testWidgets('shows nemesis data when nemesis exists', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'John Doe',
           gamesLost: 7,
@@ -65,7 +65,7 @@ void main() {
           winRate: 30.0,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -73,7 +73,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -92,7 +92,7 @@ void main() {
       });
 
       testWidgets('displays correct record format', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Jane Smith',
           gamesLost: 5,
@@ -101,7 +101,7 @@ void main() {
           winRate: 28.57,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -109,7 +109,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -119,7 +119,7 @@ void main() {
       });
 
       testWidgets('win rate displays with one decimal place', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Bob Johnson',
           gamesLost: 4,
@@ -128,7 +128,7 @@ void main() {
           winRate: 42.857142857,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -136,7 +136,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -145,7 +145,7 @@ void main() {
       });
 
       testWidgets('win rate shows in red when less than 50%', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Test Opponent',
           gamesLost: 6,
@@ -154,7 +154,7 @@ void main() {
           winRate: 25.0, // Less than 50%
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -162,7 +162,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -176,7 +176,7 @@ void main() {
       });
 
       testWidgets('displays minimum matchup count (3 games)', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Minimum Rival',
           gamesLost: 2,
@@ -185,7 +185,7 @@ void main() {
           winRate: 33.33,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -193,7 +193,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -204,7 +204,7 @@ void main() {
 
     group('Navigation', () {
       testWidgets('card is tappable when nemesis exists', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Tap Test',
           gamesLost: 5,
@@ -213,7 +213,7 @@ void main() {
           winRate: 28.57,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -221,7 +221,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -233,7 +233,7 @@ void main() {
       });
 
       testWidgets('card is not tappable when nemesis is null', (tester) async {
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -241,7 +241,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -255,14 +255,14 @@ void main() {
 
     group('UI Elements', () {
       testWidgets('displays rival emoji and title', (tester) async {
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 
@@ -270,7 +270,7 @@ void main() {
       });
 
       testWidgets('displays correct icons for nemesis data', (tester) async {
-        final nemesis = NemesisRecord(
+        const nemesis = NemesisRecord(
           opponentId: 'opponent-123',
           opponentName: 'Icon Test',
           gamesLost: 4,
@@ -279,7 +279,7 @@ void main() {
           winRate: 42.86,
         );
 
-        final user = UserModel(
+        const user = UserModel(
           uid: 'test-uid',
           email: 'test@example.com',
           isEmailVerified: true,
@@ -287,7 +287,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          testApp(child: Scaffold(body: RivalsCard(user: user))),
+          testApp(child: const Scaffold(body: RivalsCard(user: user))),
         );
         await tester.pumpAndSettle();
 

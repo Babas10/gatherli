@@ -177,13 +177,13 @@ void main() {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
         'adds group to selectedGroupIds and its members to selectedIds',
         build: () => makeBloc(),
-        seed: () => InviteeSelectionLoaded(
-          friends: const [],
+        seed: () => const InviteeSelectionLoaded(
+          friends: [],
           groups: [
             InvitableGroup(
               id: 'group-1',
               name: 'Team A',
-              members: const [InvitableUser(uid: 'member-a')],
+              members: [InvitableUser(uid: 'member-a')],
             ),
           ],
         ),
@@ -200,16 +200,16 @@ void main() {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
         'removes group from selectedGroupIds when already selected',
         build: () => makeBloc(),
-        seed: () => InviteeSelectionLoaded(
-          friends: const [],
+        seed: () => const InviteeSelectionLoaded(
+          friends: [],
           groups: [
             InvitableGroup(
               id: 'group-1',
               name: 'Team A',
-              members: const [InvitableUser(uid: 'member-a')],
+              members: [InvitableUser(uid: 'member-a')],
             ),
           ],
-          selectedGroupIds: const {'group-1'},
+          selectedGroupIds: {'group-1'},
         ),
         act: (bloc) => bloc.add(const ToggleGroup(groupId: 'group-1')),
         expect: () => [

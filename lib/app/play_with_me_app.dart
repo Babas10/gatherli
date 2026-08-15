@@ -266,6 +266,7 @@ class PlayWithMeApp extends StatelessWidget {
                 GlobalCupertinoLocalizations.delegate,
               ],
               home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
                 builder: (context, authState) {
                   if (authState is AuthenticationAuthenticated) {
                     return const HomePage();
@@ -728,6 +729,7 @@ class _HomeTabState extends State<_HomeTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return Center(
@@ -739,6 +741,7 @@ class _HomeTabState extends State<_HomeTab> {
         }
 
         return BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           builder: (context, statsState) {
             if (statsState is PlayerStatsLoading) {
               return const Center(child: CircularProgressIndicator());

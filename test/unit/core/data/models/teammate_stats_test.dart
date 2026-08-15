@@ -35,7 +35,7 @@ void main() {
       });
 
       test('creates instance with default values', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-456',
           gamesPlayed: 10,
           gamesWon: 5,
@@ -52,7 +52,7 @@ void main() {
 
     group('winRate', () {
       test('calculates win rate correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 20,
           gamesWon: 12,
@@ -63,7 +63,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -74,7 +74,7 @@ void main() {
       });
 
       test('calculates 100% win rate', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 10,
@@ -87,7 +87,7 @@ void main() {
 
     group('lossRate', () {
       test('calculates loss rate correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 20,
           gamesWon: 12,
@@ -98,7 +98,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -111,7 +111,7 @@ void main() {
 
     group('avgPointsScored', () {
       test('calculates average points scored correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 5,
@@ -123,7 +123,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -137,7 +137,7 @@ void main() {
 
     group('avgPointsAllowed', () {
       test('calculates average points allowed correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 5,
@@ -149,7 +149,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -162,7 +162,7 @@ void main() {
 
     group('avgPointDifferential', () {
       test('calculates positive point differential', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 7,
@@ -175,7 +175,7 @@ void main() {
       });
 
       test('calculates negative point differential', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 3,
@@ -190,7 +190,7 @@ void main() {
 
     group('avgEloChange', () {
       test('calculates average ELO change correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 6,
@@ -202,7 +202,7 @@ void main() {
       });
 
       test('returns 0 when no games played', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -297,7 +297,7 @@ void main() {
       });
 
       test('returns 0 when no recent games', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 0,
           gamesWon: 0,
@@ -357,7 +357,7 @@ void main() {
 
     group('recordString', () {
       test('formats record correctly', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 20,
           gamesWon: 12,
@@ -368,7 +368,7 @@ void main() {
       });
 
       test('formats perfect record', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 10,
@@ -381,7 +381,7 @@ void main() {
 
     group('formattedPointDifferential', () {
       test('formats positive differential with plus sign', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 7,
@@ -394,7 +394,7 @@ void main() {
       });
 
       test('formats negative differential without plus sign', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 3,
@@ -407,7 +407,7 @@ void main() {
       });
 
       test('formats zero differential with plus sign', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 5,
@@ -422,7 +422,7 @@ void main() {
 
     group('formattedEloChange', () {
       test('formats positive ELO change with plus sign', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 7,
@@ -434,7 +434,7 @@ void main() {
       });
 
       test('formats negative ELO change without plus sign', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-1',
           gamesPlayed: 10,
           gamesWon: 3,
@@ -567,7 +567,7 @@ void main() {
 
     group('toFirestore', () {
       test('excludes userId from output', () {
-        final stats = TeammateStats(
+        const stats = TeammateStats(
           userId: 'user-123',
           gamesPlayed: 10,
           gamesWon: 6,
@@ -604,14 +604,14 @@ void main() {
       });
 
       test('two stats with different userId are not equal', () {
-        final stats1 = TeammateStats(
+        const stats1 = TeammateStats(
           userId: 'user-123',
           gamesPlayed: 20,
           gamesWon: 12,
           gamesLost: 8,
         );
 
-        final stats2 = TeammateStats(
+        const stats2 = TeammateStats(
           userId: 'user-456',
           gamesPlayed: 20,
           gamesWon: 12,
@@ -624,7 +624,7 @@ void main() {
 
     group('copyWith', () {
       test('creates copy with updated gamesWon', () {
-        final original = TeammateStats(
+        const original = TeammateStats(
           userId: 'user-123',
           gamesPlayed: 20,
           gamesWon: 12,
@@ -639,7 +639,7 @@ void main() {
       });
 
       test('creates identical copy when no parameters provided', () {
-        final original = TeammateStats(
+        const original = TeammateStats(
           userId: 'user-123',
           gamesPlayed: 20,
           gamesWon: 12,

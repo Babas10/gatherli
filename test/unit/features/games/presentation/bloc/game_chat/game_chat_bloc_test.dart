@@ -23,7 +23,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
-    registerFallbackValue(Stream<List<ChatMessageModel>>.empty());
+    registerFallbackValue(const Stream<List<ChatMessageModel>>.empty());
   });
 
   setUp(() {

@@ -99,7 +99,7 @@ void main() {
     testWidgets('displays result badge and scores when completed with result', (
       tester,
     ) async {
-      final result = const GameResult(
+      const result = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -162,7 +162,7 @@ void main() {
       );
 
       // Assuming user-1 is in the game from _createGame default
-      expect(find.text("JOINED"), findsOneWidget);
+      expect(find.text('JOINED'), findsOneWidget);
     });
 
     testWidgets('calls onTap when tapped', (tester) async {

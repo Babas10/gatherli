@@ -52,7 +52,7 @@ void main() {
     mockAuthBloc = MockAuthenticationBloc();
     when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',

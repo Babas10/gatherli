@@ -84,8 +84,8 @@ void main() {
 
     // Defaults — individual tests override state as needed
     when(() => mockBloc.state).thenReturn(const GameInvitationsInitial());
-    when(() => mockInvitationBloc.state).thenReturn(InvitationInitial());
-    when(() => mockAuthBloc.state).thenReturn(AuthenticationUnknown());
+    when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
+    when(() => mockAuthBloc.state).thenReturn(const AuthenticationUnknown());
   });
 
   tearDown(() {
@@ -190,7 +190,7 @@ void main() {
       mockBloc,
       Stream.fromIterable([
         GameInvitationsLoaded([_makeInvitation()]),
-        GameInvitationActionSuccess([], 'inv-1', accepted: true),
+        const GameInvitationActionSuccess([], 'inv-1', accepted: true),
       ]),
       initialState: GameInvitationsLoaded([_makeInvitation()]),
     );
@@ -209,7 +209,7 @@ void main() {
       mockBloc,
       Stream.fromIterable([
         GameInvitationsLoaded([_makeInvitation()]),
-        GameInvitationActionSuccess([], 'inv-1', accepted: false),
+        const GameInvitationActionSuccess([], 'inv-1', accepted: false),
       ]),
       initialState: GameInvitationsLoaded([_makeInvitation()]),
     );

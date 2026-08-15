@@ -9,7 +9,7 @@ void main() {
       const int b = 3;
 
       // Act
-      final result = a + b;
+      const result = a + b;
 
       // Assert
       expect(result, equals(5));
@@ -21,7 +21,7 @@ void main() {
       const String target = 'PlayWithMe';
 
       // Act
-      final result = '$greeting $target';
+      const result = '$greeting $target';
 
       // Assert
       expect(result, equals('Hello PlayWithMe'));

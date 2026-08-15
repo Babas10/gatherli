@@ -10,7 +10,7 @@ void main() {
   group('MonthlyImprovementChart Edge Cases', () {
     testWidgets('shows placeholder when user has 0 games', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: MonthlyImprovementChart(ratingHistory: [], currentElo: 1500),
           )),
       );

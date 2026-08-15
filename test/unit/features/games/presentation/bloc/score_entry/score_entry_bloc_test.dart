@@ -97,7 +97,7 @@ void main() {
               teamAPlayerIds: ['player1', 'player2'],
               teamBPlayerIds: ['player3', 'player4'],
             ),
-            result: GameResult(
+            result: const GameResult(
               games: [
                 IndividualGame(
                   gameNumber: 1,
@@ -105,7 +105,7 @@ void main() {
                     SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1),
                   ],
                   winner: 'teamA',
-                  teams: const GameTeams(
+                  teams: GameTeams(
                     teamAPlayerIds: ['player1', 'player2'],
                     teamBPlayerIds: ['player3', 'player4'],
                   ),
@@ -254,9 +254,9 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 2,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) =>
@@ -279,8 +279,8 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) =>
@@ -304,9 +304,9 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 2,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) => bloc.add(
@@ -343,10 +343,10 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 2,
-              sets: [const SetScoreData(), const SetScoreData()],
+              sets: [SetScoreData(), SetScoreData()],
             ),
           ],
         ),
@@ -399,8 +399,8 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) => bloc
@@ -456,13 +456,13 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 2,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) =>
-            bloc.add(SelectGameTeams(gameIndex: 0, teams: testTeams)),
+            bloc.add(const SelectGameTeams(gameIndex: 0, teams: testTeams)),
         expect: () => [
           isA<ScoreEntryLoaded>()
               .having(
@@ -484,17 +484,17 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 2,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) => bloc
-          ..add(SelectGameTeams(gameIndex: 0, teams: testTeams))
+          ..add(const SelectGameTeams(gameIndex: 0, teams: testTeams))
           ..add(
-            SelectGameTeams(
+            const SelectGameTeams(
               gameIndex: 1,
-              teams: const GameTeams(
+              teams: GameTeams(
                 teamAPlayerIds: ['p1', 'p3'],
                 teamBPlayerIds: ['p2', 'p4'],
               ),
@@ -532,12 +532,12 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
-            GameData(numberOfSets: 1, sets: [const SetScoreData()]),
+          games: const [
+            GameData(numberOfSets: 1, sets: [SetScoreData()]),
           ],
         ),
         act: (bloc) => bloc.add(
-          SelectGameTeams(
+          const SelectGameTeams(
             gameIndex: 5, // out of range
             teams: testTeams,
           ),
@@ -564,10 +564,10 @@ void main() {
             playerIds: ['p1', 'p2', 'p3', 'p4'],
           ),
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
           ],
@@ -603,20 +603,20 @@ void main() {
             playerIds: ['p1', 'p2', 'p3', 'p4'],
           ),
           gameCount: 3,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 18)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 18)],
               teams: testTeams,
             ),
           ],
@@ -657,15 +657,15 @@ void main() {
             playerIds: ['p1', 'p2', 'p3', 'p4'],
           ),
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
           ],
@@ -706,25 +706,25 @@ void main() {
             playerIds: ['p1', 'p2', 'p3', 'p4'],
           ),
           gameCount: 4,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 18)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 18)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 17)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 17)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 18, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 18, teamBPoints: 21)],
               teams: testTeams,
             ),
           ],
@@ -754,10 +754,10 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               // No teams selected — isComplete returns false
             ),
           ],
@@ -777,10 +777,10 @@ void main() {
         seed: () => ScoreEntryLoaded(
           game: TestGameData.testGame.copyWith(status: GameStatus.completed),
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21)], // Missing teamB
+              sets: [SetScoreData(teamAPoints: 21)], // Missing teamB
               teams: testTeams,
             ),
           ],
@@ -802,15 +802,15 @@ void main() {
           final state = ScoreEntryLoaded(
             game: TestGameData.testGame,
             gameCount: 2,
-            games: [
+            games: const [
               GameData(
                 numberOfSets: 1,
-                sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+                sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
                 teams: testTeams,
               ),
               GameData(
                 numberOfSets: 1,
-                sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+                sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
                 teams: testTeams,
               ),
             ],
@@ -824,15 +824,15 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               // No teams — isComplete = false
             ),
           ],
@@ -845,15 +845,15 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData()], // Incomplete
+              sets: [SetScoreData()], // Incomplete
               teams: testTeams,
             ),
           ],
@@ -866,20 +866,20 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 3,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 18)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 18)],
               teams: testTeams,
             ),
           ],
@@ -894,10 +894,10 @@ void main() {
           final state = ScoreEntryLoaded(
             game: TestGameData.testGame,
             gameCount: 1,
-            games: [
+            games: const [
               GameData(
                 numberOfSets: 1,
-                sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+                sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
                 teams: testTeams,
               ),
             ],
@@ -911,10 +911,10 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               // No teams
             ),
           ],
@@ -927,15 +927,15 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
           ],
@@ -948,15 +948,15 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 19, teamBPoints: 21)],
+              sets: [SetScoreData(teamAPoints: 19, teamBPoints: 21)],
               teams: testTeams,
             ),
           ],
@@ -970,10 +970,10 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
           ],
@@ -987,15 +987,15 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 2,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData(teamAPoints: 21, teamBPoints: 19)],
+              sets: [SetScoreData(teamAPoints: 21, teamBPoints: 19)],
               teams: testTeams,
             ),
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData()],
+              sets: [SetScoreData()],
               teams: testTeams,
             ),
           ],
@@ -1008,10 +1008,10 @@ void main() {
         final state = ScoreEntryLoaded(
           game: TestGameData.testGame,
           gameCount: 1,
-          games: [
+          games: const [
             GameData(
               numberOfSets: 1,
-              sets: [const SetScoreData()],
+              sets: [SetScoreData()],
               teams: testTeams,
             ),
           ],

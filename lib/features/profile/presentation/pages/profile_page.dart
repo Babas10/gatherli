@@ -65,6 +65,7 @@ class ProfilePage extends StatelessWidget {
           }
         },
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           builder: (context, state) {
             if (state is AuthenticationAuthenticated) {
               return _ProfileContent(state: state);

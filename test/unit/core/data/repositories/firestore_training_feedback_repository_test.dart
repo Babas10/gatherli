@@ -338,7 +338,7 @@ void main() {
       test('returns empty aggregation for empty list', () {
         final aggregation = FeedbackAggregation.fromFeedbackList(
           'session-123',
-          [],
+          const [],
         );
 
         expect(aggregation.totalCount, equals(0));

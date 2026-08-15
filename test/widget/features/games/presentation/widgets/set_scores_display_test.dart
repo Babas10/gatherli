@@ -6,7 +6,7 @@ import 'package:play_with_me/features/games/presentation/widgets/set_scores_disp
 void main() {
   group('SetScoresDisplay', () {
     testWidgets('displays single set score correctly', (tester) async {
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -18,7 +18,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: SetScoresDisplay(result: validResult)),
         ),
       );
@@ -27,7 +27,7 @@ void main() {
     });
 
     testWidgets('displays multiple set scores correctly', (tester) async {
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -43,7 +43,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: SetScoresDisplay(result: validResult)),
         ),
       );
@@ -52,7 +52,7 @@ void main() {
     });
 
     testWidgets('displays multiple games scores correctly', (tester) async {
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -69,7 +69,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: SetScoresDisplay(result: validResult)),
         ),
       );
@@ -79,10 +79,10 @@ void main() {
     });
 
     testWidgets('renders nothing when there are no games', (tester) async {
-      final emptyResult = const GameResult(games: [], overallWinner: 'teamA');
+      const emptyResult = GameResult(games: [], overallWinner: 'teamA');
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: SetScoresDisplay(result: emptyResult)),
         ),
       );

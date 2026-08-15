@@ -258,6 +258,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
           final isSubmitting = creationState is GameCreationSubmitting;
 
           return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
             builder: (context, authState) {
               if (authState is! AuthenticationAuthenticated) {
                 return Center(child: Text(l10n.pleaseLogInToCreateGame));

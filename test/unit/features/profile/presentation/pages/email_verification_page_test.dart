@@ -47,7 +47,7 @@ void main() {
       () => mockInvitationBloc.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',

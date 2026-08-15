@@ -108,7 +108,7 @@ void main() {
       });
 
       test('getStartDate is idempotent within same second', () {
-        final period = TimePeriod.thirtyDays;
+        const period = TimePeriod.thirtyDays;
         final firstCall = period.getStartDate();
         final secondCall = period.getStartDate();
 

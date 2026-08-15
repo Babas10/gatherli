@@ -15,21 +15,21 @@ import '../../../helpers/test_app.dart';
 class MockGameGuestInvitationRepository extends Mock
     implements InvitationRepository {}
 
-final _alice = InvitablePlayerModel(
+const _alice = InvitablePlayerModel(
   uid: 'alice',
   displayName: 'Alice',
   sourceGroupId: 'group-x',
   sourceGroupName: 'Beach Crew',
 );
 
-final _bob = InvitablePlayerModel(
+const _bob = InvitablePlayerModel(
   uid: 'bob',
   displayName: 'Bob',
   sourceGroupId: 'group-y',
   sourceGroupName: 'Downtown Ballers',
 );
 
-final _carol = InvitablePlayerModel(
+const _carol = InvitablePlayerModel(
   uid: 'carol',
   displayName: 'Carol',
   sourceGroupId: 'group-x',

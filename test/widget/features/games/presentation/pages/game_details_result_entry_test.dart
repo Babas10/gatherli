@@ -138,7 +138,7 @@ void main() {
     mockGameRepository.addGame(pastGame);
 
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: participantId,
           email: '',
@@ -162,7 +162,7 @@ void main() {
       mockGameRepository.addGame(futureGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: participantId,
             email: '',
@@ -187,7 +187,7 @@ void main() {
       mockGameRepository.addGame(futureGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: creatorId,
             email: '',
@@ -214,7 +214,7 @@ void main() {
       mockGameRepository.addGame(inProgressGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: participantId,
             email: '',
@@ -239,7 +239,7 @@ void main() {
       mockGameRepository.addGame(pastGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: outsiderId,
             email: '',
@@ -264,7 +264,7 @@ void main() {
     mockGameRepository.addGame(pastGame);
 
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: participantId,
           email: '',
@@ -293,7 +293,7 @@ void main() {
       mockGameRepository.addGame(insufficientPlayersGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: participantId,
             email: '',
@@ -322,7 +322,7 @@ void main() {
       mockGameRepository.addGame(insufficientPlayersGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: creatorId,
             email: '',
@@ -351,7 +351,7 @@ void main() {
       mockGameRepository.addGame(validGame);
 
       when(() => mockAuthBloc.state).thenReturn(
-        AuthenticationAuthenticated(
+        const AuthenticationAuthenticated(
           UserEntity(
             uid: participantId,
             email: '',

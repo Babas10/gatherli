@@ -108,6 +108,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
           final isLoading = groupState is GroupLoading;
 
           return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
             builder: (context, authState) {
               if (authState is! AuthenticationAuthenticated) {
                 return const Center(

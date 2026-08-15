@@ -25,7 +25,7 @@ void main() {
     blocTest<HeadToHeadBloc, HeadToHeadState>(
       'emits [loading, loaded] when stats are found',
       build: () {
-        final testStats = HeadToHeadStats(
+        const testStats = HeadToHeadStats(
           userId: 'user-123',
           opponentId: 'opponent-123',
           opponentName: 'Opponent User',

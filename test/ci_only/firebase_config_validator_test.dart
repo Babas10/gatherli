@@ -316,12 +316,12 @@ void main() {
 
     group('ConfigValidationResult', () {
       test('should correctly identify when it has warnings', () {
-        final resultWithWarnings = ConfigValidationResult(
+        const resultWithWarnings = ConfigValidationResult(
           isValid: true,
           warnings: ['Some warning'],
         );
 
-        final resultWithoutWarnings = ConfigValidationResult(isValid: true);
+        const resultWithoutWarnings = ConfigValidationResult(isValid: true);
 
         expect(resultWithWarnings.hasWarnings, isTrue);
         expect(resultWithoutWarnings.hasWarnings, isFalse);

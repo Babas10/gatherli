@@ -16,7 +16,7 @@ void main() {
   late PlayerStatsBloc playerStatsBloc;
 
   const userId = 'user-123';
-  final testUser = UserModel(
+  const testUser = UserModel(
     uid: userId,
     email: 'test@example.com',
     isEmailVerified: true,

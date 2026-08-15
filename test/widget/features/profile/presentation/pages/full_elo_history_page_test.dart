@@ -75,7 +75,7 @@ void main() {
       () => mockInvitationBloc.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',
@@ -106,7 +106,7 @@ void main() {
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
-        child: FullEloHistoryPage(userId: testUserId),
+        child: const FullEloHistoryPage(userId: testUserId),
       ));
   }
 

@@ -11,7 +11,7 @@ void main() {
   group('BestEloHighlightCard', () {
     testWidgets('shows empty state when bestElo is null', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: BestEloHighlightCard(
               bestElo: null,
               timePeriod: TimePeriod.allTime,
@@ -326,7 +326,7 @@ void main() {
 
     testWidgets('empty state has proper styling', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: BestEloHighlightCard(
               bestElo: null,
               timePeriod: TimePeriod.allTime,

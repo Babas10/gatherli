@@ -731,6 +731,7 @@ class _RsvpButtons extends StatelessWidget {
         }
       },
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
         builder: (context, authState) {
           if (authState is! AuthenticationAuthenticated) {
             return const SizedBox.shrink();
@@ -1077,6 +1078,7 @@ class _VerificationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return const SizedBox.shrink();

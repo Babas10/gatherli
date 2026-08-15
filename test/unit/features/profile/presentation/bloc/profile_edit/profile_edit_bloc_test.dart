@@ -16,7 +16,7 @@ void main() {
   late MockUserRepository mockUserRepository;
   late ProfileEditBloc profileEditBloc;
 
-  final testUser = const UserEntity(
+  const testUser = UserEntity(
     uid: 'test-uid-123',
     email: 'test@example.com',
     isEmailVerified: true,

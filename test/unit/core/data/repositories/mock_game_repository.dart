@@ -521,7 +521,7 @@ class MockGameRepository implements GameRepository {
     }
 
     final updatedConfirmedBy = [...game.confirmedBy, userId];
-    final newStatus = GameStatus.completed;
+    const newStatus = GameStatus.completed;
 
     final updatedGame = game.copyWith(
       confirmedBy: updatedConfirmedBy,

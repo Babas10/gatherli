@@ -11,7 +11,7 @@ void main() {
       tester,
     ) async {
       // Create a user with teammate stats including display name
-      final user = UserModel(
+      const user = UserModel(
         uid: 'user-123',
         email: 'test@example.com',
         displayName: 'Test User',
@@ -30,7 +30,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PartnersCard(user: user))),
+        testApp(child: const Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify display name is shown
@@ -49,7 +49,7 @@ void main() {
       tester,
     ) async {
       // Create a user with teammate stats WITHOUT display name (legacy data)
-      final user = UserModel(
+      const user = UserModel(
         uid: 'user-123',
         email: 'test@example.com',
         displayName: 'Test User',
@@ -68,7 +68,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PartnersCard(user: user))),
+        testApp(child: const Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify fallback to "Unknown Player"
@@ -81,7 +81,7 @@ void main() {
     testWidgets('shows empty state when no teammates have 5+ games', (
       tester,
     ) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'user-123',
         email: 'test@example.com',
         displayName: 'Test User',
@@ -100,7 +100,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PartnersCard(user: user))),
+        testApp(child: const Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify empty state is shown
@@ -112,7 +112,7 @@ void main() {
     });
 
     testWidgets('selects teammate with highest win rate', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'user-123',
         email: 'test@example.com',
         displayName: 'Test User',
@@ -140,7 +140,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: PartnersCard(user: user))),
+        testApp(child: const Scaffold(body: PartnersCard(user: user))),
       );
 
       // Verify the teammate with highest win rate is shown
@@ -153,7 +153,7 @@ void main() {
     });
 
     testWidgets('handles long teammate names with ellipsis', (tester) async {
-      final user = UserModel(
+      const user = UserModel(
         uid: 'user-123',
         email: 'test@example.com',
         displayName: 'Test User',
@@ -172,7 +172,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: SizedBox(
               width: 400, // Constrained width to test ellipsis
               child: PartnersCard(user: user),

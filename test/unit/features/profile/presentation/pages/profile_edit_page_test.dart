@@ -467,7 +467,7 @@ void main() {
         tester,
       ) async {
         // Simulate the bug scenario: stored country preference is 'ES' (ISO code)
-        final isoPreferences = const LocalePreferencesEntity(
+        const isoPreferences = LocalePreferencesEntity(
           locale: Locale('es'),
           country: 'ES',
           timeZone: 'Europe/Madrid',
@@ -475,14 +475,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: isoPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: isoPreferences,
               hasUnsavedChanges: false,
             ),
@@ -500,7 +500,7 @@ void main() {
       testWidgets('falls back to default country when value is unrecognized', (
         tester,
       ) async {
-        final unknownPreferences = const LocalePreferencesEntity(
+        const unknownPreferences = LocalePreferencesEntity(
           locale: Locale('en'),
           country: 'UNKNOWN',
           timeZone: 'UTC',
@@ -508,14 +508,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: unknownPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: unknownPreferences,
               hasUnsavedChanges: false,
             ),
@@ -532,7 +532,7 @@ void main() {
       testWidgets('displays correct country when value is a valid name', (
         tester,
       ) async {
-        final validPreferences = const LocalePreferencesEntity(
+        const validPreferences = LocalePreferencesEntity(
           locale: Locale('es'),
           country: 'Spain',
           timeZone: 'Europe/Madrid',
@@ -540,14 +540,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: validPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: validPreferences,
               hasUnsavedChanges: false,
             ),

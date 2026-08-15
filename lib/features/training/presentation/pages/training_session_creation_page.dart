@@ -450,6 +450,7 @@ class _TrainingSessionCreationPageState
               title: l10n.createTrainingSession,
             ),
             body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
               builder: (context, authState) {
                 if (authState is! AuthenticationAuthenticated) {
                   return Center(child: Text(l10n.pleaseLogInToCreateTraining));

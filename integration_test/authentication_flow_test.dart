@@ -28,8 +28,8 @@ void main() {
   group('Authentication Flow - Login', () {
     test('User can successfully login with valid credentials', () async {
       // 1. Create a test user
-      final testEmail = 'valid@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'valid@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -79,7 +79,7 @@ void main() {
 
     test('Login fails with invalid password', () async {
       // 1. Create a test user
-      final testEmail = 'user@test.com';
+      const testEmail = 'user@test.com';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -120,8 +120,8 @@ void main() {
   group('Authentication Flow - Logout', () {
     test('User can successfully logout', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'logout@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'logout@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -222,8 +222,8 @@ void main() {
 
     test('Auth state stream emits user when user logs in', () async {
       // 1. Create a test user but don't sign in
-      final testEmail = 'statechange@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'statechange@test.com';
+      const testPassword = 'password123';
 
       // First create the user (this signs them in)
       final createdUser = await FirebaseEmulatorHelper.createCompleteTestUser(
@@ -278,8 +278,8 @@ void main() {
       'Auth state changes propagate correctly through multiple login/logout cycles',
       () async {
         // 1. Create a test user
-        final testEmail = 'cycles@test.com';
-        final testPassword = 'password123';
+        const testEmail = 'cycles@test.com';
+        const testPassword = 'password123';
 
         await FirebaseEmulatorHelper.createCompleteTestUser(
           email: testEmail,
@@ -332,8 +332,8 @@ void main() {
 
   group('Authentication Flow - Registration', () {
     test('New user can register and is automatically signed in', () async {
-      final testEmail = 'newuser@test.com';
-      final testPassword = 'newpassword123';
+      const testEmail = 'newuser@test.com';
+      const testPassword = 'newpassword123';
 
       // 1. Verify user doesn't exist (not authenticated)
       expect(FirebaseAuth.instance.currentUser, isNull);
@@ -356,8 +356,8 @@ void main() {
     });
 
     test('Registration fails with already existing email', () async {
-      final testEmail = 'existing@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'existing@test.com';
+      const testPassword = 'password123';
 
       // 1. Create first user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -403,7 +403,7 @@ void main() {
   group('Authentication Flow - Password Reset', () {
     test('Password reset email can be sent for existing user', () async {
       // 1. Create a test user
-      final testEmail = 'reset@test.com';
+      const testEmail = 'reset@test.com';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -439,8 +439,8 @@ void main() {
   group('Authentication Flow - User Profile', () {
     test('User can update display name after login', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'profile@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'profile@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -465,8 +465,8 @@ void main() {
 
     test('User can update photo URL after login', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'photo@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'photo@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -494,8 +494,8 @@ void main() {
   group('Authentication Flow - Session Persistence', () {
     test('User remains authenticated after Firebase instance access', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'persist@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'persist@test.com';
+      const testPassword = 'password123';
 
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,

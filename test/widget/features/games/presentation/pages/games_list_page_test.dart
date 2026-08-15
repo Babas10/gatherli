@@ -70,7 +70,7 @@ void main() {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: Text('$testGroupName Games'),
+            title: const Text('$testGroupName Games'),
             centerTitle: true,
           ),
           body: BlocBuilder<GamesListBloc, GamesListState>(
@@ -294,7 +294,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -303,7 +303,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(upcomingGame)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -322,7 +322,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now().subtract(const Duration(days: 10)),
           scheduledAt: DateTime.now().subtract(const Duration(days: 7)),
-          location: GameLocation(name: 'Santa Monica'),
+          location: const GameLocation(name: 'Santa Monica'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -330,7 +330,7 @@ void main() {
 
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
-            upcomingActivities: [],
+            upcomingActivities: const [],
             pastActivities: [GroupActivityItem.game(pastGame)],
             userId: testUserId,
           ),
@@ -350,7 +350,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -363,7 +363,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now().subtract(const Duration(days: 10)),
           scheduledAt: DateTime.now().subtract(const Duration(days: 7)),
-          location: GameLocation(name: 'Santa Monica'),
+          location: const GameLocation(name: 'Santa Monica'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -404,7 +404,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.training(trainingSession)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -423,7 +423,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Test Location'),
+          location: const GameLocation(name: 'Test Location'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -432,7 +432,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(game)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -452,7 +452,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Test Location'),
+          location: const GameLocation(name: 'Test Location'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -461,7 +461,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(game)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );

@@ -177,10 +177,10 @@ void main() {
         // Check for actual imports, not comments
         // Look for import statements specifically
         if (RegExp(
-              r"import\s+.*friend",
+              r'import\s+.*friend',
               caseSensitive: false,
             ).hasMatch(content) ||
-            RegExp(r"import\s+.*features/friends").hasMatch(content)) {
+            RegExp(r'import\s+.*features/friends').hasMatch(content)) {
           violations.add(filePath);
         }
       }
@@ -258,11 +258,11 @@ void main() {
             // Check for ELO-related imports (excluding comments)
             // Look for actual imports, not comment references
             if (RegExp(
-                  r"import\s+.*elo",
+                  r'import\s+.*elo',
                   caseSensitive: false,
                 ).hasMatch(content) ||
                 RegExp(
-                  r"import\s+.*features/profile.*elo",
+                  r'import\s+.*features/profile.*elo',
                   caseSensitive: false,
                 ).hasMatch(content)) {
               violations.add(file.path);
@@ -301,11 +301,11 @@ void main() {
 
           // Check for ELO-related imports (excluding comments)
           if (RegExp(
-                r"import\s+.*elo",
+                r'import\s+.*elo',
                 caseSensitive: false,
               ).hasMatch(content) ||
               RegExp(
-                r"import\s+.*features/profile.*elo",
+                r'import\s+.*features/profile.*elo',
                 caseSensitive: false,
               ).hasMatch(content)) {
             violations.add(filePath);

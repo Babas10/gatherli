@@ -165,7 +165,7 @@ void main() {
             BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
             BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           ],
-          child: testApp(child: RecordResultsPage(gameId: testGameId),
+          child: testApp(child: const RecordResultsPage(gameId: testGameId),
             navigatorObserver: mockObserver),
         ),
       );

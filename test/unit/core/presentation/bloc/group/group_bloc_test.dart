@@ -119,7 +119,7 @@ void main() {
         act: (bloc) => bloc.add(
           CreateGroup(
             group: newGroup,
-            friendIdsToInvite: {'friend-1', 'friend-2'},
+            friendIdsToInvite: const {'friend-1', 'friend-2'},
           ),
         ),
         expect: () => [const GroupLoading(), isA<GroupCreated>()],

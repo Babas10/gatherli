@@ -41,14 +41,14 @@ void main() {
   late MockAuthenticationBloc mockAuthBloc;
   late MockInvitationBloc mockInvitationBloc;
 
-  final testUser = UserEntity(
+  const testUser = UserEntity(
     uid: 'test-user-123',
     email: 'test@example.com',
     displayName: 'Test User',
     isEmailVerified: true,
   );
 
-  final searchedUser = UserEntity(
+  const searchedUser = UserEntity(
     uid: 'found-user-456',
     email: 'found@example.com',
     displayName: 'Found User',
@@ -71,7 +71,7 @@ void main() {
     when(() => mockFriendBloc.state).thenReturn(const FriendState.initial());
     when(
       () => mockAuthBloc.state,
-    ).thenReturn(AuthenticationAuthenticated(testUser));
+    ).thenReturn(const AuthenticationAuthenticated(testUser));
   });
 
   tearDown(() {
@@ -321,7 +321,7 @@ void main() {
     group('Search Results', () {
       testWidgets('displays search result when user found', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: false,
@@ -337,7 +337,7 @@ void main() {
 
       testWidgets('displays result for already friends', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: true,
             hasPendingRequest: false,
@@ -353,7 +353,7 @@ void main() {
 
       testWidgets('displays result for pending request sent', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: true,
@@ -372,7 +372,7 @@ void main() {
         tester,
       ) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: true,
@@ -475,7 +475,7 @@ void main() {
         tester,
       ) async {
         // Start with searchResult so _lastSearchSnapshot is captured on initial build
-        final searchResultState = FriendState.searchResult(
+        const searchResultState = FriendState.searchResult(
           user: searchedUser,
           isFriend: false,
           hasPendingRequest: false,

@@ -92,7 +92,7 @@ void main() {
             value: mockGameInvitationsBloc,
           ),
         ],
-        child: GameCreationPage(groupId: testGroupId, groupName: testGroupName),
+        child: const GameCreationPage(groupId: testGroupId, groupName: testGroupName),
       ));
   }
 
@@ -503,7 +503,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -538,7 +538,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],

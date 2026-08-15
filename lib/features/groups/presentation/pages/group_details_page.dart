@@ -385,6 +385,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         }
       },
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
         builder: (context, authState) {
           if (authState is! AuthenticationAuthenticated) {
             return Scaffold(
@@ -588,6 +589,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         },
         builder: (context, inviteLinkState) {
           return BlocBuilder<GroupMemberBloc, GroupMemberState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
             builder: (context, memberState) {
               return ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),

@@ -12,7 +12,7 @@ void main() {
   group('MonthlyImprovementChart Widget Tests', () {
     testWidgets('shows placeholder when history is empty', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(child: const Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: [],
               currentElo: 1600.0,

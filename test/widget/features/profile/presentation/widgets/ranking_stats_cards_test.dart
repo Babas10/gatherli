@@ -9,7 +9,7 @@ void main() {
   group('RankingStatsCards', () {
     testWidgets('shows dash for all ranking cards when ranking is null', (tester) async {
       await tester.pumpWidget(
-        testApp(child: Scaffold(body: RankingStatsCards(ranking: null))),
+        testApp(child: const Scaffold(body: RankingStatsCards(ranking: null))),
       );
 
       // All three ranking cards (global rank, percentile, friends rank) show '-'

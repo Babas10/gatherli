@@ -89,6 +89,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                 }
               },
               child: BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+                buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
                 builder: (context, statsState) {
                   if (statsState is PlayerStatsLoaded) {
                     return Column(

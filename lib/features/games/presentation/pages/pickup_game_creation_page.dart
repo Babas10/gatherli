@@ -366,6 +366,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
         final isSubmitting = creationState is GameCreationSubmitting;
 
         return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           builder: (context, authState) {
             if (authState is! AuthenticationAuthenticated) {
               return Scaffold(
@@ -618,6 +619,9 @@ class _InviteStep extends StatelessWidget {
       children: [
         // Selected count badge
         BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
+          (prev is InviteeSelectionLoaded && curr is InviteeSelectionLoaded &&
+           prev.selectedIds != curr.selectedIds),
           builder: (context, state) {
             if (state is! InviteeSelectionLoaded) return const SizedBox.shrink();
             final count = state.selectedIds.length;

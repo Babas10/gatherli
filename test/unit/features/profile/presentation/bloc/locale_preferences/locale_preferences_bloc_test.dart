@@ -440,7 +440,7 @@ void main() {
       blocTest<LocalePreferencesBloc, LocalePreferencesState>(
         'emits ISO code country as-is from repository, requiring UI normalization',
         build: () {
-          final isoPreferences = const LocalePreferencesEntity(
+          const isoPreferences = LocalePreferencesEntity(
             locale: Locale('es'),
             country: 'ES',
             timeZone: null,
@@ -469,7 +469,7 @@ void main() {
       blocTest<LocalePreferencesBloc, LocalePreferencesState>(
         'emits ISO code country from Firestore, requiring UI normalization',
         build: () {
-          final isoPreferences = const LocalePreferencesEntity(
+          const isoPreferences = LocalePreferencesEntity(
             locale: Locale('fr'),
             country: 'FR',
             timeZone: null,

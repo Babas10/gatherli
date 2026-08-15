@@ -70,7 +70,7 @@ void main() {
     recentMatchups: [testMatchup1, testMatchup2, testMatchup3],
   );
 
-  final testStatsNoMatchups = HeadToHeadStats(
+  const testStatsNoMatchups = HeadToHeadStats(
     userId: testUserId,
     opponentId: testOpponentId,
     opponentName: 'Jane Smith',
@@ -96,7 +96,7 @@ void main() {
       () => mockInvitationBloc.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',
@@ -574,7 +574,7 @@ void main() {
 
     group('Opponent Display Name Fallback', () {
       testWidgets('shows email when name is null', (tester) async {
-        final statsWithoutName = HeadToHeadStats(
+        const statsWithoutName = HeadToHeadStats(
           userId: testUserId,
           opponentId: testOpponentId,
           opponentName: null,

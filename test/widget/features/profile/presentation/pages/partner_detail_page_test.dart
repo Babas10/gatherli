@@ -65,7 +65,7 @@ void main() {
     recentGames: [testGame1, testGame2, testGame3],
   );
 
-  final testStatsNoGames = TeammateStats(
+  const testStatsNoGames = TeammateStats(
     userId: testPartnerId,
     gamesPlayed: 10,
     gamesWon: 6,
@@ -76,7 +76,7 @@ void main() {
     recentGames: [],
   );
 
-  final testPartner = UserModel(
+  const testPartner = UserModel(
     uid: testPartnerId,
     email: 'partner@example.com',
     displayName: 'John Partner',
@@ -84,7 +84,7 @@ void main() {
     isEmailVerified: true,
   );
 
-  final testPartnerWithoutDisplayName = UserModel(
+  const testPartnerWithoutDisplayName = UserModel(
     uid: testPartnerId,
     email: 'anonymous@example.com',
     displayName: null,
@@ -101,7 +101,7 @@ void main() {
       () => mockInvitationBloc.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',
@@ -132,7 +132,7 @@ void main() {
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
-        child: PartnerDetailPage(userId: testUserId, partnerId: testPartnerId),
+        child: const PartnerDetailPage(userId: testUserId, partnerId: testPartnerId),
       ));
   }
 
@@ -617,7 +617,7 @@ void main() {
 
     group('Negative Stats Display', () {
       testWidgets('shows negative ELO change correctly', (tester) async {
-        final negativeStats = TeammateStats(
+        const negativeStats = TeammateStats(
           userId: testPartnerId,
           gamesPlayed: 10,
           gamesWon: 3,
@@ -644,7 +644,7 @@ void main() {
       testWidgets('shows negative point differential correctly', (
         tester,
       ) async {
-        final negativeStats = TeammateStats(
+        const negativeStats = TeammateStats(
           userId: testPartnerId,
           gamesPlayed: 10,
           gamesWon: 3,

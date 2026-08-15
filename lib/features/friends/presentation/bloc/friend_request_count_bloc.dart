@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'friend_request_count_event.dart';
 import 'friend_request_count_state.dart';

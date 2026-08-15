@@ -22,6 +22,9 @@ class InviteePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
+          (prev is InviteeSelectionLoaded && curr is InviteeSelectionLoaded &&
+           prev.selectedIds != curr.selectedIds),
       builder: (context, state) {
         if (state is InviteeSelectionLoading) {
           return const Center(child: CircularProgressIndicator());

@@ -133,7 +133,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: _testUserId,
           email: 'test@example.com',
