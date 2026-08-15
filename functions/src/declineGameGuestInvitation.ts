@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for declineGameGuestInvitation Cloud Function
@@ -149,4 +150,4 @@ export async function declineGameGuestInvitationHandler(
  */
 export const declineGameGuestInvitation = functions
   .region("europe-west6")
-  .https.onCall(declineGameGuestInvitationHandler);
+  .https.onCall(withLogging('declineGameGuestInvitation', declineGameGuestInvitationHandler));

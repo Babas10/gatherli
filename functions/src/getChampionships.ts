@@ -1,6 +1,7 @@
 // Cloud Function for listing all championships — authenticated callable (Story 30.x)
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -96,4 +97,4 @@ export const getChampionships = functions
     timeoutSeconds: 30,
     memory: "256MB",
   })
-  .https.onCall(getChampionshipsHandler);
+  .https.onCall(withLogging('getChampionships', getChampionshipsHandler));

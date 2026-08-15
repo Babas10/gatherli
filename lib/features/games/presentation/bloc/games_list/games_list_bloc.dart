@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
@@ -12,7 +13,7 @@ import 'package:play_with_me/core/data/models/group_activity_item.dart';
 import 'games_list_event.dart';
 import 'games_list_state.dart';
 
-class GamesListBloc extends Bloc<GamesListEvent, GamesListState> {
+class GamesListBloc extends BaseBloc<GamesListEvent, GamesListState> {
   final GameRepository _gameRepository;
   final TrainingSessionRepository _trainingSessionRepository;
   StreamSubscription<List<GameModel>>? _gamesSubscription;

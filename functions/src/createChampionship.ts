@@ -1,6 +1,7 @@
 // Cloud Function for creating championships — any authenticated user (Story 30.2, updated)
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -179,4 +180,4 @@ export const createChampionship = functions
     timeoutSeconds: 30,
     memory: "256MB",
   })
-  .https.onCall(createChampionshipHandler);
+  .https.onCall(withLogging('createChampionship', createChampionshipHandler));

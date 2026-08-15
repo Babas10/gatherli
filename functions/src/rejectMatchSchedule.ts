@@ -4,6 +4,7 @@
 // and notifies the proposing team.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 import {
   sendChampionshipNotificationToUsers,
 } from "./championshipNotifications";
@@ -171,4 +172,4 @@ export async function rejectMatchScheduleHandler(
 export const rejectMatchSchedule = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(rejectMatchScheduleHandler);
+  .https.onCall(withLogging('rejectMatchSchedule', rejectMatchScheduleHandler));

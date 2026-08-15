@@ -35,11 +35,12 @@ export function logError(ctx: FunctionContext, startMs: number, error: unknown):
  * Wraps any callable handler with automatic structured timing logs.
  * Usage: export const myFn = functions.https.onCall(withLogging('myFn', handler));
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function withLogging<T>(
   fnName: string,
-  handler: (data: unknown, context: unknown) => Promise<T>,
-): (data: unknown, context: unknown) => Promise<T> {
-  return async (data: unknown, context: unknown): Promise<T> => {
+  handler: (data: any, context: any) => Promise<T>,
+): (data: any, context: any) => Promise<T> {
+  return async (data: any, context: any): Promise<T> => {
     const start = startTimer();
     const ctx: FunctionContext = {
       fn: fnName,

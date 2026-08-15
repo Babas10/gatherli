@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import '../../../domain/repositories/invitation_repository.dart';
 import '../../../data/models/invitation_model.dart';
 import '../../../utils/error_messages.dart';
 import 'invitation_event.dart';
 import 'invitation_state.dart';
 
-class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
+class InvitationBloc extends BaseBloc<InvitationEvent, InvitationState> {
   final InvitationRepository _invitationRepository;
   StreamSubscription<dynamic>? _invitationsSubscription;
 

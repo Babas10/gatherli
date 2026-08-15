@@ -3,6 +3,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { generateRoundRobinFixtures } from "./roundRobinFixtures";
 import { sendChampionshipNotificationToUsers } from "./championshipNotifications";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -206,4 +207,4 @@ export async function startChampionshipHandler(
 export const startChampionship = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 60, memory: "256MB" })
-  .https.onCall(startChampionshipHandler);
+  .https.onCall(withLogging('startChampionship', startChampionshipHandler));

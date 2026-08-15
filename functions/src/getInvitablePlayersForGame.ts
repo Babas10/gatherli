@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for getInvitablePlayersForGame Cloud Function
@@ -212,4 +213,4 @@ export async function getInvitablePlayersForGameHandler(
  */
 export const getInvitablePlayersForGame = functions
   .region("europe-west6")
-  .https.onCall(getInvitablePlayersForGameHandler);
+  .https.onCall(withLogging('getInvitablePlayersForGame', getInvitablePlayersForGameHandler));

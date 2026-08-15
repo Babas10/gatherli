@@ -4,6 +4,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {checkFriendship} from "./friendships";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Request / Response types
@@ -370,4 +371,4 @@ export async function sendInvitationHandler(
  */
 export const sendInvitation = functions
   .region("europe-west6")
-  .https.onCall(sendInvitationHandler);
+  .https.onCall(withLogging('sendInvitation', sendInvitationHandler));

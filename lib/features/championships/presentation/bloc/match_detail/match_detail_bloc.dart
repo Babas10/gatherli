@@ -2,12 +2,13 @@
 // championship match detail screen.
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'match_detail_event.dart';
 import 'match_detail_state.dart';
 
-class MatchDetailBloc extends Bloc<MatchDetailEvent, MatchDetailState> {
+class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
   final ChampionshipRepository _repository;
   StreamSubscription<dynamic>? _matchSubscription;
   String? _championshipId;

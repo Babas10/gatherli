@@ -5,6 +5,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {checkFriendship} from "./friendships";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for acceptInvitation Cloud Function
@@ -270,4 +271,4 @@ async function acceptGameInvitation(
  */
 export const acceptInvitation = functions
   .region("europe-west6")
-  .https.onCall(acceptInvitationHandler);
+  .https.onCall(withLogging('acceptInvitation', acceptInvitationHandler));

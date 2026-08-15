@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import '../../../domain/repositories/group_repository.dart';
 import '../../../domain/repositories/invitation_repository.dart';
 import '../../../data/models/group_model.dart';
@@ -10,7 +11,7 @@ import '../../../utils/performance_tracer.dart';
 import 'group_event.dart';
 import 'group_state.dart';
 
-class GroupBloc extends Bloc<GroupEvent, GroupState> {
+class GroupBloc extends BaseBloc<GroupEvent, GroupState> {
   final GroupRepository _groupRepository;
   final InvitationRepository? _invitationRepository;
   final FirebaseAnalytics _analytics;

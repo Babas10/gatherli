@@ -7,6 +7,8 @@ import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/services/firebase_service.dart';
+import 'package:play_with_me/core/services/connectivity_service.dart';
+import 'package:play_with_me/core/services/feature_flags.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 
 Future<void> mainCommon() async {
@@ -37,6 +39,12 @@ Future<void> mainCommon() async {
     // Stores any recovered token in PendingInviteStorage before runApp() so
     // that DeepLinkBloc.InitializeDeepLinks picks it up automatically.
     await sl<DeferredDeepLinkOrchestrator>().checkOnce();
+
+    // Start monitoring network connectivity — updates OfflineBanner on all pages
+    ConnectivityService.instance.initialize();
+
+    // Load feature flags from Firestore before runApp — gates features without a release
+    await FeatureFlags.refresh();
 
     runApp(const PlayWithMeApp());
   } catch (e) {

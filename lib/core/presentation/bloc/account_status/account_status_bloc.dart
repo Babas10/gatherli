@@ -2,12 +2,13 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/entities/account_status.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_event.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 
-class AccountStatusBloc extends Bloc<AccountStatusEvent, AccountStatusState> {
+class AccountStatusBloc extends BaseBloc<AccountStatusEvent, AccountStatusState> {
   final AuthRepository _authRepository;
   StreamSubscription<dynamic>? _authStateSubscription;
 

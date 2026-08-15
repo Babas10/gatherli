@@ -3,6 +3,7 @@
 // Clears scheduledByTeamId (marks schedule as confirmed) and notifies proposer.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 interface ConfirmMatchScheduleRequest {
   championshipId: string;
@@ -170,4 +171,4 @@ export async function confirmMatchScheduleHandler(
 export const confirmMatchSchedule = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(confirmMatchScheduleHandler);
+  .https.onCall(withLogging('confirmMatchSchedule', confirmMatchScheduleHandler));

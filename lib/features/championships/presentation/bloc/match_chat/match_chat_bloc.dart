@@ -1,12 +1,13 @@
 // Manages real-time per-match coordination chat messages for championship matches.
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'match_chat_event.dart';
 import 'match_chat_state.dart';
 
-class MatchChatBloc extends Bloc<MatchChatEvent, MatchChatState> {
+class MatchChatBloc extends BaseBloc<MatchChatEvent, MatchChatState> {
   final MessageRepository _messageRepository;
   StreamSubscription<dynamic>? _messagesSubscription;
 

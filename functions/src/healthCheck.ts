@@ -1,4 +1,5 @@
 import * as functions from "firebase-functions";
+import { withLogging } from './utils/logger';
 
 export interface HealthCheckResponse {
   status: "ok";
@@ -22,4 +23,4 @@ export async function healthCheckHandler(
  * Used by the post-deploy smoke test in cd-beta.yml and cd-production.yml
  * to confirm that functions are running after a deployment.
  */
-export const healthCheck = functions.region('europe-west6').https.onCall(healthCheckHandler);
+export const healthCheck = functions.region('europe-west6').https.onCall(withLogging('healthCheck', healthCheckHandler));

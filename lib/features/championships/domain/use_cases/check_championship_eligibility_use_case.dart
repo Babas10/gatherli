@@ -72,11 +72,33 @@ class CheckChampionshipEligibilityUseCase
       isAlreadyRegistered: isAlreadyRegistered,
       isGenderAllowed: isGenderAllowed,
       canRegister: canRegister,
-      genderBlockReason: _genderBlockReason(
+      genderBlockReason: _genderBlockReasonText(
         championship.genderCategory,
         input.userGender,
         isAlreadyRegistered,
       ),
+      myTeamId: myTeamId,
+    );
+  }
+
+  /// Synchronous version — safe because this use case has no I/O.
+  /// Use from widget build() methods instead of execute().
+  ChampionshipEligibilityResult executeSync(ChampionshipEligibilityInput input) {
+    final userId = input.userId;
+    final championship = input.championship;
+    final teams = input.teams;
+    final isAlreadyRegistered = userId != null && teams.any((t) => t.memberIds.contains(userId));
+    final isGenderAllowed = _isGenderAllowed(championship.genderCategory, input.userGender);
+    final canRegister = userId != null && !isAlreadyRegistered && isGenderAllowed &&
+        championship.status == ChampionshipStatus.registration && championship.isOpen;
+    final myTeamId = userId != null
+        ? teams.where((t) => t.memberIds.contains(userId)).map((t) => t.id).firstOrNull
+        : null;
+    return ChampionshipEligibilityResult(
+      isAlreadyRegistered: isAlreadyRegistered,
+      isGenderAllowed: isGenderAllowed,
+      canRegister: canRegister,
+      genderBlockReason: _genderBlockReasonText(championship.genderCategory, input.userGender, isAlreadyRegistered),
       myTeamId: myTeamId,
     );
   }
@@ -90,7 +112,7 @@ class CheckChampionshipEligibilityUseCase
     return userGender == category.name;
   }
 
-  String? _genderBlockReason(
+  String? _genderBlockReasonText(
     ChampionshipGenderCategory? category,
     String? userGender,
     bool alreadyRegistered,

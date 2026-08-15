@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
@@ -16,7 +17,7 @@ const _finalStatuses = {
   ChampionshipMatchStatus.adminDecided,
 };
 
-class AdminPanelBloc extends Bloc<AdminPanelEvent, AdminPanelState> {
+class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
   final ChampionshipRepository _repository;
   StreamSubscription<List<ChampionshipMatchModel>>? _matchSubscription;
   String? _championshipId;

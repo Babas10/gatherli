@@ -3,6 +3,7 @@
 // the championship is in registration or registration_closed status.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 interface EditChampionshipRequest {
   championshipId: string;
@@ -135,4 +136,4 @@ export async function editChampionshipHandler(
 export const editChampionship = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(editChampionshipHandler);
+  .https.onCall(withLogging('editChampionship', editChampionshipHandler));

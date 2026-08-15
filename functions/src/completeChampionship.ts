@@ -2,6 +2,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { sendChampionshipNotificationToUsers } from "./championshipNotifications";
+import { withLogging } from './utils/logger';
 
 interface CompleteChampionshipRequest {
   championshipId: string;
@@ -127,4 +128,4 @@ export async function completeChampionshipHandler(
 export const completeChampionship = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(completeChampionshipHandler);
+  .https.onCall(withLogging('completeChampionship', completeChampionshipHandler));

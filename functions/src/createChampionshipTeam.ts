@@ -2,6 +2,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { checkFriendship } from "./friendships";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -227,4 +228,4 @@ export async function createChampionshipTeamHandler(
 export const createChampionshipTeam = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(createChampionshipTeamHandler);
+  .https.onCall(withLogging('createChampionshipTeam', createChampionshipTeamHandler));

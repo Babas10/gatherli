@@ -31,6 +31,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/domain/use_cases/check_championship_eligibility_use_case.dart';
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -99,27 +100,20 @@ class _ChampionshipDetailView extends StatelessWidget {
           : null;
       final isAdmin = currentUserId != null &&
           state.championship.adminIds.contains(currentUserId);
-      final alreadyRegistered = currentUserId != null &&
-          state.teams.any((t) => t.memberIds.contains(currentUserId));
-      final genderAllowed = _genderAllowed(
-        state.championship.genderCategory,
-        state.currentUserGender,
-      );
-      final canRegister = currentUserId != null &&
-          !alreadyRegistered &&
-          genderAllowed &&
-          state.championship.status == ChampionshipStatus.registration &&
-          state.championship.isOpen;
 
-      // Tab count: Standings + Matches + My Matches (if registered) + Admin (if admin)
-      final myTeamId = currentUserId != null
-          ? state.teams
-              .where((t) => t.memberIds.contains(currentUserId))
-              .map((t) => t.id)
-              .firstOrNull
-          : null;
-      final tabCount =
-          2 + (alreadyRegistered ? 1 : 0) + (isAdmin ? 1 : 0);
+      // All registration eligibility logic centralised in the use case
+      final eligibility = const CheckChampionshipEligibilityUseCase().executeSync(
+        ChampionshipEligibilityInput(
+          championship: state.championship,
+          teams: state.teams,
+          userId: currentUserId,
+          userGender: state.currentUserGender,
+        ),
+      );
+
+      final alreadyRegistered = eligibility.isAlreadyRegistered;
+      final myTeamId = eligibility.myTeamId;
+      final tabCount = 2 + (alreadyRegistered ? 1 : 0) + (isAdmin ? 1 : 0);
 
       return DefaultTabController(
         length: tabCount,
@@ -127,20 +121,11 @@ class _ChampionshipDetailView extends StatelessWidget {
           children: [
             _ChampionshipHeader(
               championship: state.championship,
-              onRegister: canRegister
+              onRegister: eligibility.canRegister
                   ? () => _openRegistration(context, state.championship.id,
-                      currentUserId, l10n)
+                      currentUserId!, l10n)
                   : null,
-              genderBlockReason: !genderAllowed &&
-                      state.championship.status ==
-                          ChampionshipStatus.registration &&
-                      !alreadyRegistered
-                  ? _genderBlockMessage(
-                      state.championship.genderCategory,
-                      state.currentUserGender,
-                      l10n,
-                    )
-                  : null,
+              genderBlockReason: eligibility.genderBlockReason,
               myTeam: alreadyRegistered
                   ? state.teams.where((t) =>
                       t.memberIds.contains(currentUserId)).firstOrNull
@@ -203,7 +188,7 @@ class _ChampionshipDetailView extends StatelessWidget {
                       allMatches: state.allMatches,
                       teams: state.teams,
                       myTeamId: myTeamId ?? '',
-                      currentUserId: currentUserId,
+                      currentUserId: currentUserId ?? '',
                       currentUserDisplayName:
                           (context.read<AuthenticationBloc>().state
                                   as AuthenticationAuthenticated)
@@ -232,32 +217,6 @@ class _ChampionshipDetailView extends StatelessWidget {
       status == ChampionshipStatus.registration ||
       status == ChampionshipStatus.registrationClosed;
 
-  /// Returns true if the user's gender is eligible for the championship.
-  /// If no genderCategory is set on the championship, everyone is allowed.
-  static bool _genderAllowed(
-    ChampionshipGenderCategory? category,
-    String? userGender,
-  ) {
-    if (category == null) return true;
-    if (userGender == null || userGender == 'none') return false;
-    return userGender == category.name;
-  }
-
-  /// Returns a localised reason message why registration is blocked by gender,
-  /// or null if there is no gender restriction.
-  static String? _genderBlockMessage(
-    ChampionshipGenderCategory? category,
-    String? userGender,
-    AppLocalizations l10n,
-  ) {
-    if (category == null) return null;
-    if (userGender == null || userGender == 'none') {
-      return l10n.championshipGenderBlockNoGender;
-    }
-    return category == ChampionshipGenderCategory.male
-        ? l10n.championshipGenderBlockMaleOnly
-        : l10n.championshipGenderBlockFemaleOnly;
-  }
 
   void _openRegistration(
     BuildContext context,

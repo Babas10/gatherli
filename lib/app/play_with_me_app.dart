@@ -108,7 +108,12 @@ class PlayWithMeApp extends StatelessWidget {
             repository: sl<LocalePreferencesRepository>(),
           )..add(const LocalePreferencesEvent.loadPreferences()),
         ),
-        // ChampionshipListBloc is scoped to the Championships tab (see _pages)
+        // ChampionshipListBloc is at app root so the authentication listener
+        // (below) can call LoadChampionships after auth is confirmed.
+        // Moving it to tab scope would break the listener.
+        BlocProvider<ChampionshipListBloc>(
+          create: (context) => sl<ChampionshipListBloc>(),
+        ),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -344,10 +349,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: const GroupListPage(),
       ),
       const MyCommunityPage(),
-      BlocProvider<ChampionshipListBloc>(
-        create: (context) => sl<ChampionshipListBloc>(),
-        child: const ChampionshipListPage(),
-      ),
+      const ChampionshipListPage(),
     ];
   }
 

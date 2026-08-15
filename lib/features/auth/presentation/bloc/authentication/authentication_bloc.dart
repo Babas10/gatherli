@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_event.dart';

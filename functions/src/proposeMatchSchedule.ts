@@ -4,6 +4,7 @@
 // and notifies the opposing team (Story 30.20).
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 import {
   sendChampionshipNotificationToUsers,
 } from "./championshipNotifications";
@@ -204,4 +205,4 @@ export async function proposeMatchScheduleHandler(
 export const proposeMatchSchedule = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(proposeMatchScheduleHandler);
+  .https.onCall(withLogging('proposeMatchSchedule', proposeMatchScheduleHandler));

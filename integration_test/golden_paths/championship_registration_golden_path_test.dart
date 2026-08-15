@@ -17,7 +17,7 @@ void main() {
 
   setUp(() async {
     await FirebaseEmulatorHelper.clearFirestore();
-    final user = await FirebaseEmulatorHelper.createAndSignInUser(
+    final user = await FirebaseEmulatorHelper.signIn(
       email: "captain@test.com", password: "test1234");
     captainUid = user.uid;
   });
