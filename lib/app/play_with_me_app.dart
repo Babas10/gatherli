@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:play_with_me/app/route_generator.dart';
@@ -59,6 +60,7 @@ import 'package:play_with_me/features/groups/presentation/pages/group_details_pa
 import 'package:play_with_me/features/training/presentation/pages/training_session_details_page.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_theme.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
@@ -250,26 +252,7 @@ class PlayWithMeApp extends StatelessWidget {
               navigatorKey: PlayWithMeApp.navigatorKey,
               debugShowCheckedModeBanner: false,
               title: 'Gatherli${EnvironmentConfig.appSuffix}',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary)
-                    .copyWith(
-                      primary: AppColors.primary,
-                      secondary: AppColors.secondary,
-                      error: AppColors.danger,
-                      onSurface: AppColors.onSurface,
-                      onSurfaceVariant: AppColors.textMuted,
-                    ),
-                scaffoldBackgroundColor: AppColors.scaffoldBackground,
-                cardTheme: CardThemeData(
-                  elevation: 0,
-                  color: Colors.white,
-                  shadowColor: AppColors.shadow,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                useMaterial3: true,
-              ),
+              theme: AppTheme.light,
               locale: currentLocale,
               supportedLocales: LocalePreferencesEntity.supportedLocales,
               localizationsDelegates: const [
@@ -770,12 +753,12 @@ class _HomeTabState extends State<_HomeTab> {
                           const Icon(
                             Icons.error_outline,
                             size: 48,
-                            color: Colors.red,
+                            color: AppColors.danger,
                           ),
                           const SizedBox(height: 16),
                           Text(
                             'Error loading stats: ${statsState.message}',
-                            style: const TextStyle(color: Colors.red),
+                            style: const TextStyle(color: AppColors.danger),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -808,12 +791,7 @@ class _HomeTabState extends State<_HomeTab> {
                       padding: const EdgeInsets.only(left: 20.0, bottom: 15.0),
                       child: Text(
                         AppLocalizations.of(context)!.nextGame.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textMuted,
-                          letterSpacing: 0.8,
-                        ),
+                        style: AppTextStyles.sectionLabel,
                       ),
                     ),
 
@@ -869,12 +847,7 @@ class _HomeTabState extends State<_HomeTab> {
                         AppLocalizations.of(
                           context,
                         )!.nextTrainingSession.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textMuted,
-                          letterSpacing: 0.8,
-                        ),
+                        style: AppTextStyles.sectionLabel,
                       ),
                     ),
 

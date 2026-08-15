@@ -1,5 +1,6 @@
 // Partners card showing best partner statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
@@ -27,12 +28,7 @@ class PartnersCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           Text(
             l10n.bestPartner.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
           // White card
@@ -98,7 +94,7 @@ class PartnersCard extends StatelessWidget {
                 l10n.winRatePercent(winRate),
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Colors.green,
+                  color: AppColors.success,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -124,19 +120,19 @@ class PartnersCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.trending_up, size: 14, color: Colors.green),
+                  const Icon(Icons.trending_up, size: 14, color: AppColors.success),
                   const SizedBox(width: 4),
                   Text(
                     '$winRate%',
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.green,
+                      color: AppColors.success,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

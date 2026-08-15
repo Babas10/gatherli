@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           }

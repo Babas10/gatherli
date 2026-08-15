@@ -1,6 +1,7 @@
 // Game details page displaying game information and allowing RSVP actions.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -129,7 +130,7 @@ class _GameDetailsView extends StatelessWidget {
               ),
               if (state.isRetryable) ...[
                 const SizedBox(height: 16),
-                ElevatedButton(
+                FilledButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -166,7 +167,7 @@ class _GameDetailsView extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              FilledButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(l10n.goBack),
               ),
@@ -486,15 +487,7 @@ class _PlayersCard extends StatelessWidget {
                       return ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.primary.withValues(
-                            alpha: 0.25,
-                          ),
-                          child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(color: AppColors.secondary),
-                          ),
-                        ),
+                        leading: UserAvatar(name: displayName),
                         title: Text(
                           displayName,
                           style: const TextStyle(fontWeight: FontWeight.w500),
@@ -531,12 +524,7 @@ class _PlayersCard extends StatelessWidget {
                     return ListTile(
                       dense: true,
                       contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(
-                          context,
-                        ).colorScheme.surface.withValues(alpha: 0.5),
-                        child: Text('${entry.key + 1}'),
-                      ),
+                      leading: UserAvatar(name: displayName, radius: 16),
                       title: Text(displayName),
                       trailing:
                           isCurrentUser && game.status == GameStatus.scheduled
@@ -840,7 +828,7 @@ class _RsvpButtons extends StatelessWidget {
             child: SafeArea(
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: isOperationInProgress
                       ? null
                       : () {
@@ -865,10 +853,8 @@ class _RsvpButtons extends StatelessWidget {
                         )
                       : const Icon(Icons.add_circle_outline),
                   label: Text(game.isFull ? 'Join Waitlist' : 'I\'m In'),
-                  style: ElevatedButton.styleFrom(
+                  style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
                   ),
                 ),
               ),
@@ -1035,14 +1021,9 @@ class _QuickScoreDisplay extends StatelessWidget {
       backgroundColor = AppColors.secondary;
       textColor = Colors.white;
       borderColor = AppColors.secondary;
-    } else if (isTied) {
-      // Tie: Team A gets yellow/gold, Team B gets blue — visually distinct
-      backgroundColor = isTeamA ? AppColors.primary : AppColors.secondary;
-      textColor = isTeamA ? AppColors.secondary : Colors.white;
-      borderColor = isTeamA ? AppColors.primary : AppColors.secondary;
     } else {
-      backgroundColor = AppColors.primary;
-      textColor = AppColors.secondary;
+      backgroundColor = AppColors.avatarBackground;
+      textColor = AppColors.avatarForeground;
       borderColor = AppColors.primary;
     }
 
@@ -1107,7 +1088,7 @@ class _VerificationSection extends StatelessWidget {
 
         if (!isParticipant) return const SizedBox.shrink();
 
-        Color bannerColor = Colors.orange;
+        Color bannerColor = AppColors.warning;
         String title = 'Result Verification Pending';
         String message = 'Please verify the game results.';
         IconData icon = Icons.warning_amber_rounded;
@@ -1118,7 +1099,7 @@ class _VerificationSection extends StatelessWidget {
           message = 'Waiting for other players to confirm.';
           icon = Icons.info_outline;
         } else if (hasConfirmed) {
-          bannerColor = Colors.green;
+          bannerColor = AppColors.success;
           title = 'Confirmed';
           message = 'You have confirmed this result.';
           icon = Icons.check_circle_outline;
@@ -1155,7 +1136,7 @@ class _VerificationSection extends StatelessWidget {
                 children: [
                   if (!isSubmitter && !hasConfirmed)
                     Expanded(
-                      child: ElevatedButton.icon(
+                      child: FilledButton.icon(
                         onPressed: isOperationInProgress
                             ? null
                             : () {
@@ -1169,14 +1150,14 @@ class _VerificationSection extends StatelessWidget {
                         icon: const Icon(Icons.check),
                         label: const Text('Confirm'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: AppColors.success,
                           foregroundColor: Colors.white,
                         ),
                       ),
                     ),
                   if (!isSubmitter && !hasConfirmed) const SizedBox(width: 8),
                   Expanded(
-                    child: ElevatedButton.icon(
+                    child: FilledButton.icon(
                       onPressed: isOperationInProgress
                           ? null
                           : () {
@@ -1190,7 +1171,7 @@ class _VerificationSection extends StatelessWidget {
                             },
                       icon: const Icon(Icons.edit),
                       label: const Text('Edit / Dispute'),
-                      style: ElevatedButton.styleFrom(
+                      style: FilledButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,
                       ),

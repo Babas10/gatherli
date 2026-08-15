@@ -42,36 +42,16 @@ class GlobalBottomNavBar extends StatelessWidget {
           label: l10n.groups,
         ),
         BottomNavigationBarItem(
-          icon: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              const Icon(Icons.people),
-              if (friendRequestCount > 0)
-                Positioned(
-                  right: -6,
-                  top: -4,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 18,
-                      minHeight: 18,
-                    ),
-                    child: Text(
-                      friendRequestCount > 9 ? '9+' : '$friendRequestCount',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-            ],
+          icon: Badge(
+            isLabelVisible: friendRequestCount > 0,
+            label: Text(friendRequestCount > 9 ? '9+' : '$friendRequestCount'),
+            backgroundColor: AppColors.danger,
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            child: const Icon(Icons.people),
           ),
           label: l10n.community,
         ),

@@ -1,5 +1,6 @@
 // Displays a list of pending invitations for the current user with real-time updates
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
@@ -59,7 +60,7 @@ class PendingInvitationsPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
             // Reload invitations after accepting
@@ -70,7 +71,7 @@ class PendingInvitationsPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.orange,
+                backgroundColor: AppColors.warning,
               ),
             );
             // Reload invitations after declining
@@ -81,7 +82,7 @@ class PendingInvitationsPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
             // Reload invitations after error

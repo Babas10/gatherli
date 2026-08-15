@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                   content: Text(
                     AppLocalizations.of(context)!.deleteAccountError,
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           }

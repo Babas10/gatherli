@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
@@ -55,7 +56,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
                   const SizedBox(height: 16),
                   Text(
                     'Error loading feedback',
@@ -68,7 +69,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
                     style: const TextStyle(color: Colors.grey),
                   ),
                   const SizedBox(height: 24),
-                  ElevatedButton.icon(
+                  FilledButton.icon(
                     onPressed: () {
                       context.read<TrainingFeedbackBloc>().add(
                         LoadAggregatedFeedback(widget.trainingSessionId),
@@ -126,11 +127,11 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
             ),
             const SizedBox(height: 32),
             if (!hasUserSubmitted)
-              ElevatedButton.icon(
+              FilledButton.icon(
                 onPressed: () => _navigateToSubmitFeedback(context),
                 icon: const Icon(Icons.rate_review),
                 label: const Text('Submit Feedback'),
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 16,
@@ -209,12 +210,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               children: [
                 const Text(
                   'INDIVIDUAL FEEDBACK',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textMuted,
-                    letterSpacing: 0.8,
-                  ),
+                  style: AppTextStyles.sectionLabel,
                 ),
                 const SizedBox(width: 8),
                 Container(

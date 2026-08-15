@@ -835,11 +835,17 @@ async function main(): Promise<void> {
   await createVerifiedMatch(wChampId,2,wTeams[0],wTeams[3],"teamA","2-0",daysAgo(28),daysAgo(30));
   await createVerifiedMatch(wChampId,2,wTeams[4],wTeams[2],"teamB","2-0",daysAgo(28),daysAgo(29));
 
-  // Round 3 — MIX: verified, played-awaiting, scheduled, pending, disputed
+  // Round 3 — MIX: verified, played-awaiting, scheduled, disputed
   await createVerifiedMatch(wChampId,3,wTeams[0],wTeams[2],"teamA","2-1",daysAgo(14),daysAgo(15));
   await createPlayedMatch(wChampId,3,wTeams[1],wTeams[4],daysAgo(7), wTeams[1]);      // awaiting verification
   await createScheduledMatch(wChampId,3,wTeams[3],wTeams[2],daysFuture(14),daysFuture(5),wTeams[3]); // scheduled
   await createDisputedMatch(wChampId,3,wTeams[0],wTeams[4],daysAgo(3));               // disputed
+
+  // Rounds 4 & 5 — all pending (future rounds)
+  await createPendingMatch(wChampId,4,wTeams[0],wTeams[1],daysFuture(21));
+  await createPendingMatch(wChampId,4,wTeams[2],wTeams[4],daysFuture(21));
+  await createPendingMatch(wChampId,5,wTeams[0],wTeams[3],daysFuture(35));
+  await createPendingMatch(wChampId,5,wTeams[1],wTeams[2],daysFuture(35));
 
   // Standings after 2 completed rounds
   await writeStandings(wChampId, [

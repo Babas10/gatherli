@@ -97,7 +97,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Failed to create group: ${state.message}'),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 duration: const Duration(seconds: 3),
               ),
             );

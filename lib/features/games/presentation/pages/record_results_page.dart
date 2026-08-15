@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +64,7 @@ class _RecordResultsView extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           }
@@ -83,7 +84,7 @@ class _RecordResultsView extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 64,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -384,17 +385,7 @@ class _PlayerChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-            child: Text(
-              playerName.substring(0, 1).toUpperCase(),
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          UserAvatar(name: playerName, radius: 16),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -445,17 +436,7 @@ class _UnassignedPlayerItem extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-            child: Text(
-              playerName.substring(0, 1).toUpperCase(),
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          UserAvatar(name: playerName, radius: 16),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -470,8 +451,6 @@ class _UnassignedPlayerItem extends StatelessWidget {
                 key: Key('assign_team_A_button_$playerId'),
                 onPressed: onAssignToTeamA,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.secondary,
                   minimumSize: const Size(60, 36),
                 ),
                 child: Text(AppLocalizations.of(context)!.teamA),

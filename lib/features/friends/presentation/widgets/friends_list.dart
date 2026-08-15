@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'friend_tile.dart';
@@ -89,7 +90,7 @@ class FriendsList extends StatelessWidget {
               // For now, we'll use the uid as a placeholder
               onRemoveFriend(friend.uid);
             },
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
             child: Text(l10n.remove),
           ),
         ],

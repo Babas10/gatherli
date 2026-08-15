@@ -87,47 +87,28 @@ class PlayWithMeAppBar {
             pendingCount = state.invitations.length;
           }
 
-          return Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.mail_outline, size: 22),
-                visualDensity: VisualDensity.compact,
-                tooltip: l10n.invitations,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const PendingInvitationsPage(),
-                    ),
-                  );
-                },
-              ),
-              if (pendingCount > 0)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 16,
-                      minHeight: 16,
-                    ),
-                    child: Text(
-                      pendingCount > 9 ? '9+' : '$pendingCount',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+          return Badge(
+            isLabelVisible: pendingCount > 0,
+            label: Text(pendingCount > 9 ? '9+' : '$pendingCount'),
+            backgroundColor: AppColors.danger,
+            textStyle: const TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.mail_outline, size: 22),
+              visualDensity: VisualDensity.compact,
+              tooltip: l10n.invitations,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const PendingInvitationsPage(),
                   ),
-                ),
-            ],
+                );
+              },
+            ),
           );
         },
       ),
@@ -154,57 +135,38 @@ class PlayWithMeAppBar {
                 pendingCount = state.invitations.length;
               }
 
-              return Stack(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.sports_volleyball_outlined,
-                      size: 22,
-                    ),
-                    visualDensity: VisualDensity.compact,
-                    tooltip: l10n.gameInvitations,
-                    onPressed: () async {
-                      final bloc = gameInvBloc!;
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider.value(
-                            value: bloc,
-                            child: const MyGamesPage(),
-                          ),
-                        ),
-                      );
-                      // Reload so badge reflects any accepts/declines made
-                      // while on MyGamesPage or GameDetailsPage.
-                      bloc.add(const LoadGameInvitations());
-                    },
+              return Badge(
+                isLabelVisible: pendingCount > 0,
+                label: Text(pendingCount > 9 ? '9+' : '$pendingCount'),
+                backgroundColor: AppColors.danger,
+                textStyle: const TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.sports_volleyball_outlined,
+                    size: 22,
                   ),
-                  if (pendingCount > 0)
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        child: Text(
-                          pendingCount > 9 ? '9+' : '$pendingCount',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                  visualDensity: VisualDensity.compact,
+                  tooltip: l10n.gameInvitations,
+                  onPressed: () async {
+                    final bloc = gameInvBloc!;
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: bloc,
+                          child: const MyGamesPage(),
                         ),
                       ),
-                    ),
-                ],
+                    );
+                    // Reload so badge reflects any accepts/declines made
+                    // while on MyGamesPage or GameDetailsPage.
+                    bloc.add(const LoadGameInvitations());
+                  },
+                ),
               );
             },
           );

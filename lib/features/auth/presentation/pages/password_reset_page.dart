@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -46,7 +47,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           } else if (state is PasswordResetSuccess) {
@@ -138,7 +139,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          icon: Icon(Icons.check_circle, color: Colors.green, size: 48),
+          icon: Icon(Icons.check_circle, color: AppColors.success, size: 48),
           title: Text(l10n.emailSent),
           content: Column(
             mainAxisSize: MainAxisSize.min,

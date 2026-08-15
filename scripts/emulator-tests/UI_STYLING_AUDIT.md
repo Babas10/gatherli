@@ -15,7 +15,7 @@
 | Danger | `#EF476F` (`AppColors.danger`) | Errors, destructive actions |
 | Dividers | `#E2E8F0` (`AppColors.divider`) | — |
 
-**Critical rule:** NEVER use Material 3 generated surface colors (`surfaceContainerLow`, `surfaceVariant`, `surfaceContainer`, etc.) — they produce wrong bluish/cream tints.
+**Critical rule:** NEVER use Material 3 generated surface colors (`surfaceContainerLow`, `surfaceVariant`, `surfaceContainer`, `primaryContainer`, `colorScheme.surface`, `colorScheme.primary`) — they produce wrong bluish/cream tints.
 
 ---
 
@@ -38,7 +38,6 @@
 | AppBar | White, "Login" title teal | White | ✅ |
 | Email/Password fields | White card, teal icons | White card | ✅ |
 | Login button | Gold filled | Gold | ✅ |
-| "Sign Up" link | Pink/teal accent | — | ✅ |
 | "Forgot Password?" | Gold | Gold | ✅ |
 
 ---
@@ -52,8 +51,7 @@
 | Scaffold background | `#F4F6F8` light grey | `#F4F6F8` | ✅ |
 | AppBar | White, "Gatherli" logo | White | ✅ |
 | ELO / Win Rate cards | White, elevation 0 | White cards | ✅ |
-| Section headers ("NEXT GAME") | Light grey background (scaffold shows through) | No container | ✅ |
-| Empty state dashed cards | Light grey dashed border, muted icon | — | ✅ |
+| Next Game / Next Training cards | White cards | White cards | ✅ |
 | Pickup Game FAB | Dark teal `#004E64` | — | ✅ |
 
 ---
@@ -66,45 +64,235 @@
 |---|---|---|---|
 | Scaffold background | `#F4F6F8` light grey | `#F4F6F8` | ✅ |
 | AppBar | White, "My Stats" teal | White | ✅ |
-| "No Performance Data" card | White card | White | ✅ |
-| ELO progress stat chips (Global Rank, Percentile…) | White chips with teal icon | White card | ✅ |
-| Time filter pills (30d / 90d / 1y / ∞) | **Sand/cream outlined pills**, selected uses gold | Should use `AppColors` chip styling | ⚠️ |
+| ELO progress stat chips | White chips with teal icon | White | ✅ |
 | Monthly Progress Chart card | White card | White | ✅ |
+| Time filter pills (30d / 90d / 1y / ∞) | **Sand/cream outlined pills** | AppColors chip styling | ⚠️ |
 
-**Fix needed:** The 30d/90d/1y time filter pills appear to use a sand/cream tint on the unselected state. Should use `AppColors.scaffoldBackground` as background with `AppColors.divider` border, and `AppColors.primary` for the selected state.
+**Fix needed:** Time filter pills use a sand/cream tint on unselected state. Should use `AppColors.scaffoldBackground` with `AppColors.divider` border; `AppColors.primary` for selected.
 
 ---
 
 ### 4. Groups List (My Groups)
 **File:** `lib/features/groups/presentation/pages/group_list_page.dart`
-**Status:** ✅ Conforming
+**Status:** ✅ Conforming (minor FAB shadow tint)
 
 | Element | Observed | Standard | OK? |
 |---|---|---|---|
 | Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
 | AppBar | White, "My Groups" teal | White | ✅ |
-| Empty state illustration | Muted gold icon | — | ✅ |
-| "Create Group" FAB | Gold + cream background | Gold | ⚠️ |
-
-**Note:** "Create Group" FAB has a cream/warm background behind it (likely FAB elevation shadow tinting). Should be solid gold background on dark teal icon, or solid gold as per other FABs.
+| Group cards | White, elevation 0 | White cards | ✅ |
+| "Create Group" FAB | Gold + cream shadow | Solid gold | ⚠️ |
 
 ---
 
-### 5. Community (My Community / Friends)
-**File:** `lib/features/friends/presentation/pages/my_community_page.dart`
+### 5. Group Details Page
+**File:** `lib/features/groups/presentation/pages/group_details_page.dart`
 **Status:** ✅ Conforming
 
 | Element | Observed | Standard | OK? |
 |---|---|---|---|
 | Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
-| AppBar | White, "My Community" teal | White | ✅ |
-| Friends / Requests TabBar | Gold underline indicator, teal text | Gold indicator | ✅ |
-| Empty state icon | Teal people icon | — | ✅ |
-| "Add Friend" FAB | Gold + cream background | Gold | ⚠️ |
+| AppBar | White, group name teal | White | ✅ |
+| Group header info | No container — scaffold shows through | Correct | ✅ |
+| Members/Activities TabBar | Teal underline indicator | Teal | ✅ |
+| Member list tiles | No background — scaffold shows through | Correct | ✅ |
+| Create Game / Create Training buttons | White cards | White | ✅ |
 
 ---
 
-### 6. Championships List
+### 6. Game Details Page (future game — Join/Waitlist)
+**File:** `lib/features/games/presentation/pages/game_details_page.dart`
+**Status:** ⚠️ Minor — wrong M3 color components
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| Game info header card | White card | White | ✅ |
+| Player number circles (confirmed) | Gold tinted | AppColors.primary | ✅ |
+| Player number circles (waitlist section) | **Cream/surface tinted** | Neutral grey | ⚠️ |
+| "I'm In" / "Join Waitlist" button | **Washed-out gold/cream** | Solid `AppColors.primary` | ⚠️ |
+
+**Root cause (line 535):** `CircleAvatar` uses `Theme.of(context).colorScheme.surface.withValues(alpha: 0.5)` — M3 surface = cream. Fix: use `Colors.grey.shade100` or `AppColors.scaffoldBackground`.
+
+**Root cause (line 870):** Button uses `Theme.of(context).colorScheme.primary` — M3 primary, not `AppColors.primary`. Fix: replace with `AppColors.primary`.
+
+---
+
+### 7. Game Details Page (past game / with results)
+**File:** `lib/features/games/presentation/pages/game_details_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| Game Results card | White card | White | ✅ |
+| Confirmed Players card | White card | White | ✅ |
+
+---
+
+### 8. Score / Game Results Page
+**File:** `lib/features/games/presentation/pages/game_history_screen.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "Game Results" | White | ✅ |
+| ELO changes card | White card | White | ✅ |
+| Individual games list | White cards | White | ✅ |
+
+---
+
+### 9. Game Creation Page
+**File:** `lib/features/games/presentation/pages/game_creation_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| Date picker | `showAppStyledDatePicker` ✅ | White bg, teal selection | ✅ |
+| Submit button | Gold filled | Gold | ✅ |
+
+---
+
+### 10. Pickup Game Creation Page
+**File:** `lib/features/games/presentation/pages/pickup_game_creation_page.dart`
+**Status:** ⚠️ Minor — raw date picker
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| **Date & Time picker** | **Raw `showDatePicker` (line 97)** — cream calendar | `showAppStyledDatePicker` | ⚠️ |
+
+---
+
+### 11. Training Session Creation Page
+**File:** `lib/features/training/presentation/pages/training_session_creation_page.dart`
+**Status:** ⚠️ Minor — raw date picker
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| **Start/End time pickers** | **Raw `showDatePicker` (line 66)** — cream calendar | `showAppStyledDatePicker` | ⚠️ |
+| Min/Max participants sliders | Native look | — | ✅ |
+
+---
+
+### 12. Training Session Details Page
+**File:** `lib/features/training/presentation/pages/training_session_details_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| Status badge (Completed) | White card | White | ✅ |
+| Session info header | No container — scaffold shows through | Correct | ✅ |
+| Participants / Exercises TabBar | Teal underline | Teal | ✅ |
+| Participation stats card | White card | White | ✅ |
+
+---
+
+### 13. Community (My Community / Friends)
+**File:** `lib/features/friends/presentation/pages/my_community_page.dart`
+**Status:** ✅ Conforming (minor FAB shadow tint)
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "My Community" teal | White | ✅ |
+| Friends / Requests TabBar | Gold underline indicator | Gold | ✅ |
+| Friend list tiles | No card — scaffold shows through | Correct | ✅ |
+| Requests badge | Teal pill on tab | — | ✅ |
+| "Add Friend" FAB | Gold + cream shadow | Solid gold | ⚠️ |
+
+---
+
+### 14. Add Friend / Search Page
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "Add Friend" | White | ✅ |
+| Search field | Standard text field | — | ✅ |
+
+---
+
+### 15. Invite Member Page
+**File:** `lib/features/groups/presentation/pages/invite_member_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "Invite Members" | White | ✅ |
+| Friends list | No container — scaffold shows through | Correct | ✅ |
+| "Select All" / "Clear All" | Teal text buttons | Teal | ✅ |
+
+---
+
+### 16. Profile Page
+**File:** `lib/features/profile/presentation/pages/profile_page.dart` + `profile_header.dart`
+**Status:** ❌ Non-conforming — cream header section
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| **Profile header section** | **Cream/warm gold-tinted background** | `Colors.white` | ❌ |
+| **Avatar CircleAvatar** | **M3 primary tint** | `AppColors.secondary` | ❌ |
+| Scaffold below header | `#F4F6F8` (correct) | `#F4F6F8` | ✅ |
+| "Account Information" card | White card | White | ✅ |
+| "Account Settings" button | Gold filled | Gold | ✅ |
+| AppBar | White | White | ✅ |
+
+**Root cause confirmed (`profile_header.dart` line 19):**
+```dart
+color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3)  // WRONG
+```
+**Root cause (`profile_header.dart` line 30):**
+```dart
+backgroundColor: theme.colorScheme.primary  // WRONG
+```
+**Fix:**
+```dart
+color: Colors.white                      // line 19
+backgroundColor: AppColors.secondary     // line 30
+```
+
+---
+
+### 17. Account Settings Page
+**File:** `lib/features/profile/presentation/pages/profile_edit_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "Account Settings" | White | ✅ |
+| Language / Country selectors | Standard form fields | — | ✅ |
+| Save/Cancel buttons | Gold filled / outlined | Gold | ✅ |
+
+---
+
+### 18. Notification Settings
+**File:** `lib/features/notifications/presentation/pages/notification_settings_page.dart`
+**Status:** ⚠️ Minor — raw time pickers for Quiet Hours
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White, "Notifications" teal | White | ✅ |
+| Category tiles (Social, Games, Training, Championships) | No container — scaffold shows through | Correct | ✅ |
+| Toggle switches | Gold when active | Gold | ✅ |
+| **Quiet Hours time pickers** | **Raw `showTimePicker` (lines 194, 208)** | Styled time picker | ⚠️ |
+
+---
+
+### 19. Championships List
 **File:** `lib/features/championships/presentation/pages/championship_list_page.dart`
 **Status:** ✅ Conforming
 
@@ -112,157 +300,107 @@
 |---|---|---|---|
 | Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
 | AppBar | White, "Championships" teal | White | ✅ |
-| Active / Completed TabBar | Teal underline indicator | Teal | ✅ |
+| Active / Completed TabBar | Teal underline | Teal | ✅ |
 | Championship cards | White, elevation 0, radius 16 | White cards | ✅ |
-| Status badges (Registration Open, Round N/9) | Correct accent colors | — | ✅ |
-| "+" Create Championship FAB | Gold solid | Gold | ✅ |
+| Status badges | Correct accent colors | — | ✅ |
+| Create Championship FAB | Gold solid | Gold | ✅ |
 
 ---
 
-### 7. Championship Detail — Standings Tab
+### 20. Championship Detail — Standings/Matches Tabs
 **File:** `lib/features/championships/presentation/pages/championship_detail_page.dart`
-**Status:** ✅ Conforming
-
-| Element | Observed | Standard | OK? |
-|---|---|---|---|
-| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
-| AppBar | Appears white | White | ✅ |
-| Tab bar (Standings/Matches/Admin) | Gold underline | Gold | ✅ |
-| Standings table | No card container — scaffold shows through | Correct (no card) | ✅ |
-| Points values | Teal/gold accent colors | — | ✅ |
-| Set ratio positive | Green | — | ✅ |
-| Set ratio negative | Red/danger | — | ✅ |
-| My Team section | Gold border, gold text | Gold accent | ✅ |
-
----
-
-### 8. Match Detail Page
-**File:** `lib/features/championships/presentation/pages/match_detail_page.dart`
-**Status:** ❌ Non-conforming — cream scaffold
-
-| Element | Observed | Standard | OK? |
-|---|---|---|---|
-| **Scaffold background** | **Cream/warm white** | `#F4F6F8` light grey | ❌ |
-| **AppBar background** | **Cream/warm off-white** | `#FFFFFF` pure white | ❌ |
-| Match header card | White card ✅ | White | ✅ |
-| Match Chat card | White card ✅ | White | ✅ |
-| Result card | White card ✅ | White | ✅ |
-| "Propose Schedule" section | White card ✅ | White | ✅ |
-| Bottom nav | White ✅ | White | ✅ |
-
-**Root cause:** The page's `Scaffold` is not explicitly setting `backgroundColor: AppColors.scaffoldBackground`. Flutter's Material 3 is defaulting to `Theme.of(context).colorScheme.surface` which resolves to a warm cream/off-white surface color. Need to add `backgroundColor: AppColors.scaffoldBackground` to the Scaffold, and ensure the AppBar uses `backgroundColor: AppColors.appBarBackground`.
-
----
-
-### 9. Profile Page
-**File:** `lib/features/profile/presentation/pages/profile_page.dart` (or similar)
-**Status:** ❌ Non-conforming — cream header section
-
-| Element | Observed | Standard | OK? |
-|---|---|---|---|
-| **Profile header section** (avatar, name, email, Verified badge) | **Cream/warm gold-tinted background** — clearly visible warm cream | `#F4F6F8` scaffold or white card | ❌ |
-| Scaffold below header | `#F4F6F8` (correct) | `#F4F6F8` | ✅ |
-| "Account Information" card | White card ✅ | White | ✅ |
-| Row labels (Email, Account Type…) | Teal small caps | — | ✅ |
-| "Account Settings" button | Gold filled ✅ | Gold | ✅ |
-| "Notification Settings" button | Outlined, teal icon ✅ | — | ✅ |
-| AppBar | White ✅ | White | ✅ |
-
-**Root cause:** The profile header section uses `Container` with a color that resolves to `Theme.of(context).colorScheme.primaryContainer` or similar Material 3 color — producing the cream/gold tint. Should use `Colors.white` (card-like) or `AppColors.scaffoldBackground` with no explicit background.
-
----
-
-### 10. Notification Settings
-**File:** `lib/features/notifications/presentation/pages/notification_settings_page.dart`
-**Status:** ✅ Conforming
-
-| Element | Observed | Standard | OK? |
-|---|---|---|---|
-| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
-| AppBar | White, "Notifications" teal | White | ✅ |
-| Category tiles (Social, Games…) | No background container — scaffold shows through | Correct | ✅ |
-| Toggle switches | Gold when active | Gold | ✅ |
-| Category icons | Teal | Teal | ✅ |
-| Section headers | Teal bold text, no background container | No container | ✅ |
-
----
-
-### 11. Create Championship
-**File:** `lib/features/championships/presentation/pages/create_championship_page.dart`
-**Status:** ⚠️ Minor — date/time pickers use default Material 3 style
+**Status:** ✅ Conforming (content) — AlertDialogs ❌
 
 | Element | Observed | Standard | OK? |
 |---|---|---|---|
 | Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
 | AppBar | White | White | ✅ |
-| Title field | Standard text field | — | ✅ |
-| Gender option cards | White outlined, teal when selected | — | ✅ |
-| Max teams segmented field (`_SegmentedField`) | Teal border + light teal bg when selected | Teal | ✅ |
-| Date pickers | `showAppStyledDatePicker` used ✅ | White background, teal selection | ✅ |
+| Tab bar | Teal underline | Teal | ✅ |
+| Standings table | No card — scaffold shows through | Correct | ✅ |
+| Match cards | White, elevation 0 | White | ✅ |
+| Champion banner (completed) | Trophy icon + name | — | ✅ |
+| My Team section | Gold border, gold text | Gold | ✅ |
+| **Tiebreaker dialog** | **Cream background** | White | ❌ |
+| **All admin dialogs** | **Cream background** | White | ❌ |
+
+---
+
+### 21. Match Detail Page
+**File:** `lib/features/championships/presentation/pages/match_detail_page.dart`
+**Status:** ❌ Non-conforming — cream scaffold + raw pickers
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| **Scaffold background** | **Cream/warm white** | `#F4F6F8` | ❌ |
+| **AppBar background** | **Cream/warm off-white** | `#FFFFFF` | ❌ |
+| Match header card | White card | White | ✅ |
+| Match Chat card | White card | White | ✅ |
+| **Date picker (Propose Schedule)** | **Raw `showDatePicker` (line 415)** | `showAppStyledDatePicker` | ❌ |
+| **Time picker (Propose Schedule)** | **Raw `showTimePicker` (line 425)** | `showAppStyledTimePicker` | ❌ |
+| Bottom nav | White | White | ✅ |
+
+**Root cause:** Scaffold missing `backgroundColor: AppColors.scaffoldBackground`. Flutter Material 3 defaults to `colorScheme.surface` (cream).
+
+---
+
+### 22. Create Championship Page
+**File:** `lib/features/championships/presentation/pages/create_championship_page.dart`
+**Status:** ✅ Conforming
+
+| Element | Observed | Standard | OK? |
+|---|---|---|---|
+| Scaffold background | `#F4F6F8` | `#F4F6F8` | ✅ |
+| AppBar | White | White | ✅ |
+| Gender option cards | White outlined, teal selected | — | ✅ |
+| Max teams segmented field | Teal border + teal bg selected | Teal | ✅ |
+| Date pickers | `showAppStyledDatePicker` ✅ | White bg, teal selection | ✅ |
 | Submit button | Gold filled | Gold | ✅ |
 
 ---
 
-### 12. Admin Panel (Championship Detail — Admin Tab)
+### 23. Admin Panel (Championship Detail — Admin Tab)
 **File:** `championship_detail_page.dart` → `_AdminTab`
-**Status:** ⚠️ AlertDialogs have cream background
+**Status:** ❌ All AlertDialogs have cream background
 
 | Element | Observed | Standard | OK? |
 |---|---|---|---|
 | Admin panel content area | `#F4F6F8` scaffold | `#F4F6F8` | ✅ |
-| "Edit Details" button | Gold outlined | — | ✅ |
-| **Edit Championship dialog** | **Cream/warm background** (Material 3 default AlertDialog) | White | ❌ |
-| **Rename Team dialog** | **Cream/warm background** (same issue) | White | ❌ |
-| **Start Championship dialog** | **Cream/warm background** | White | ❌ |
-| **Leave Team confirm dialog** | **Cream/warm background** | White | ❌ |
-
-**Root cause:** All `showDialog` / `AlertDialog` calls use Flutter Material 3 defaults which produce a warm cream surface. Need to wrap all `AlertDialog` with explicit `backgroundColor: Colors.white` and `surfaceTintColor: Colors.transparent`.
+| "Edit Details" button | Outlined | — | ✅ |
+| **Edit Championship dialog** | **Cream background** | White | ❌ |
+| **Rename Team dialog** | **Cream background** | White | ❌ |
+| **Start Championship dialog** | **Cream background** | White | ❌ |
+| **Leave Team confirm dialog** | **Cream background** | White | ❌ |
 
 ---
 
-## Pages Not Yet Captured (needs follow-up audit)
-
-| Page | File | Expected issues |
-|---|---|---|
-| Group Details | `group_details_page.dart` | Likely OK based on code review |
-| Invite Member | `invite_member_page.dart` | Unknown |
-| Game Creation | `game_creation_page.dart` | `showAppStyledDatePicker` used ✅ |
-| Training Session Creation | `training_session_creation_page.dart` | May use raw date picker ⚠️ |
-| Game Details | `game_details_page.dart` | Unknown |
-| Score Entry | `score_entry_page.dart` | Unknown |
-| My Games | `my_games_page.dart` | Unknown |
-| Championship Registration | `championship_registration_page.dart` | Unknown |
-| Pickup Game Creation | `pickup_game_creation_page.dart` | Unknown |
-| Profile Edit | `profile_edit_page.dart` | Likely has cream header too |
-| Add Friend / Search | Various | Unknown |
-| Training Session Details | `training_session_details_page.dart` | Unknown |
-
----
-
-## Summary of Issues
+## Summary of All Issues
 
 ### Critical (❌ visually obvious)
 
 | # | Page | Issue | File |
 |---|---|---|---|
-| 1 | **Match Detail** | Cream scaffold + cream AppBar instead of `#F4F6F8` + white | `match_detail_page.dart` |
-| 2 | **Profile** | Cream header section (avatar + info area) | `profile_page.dart` |
-| 3 | **All AlertDialogs** | Cream/warm background on every `showDialog` | All files using `AlertDialog` |
+| 1 | **Match Detail** | Cream scaffold + AppBar | `match_detail_page.dart` — missing `backgroundColor` |
+| 2 | **Profile Header** | Cream/gold-tinted container | `profile_header.dart` line 19 — `primaryContainer` |
+| 3 | **All AlertDialogs** | Cream background in every `showDialog` | 25 dialogs across 15 files |
 
 ### Non-critical (⚠️ inconsistent)
 
-| # | Page | Issue | Fix |
+| # | Page | Issue | File / Location |
 |---|---|---|---|
-| 4 | **Stats** | Time filter pills (30d/90d/1y) use sand/cream outlined style | Use `AppColors` chip styling |
-| 5 | **Groups + Community FABs** | Cream background behind FAB (shadow tint) | Verify FAB `backgroundColor` |
-| 6 | **Time Picker** | Raw `showTimePicker` uses Material 3 cream background | Create `showAppStyledTimePicker` helper |
-| 7 | **Any raw `showDatePicker`** | Any page NOT using `showAppStyledDatePicker` shows cream calendar | Audit all pages for date picker usage |
+| 4 | **Game Details** | Waitlist CircleAvatar uses `colorScheme.surface` | `game_details_page.dart` line 535 |
+| 5 | **Game Details** | Join/Waitlist button uses `colorScheme.primary` | `game_details_page.dart` line 870 |
+| 6 | **Match Detail** | Raw `showDatePicker` + `showTimePicker` | `match_detail_page.dart` lines 415, 425 |
+| 7 | **Pickup Game Creation** | Raw `showDatePicker` | `pickup_game_creation_page.dart` line 97 |
+| 8 | **Training Creation** | Raw `showDatePicker` | `training_session_creation_page.dart` line 66 |
+| 9 | **Notification Settings** | Raw `showTimePicker` for quiet hours | `notification_settings_page.dart` lines 194, 208 |
+| 10 | **Stats** | Time filter pills use sand/cream outlined style | `stats_page.dart` |
+| 11 | **Groups + Community FABs** | Cream shadow tint on FABs | `group_list_page.dart`, `my_community_page.dart` |
 
 ---
 
 ## Root Causes
 
-**1. Missing `backgroundColor` on Scaffolds**
+**1. Missing `backgroundColor` on Scaffold**
 ```dart
 // WRONG — Material 3 defaults to cream surface
 Scaffold(body: ...)
@@ -287,35 +425,84 @@ AlertDialog(
 )
 ```
 
-**3. Profile header uses a Material 3 container color**
+**3. Profile header uses `primaryContainer`**
 ```dart
-// WRONG — likely uses colorScheme.primaryContainer
-Container(color: Theme.of(context).colorScheme.primaryContainer, ...)
+// WRONG (profile_header.dart line 19)
+color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3)
 
-// CORRECT — use white or no explicit color (let scaffold show)
-Container(color: Colors.white, ...)
-// or just use a Card widget
+// CORRECT
+color: Colors.white
 ```
 
-**4. Time Picker not styled**
+**4. Profile CircleAvatar uses `colorScheme.primary`**
 ```dart
-// WRONG — raw picker shows cream
-showTimePicker(context: context, initialTime: ...)
+// WRONG (profile_header.dart line 30)
+backgroundColor: theme.colorScheme.primary
 
-// CORRECT — create a showAppStyledTimePicker helper in date_picker_helper.dart
-// mirroring showAppStyledDatePicker with white background + teal accents
+// CORRECT
+backgroundColor: AppColors.secondary
 ```
+
+**5. Raw date/time pickers (show cream calendar)**
+```dart
+// WRONG
+showDatePicker(context: context, ...)
+showTimePicker(context: context, ...)
+
+// CORRECT for dates (helper already exists in date_picker_helper.dart)
+showAppStyledDatePicker(context: context, ...)
+
+// CORRECT for times (need to create showAppStyledTimePicker helper)
+showAppStyledTimePicker(context: context, ...)
+```
+
+**6. Button/widget using `colorScheme` instead of `AppColors`**
+```dart
+// WRONG (game_details_page.dart line 870)
+backgroundColor: Theme.of(context).colorScheme.primary
+
+// CORRECT
+backgroundColor: AppColors.primary
+```
+
+---
+
+## Files With AlertDialog — All 15 files need fix
+
+| File | AlertDialog count |
+|---|---|
+| `championship_detail_page.dart` | 6 |
+| `training_session_details_page.dart` | ~2 |
+| `exercise_form_dialog.dart` | ~1 |
+| `exercise_list_widget.dart` | ~1 |
+| `notification_settings_page.dart` | ~1 |
+| `profile_edit_page.dart` | ~1 |
+| `profile_page.dart` | ~1 |
+| `avatar_upload_widget.dart` | ~1 |
+| `championship_registration_page.dart` | ~1 |
+| `friends_list.dart` | ~1 |
+| `game_history_screen.dart` | ~1 |
+| `member_action_dialogs.dart` | ~2 |
+| `restricted_action_guard.dart` | ~1 |
+| `play_with_me_app_bar.dart` | ~1 |
+| `password_reset_page.dart` | ~1 |
 
 ---
 
 ## Fix Priority
 
-| Priority | Fix | Pages affected | Effort |
-|---|---|---|---|
-| P0 | Fix all `AlertDialog` `backgroundColor` | All dialogs across app | Small — find+replace |
-| P0 | Fix Match Detail scaffold + AppBar | `match_detail_page.dart` | Trivial |
-| P0 | Fix Profile header container color | `profile_page.dart` | Small |
-| P1 | Create `showAppStyledTimePicker` helper | Any page with time input | Medium |
-| P1 | Audit all pages for raw `showDatePicker` / `showTimePicker` | Multiple files | Medium |
-| P2 | Fix Stats time filter pills styling | `stats_page.dart` | Small |
-| P2 | Fix FAB cream shadow tint on Groups/Community | `group_list_page.dart`, `my_community_page.dart` | Small |
+| Priority | Fix | Effort |
+|---|---|---|
+| P0 | Fix all `AlertDialog` — add `backgroundColor: Colors.white, surfaceTintColor: Colors.transparent` | Small — grep + replace across 15 files |
+| P0 | Fix Match Detail scaffold — add `backgroundColor: AppColors.scaffoldBackground` | Trivial |
+| P0 | Fix Profile header — `primaryContainer` → `Colors.white` | Trivial |
+| P0 | Fix Profile CircleAvatar — `colorScheme.primary` → `AppColors.secondary` | Trivial |
+| P1 | Create `showAppStyledTimePicker` helper in `date_picker_helper.dart` | Small |
+| P1 | Replace raw pickers in Match Detail (lines 415, 425) | Small |
+| P1 | Replace raw pickers in Training Creation (line 66) | Small |
+| P1 | Replace raw pickers in Pickup Game Creation (line 97) | Small |
+| P1 | Replace raw pickers in Notification Settings (lines 194, 208) | Small |
+| P2 | Fix Game Details Join/Waitlist button — `colorScheme.primary` → `AppColors.primary` | Trivial |
+| P2 | Fix Game Details waitlist CircleAvatar — `colorScheme.surface` → neutral | Trivial |
+| P2 | Fix Stats time filter pills styling | Small |
+| P2 | Fix FAB cream shadow tint on Groups/Community | Small |

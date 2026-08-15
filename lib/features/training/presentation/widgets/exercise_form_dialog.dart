@@ -128,7 +128,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: _submit,
           child: Text(isEditing ? 'Update' : 'Add'),
         ),

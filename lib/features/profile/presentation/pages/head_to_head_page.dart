@@ -1,5 +1,6 @@
 // Head-to-head rivalry screen showing comprehensive opponent statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class HeadToHeadPage extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 40,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -115,12 +116,7 @@ class HeadToHeadPage extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
           Card(
@@ -227,7 +223,7 @@ class HeadToHeadPage extends StatelessWidget {
         _buildStatColumn(
           'Win Rate',
           '${stats.winRate.toStringAsFixed(1)}%',
-          stats.winRate >= 50 ? Colors.green : Colors.red,
+          stats.winRate >= 50 ? AppColors.success : AppColors.danger,
         ),
         _buildStatColumn('Record', stats.recordString, AppColors.secondary),
       ],
@@ -245,7 +241,7 @@ class HeadToHeadPage extends StatelessWidget {
         _buildStatColumn(
           'Avg Per Game',
           stats.formattedPointDifferential,
-          isPositive ? Colors.green : Colors.red,
+          isPositive ? AppColors.success : AppColors.danger,
         ),
         _buildStatColumn(
           'Points For',
@@ -268,17 +264,17 @@ class HeadToHeadPage extends StatelessWidget {
         _buildStatColumn(
           'Biggest Win',
           '+${stats.largestVictoryMargin}',
-          Colors.green,
+          AppColors.success,
         ),
         _buildStatColumn(
           'Worst Loss',
           '-${stats.largestDefeatMargin}',
-          Colors.red,
+          AppColors.danger,
         ),
         _buildStatColumn(
           'ELO vs Them',
           stats.formattedEloChange,
-          stats.eloChange >= 0 ? Colors.green : Colors.red,
+          stats.eloChange >= 0 ? AppColors.success : AppColors.danger,
         ),
       ],
     );
@@ -298,15 +294,15 @@ class HeadToHeadPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: stats.isOnWinningStreak
-                    ? Colors.green.withValues(alpha: 0.1)
-                    : Colors.red.withValues(alpha: 0.1),
+                    ? AppColors.success.withValues(alpha: 0.1)
+                    : AppColors.danger.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 '${stats.currentStreak.abs()} ${stats.isOnWinningStreak ? "W" : "L"} Streak',
                 style: TextStyle(
                   fontSize: 12,
-                  color: stats.isOnWinningStreak ? Colors.green : Colors.red,
+                  color: stats.isOnWinningStreak ? AppColors.success : AppColors.danger,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -329,7 +325,7 @@ class HeadToHeadPage extends StatelessWidget {
   }
 
   Widget _buildMatchupTile(HeadToHeadGameResult matchup) {
-    final resultColor = matchup.won ? Colors.green : Colors.red;
+    final resultColor = matchup.won ? AppColors.success : AppColors.danger;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -389,7 +385,7 @@ class HeadToHeadPage extends StatelessWidget {
                   'ELO: ${matchup.formattedEloChange}',
                   style: TextStyle(
                     fontSize: 11,
-                    color: matchup.eloChange >= 0 ? Colors.green : Colors.red,
+                    color: matchup.eloChange >= 0 ? AppColors.success : AppColors.danger,
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
@@ -74,7 +75,7 @@ class ProfileEditPage extends StatelessWidget {
                     content: Text(
                       AppLocalizations.of(context)!.settingsUpdatedSuccessfully,
                     ),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColors.success,
                   ),
                 );
                 Navigator.of(context).pop();
@@ -83,7 +84,7 @@ class ProfileEditPage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.danger,
                   ),
                 );
               }
@@ -115,7 +116,7 @@ class ProfileEditPage extends StatelessWidget {
                           context,
                         )!.settingsUpdatedSuccessfully,
                       ),
-                      backgroundColor: Colors.green,
+                      backgroundColor: AppColors.success,
                     ),
                   );
                   Navigator.of(context).pop();
@@ -125,7 +126,7 @@ class ProfileEditPage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.danger,
                   ),
                 );
               }

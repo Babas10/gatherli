@@ -1,15 +1,15 @@
-// Role-based performance card showing adaptability stats across different team contexts.
-import 'package:flutter/material.dart';
-import 'package:play_with_me/core/data/models/user_model.dart';
-import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+// Adaptability stats: 3 individual AccentCards — one per role (Carry, Balanced, Weak-Link).
+import "package:flutter/material.dart";
+import "package:play_with_me/core/theme/app_text_styles.dart";
+import "package:play_with_me/core/data/models/user_model.dart";
+import "package:play_with_me/core/presentation/widgets/accent_card.dart";
+import "package:play_with_me/core/theme/app_colors.dart";
+import "package:play_with_me/l10n/app_localizations.dart";
 
-/// Adaptability stats section: gray background, gray section label, white card.
-///
-/// Shows win rates when player is:
-/// - Carry: Highest ELO on team (leading/carrying the team)
-/// - Weak-Link: Lowest ELO on team (playing with stronger teammates)
-/// - Balanced: Middle or tied ELO (balanced team composition)
+// Gold accent bar, teal win rate text — consistent, minimal palette
+const _kAccentBarColor = AppColors.primary;    // gold left bar
+const _kWinRateColor = AppColors.secondary;    // teal win rate percentage
+
 class RoleBasedPerformanceCard extends StatelessWidget {
   final UserModel user;
 
@@ -17,6 +17,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final stats = user.roleBasedStats;
     final hasData = stats != null && stats.hasData;
 
@@ -25,108 +26,155 @@ class RoleBasedPerformanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section label — uppercase, muted, letter-spaced
           Text(
-            AppLocalizations.of(context)!.adaptabilityStats.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            l10n.adaptabilityStats.toUpperCase(),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
-          // White card — always expanded
-          Card(
-            margin: EdgeInsets.zero,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: hasData
-                  ? _buildStatsContent(context, stats)
-                  : _buildEmptyState(context),
-            ),
-          ),
-          const SizedBox(height: 16),
+
+          if (!hasData)
+            _LockedCard(l10n: l10n)
+          else ...[
+            if (stats.carry.games > 0)
+              _RoleCard(
+                icon: Icons.emoji_events,
+                accentColor: _kAccentBarColor,
+                role: l10n.leadingTheTeam,
+                description: l10n.whenHighestRated,
+                stats: stats.carry,
+              ),
+            if (stats.balanced.games > 0)
+              _RoleCard(
+                icon: Icons.balance,
+                accentColor: _kAccentBarColor,
+                role: l10n.balancedTeams,
+                description: l10n.whenSimilarlyRatedTeammates,
+                stats: stats.balanced,
+              ),
+            if (stats.weakLink.games > 0)
+              _RoleCard(
+                icon: Icons.people,
+                accentColor: _kAccentBarColor,
+                role: l10n.playingWithStrongerPartners,
+                description: l10n.whenMoreExperiencedTeammates,
+                stats: stats.weakLink,
+              ),
+          ],
+
+          const SizedBox(height: 4),
         ],
       ),
     );
   }
+}
 
-  Widget _buildStatsContent(BuildContext context, RoleBasedStats stats) {
-    final theme = Theme.of(context);
+class _RoleCard extends StatelessWidget {
+  final IconData icon;
+  final Color accentColor;
+  final String role;
+  final String description;
+  final RoleStats stats;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.seeHowYouPerform,
-          style: TextStyle(
-            fontSize: 13,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+  const _RoleCard({
+    required this.icon,
+    required this.accentColor,
+    required this.role,
+    required this.description,
+    required this.stats,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AccentCard(
+      accentColor: accentColor,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: accentColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: accentColor, size: 20),
           ),
-        ),
-        const SizedBox(height: 20),
-
-        if (stats.carry.games > 0) ...[
-          _RoleStatRow(
-            role: AppLocalizations.of(context)!.leadingTheTeam,
-            icon: Icons.emoji_events,
-            color: AppColors.primary,
-            stats: stats.carry,
-            description: AppLocalizations.of(context)!.whenHighestRated,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  role,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: AppColors.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '${stats.recordString}  ·  ${stats.games} games',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                stats.winRateString,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: _kWinRateColor,
+                ),
+              ),
+              const Text(
+                'win rate',
+                style: TextStyle(fontSize: 11, color: AppColors.textMuted),
+              ),
+            ],
+          ),
         ],
-
-        if (stats.weakLink.games > 0) ...[
-          _RoleStatRow(
-            role: AppLocalizations.of(context)!.playingWithStrongerPartners,
-            icon: Icons.people,
-            color: AppColors.secondary,
-            stats: stats.weakLink,
-            description: AppLocalizations.of(
-              context,
-            )!.whenMoreExperiencedTeammates,
-          ),
-          const SizedBox(height: 16),
-        ],
-
-        if (stats.balanced.games > 0) ...[
-          _RoleStatRow(
-            role: AppLocalizations.of(context)!.balancedTeams,
-            icon: Icons.balance,
-            color: AppColors.primary,
-            stats: stats.balanced,
-            description: AppLocalizations.of(
-              context,
-            )!.whenSimilarlyRatedTeammates,
-          ),
-          const SizedBox(height: 16),
-        ],
-      ],
+      ),
     );
   }
+}
 
-  Widget _buildEmptyState(BuildContext context) {
-    final theme = Theme.of(context);
+class _LockedCard extends StatelessWidget {
+  final AppLocalizations l10n;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.seeHowYouPerform,
-          style: TextStyle(
-            fontSize: 13,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Row(
+  const _LockedCard({required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
           children: [
             Icon(
-              Icons.analytics_outlined,
-              size: 32,
-              color: AppColors.textMuted.withValues(alpha: 0.35),
+              Icons.lock_outline,
+              size: 28,
+              color: AppColors.textMuted.withValues(alpha: 0.4),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -134,7 +182,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.adaptabilityStatsLocked,
+                    l10n.adaptabilityStatsLocked,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -143,7 +191,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    AppLocalizations.of(context)!.playMoreGamesToSeeRoles,
+                    l10n.playMoreGamesToSeeRoles,
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textMuted.withValues(alpha: 0.7),
@@ -154,62 +202,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
             ),
           ],
         ),
-      ],
-    );
-  }
-}
-
-/// Display row for a single role's statistics.
-class _RoleStatRow extends StatelessWidget {
-  final String role;
-  final IconData icon;
-  final Color color;
-  final RoleStats stats;
-  final String description;
-
-  const _RoleStatRow({
-    required this.role,
-    required this.icon,
-    required this.color,
-    required this.stats,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(icon, color: color, size: 18),
-            const SizedBox(width: 8),
-            Text(role, style: const TextStyle(fontWeight: FontWeight.w600)),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(
-          description,
-          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${stats.recordString} (${stats.games} games)',
-              style: const TextStyle(color: AppColors.secondary),
-            ),
-            Text(
-              stats.winRateString,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.secondary,
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

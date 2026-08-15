@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_bloc.dart';
@@ -67,14 +68,14 @@ class PlayerStatsSection extends StatelessWidget {
                     value: user.eloRating.toStringAsFixed(0),
                     subLabel: l10n.peak(user.eloPeak.toStringAsFixed(0)),
                     icon: Icons.show_chart,
-                    iconColor: Colors.blue,
+                    iconColor: AppColors.info,
                   ),
                   StatCard(
                     label: l10n.winRate,
                     value: '${(user.winRate * 100).toStringAsFixed(1)}%',
                     subLabel: l10n.winsLosses(user.gamesWon, user.gamesLost),
                     icon: Icons.pie_chart,
-                    iconColor: Colors.green,
+                    iconColor: AppColors.success,
                   ),
                   StatCard(
                     label: l10n.streakLabel,
@@ -86,14 +87,14 @@ class PlayerStatsSection extends StatelessWidget {
                               : l10n.noStreak),
                     icon: Icons.local_fire_department,
                     iconColor: user.isOnWinningStreak
-                        ? Colors.orange
+                        ? AppColors.warning
                         : Colors.grey,
                   ),
                   StatCard(
                     label: l10n.gamesPlayedLabel,
                     value: user.gamesPlayed.toString(),
                     icon: Icons.sports_volleyball,
-                    iconColor: Colors.orange,
+                    iconColor: AppColors.warning,
                   ),
                 ],
               ),
@@ -160,7 +161,7 @@ class _BestTeammateCard extends StatelessWidget {
           subtitle: Text(
             'ID: ${bestId.substring(0, 5)}... • $wins wins ($winRate%)',
           ), // ID is temporary until we resolve name
-          trailing: const Icon(Icons.star, color: Colors.amber),
+          trailing: const Icon(Icons.star, color: AppColors.warning),
         ),
       ),
     );

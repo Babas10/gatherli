@@ -65,14 +65,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           } else if (state is RegistrationSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.accountCreatedSuccess),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
             Navigator.of(context).pop();

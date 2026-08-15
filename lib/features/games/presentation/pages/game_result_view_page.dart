@@ -232,8 +232,8 @@ class _EloUpdatesCard extends StatelessWidget {
                             Icons.arrow_forward,
                             size: 16,
                             color: isGain
-                                ? Colors.green
-                                : (isLoss ? Colors.red : Colors.grey),
+                                ? AppColors.success
+                                : (isLoss ? AppColors.danger : Colors.grey),
                           ),
                         ),
                         // New ELO
@@ -245,8 +245,8 @@ class _EloUpdatesCard extends StatelessWidget {
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: isGain
-                                      ? Colors.green
-                                      : (isLoss ? Colors.red : Colors.grey),
+                                      ? AppColors.success
+                                      : (isLoss ? AppColors.danger : Colors.grey),
                                 ),
                             textAlign: TextAlign.right,
                           ),
@@ -261,8 +261,8 @@ class _EloUpdatesCard extends StatelessWidget {
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
                               color: isGain
-                                  ? Colors.green
-                                  : (isLoss ? Colors.red : Colors.grey),
+                                  ? AppColors.success
+                                  : (isLoss ? AppColors.danger : Colors.grey),
                             ),
                             textAlign: TextAlign.right,
                           ),

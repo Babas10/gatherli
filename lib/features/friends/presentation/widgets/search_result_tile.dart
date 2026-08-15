@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -98,19 +100,7 @@ class SearchResultTile extends StatelessWidget {
     final displayName = foundUser.displayName;
 
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
-        backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-        child: photoUrl == null
-            ? Text(
-                _getInitials(displayName ?? foundUser.email),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF004E64),
-                ),
-              )
-            : null,
-      ),
+      leading: UserAvatar(name: displayName ?? foundUser.email, photoUrl: photoUrl),
       title: Text(
         displayName ?? foundUser.email,
         style: const TextStyle(fontWeight: FontWeight.w500),
@@ -123,7 +113,7 @@ class SearchResultTile extends StatelessWidget {
   Widget _buildActionButton(BuildContext context, AppLocalizations l10n) {
     // Request just sent — show green tick
     if (isInvited) {
-      return const Icon(Icons.check_circle, color: Colors.green, size: 28);
+      return const Icon(Icons.check_circle, color: AppColors.success, size: 28);
     }
 
     // Already friends
@@ -165,21 +155,12 @@ class SearchResultTile extends StatelessWidget {
     return FilledButton(
       onPressed: onSendRequest,
       style: FilledButton.styleFrom(
-        backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
-        foregroundColor: const Color(0xFF004E64),
+        backgroundColor: AppColors.avatarBackground,
+        foregroundColor: AppColors.secondary,
         padding: const EdgeInsets.symmetric(horizontal: 16),
       ),
       child: Text(l10n.sendFriendRequest),
     );
   }
 
-  String _getInitials(String name) {
-    final parts = name.split(' ');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
-      return parts[0][0].toUpperCase();
-    }
-    return '?';
-  }
 }

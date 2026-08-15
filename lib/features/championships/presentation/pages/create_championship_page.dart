@@ -301,7 +301,7 @@ class _GenderOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const blue = Color(0xFF004E64);
+    const blue = AppColors.secondary;
     final color = selected ? blue : Colors.grey.shade400;
     return InkWell(
       onTap: onTap,
@@ -355,7 +355,7 @@ class _SegmentedField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const blue = Color(0xFF004E64);
+    const blue = AppColors.secondary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

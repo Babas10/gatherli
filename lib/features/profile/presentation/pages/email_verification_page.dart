@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/email_verification/email_verification_bloc.dart';
@@ -27,7 +28,7 @@ class EmailVerificationPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Verification email sent to ${state.email}'),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
                 duration: const Duration(seconds: 3),
               ),
             );
@@ -38,7 +39,7 @@ class EmailVerificationPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 duration: const Duration(seconds: 4),
               ),
             );

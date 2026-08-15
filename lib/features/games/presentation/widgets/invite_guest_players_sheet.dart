@@ -221,7 +221,7 @@ class _GroupCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isInvited ? Colors.green.shade200 : Colors.grey.shade200,
+          color: isInvited ? AppColors.success : Colors.grey.shade200,
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -263,7 +263,7 @@ class _GroupCard extends StatelessWidget {
                       l10n.groupMembersCount(members.length),
                       style: const TextStyle(
                         fontSize: 13,
-                        color: Color(0xFF64748B),
+                        color: AppColors.textMuted,
                       ),
                     ),
                   ],
@@ -284,7 +284,7 @@ class _GroupCard extends StatelessWidget {
                     Icon(
                       Icons.check_circle,
                       size: 18,
-                      color: Colors.green.shade600,
+                      color: AppColors.success,
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -292,7 +292,7 @@ class _GroupCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.green.shade600,
+                        color: AppColors.success,
                       ),
                     ),
                   ],
@@ -301,7 +301,7 @@ class _GroupCard extends StatelessWidget {
                 const Icon(
                   Icons.chevron_right,
                   size: 20,
-                  color: Color(0xFF64748B),
+                  color: AppColors.textMuted,
                 ),
             ],
           ),
@@ -336,7 +336,7 @@ class _ErrorView extends StatelessWidget {
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),
-            ElevatedButton(
+            FilledButton(
               onPressed: () => context.read<GameGuestInvitationBloc>().add(
                 LoadInvitablePlayers(gameId: gameId),
               ),

@@ -109,7 +109,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
         if (state is MatchVerificationVerified) {
           return _StatusCard(
             icon: Icons.check_circle,
-            iconColor: Colors.green,
+            iconColor: AppColors.success,
             message: l10n.verifyResultVerified,
           );
         }
@@ -117,7 +117,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
         if (state is MatchVerificationDisputed) {
           return _StatusCard(
             icon: Icons.gavel,
-            iconColor: Colors.orange,
+            iconColor: AppColors.warning,
             message: l10n.verifyResultDisputed,
           );
         }
@@ -155,7 +155,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                           icon: const Icon(Icons.check, size: 18),
                           label: Text(l10n.verifyResultConfirmButton),
                           style: FilledButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: AppColors.success,
                           ),
                         ),
                       ),
@@ -168,8 +168,8 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                           icon: const Icon(Icons.flag_outlined, size: 18),
                           label: Text(l10n.verifyResultDisputeButton),
                           style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.orange,
-                            side: const BorderSide(color: Colors.orange),
+                            foregroundColor: AppColors.warning,
+                            side: const BorderSide(color: AppColors.warning),
                           ),
                         ),
                       ),
@@ -214,7 +214,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                               ? null
                               : () => _onDispute(context, l10n),
                           style: FilledButton.styleFrom(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: AppColors.warning,
                           ),
                           child: isLoading
                               ? const SizedBox(

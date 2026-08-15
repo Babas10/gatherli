@@ -53,7 +53,7 @@ class _ScoreEntryView extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           }
@@ -73,7 +73,7 @@ class _ScoreEntryView extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 64,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -559,7 +559,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                 ? Tooltip(
                     message: widget.setData.validationError ?? 'Invalid score',
                     triggerMode: TooltipTriggerMode.tap,
-                    child: const Icon(Icons.error, color: Colors.red, size: 20),
+                    child: const Icon(Icons.error, color: AppColors.danger, size: 20),
                   )
                 : null,
           ),

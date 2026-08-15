@@ -53,7 +53,7 @@ class _NotificationSettingsView extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(message),
                   const SizedBox(height: 16),
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: () => context
                         .read<NotificationBloc>()
                         .add(const NotificationEvent.loadPreferences()),
@@ -222,7 +222,7 @@ class _NotificationSettingsView extends StatelessWidget {
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               context.read<NotificationBloc>().add(
                 NotificationEvent.toggleQuietHours(

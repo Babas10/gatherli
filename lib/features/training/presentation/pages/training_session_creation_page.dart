@@ -431,12 +431,12 @@ class _TrainingSessionCreationPageState
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.trainingCreatedSuccess),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         } else if (state is TrainingSessionCreationError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
           );
         }
       },

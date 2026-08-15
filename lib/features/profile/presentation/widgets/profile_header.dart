@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
 
@@ -15,9 +16,9 @@ class ProfileHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
@@ -27,7 +28,7 @@ class ProfileHeader extends StatelessWidget {
           // Avatar
           CircleAvatar(
             radius: 56,
-            backgroundColor: theme.colorScheme.primary,
+            backgroundColor: AppColors.secondary,
             backgroundImage: user.photoUrl != null
                 ? NetworkImage(user.photoUrl!)
                 : null,
@@ -35,7 +36,7 @@ class ProfileHeader extends StatelessWidget {
                 ? Icon(
                     Icons.person,
                     size: 56,
-                    color: theme.colorScheme.onPrimary,
+                    color: Colors.white,
                   )
                 : null,
           ),
@@ -59,7 +60,7 @@ class ProfileHeader extends StatelessWidget {
                 child: Text(
                   user.email,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: AppColors.textMuted,
                   ),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,

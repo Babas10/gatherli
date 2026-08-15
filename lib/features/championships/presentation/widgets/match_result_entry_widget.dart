@@ -165,7 +165,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle, color: Colors.green, size: 48),
+                const Icon(Icons.check_circle, color: AppColors.success, size: 48),
                 const SizedBox(height: 12),
                 Text(
                   l10n.submitResultAwaitingVerification,
@@ -246,7 +246,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                 const SizedBox(height: 8),
                 Text(
                   _validationError!,
-                  style: const TextStyle(color: Colors.red, fontSize: 13),
+                  style: const TextStyle(color: AppColors.danger, fontSize: 13),
                 ),
               ],
               const SizedBox(height: 16),

@@ -233,7 +233,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.gameCreatedSuccess),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -247,7 +247,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 duration: const Duration(seconds: 3),
               ),
             );
@@ -277,7 +277,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                           subtitle: Text(widget.groupName),
                           trailing: const Icon(
                             Icons.check_circle,
-                            color: Colors.green,
+                            color: AppColors.success,
                           ),
                         ),
                       ),
@@ -342,7 +342,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                           borderRadius: BorderRadius.circular(8),
                           side: BorderSide(
                             color: _selectedDateTime == null
-                                ? Colors.red
+                                ? AppColors.danger
                                 : Colors.grey.shade300,
                           ),
                         ),
@@ -353,7 +353,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                           child: Text(
                             l10n.tapToSelect,
                             style: const TextStyle(
-                              color: Colors.red,
+                              color: AppColors.danger,
                               fontSize: 12,
                             ),
                           ),
@@ -393,11 +393,11 @@ class _GameCreationPageState extends State<GameCreationPage> {
                       const SizedBox(height: 16),
 
                       // Submit Button
-                      ElevatedButton(
+                      FilledButton(
                         onPressed: isSubmitting
                             ? null
                             : () => _handleSubmit(context, authState.user.uid),
-                        style: ElevatedButton.styleFrom(
+                        style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         child: isSubmitting

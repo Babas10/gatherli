@@ -1,10 +1,13 @@
 // Championship detail screen: header info, standings table, per-round matches,
 // and an admin panel tab (visible to championship admins only).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
@@ -141,16 +144,17 @@ class _ChampionshipDetailView extends StatelessWidget {
                   ? state.teams.where((t) =>
                       t.memberIds.contains(currentUserId)).firstOrNull
                   : null,
-              onLeaveTeam: () {
-                final myT = state.teams.where((t) =>
-                    currentUserId != null &&
-                        t.memberIds.contains(currentUserId)).firstOrNull;
-                if (alreadyRegistered &&
-                    myT != null &&
-                    state.championship.status == ChampionshipStatus.registration) {
-                  _confirmLeaveTeam(context, state.championship.id, myT.id, l10n);
-                }
-              },
+              onLeaveTeam: alreadyRegistered &&
+                  state.championship.status == ChampionshipStatus.registration
+                  ? () {
+                      final myT = state.teams
+                          .where((t) => t.memberIds.contains(currentUserId))
+                          .firstOrNull;
+                      if (myT != null) {
+                        _confirmLeaveTeam(context, state.championship.id, myT.id, l10n);
+                      }
+                    }
+                  : null,
               championTeamName: state.standings.isNotEmpty
                   ? state.standings
                       .reduce((a, b) => a.position < b.position ? a : b)
@@ -159,17 +163,20 @@ class _ChampionshipDetailView extends StatelessWidget {
               currentUserId: currentUserId,
               l10n: l10n,
             ),
-            TabBar(
+            SectionTabBar(
               tabs: [
-                Tab(
-                  text: _isRegistrationPhase(state.championship.status)
+                AppTabItem(
+                  icon: _isRegistrationPhase(state.championship.status)
+                      ? Icons.group
+                      : Icons.leaderboard,
+                  label: _isRegistrationPhase(state.championship.status)
                       ? l10n.championshipDetailTeamsTab
                       : l10n.championshipDetailStandingsTab,
                 ),
-                Tab(text: l10n.championshipDetailMatchesTab),
+                AppTabItem(icon: Icons.sports_volleyball, label: l10n.championshipDetailMatchesTab),
                 if (alreadyRegistered)
-                  Tab(text: l10n.championshipMyMatchesTab),
-                if (isAdmin) Tab(text: l10n.adminPanelTabLabel),
+                  AppTabItem(icon: Icons.person, label: l10n.championshipMyMatchesTab),
+                if (isAdmin) AppTabItem(icon: Icons.admin_panel_settings, label: l10n.adminPanelTabLabel),
               ],
             ),
             Expanded(
@@ -385,32 +392,65 @@ class _ChampionshipHeader extends StatelessWidget {
     this.currentUserId,
   });
 
+  void _showTiebreakerDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.standingsTiebreakerTitle),
+        content: Text(l10n.standingsTiebreakerBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.ok),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            spacing: 8,
-            runSpacing: 4,
+    return Card(
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _StatusBadge(championship: championship, l10n: l10n),
-              if (championship.genderCategory != null)
-                _GenderBadge(category: championship.genderCategory!, l10n: l10n),
-              if (championship.country != null)
-                _InfoChip(
-                  icon: Icons.location_on_outlined,
-                  label: [championship.region, championship.country]
-                      .whereType<String>()
-                      .join(', '),
+              Expanded(
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    _StatusBadge(championship: championship, l10n: l10n),
+                    if (championship.genderCategory != null)
+                      _GenderBadge(category: championship.genderCategory!, l10n: l10n),
+                    if (championship.country != null)
+                      _InfoChip(
+                        icon: Icons.location_on_outlined,
+                        label: [championship.region, championship.country]
+                            .whereType<String>()
+                            .join(', '),
+                      ),
+                    _InfoChip(
+                      icon: Icons.group,
+                      label: l10n.championshipTeamCountOf(
+                        championship.teamsCount,
+                        championship.maxTeams,
+                      ),
+                    ),
+                  ],
                 ),
-              _InfoChip(
-                icon: Icons.group,
-                label: l10n.championshipTeamCountOf(
-                  championship.teamsCount,
-                  championship.maxTeams,
+              ),
+              GestureDetector(
+                onTap: () => _showTiebreakerDialog(context),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Icon(Icons.info_outline,
+                      size: 20, color: AppColors.textMuted),
                 ),
               ),
             ],
@@ -455,7 +495,8 @@ class _ChampionshipHeader extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 8),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -478,7 +519,7 @@ class _ChampionBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFEACE6A), Color(0xFFD4A017)],
+          colors: [AppColors.primary, Color(0xFFD4A017)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -682,7 +723,7 @@ class _GenderBadge extends StatelessWidget {
     final label = category == ChampionshipGenderCategory.male
         ? l10n.championshipGenderMale
         : l10n.championshipGenderFemale;
-    const color = Color(0xFF5B8DEF); // blue accent — neutral gender indicator
+    const color = AppColors.info; // blue accent — neutral gender indicator
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -743,11 +784,11 @@ class _StatusBadge extends StatelessWidget {
     final (label, color) = switch (championship.status) {
       ChampionshipStatus.registration => (
           l10n.championshipStatusBadgeRegistration,
-          Colors.green,
+          AppColors.primary,
         ),
       ChampionshipStatus.registrationClosed => (
           l10n.championshipStatusBadgeClosed,
-          Colors.orange,
+          AppColors.warning,
         ),
       ChampionshipStatus.active => (
           l10n.championshipStatusBadgeActive(
@@ -762,21 +803,7 @@ class _StatusBadge extends StatelessWidget {
         ),
     };
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.4)),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
-      ),
-    );
+    return StatusBadge(label: label, color: color);
   }
 }
 
@@ -850,33 +877,15 @@ class _StandingsTab extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Tiebreaker info icon ────────────────────────────────────────
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: const Icon(Icons.info_outline,
-                    size: 18, color: AppColors.textMuted),
-                tooltip: l10n.standingsTiebreakerTitle,
-                onPressed: () => showDialog<void>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: Text(l10n.standingsTiebreakerTitle),
-                    content: Text(l10n.standingsTiebreakerBody),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(),
-                        child: Text(l10n.ok),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+      padding: const EdgeInsets.all(12),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
             Table(
               columnWidths: const {
                 0: FixedColumnWidth(32), // #
@@ -893,6 +902,7 @@ class _StandingsTab extends StatelessWidget {
               ],
             ),
           ],
+          ),
         ),
       ),
     );
@@ -931,7 +941,7 @@ class _StandingsTab extends StatelessWidget {
     final boldStyle = baseStyle?.copyWith(fontWeight: FontWeight.w600);
     final champStyle = baseStyle?.copyWith(
       fontWeight: FontWeight.w700,
-      color: const Color(0xFFB8860B), // dark gold
+      color: const Color(0xFFB8860B),
     );
 
     final sr = row.setRatio;
@@ -947,9 +957,9 @@ class _StandingsTab extends StatelessWidget {
     return TableRow(
       decoration: isChampion
           ? BoxDecoration(
-              color: const Color(0xFFEACE6A).withValues(alpha: 0.18),
+              color: AppColors.primary.withValues(alpha: 0.18),
               border: const Border(
-                left: BorderSide(color: Color(0xFFEACE6A), width: 3),
+                left: BorderSide(color: AppColors.primary, width: 3),
               ),
             )
           : null,
@@ -967,7 +977,7 @@ class _StandingsTab extends StatelessWidget {
         _cell(lossText, baseStyle),
         _cell(
           srText,
-          baseStyle?.copyWith(color: sr >= 0 ? Colors.green : Colors.red),
+          baseStyle?.copyWith(color: sr >= 0 ? AppColors.success : AppColors.danger),
         ),
       ],
     );
@@ -992,39 +1002,37 @@ class _TeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return AccentCard(
       margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            Text(
-              '$position',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textMuted,
-                    fontWeight: FontWeight.w600,
-                  ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      child: Row(
+        children: [
+          Text(
+            '$position',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              team.name,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                team.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
-              ),
-            ),
-            Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
-            const SizedBox(width: 4),
-            Text(
-              '${team.memberIds.length}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-            ),
-          ],
-        ),
+          ),
+          Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
+          const SizedBox(width: 4),
+          Text(
+            '${team.memberIds.length}',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -1084,8 +1092,8 @@ class _MatchesTab extends StatelessWidget {
     return Column(
       children: [
         // Round selector
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        Card(
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -1114,6 +1122,7 @@ class _MatchesTab extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 8),
         const Divider(height: 1),
         // Match list
         Expanded(
@@ -1190,10 +1199,10 @@ class _MatchCard extends StatelessWidget {
     return switch (match.status) {
       ChampionshipMatchStatus.pending => AppColors.textMuted,
       ChampionshipMatchStatus.scheduled => AppColors.secondary,
-      ChampionshipMatchStatus.played => Colors.blue,
-      ChampionshipMatchStatus.disputed => Colors.orange,
+      ChampionshipMatchStatus.played => AppColors.info,
+      ChampionshipMatchStatus.disputed => AppColors.warning,
       ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => Colors.green,
+      ChampionshipMatchStatus.verified => AppColors.success,
     };
   }
 
@@ -1747,7 +1756,7 @@ class _AdminMatchCard extends StatelessWidget {
     final isDisputed = match.status == ChampionshipMatchStatus.disputed;
     final badgeLabel =
         isDisputed ? l10n.adminPanelMatchDisputed : l10n.adminPanelMatchOverdue;
-    final badgeColor = isDisputed ? Colors.orange : Colors.red;
+    final badgeColor = isDisputed ? AppColors.warning : AppColors.danger;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -1988,7 +1997,7 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                     ),
                     const SizedBox(height: 8),
                   ],
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: isDeciding ? null : _submit,
                     child: isDeciding
                         ? const SizedBox(
@@ -2042,11 +2051,11 @@ class _MyMatchesTab extends StatelessWidget {
   Color _statusColor(ChampionshipMatchStatus status) {
     return switch (status) {
       ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => Colors.blue,
-      ChampionshipMatchStatus.played => Colors.orange,
+      ChampionshipMatchStatus.scheduled => AppColors.info,
+      ChampionshipMatchStatus.played => AppColors.warning,
       ChampionshipMatchStatus.disputed => Colors.deepOrange,
       ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => Colors.green,
+      ChampionshipMatchStatus.verified => AppColors.success,
     };
   }
 

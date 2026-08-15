@@ -1,5 +1,6 @@
 // Page for searching and adding friends by email
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
@@ -124,7 +125,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                   backgroundColor: const Color(
                     0xFFEACE6A,
                   ).withValues(alpha: 0.25),
-                  foregroundColor: const Color(0xFF004E64),
+                  foregroundColor: AppColors.secondary,
                 ),
                 onPressed: isSearching || _searchController.text.trim().isEmpty
                     ? null
@@ -159,7 +160,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
         state.whenOrNull(
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message), backgroundColor: Colors.red),
+              SnackBar(content: Text(message), backgroundColor: AppColors.danger),
             );
           },
           actionSuccess: (_) {

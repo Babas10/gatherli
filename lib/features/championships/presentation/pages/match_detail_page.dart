@@ -62,6 +62,7 @@ class _MatchDetailView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(title: Text(l10n.matchDetailTitle)),
       bottomNavigationBar: GlobalBottomNavBar(
         selectedIndex: 4,
@@ -376,11 +377,11 @@ class _MatchHeaderCard extends StatelessWidget {
   Color _statusColor() {
     return switch (match.status) {
       ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => Colors.blue,
-      ChampionshipMatchStatus.played => Colors.orange,
+      ChampionshipMatchStatus.scheduled => AppColors.info,
+      ChampionshipMatchStatus.played => AppColors.warning,
       ChampionshipMatchStatus.disputed => Colors.deepOrange,
       ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => Colors.green,
+      ChampionshipMatchStatus.verified => AppColors.success,
     };
   }
 }
@@ -516,7 +517,7 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
               Text(
                 state.scheduleError!,
                 style:
-                    const TextStyle(color: Colors.red, fontSize: 13),
+                    const TextStyle(color: AppColors.danger, fontSize: 13),
               ),
             ],
             const SizedBox(height: 12),
@@ -599,7 +600,7 @@ class _ResultSection extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.hourglass_top,
-                    color: Colors.orange, size: 40),
+                    color: AppColors.warning, size: 40),
                 const SizedBox(height: 12),
                 Text(
                   l10n.submitResultAwaitingVerification,
@@ -617,7 +618,7 @@ class _ResultSection extends StatelessWidget {
           teamA: teamA,
           teamB: teamB,
           icon: Icons.check_circle,
-          iconColor: Colors.green,
+          iconColor: AppColors.success,
           message: l10n.verifyResultVerified,
         );
 
@@ -627,7 +628,7 @@ class _ResultSection extends StatelessWidget {
           teamA: teamA,
           teamB: teamB,
           icon: Icons.gavel,
-          iconColor: Colors.orange,
+          iconColor: AppColors.warning,
           message: l10n.verifyResultDisputed,
         );
 
@@ -846,7 +847,7 @@ class _ScheduleConfirmationSection extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 state.scheduleConfirmError!,
-                style: const TextStyle(color: Colors.red, fontSize: 13),
+                style: const TextStyle(color: AppColors.danger, fontSize: 13),
               ),
             ],
             const SizedBox(height: 12),
@@ -860,8 +861,8 @@ class _ScheduleConfirmationSection extends StatelessWidget {
                             .read<MatchDetailBloc>()
                             .add(const RejectSchedule()),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      side: const BorderSide(color: Colors.red),
+                      foregroundColor: AppColors.danger,
+                      side: const BorderSide(color: AppColors.danger),
                     ),
                     child: isRejecting
                         ? const SizedBox(
@@ -869,7 +870,7 @@ class _ScheduleConfirmationSection extends StatelessWidget {
                             width: 18,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.red,
+                              color: AppColors.danger,
                             ),
                           )
                         : Text(l10n.matchScheduleRejectButton),
@@ -920,9 +921,9 @@ class _DisputedStateSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.orange.withValues(alpha: 0.08),
+        color: AppColors.warning.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.orange.withValues(alpha: 0.4)),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -930,12 +931,12 @@ class _DisputedStateSection extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.warning_amber_outlined,
-                  color: Colors.orange, size: 18),
+                  color: AppColors.warning, size: 18),
               const SizedBox(width: 6),
               Text(
                 l10n.matchDisputedTitle,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Colors.orange.shade800,
+                      color: AppColors.warning,
                       fontWeight: FontWeight.w700,
                     ),
               ),
@@ -947,7 +948,7 @@ class _DisputedStateSection extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
-                ?.copyWith(color: Colors.orange.shade800),
+                ?.copyWith(color: AppColors.warning),
           ),
           if (result != null) ...[
             const SizedBox(height: 10),
@@ -956,7 +957,7 @@ class _DisputedStateSection extends StatelessWidget {
                   .map((s) => '${s.teamAPoints} – ${s.teamBPoints}')
                   .join('   '),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.orange.shade700,
+                    color: AppColors.warning,
                     fontWeight: FontWeight.w600,
                   ),
             ),

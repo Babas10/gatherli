@@ -25,7 +25,7 @@ class ProfileActions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Account Settings button (renamed from Edit Profile)
-          FilledButton.icon(
+          OutlinedButton.icon(
             onPressed: onEditProfile,
             icon: const Icon(Icons.settings),
             label: Text(l10n.accountSettings),

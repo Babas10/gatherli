@@ -1,5 +1,6 @@
 // Displays a list of groups that the current user is a member of with real-time updates
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
@@ -138,8 +139,8 @@ class GroupListPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
-        foregroundColor: const Color(0xFF004E64),
+        backgroundColor: AppColors.primary.withValues(alpha: 0.25),
+        foregroundColor: AppColors.secondary,
         elevation: 0,
         highlightElevation: 0,
         onPressed: () => _navigateToCreateGroup(context),

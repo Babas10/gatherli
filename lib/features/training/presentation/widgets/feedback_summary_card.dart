@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/domain/repositories/training_feedback_repository.dart';
@@ -27,12 +28,7 @@ class FeedbackSummaryCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           const Text(
             'FEEDBACK SUMMARY',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
 

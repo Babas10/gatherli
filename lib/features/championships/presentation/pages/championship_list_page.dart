@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
@@ -172,14 +174,9 @@ class ChampionshipCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+    return AccentCard(
+      onTap: onTap,
+      child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -247,8 +244,6 @@ class ChampionshipCard extends StatelessWidget {
                 _DeadlineRow(championship: championship, l10n: l10n),
               ],
             ],
-          ),
-        ),
       ),
     );
   }
@@ -267,22 +262,8 @@ class _GenderBadge extends StatelessWidget {
     final label = category == ChampionshipGenderCategory.male
         ? l10n.championshipGenderMale
         : l10n.championshipGenderFemale;
-    const color = Color(0xFF5B8DEF);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
-      ),
-    );
+    const color = AppColors.info;
+    return StatusBadge(label: label, color: color);
   }
 }
 
@@ -299,11 +280,11 @@ class _StatusBadge extends StatelessWidget {
     final (label, color) = switch (championship.status) {
       ChampionshipStatus.registration => (
           l10n.championshipStatusBadgeRegistration,
-          Colors.green,
+          AppColors.primary,
         ),
       ChampionshipStatus.registrationClosed => (
           l10n.championshipStatusBadgeClosed,
-          Colors.orange,
+          AppColors.warning,
         ),
       ChampionshipStatus.active => (
           l10n.championshipStatusBadgeActive(
@@ -318,21 +299,7 @@ class _StatusBadge extends StatelessWidget {
         ),
     };
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.4)),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
-      ),
-    );
+    return StatusBadge(label: label, color: color);
   }
 }
 
@@ -355,7 +322,7 @@ class _DeadlineRow extends StatelessWidget {
 
     if (daysLeft > 0) {
       text = l10n.championshipDeadlineCountdown(daysLeft);
-      color = daysLeft <= 3 ? Colors.red : AppColors.textMuted;
+      color = daysLeft <= 3 ? AppColors.danger : AppColors.textMuted;
     } else {
       text = l10n.championshipDeadlineLabel(DateFormat.yMMMd().format(deadline));
       color = AppColors.textMuted;

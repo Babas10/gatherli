@@ -1,5 +1,6 @@
 // Momentum and consistency card showing streak and monthly improvement.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -60,12 +61,7 @@ class MomentumConsistencyCard extends StatelessWidget {
               AppLocalizations.of(
                 context,
               )!.momentumAndConsistency.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-                letterSpacing: 0.8,
-              ),
+              style: AppTextStyles.sectionLabel,
             ),
             const SizedBox(height: 12),
             // Streak white card
@@ -80,12 +76,7 @@ class MomentumConsistencyCard extends StatelessWidget {
             // ELO Progress section label
             Text(
               AppLocalizations.of(context)!.eloProgress.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-                letterSpacing: 0.8,
-              ),
+              style: AppTextStyles.sectionLabel,
             ),
             const SizedBox(height: 12),
             // Ranking Stats Cards — sit directly on gray background (Story 302.5)
@@ -166,7 +157,7 @@ class MomentumConsistencyCard extends StatelessWidget {
 
     final isWinning = user.currentStreak > 0;
     final streakValue = user.currentStreak.abs();
-    final streakColor = isWinning ? Colors.green : Colors.red;
+    final streakColor = isWinning ? AppColors.success : AppColors.danger;
     final streakIcon = isWinning ? Icons.trending_up : Icons.trending_down;
     final streakLabel = isWinning
         ? AppLocalizations.of(context)!.winStreak

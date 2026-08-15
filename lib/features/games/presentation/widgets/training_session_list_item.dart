@@ -114,7 +114,7 @@ class TrainingSessionListItem extends StatelessWidget {
     }
 
     if (session.status == TrainingStatus.completed) {
-      return Colors.green.withValues(alpha: 0.05);
+      return AppColors.success.withValues(alpha: 0.05);
     }
 
     // Default: no special background (same as games)

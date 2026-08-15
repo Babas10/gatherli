@@ -1,5 +1,6 @@
 // Rivals card showing nemesis statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/head_to_head_page.dart';
@@ -27,12 +28,7 @@ class RivalsCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           Text(
             AppLocalizations.of(context)!.rival.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
           // White card

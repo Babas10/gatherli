@@ -1,5 +1,6 @@
 // ELO trend indicator widget showing rating delta and direction.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -66,7 +67,7 @@ class ELOTrendIndicator extends StatelessWidget {
                         ? Icons.arrow_upward
                         : Icons.arrow_downward,
                     size: 16,
-                    color: trendData['isPositive'] ? Colors.green : Colors.red,
+                    color: trendData['isPositive'] ? AppColors.success : AppColors.danger,
                   ),
                   const SizedBox(width: 4),
                   // Delta
@@ -74,8 +75,8 @@ class ELOTrendIndicator extends StatelessWidget {
                     '${trendData['delta'] > 0 ? '+' : ''}${trendData['delta'].toStringAsFixed(0)}',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: trendData['isPositive']
-                          ? Colors.green
-                          : Colors.red,
+                          ? AppColors.success
+                          : AppColors.danger,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

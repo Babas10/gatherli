@@ -1,5 +1,6 @@
 // Performance overview card following the homepage gray-background / white-card pattern.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -42,12 +43,7 @@ class PerformanceOverviewCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced (matches homepage style)
           Text(
             AppLocalizations.of(context)!.performanceOverview.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
           const SizedBox(height: 12),
           // Row 1: Current ELO + Peak ELO
@@ -384,7 +380,7 @@ class PerformanceOverviewCard extends StatelessWidget {
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: pointStats.winningSetsCount > 0
-                          ? Colors.green
+                          ? AppColors.success
                           : theme.colorScheme.onSurface.withValues(alpha: 0.3),
                     ),
                   ),
@@ -425,7 +421,7 @@ class PerformanceOverviewCard extends StatelessWidget {
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: pointStats.losingSetsCount > 0
-                          ? Colors.red
+                          ? AppColors.danger
                           : theme.colorScheme.onSurface.withValues(alpha: 0.3),
                     ),
                   ),

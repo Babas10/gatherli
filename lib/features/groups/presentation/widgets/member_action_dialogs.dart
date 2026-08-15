@@ -63,8 +63,6 @@ Future<bool> showDemoteConfirmationDialog(
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.secondary,
               ),
               child: Text(l10n.demote),
             ),
@@ -94,7 +92,7 @@ Future<bool> showRemoveMemberConfirmationDialog(
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(backgroundColor: Colors.red),
+              style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
               child: Text(l10n.remove),
             ),
           ],
@@ -121,7 +119,7 @@ Future<bool> showLeaveGroupConfirmationDialog(
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(backgroundColor: Colors.red),
+              style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
               child: Text(l10n.leave),
             ),
           ],

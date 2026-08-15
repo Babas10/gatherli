@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/group_avatar.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import '../bloc/invitee_selection/invitee_selection_bloc.dart';
@@ -38,9 +41,6 @@ class InviteePicker extends StatelessWidget {
             child: Column(
               children: [
                 TabBar(
-                  labelColor: AppColors.secondary,
-                  indicatorColor: AppColors.secondary,
-                  unselectedLabelColor: AppColors.textMuted,
                   tabs: [
                     Tab(text: l10n.myCommunity),
                     Tab(text: l10n.groups),
@@ -86,6 +86,7 @@ class _FriendsTab extends StatelessWidget {
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: state.friends.length,
       itemBuilder: (context, i) {
         final user = state.friends[i];
@@ -122,6 +123,7 @@ class _GroupsTab extends StatelessWidget {
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: state.groups.length,
       itemBuilder: (context, i) {
         final group = state.groups[i];
@@ -153,28 +155,39 @@ class _InviteeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      value: isSelected,
-      onChanged: (_) => onTap(),
-      title: Text(user.displayNameOrFallback),
-      secondary: CircleAvatar(
-        backgroundColor: AppColors.secondary.withValues(alpha: 0.2),
-        backgroundImage:
-            user.photoUrl != null ? NetworkImage(user.photoUrl!) : null,
-        child: user.photoUrl == null
-            ? Text(
-                (user.displayName?.isNotEmpty == true)
-                    ? user.displayName![0].toUpperCase()
-                    : '?',
-                style: const TextStyle(
-                  color: AppColors.secondary,
-                  fontWeight: FontWeight.bold,
+    return AccentCard(
+      onTap: onTap,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        children: [
+          UserAvatar(name: user.displayNameOrFallback, photoUrl: user.photoUrl),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.displayNameOrFallback,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
-              )
-            : null,
+
+              ],
+            ),
+          ),
+          Checkbox(
+            value: isSelected,
+            onChanged: (_) => onTap(),
+            activeColor: AppColors.secondary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ],
       ),
-      activeColor: AppColors.secondary,
-      controlAffinity: ListTileControlAffinity.trailing,
     );
   }
 }
@@ -193,23 +206,45 @@ class _GroupRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return CheckboxListTile(
-      value: isSelected,
-      onChanged: (_) => onTap(),
-      title: Text(group.name),
-      subtitle: Text(
-        l10n.groupMembersCount(group.members.length),
-        style: Theme.of(context)
-            .textTheme
-            .bodySmall
-            ?.copyWith(color: AppColors.textMuted),
+    return AccentCard(
+      onTap: onTap,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        children: [
+          GroupAvatar(name: group.name, radius: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  group.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+                Text(
+                  l10n.groupMembersCount(group.members.length),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Checkbox(
+            value: isSelected,
+            onChanged: (_) => onTap(),
+            activeColor: AppColors.secondary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ],
       ),
-      secondary: const CircleAvatar(
-        backgroundColor: AppColors.secondary,
-        child: Icon(Icons.group, color: Colors.white, size: 20),
-      ),
-      activeColor: AppColors.secondary,
-      controlAffinity: ListTileControlAffinity.trailing,
     );
   }
 }

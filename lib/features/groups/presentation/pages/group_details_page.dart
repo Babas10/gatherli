@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -282,7 +284,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Friend request sent successfully'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
           duration: Duration(seconds: 2),
         ),
       );
@@ -296,7 +298,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to send friend request: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.danger,
           duration: const Duration(seconds: 3),
         ),
       );
@@ -345,7 +347,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -356,7 +358,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppColors.danger,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -461,13 +463,13 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               const Icon(
                                 Icons.exit_to_app,
                                 size: 20,
-                                color: Colors.red,
+                                color: AppColors.danger,
                               ),
                               const SizedBox(width: 12),
                               Flexible(
                                 child: Text(
                                   l10n.leaveGroup,
-                                  style: const TextStyle(color: Colors.red),
+                                  style: const TextStyle(color: AppColors.danger),
                                 ),
                               ),
                             ],
@@ -543,14 +545,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         const Divider(height: 1),
 
         // Tab bar
-        TabBar(
+        SectionTabBar(
           controller: _tabController,
-          labelColor: AppColors.textMuted,
-          unselectedLabelColor: AppColors.textMuted,
-          indicatorColor: AppColors.primary,
           tabs: [
-            Tab(text: l10n.members),
-            Tab(text: l10n.activities),
+            AppTabItem(icon: Icons.people, label: l10n.members),
+            AppTabItem(icon: Icons.calendar_today, label: l10n.activities),
           ],
         ),
 
@@ -610,57 +609,40 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                   if (canInvite) {
                     if (index == 1) {
                       final l10n = AppLocalizations.of(context)!;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.secondary.withValues(
-                            alpha: 0.1,
-                          ),
-                          child: Icon(
-                            Icons.person_add,
-                            color: AppColors.secondary,
-                          ),
-                        ),
-                        title: Text(
-                          l10n.inviteMember,
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                      return AccentCard(
                         onTap: () => _navigateToInvitePage(context),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+                              child: const Icon(Icons.person_add, color: AppColors.secondary),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(l10n.inviteMember,
+                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                          ],
+                        ),
                       );
                     }
                     if (index == 2) {
                       final l10n = AppLocalizations.of(context)!;
                       final isGenerating =
                           inviteLinkState is GroupInviteLinkLoading;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.secondary.withValues(
-                            alpha: 0.1,
-                          ),
-                          child: isGenerating
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Icon(Icons.link, color: AppColors.secondary),
+                      return AccentCard(
+                        onTap: isGenerating ? null : () => context.read<GroupInviteLinkBloc>().add(GenerateInvite(groupId: widget.groupId)),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+                              child: isGenerating
+                                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                                  : const Icon(Icons.link, color: AppColors.secondary),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(l10n.inviteWithLink,
+                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                          ],
                         ),
-                        title: Text(
-                          l10n.inviteWithLink,
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        onTap: isGenerating
-                            ? null
-                            : () => context.read<GroupInviteLinkBloc>().add(
-                                GenerateInvite(groupId: widget.groupId),
-                              ),
                       );
                     }
                   }
@@ -689,7 +671,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                 _getInitials(member.fullDisplayName),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF004E64),
+                                  color: AppColors.secondary,
                                 ),
                               )
                             : null,
@@ -753,37 +735,30 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Create action buttons at the top
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _navigateToGameCreation(context),
-                          icon: const Icon(Icons.sports_volleyball),
-                          label: Text(l10n.createGame),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.secondary,
-                            side: BorderSide(color: AppColors.secondary),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                // Create action buttons — wrapped in Card for contrast
+                Card(
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToGameCreation(context),
+                            icon: const Icon(Icons.sports_volleyball),
+                            label: Text(l10n.createGame),
                           ),
                         ),
-                      ),
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _navigateToTrainingCreation(context),
-                          icon: const Icon(Icons.fitness_center),
-                          label: Text(l10n.createTraining),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.secondary,
-                            side: BorderSide(color: AppColors.secondary),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToTrainingCreation(context),
+                            icon: const Icon(Icons.fitness_center),
+                            label: Text(l10n.createTraining),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(height: 1),
@@ -1006,7 +981,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.linkCopied),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
           label: l10n.shareLink,
@@ -1021,7 +996,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       case 0: // Home
       case 1: // Stats
       case 3: // Community
-        // Switch the home page tab then pop back to the root route.
+      case 4: // Championships
         HomePage.onNavigateToTab?.call(index);
         Navigator.of(context).popUntil((route) => route.isFirst);
         break;

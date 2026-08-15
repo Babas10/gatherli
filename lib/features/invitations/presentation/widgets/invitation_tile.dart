@@ -95,9 +95,7 @@ class InvitationTile extends StatelessWidget {
                 // Accept button
                 FilledButton(
                   onPressed: isLoading ? null : onAccept,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
+                  // No style override — gold comes from AppTheme.filledButtonTheme
                   child: isLoading
                       ? const SizedBox(
                           width: 16,

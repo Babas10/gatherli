@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -158,16 +159,16 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
 
   Widget _buildErrorState() {
     return Card(
-      color: Colors.red.shade50,
+      color: AppColors.danger,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Icon(Icons.error_outline, color: Colors.red.shade700, size: 48),
+            Icon(Icons.error_outline, color: AppColors.danger, size: 48),
             const SizedBox(height: 8),
             Text(
               _errorMessage!,
-              style: TextStyle(color: Colors.red.shade900),
+              style: TextStyle(color: AppColors.danger),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -264,23 +265,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 if (isInvited) {
                   // Show green tick — already invited, not selectable
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: AppColors.primary.withValues(
-                        alpha: 0.25,
-                      ),
-                      backgroundImage: friend.photoUrl != null
-                          ? NetworkImage(friend.photoUrl!)
-                          : null,
-                      child: friend.photoUrl == null
-                          ? Text(
-                              friend.displayNameOrEmail[0].toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.secondary,
-                              ),
-                            )
-                          : null,
-                    ),
+                    leading: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
                     title: Text(
                       friend.displayNameOrEmail,
                       style: TextStyle(
@@ -299,7 +284,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                         : null,
                     trailing: const Icon(
                       Icons.check_circle,
-                      color: Colors.green,
+                      color: AppColors.success,
                       size: 28,
                     ),
                   );
@@ -328,21 +313,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                           ),
                         )
                       : null,
-                  secondary: CircleAvatar(
-                    backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-                    backgroundImage: friend.photoUrl != null
-                        ? NetworkImage(friend.photoUrl!)
-                        : null,
-                    child: friend.photoUrl == null
-                        ? Text(
-                            friend.displayNameOrEmail[0].toUpperCase(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.secondary,
-                            ),
-                          )
-                        : null,
-                  ),
+                  secondary: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
                   controlAffinity: ListTileControlAffinity.trailing,
                 );
               },

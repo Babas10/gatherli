@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,7 +45,7 @@ class AvatarUploadWidget extends StatelessWidget {
                 content: Text(
                   AppLocalizations.of(context)!.avatarUploadedSuccess,
                 ),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
 
@@ -57,7 +58,7 @@ class AvatarUploadWidget extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           } else if (state is AvatarUploadValidationError) {
@@ -65,7 +66,7 @@ class AvatarUploadWidget extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.orange,
+                backgroundColor: AppColors.warning,
               ),
             );
           } else if (state is AvatarUploadDeleteSuccess) {
@@ -78,7 +79,7 @@ class AvatarUploadWidget extends StatelessWidget {
                 content: Text(
                   AppLocalizations.of(context)!.avatarRemovedSuccess,
                 ),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
 
@@ -91,7 +92,7 @@ class AvatarUploadWidget extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           }
@@ -256,10 +257,10 @@ class _AvatarUploadContent extends StatelessWidget {
                 enabled)
               TextButton.icon(
                 onPressed: () => _showDeleteConfirmation(context),
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                icon: const Icon(Icons.delete_outline, color: AppColors.danger),
                 label: Text(
                   AppLocalizations.of(context)!.removeAvatar,
-                  style: const TextStyle(color: Colors.red),
+                  style: const TextStyle(color: AppColors.danger),
                 ),
               ),
           ],
@@ -288,7 +289,7 @@ class _AvatarUploadContent extends StatelessWidget {
                 const AvatarUploadEvent.deleteRequested(),
               );
             },
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
             child: Text(l10n.remove),
           ),
         ],

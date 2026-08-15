@@ -66,7 +66,7 @@ class _TrainingSessionFeedbackPageState
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.thankYouFeedback),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
             // Navigate back after short delay
@@ -80,7 +80,7 @@ class _TrainingSessionFeedbackPageState
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           } else if (state is FeedbackSubmissionChecked && state.hasSubmitted) {
@@ -131,7 +131,7 @@ class _TrainingSessionFeedbackPageState
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
+            FilledButton(
               onPressed: () => Navigator.pop(context),
               child: Text(l10n.backToSession),
             ),
@@ -230,9 +230,9 @@ class _TrainingSessionFeedbackPageState
             const SizedBox(height: 32),
 
             // Submit button
-            ElevatedButton(
+            FilledButton(
               onPressed: isSubmitting ? null : () => _submitFeedback(context),
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.secondary,
                 foregroundColor: Colors.white,

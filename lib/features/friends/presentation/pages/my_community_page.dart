@@ -111,7 +111,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                                   vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: AppColors.danger,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 constraints: const BoxConstraints(
@@ -159,7 +159,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(message),
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColors.danger,
                         ),
                       );
                     },
@@ -255,7 +255,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                               const Icon(
                                 Icons.error_outline,
                                 size: 64,
-                                color: Colors.red,
+                                color: AppColors.danger,
                               ),
                               const SizedBox(height: 16),
                               Text(
@@ -300,8 +300,6 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
   Widget _buildAddFriendButton(BuildContext context, AppLocalizations l10n) {
     return FloatingActionButton.extended(
       heroTag: 'add_friend_fab', // Unique tag to avoid Hero conflicts
-      backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-      foregroundColor: AppColors.secondary,
       elevation: 0,
       highlightElevation: 0,
       onPressed: () {

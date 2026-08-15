@@ -1,5 +1,6 @@
 // Single-select list of friends for choosing a championship partner.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -39,14 +40,7 @@ class PartnerPickerList extends StatelessWidget {
         final isSelected = friend.uid == selectedPartnerId;
 
         return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: friend.photoUrl != null
-                ? NetworkImage(friend.photoUrl!)
-                : null,
-            child: friend.photoUrl == null
-                ? Text(friend.displayNameOrFallback[0].toUpperCase())
-                : null,
-          ),
+          leading: UserAvatar(name: friend.displayNameOrFallback, photoUrl: friend.photoUrl),
           title: Text(friend.displayNameOrFallback),
           trailing: isSelected
               ? Icon(Icons.radio_button_checked,

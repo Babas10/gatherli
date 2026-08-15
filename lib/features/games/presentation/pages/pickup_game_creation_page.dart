@@ -325,7 +325,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
             SnackBar(
               content:
                   Text(AppLocalizations.of(context)!.invitationsSentSuccess),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         }
@@ -337,7 +337,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
         SnackBar(
           content:
               Text(AppLocalizations.of(context)!.pickupGameCreatedSuccess),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
           duration: const Duration(seconds: 2),
         ),
       );
@@ -448,32 +448,44 @@ class _GameDetailsStep extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Pickup Game badge
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.secondary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                    color: AppColors.secondary.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.flash_on,
-                      color: AppColors.secondary, size: 16),
-                  const SizedBox(width: 6),
-                  Text(
-                    l10n.pickupGame,
-                    style: const TextStyle(
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13),
-                  ),
-                ],
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: AppColors.secondary.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.flash_on,
+                        color: AppColors.secondary, size: 16),
+                    const SizedBox(width: 6),
+                    Text(
+                      l10n.pickupGame,
+                      style: const TextStyle(
+                          color: AppColors.secondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+
+            // Form fields card
+            Card(
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
 
             // Title
             TextFormField(
@@ -567,12 +579,16 @@ class _GameDetailsStep extends StatelessWidget {
               ),
               enabled: !isSubmitting,
             ),
-            const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
 
             // Next button
-            ElevatedButton(
+            OutlinedButton(
               onPressed: isSubmitting ? null : onNext,
-              style: ElevatedButton.styleFrom(
+              style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16)),
               child: Text(l10n.next, style: const TextStyle(fontSize: 16)),
             ),
@@ -621,33 +637,36 @@ class _InviteStep extends StatelessWidget {
         // Tabbed picker fills the remaining space
         const Expanded(child: InviteePicker()),
         // Action buttons
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: isSubmitting ? null : onSkip,
-                  child: Text(l10n.skipInvitations),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: isSubmitting ? null : onSubmit,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+        Card(
+          margin: const EdgeInsets.all(12),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: isSubmitting ? null : onSkip,
+                    child: Text(l10n.skipInvitations),
                   ),
-                  child: isSubmitting
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.createAndInvite),
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: isSubmitting ? null : onSubmit,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: isSubmitting
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(l10n.createAndInvite),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

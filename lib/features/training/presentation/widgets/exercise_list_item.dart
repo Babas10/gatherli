@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/data/models/exercise_model.dart';
 
@@ -80,9 +81,9 @@ class ExerciseListItem extends StatelessWidget {
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Colors.red),
+                        Icon(Icons.delete, color: AppColors.danger),
                         SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: Colors.red)),
+                        Text('Delete', style: TextStyle(color: AppColors.danger)),
                       ],
                     ),
                   ),

@@ -72,7 +72,7 @@ class _PendingGameInvitationsViewState
                 : l10n.gameInvitationDeclined,
           ),
           backgroundColor: state.accepted
-              ? Colors.green.shade600
+              ? AppColors.success
               : AppColors.textMuted,
         ),
       );

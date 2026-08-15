@@ -345,7 +345,7 @@ class _ChatInput extends StatelessWidget {
               : const Icon(Icons.send),
           color: AppColors.secondary,
           style: IconButton.styleFrom(
-            backgroundColor: AppColors.primary,
+            backgroundColor: AppColors.avatarBackground,
             shape: const CircleBorder(),
           ),
         ),

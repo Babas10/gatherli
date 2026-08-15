@@ -31,8 +31,8 @@ class GameListItem extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      elevation: isPast ? 0 : 1,
-      color: _getCardBackgroundColor(context),
+      elevation: 1,
+      color: AppColors.cardBackground,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -108,24 +108,6 @@ class GameListItem extends StatelessWidget {
     );
   }
 
-  Color? _getCardBackgroundColor(BuildContext context) {
-    if (game.status == GameStatus.cancelled) {
-      return Theme.of(
-        context,
-      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5);
-    }
-
-    switch (game.status) {
-      case GameStatus.verification:
-        return AppColors.primary.withValues(alpha: 0.1);
-      case GameStatus.completed:
-        return Colors.green.withValues(alpha: 0.05);
-      case GameStatus.inProgress:
-        return Colors.orange.withValues(alpha: 0.05);
-      default:
-        return null;
-    }
-  }
 
   Widget _buildInfoRow(
     BuildContext context,
@@ -141,9 +123,7 @@ class GameListItem extends StatelessWidget {
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: AppColors.onSurface,
             ),
           ),
         ),
@@ -230,14 +210,14 @@ class GameListItem extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.orange.withValues(alpha: 0.2),
+          color: AppColors.warning.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.orange),
+          border: Border.all(color: AppColors.warning),
         ),
         child: Text(
           l10n.onWaitlist,
           style: TextStyle(
-            color: Colors.orange.shade700,
+            color: AppColors.warning,
             fontWeight: FontWeight.bold,
             fontSize: 10,
           ),
@@ -249,14 +229,14 @@ class GameListItem extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.2),
+          color: AppColors.danger.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red),
+          border: Border.all(color: AppColors.danger),
         ),
         child: Text(
           l10n.full,
           style: TextStyle(
-            color: Colors.red.shade700,
+            color: AppColors.danger,
             fontWeight: FontWeight.bold,
             fontSize: 10,
           ),
@@ -284,9 +264,7 @@ class GameListItem extends StatelessWidget {
                   Text(
                     '${game.currentPlayerCount}/${game.maxPlayers} players',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isPast
-                          ? Theme.of(context).colorScheme.onSurfaceVariant
-                          : Theme.of(context).colorScheme.onSurface,
+                      color: AppColors.onSurface,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -305,14 +283,8 @@ class GameListItem extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 6,
-                  backgroundColor: isPast
-                      ? Theme.of(context).colorScheme.surfaceContainerHighest
-                      : Theme.of(context).colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isPast
-                        ? Theme.of(context).colorScheme.onSurfaceVariant
-                        : AppColors.primary,
-                  ),
+                  backgroundColor: AppColors.divider,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
               ),
             ],

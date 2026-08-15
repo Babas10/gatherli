@@ -420,13 +420,13 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+          SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
         );
     } else if (state is InviteRegistrationSuccess) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.groupJoinedSuccess(state.groupName)),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(
@@ -439,7 +439,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.inviteExpiredDuringRegistration),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppColors.warning,
         ),
       );
       Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);

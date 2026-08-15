@@ -229,7 +229,7 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                     const SizedBox(height: 16),
                     Text(message),
                     const SizedBox(height: 16),
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {
                         context.read<GameHistoryBloc>().add(
                           GameHistoryEvent.load(

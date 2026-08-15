@@ -1,15 +1,11 @@
 // Card displaying the next upcoming training session on the homepage.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 // Golden Hour theme colors
-const _kPrimary = Color(0xFFEACE6A);
-const _kTextMain = Color(0xFF1A2C32);
-const _kTextMuted = Color(0xFF64748B);
-const _kShadow = Color(0x14004E64);
-const _kDashedBorder = Color(0xFFE2E8F0);
 
 /// A card widget that displays the user's next upcoming training session.
 ///
@@ -57,7 +53,7 @@ class NextTrainingSessionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               boxShadow: const [
                 BoxShadow(
-                  color: _kShadow,
+                  color: AppColors.shadow,
                   blurRadius: 20,
                   offset: Offset(0, 8),
                 ),
@@ -70,7 +66,7 @@ class NextTrainingSessionCard extends StatelessWidget {
                   left: 0,
                   top: 0,
                   bottom: 0,
-                  child: Container(width: 6, color: _kPrimary),
+                  child: Container(width: 6, color: AppColors.primary),
                 ),
                 // Card content
                 Padding(
@@ -102,14 +98,14 @@ class NextTrainingSessionCard extends StatelessWidget {
                   Icon(
                     Icons.fitness_center,
                     size: 36,
-                    color: _kTextMuted.withValues(alpha: 0.3),
+                    color: AppColors.textMuted.withValues(alpha: 0.3),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     l10n.noTrainingSessionsScheduled,
                     style: TextStyle(
                       fontSize: 14,
-                      color: _kTextMuted.withValues(alpha: 0.6),
+                      color: AppColors.textMuted.withValues(alpha: 0.6),
                     ),
                   ),
                 ],
@@ -135,7 +131,7 @@ class NextTrainingSessionCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: _kTextMain,
+                  color: AppColors.onSurface,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -149,33 +145,33 @@ class NextTrainingSessionCard extends StatelessWidget {
         // Date/time + Location + Duration
         Row(
           children: [
-            Icon(Icons.calendar_today, size: 14, color: _kTextMuted),
+            Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
             const SizedBox(width: 4),
             Expanded(
               child: Text(
                 _formatDateTime(context, session!.startTime),
-                style: const TextStyle(fontSize: 14, color: _kTextMuted),
+                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.location_on, size: 14, color: _kTextMuted),
+            Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
             const SizedBox(width: 2),
             Expanded(
               child: Text(
                 session!.location.name,
-                style: const TextStyle(fontSize: 14, color: _kTextMuted),
+                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.access_time, size: 14, color: _kTextMuted),
+            Icon(Icons.access_time, size: 14, color: AppColors.textMuted),
             const SizedBox(width: 2),
             Text(
               _formatDuration(context, session!.duration),
-              style: const TextStyle(fontSize: 14, color: _kTextMuted),
+              style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
             ),
           ],
         ),
@@ -193,7 +189,7 @@ class NextTrainingSessionCard extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
-          color: _kPrimary,
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
@@ -210,13 +206,13 @@ class NextTrainingSessionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: _kPrimary.withValues(alpha: 0.1),
+        color: AppColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         l10n.join,
         style: const TextStyle(
-          color: _kPrimary,
+          color: AppColors.primary,
           fontWeight: FontWeight.w600,
           fontSize: 11,
         ),
@@ -243,7 +239,7 @@ class NextTrainingSessionCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w500,
-              color: _kTextMain,
+              color: AppColors.onSurface,
             ),
           ),
           const SizedBox(width: 8),
@@ -253,11 +249,11 @@ class NextTrainingSessionCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 5,
-                backgroundColor: const Color(0xFFE2E8F0),
+                backgroundColor: AppColors.divider,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   session!.currentParticipantCount >= session!.minParticipants
-                      ? _kPrimary
-                      : _kPrimary,
+                      ? AppColors.primary
+                      : AppColors.primary,
                 ),
               ),
             ),
@@ -307,7 +303,7 @@ class _DashedBorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = _kDashedBorder
+      ..color = AppColors.divider
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
