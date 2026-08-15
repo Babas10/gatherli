@@ -1,0 +1,109 @@
+// Determines whether a user is eligible to register for a championship.
+// Extracted from championship_detail_page.dart where it was inline logic.
+import 'package:play_with_me/core/domain/use_cases/base_use_case.dart';
+import 'package:play_with_me/features/championships/data/models/championship_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
+
+class ChampionshipEligibilityInput {
+  final ChampionshipModel championship;
+  final List<ChampionshipTeamModel> teams;
+  final String? userId;
+  final String? userGender;
+
+  const ChampionshipEligibilityInput({
+    required this.championship,
+    required this.teams,
+    this.userId,
+    this.userGender,
+  });
+}
+
+class ChampionshipEligibilityResult {
+  final bool isAlreadyRegistered;
+  final bool isGenderAllowed;
+  final bool canRegister;
+  final String? genderBlockReason;
+  final String? myTeamId;
+
+  const ChampionshipEligibilityResult({
+    required this.isAlreadyRegistered,
+    required this.isGenderAllowed,
+    required this.canRegister,
+    this.genderBlockReason,
+    this.myTeamId,
+  });
+}
+
+class CheckChampionshipEligibilityUseCase
+    extends UseCase<ChampionshipEligibilityInput, ChampionshipEligibilityResult> {
+
+  const CheckChampionshipEligibilityUseCase();
+
+  @override
+  Future<ChampionshipEligibilityResult> execute(
+    ChampionshipEligibilityInput input,
+  ) async {
+    final userId = input.userId;
+    final championship = input.championship;
+    final teams = input.teams;
+
+    final isAlreadyRegistered = userId != null &&
+        teams.any((t) => t.memberIds.contains(userId));
+
+    final isGenderAllowed = _isGenderAllowed(
+      championship.genderCategory,
+      input.userGender,
+    );
+
+    final canRegister = userId != null &&
+        !isAlreadyRegistered &&
+        isGenderAllowed &&
+        championship.status == ChampionshipStatus.registration &&
+        championship.isOpen;
+
+    final myTeamId = userId != null
+        ? teams
+            .where((t) => t.memberIds.contains(userId))
+            .map((t) => t.id)
+            .firstOrNull
+        : null;
+
+    return ChampionshipEligibilityResult(
+      isAlreadyRegistered: isAlreadyRegistered,
+      isGenderAllowed: isGenderAllowed,
+      canRegister: canRegister,
+      genderBlockReason: _genderBlockReason(
+        championship.genderCategory,
+        input.userGender,
+        isAlreadyRegistered,
+      ),
+      myTeamId: myTeamId,
+    );
+  }
+
+  bool _isGenderAllowed(
+    ChampionshipGenderCategory? category,
+    String? userGender,
+  ) {
+    if (category == null) return true;
+    if (userGender == null || userGender == 'none') return false;
+    return userGender == category.name;
+  }
+
+  String? _genderBlockReason(
+    ChampionshipGenderCategory? category,
+    String? userGender,
+    bool alreadyRegistered,
+  ) {
+    if (category == null || alreadyRegistered) return null;
+    if (userGender == null || userGender == 'none') {
+      return 'Set your gender in profile settings to register for gendered championships.';
+    }
+    if (userGender != category.name) {
+      return category == ChampionshipGenderCategory.male
+          ? 'This is a men\'s championship.'
+          : 'This is a women\'s championship.';
+    }
+    return null;
+  }
+}
