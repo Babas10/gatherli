@@ -77,6 +77,9 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
         // ── Tab content ──────────────────────────────────────────────────────
         Expanded(
           child: BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
+                (prev is ChampionshipListLoaded && curr is ChampionshipListLoaded &&
+                 prev.championships != curr.championships),
             builder: (context, state) {
               if (state is ChampionshipListLoading) {
                 return const Center(child: CircularProgressIndicator());
