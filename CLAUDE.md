@@ -998,43 +998,223 @@ Claude may proceed **without approval** if:
 
 ---
 
-## 🎨 9b. UI & Theme Standards (Non-Negotiable)
+## 🎨 9b. UI & Design System (Non-Negotiable)
 
-Before building any UI, Claude **must** check this section and existing pages for established patterns. Never invent colors or use Material 3 generated surface colors.
-
-### Theme Configuration
-
-The global theme is defined in `lib/app/play_with_me_app.dart` (ThemeData) and `lib/core/theme/app_colors.dart`.
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `AppColors.scaffoldBackground` | `Color(0xFFF4F6F8)` | All scaffold backgrounds — set globally, never override |
-| `AppColors.appBarBackground` | `Colors.white` | AppBar background |
-| `AppColors.bottomNavBackground` | `Colors.white` | Bottom nav bar |
-| `AppColors.primary` | `Color(0xFFEACE6A)` | Brand gold — buttons, selected states |
-| `AppColors.secondary` | `Color(0xFF004E64)` | Brand dark teal — date picker selection, secondary actions |
-| `AppColors.textMuted` | `Color(0xFF64748B)` | Secondary / hint text |
-| `AppColors.danger` | `Color(0xFFEF476F)` | Errors |
-| `AppColors.divider` | `Color(0xFFE2E8F0)` | Dividers, borders |
-| Card background | `Colors.white` | Global cardTheme: elevation 0, radius 16 |
-
-### Rules
-
-* **NEVER** use `Theme.of(context).colorScheme.surfaceContainerLow`, `surfaceContainer`, `surfaceVariant`, or any other Material 3 generated tinted surface — they produce wrong bluish/greyish tints that don't match the app.
-* **NEVER** set an explicit `color` on a section `Container` unless it is `Colors.white` (card-like) or `AppColors.scaffoldBackground`.
-* Section headers and info rows: use `Padding` only — let the scaffold background show through.
-* Cards already inherit `Colors.white` from the global `cardTheme` — do not set `color` on `Card`.
-* Before adding any background to a widget, open a nearby existing page (e.g. `game_details_page.dart`, `championship_list_page.dart`) and match its pattern exactly.
-
-### Date Pickers
-
-All `showDatePicker` calls must use the styled theme from `game_creation_page.dart`:
-- `backgroundColor: Colors.white`, `headerBackgroundColor: Colors.white`
-- Selected day/year: `foregroundColor: AppColors.secondary`, outlined circle border `side: BorderSide(color: AppColors.secondary, width: 2)`
-- Text buttons: `foregroundColor: AppColors.secondary`
-- Use `const blue = Color(0xFF004E64)` (inlined — `AppColors.secondary` is not a `const` expression in local scope)
+All visual styling in this app is centralized. **Before writing any UI code**, consult the files below and use the shared patterns. Never invent colors, sizes, or widget patterns from scratch.
 
 ---
+
+### Central configuration files (one change = whole app updates)
+
+| File | Controls |
+|---|---|
+| `lib/core/theme/app_colors.dart` | **Every color** — brand, semantic, avatar, surface |
+| `lib/core/theme/app_theme.dart` | **Every component style** — buttons, cards, dialogs, tabs, AppBar, nav, switches, text theme |
+| `lib/core/theme/app_text_styles.dart` | **Reusable text styles** — sectionLabel, caption, cardTitle, badgeLabel, etc. |
+| `lib/core/theme/app_spacing.dart` | **All spacing & radii** — xs/sm/md/lg/xl/xxl, icon sizes, card/badge/input radius |
+
+**Rule:** If a value you need does not exist in these files, **add it there first**, then use it. Never hardcode a raw value in a widget.
+
+---
+
+### Colors — `AppColors`
+
+```dart
+// ✅ CORRECT
+color: AppColors.primary        // gold
+color: AppColors.secondary      // teal
+color: AppColors.danger         // red errors / destructive
+color: AppColors.success        // green wins / accepted
+color: AppColors.warning        // orange pending / scheduled
+color: AppColors.info           // blue informational
+color: AppColors.textMuted      // secondary text
+color: AppColors.avatarBackground  // gold 25% — all circles
+color: AppColors.avatarForeground  // teal — circle text/icons
+
+// ❌ FORBIDDEN — never use raw Colors.* or Color(0xFF...) in widgets
+color: Colors.green
+color: Colors.red
+color: Color(0xFF004E64)        // use AppColors.secondary
+color: Theme.of(context).colorScheme.surface   // M3 generated tint
+color: Theme.of(context).colorScheme.primaryContainer  // M3 tint
+```
+
+---
+
+### Spacing — `AppSpacing`
+
+```dart
+// ✅ CORRECT
+SizedBox(height: AppSpacing.sm)   // 8dp
+SizedBox(height: AppSpacing.lg)   // 16dp
+EdgeInsets.all(AppSpacing.pagePadding)          // 16dp page margin
+BorderRadius.circular(AppSpacing.cardRadius)    // 16dp
+BorderRadius.circular(AppSpacing.badgeRadius)   // 8dp
+Icon(Icons.star, size: AppSpacing.iconMd)       // 20dp
+
+// ❌ FORBIDDEN — never hardcode spacing/radius in widgets
+SizedBox(height: 16)
+BorderRadius.circular(16)
+Icon(Icons.star, size: 20)
+```
+
+---
+
+### Text styles — `AppTextStyles`
+
+```dart
+// ✅ CORRECT
+Text('NEXT GAME', style: AppTextStyles.sectionLabel)  // uppercase section headers
+Text('1657',      style: AppTextStyles.statValue)      // large stat numbers
+Text(date,        style: AppTextStyles.caption)         // small muted metadata
+Text(name,        style: AppTextStyles.cardTitle)       // primary card text
+Text(badge,       style: AppTextStyles.badgeLabel.copyWith(color: color))
+
+// ❌ FORBIDDEN
+TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textMuted, letterSpacing: 0.8)
+// → Use AppTextStyles.sectionLabel
+```
+
+---
+
+### Shared widgets — always use, never duplicate
+
+| Widget | File | Use for |
+|---|---|---|
+| `UserAvatar` | `core/presentation/widgets/user_avatar.dart` | Every user circle (friend, member, player) |
+| `GroupAvatar` | `core/presentation/widgets/group_avatar.dart` | Every group circle |
+| `AccentCard` | `core/presentation/widgets/accent_card.dart` | Every list item card (games, championships, friends, groups) |
+| `SectionTabBar` | `core/presentation/widgets/section_tab_bar.dart` | Every tab bar in the app |
+| `StatusBadge` | `core/presentation/widgets/status_badge.dart` | Every colored status pill |
+| `EmptyState` | `core/presentation/widgets/empty_state.dart` | Every empty list/screen state |
+| `AppScaffold` | `core/presentation/widgets/app_scaffold.dart` | Pages with loading/error/content states |
+| `AppSnackBar` | `core/presentation/widgets/app_snack_bar.dart` | All user feedback (success/error/info) |
+| `AppPageRoute` | `core/presentation/widgets/app_page_route.dart` | All `Navigator.push` calls |
+| `FormSection` | `core/presentation/widgets/form_section.dart` | Sections in creation/edit forms |
+| `Badge` | Flutter built-in | Notification count on icons (NOT Stack+Positioned) |
+
+#### AccentCard — list items
+```dart
+// ✅ CORRECT — all list pages
+AccentCard(
+  onTap: () => ...,
+  margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+  child: Row(children: [UserAvatar(...), ...]),
+)
+// ❌ WRONG — bare ListTile or Card without AccentCard for navigable list items
+```
+
+#### SectionTabBar — all tab bars
+```dart
+// ✅ CORRECT
+SectionTabBar(
+  controller: _tabController,
+  tabs: [
+    AppTabItem(icon: Icons.people, label: l10n.members),
+    AppTabItem(icon: Icons.calendar_today, label: l10n.activities),
+  ],
+)
+// ❌ WRONG — bare TabBar with inline color overrides
+```
+
+#### StatusBadge — all colored pills
+```dart
+// ✅ CORRECT
+StatusBadge(label: l10n.verified, color: AppColors.success)
+StatusBadge.primary(l10n.registrationOpen)   // gold
+StatusBadge.muted(l10n.completed)            // grey
+// ❌ WRONG — inline Container+BoxDecoration pill
+```
+
+#### AppPageRoute — all navigation
+```dart
+// ✅ CORRECT
+Navigator.push(context, AppPageRoute.detail(builder: (_) => GameDetailsPage(...)))
+Navigator.push(context, AppPageRoute.modal(builder: (_) => CreateChampionshipPage()))
+// ❌ WRONG — raw MaterialPageRoute
+```
+
+---
+
+### Button rules
+
+| Situation | Widget |
+|---|---|
+| Primary CTA (submit, create, register) | `FilledButton` — gold from theme, no inline style |
+| Secondary / cancel / navigation actions | `OutlinedButton` — white bg, teal border, no inline style |
+| Destructive (delete, remove, leave) | `OutlinedButton` with `foregroundColor: AppColors.danger, side: BorderSide(color: AppColors.danger)` |
+| Icon-only buttons | `IconButton` — 48×48 touch target from `iconButtonTheme` |
+
+```dart
+// ✅ CORRECT — no backgroundColor override needed; theme handles it
+FilledButton(onPressed: _submit, child: Text(l10n.submit))
+OutlinedButton(onPressed: _cancel, child: Text(l10n.cancel))
+
+// ❌ WRONG — bypasses theme, breaks global button color changes
+ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary), ...)
+```
+
+---
+
+### Notification badges on icons
+
+```dart
+// ✅ CORRECT — Badge widget does not block tap area
+Badge(
+  isLabelVisible: count > 0,
+  label: Text('$count'),
+  backgroundColor: AppColors.danger,
+  child: IconButton(icon: Icon(Icons.mail_outline), onPressed: ...),
+)
+// ❌ WRONG — Positioned badge overlaps icon tap area
+Stack(children: [IconButton(...), Positioned(right: 8, top: 8, child: Container(...))])
+```
+
+---
+
+### Material 3 color scheme — forbidden patterns
+
+```dart
+// ❌ NEVER USE — these produce M3 generated tints (cream, blue, warm grey)
+Theme.of(context).colorScheme.surface
+Theme.of(context).colorScheme.surfaceContainerLow
+Theme.of(context).colorScheme.surfaceVariant
+Theme.of(context).colorScheme.primaryContainer
+Theme.of(context).colorScheme.primary   // use AppColors.primary instead
+Theme.of(context).colorScheme.secondary // use AppColors.secondary instead
+
+// ✅ USE AppColors constants exclusively
+```
+
+---
+
+### Date & time pickers
+
+```dart
+// ✅ CORRECT — use the styled helper (white bg, teal selection, no M3 cream)
+showAppStyledDatePicker(context: context, initialDate: ..., firstDate: ..., lastDate: ...)
+
+// Create showAppStyledTimePicker similarly if a time picker is needed.
+// ❌ WRONG — raw picker shows M3 cream calendar
+showDatePicker(context: context, ...)
+showTimePicker(context: context, ...)
+```
+
+---
+
+### Quick checklist before submitting any UI PR
+
+- [ ] All colors reference `AppColors.*` — no `Colors.red/green/orange/blue`, no `Color(0xFF...)`
+- [ ] All spacing uses `AppSpacing.*` — no raw `SizedBox(height: 16)`, no `EdgeInsets.all(16)`
+- [ ] All text styles use `AppTextStyles.*` or `Theme.of(context).textTheme.*` — no raw `TextStyle(fontSize: 12, ...)`
+- [ ] List items use `AccentCard` — no bare `ListTile` or `Card` for navigable rows
+- [ ] Tab bars use `SectionTabBar` with `AppTabItem` — no bare `TabBar` with inline colors
+- [ ] Status pills use `StatusBadge` — no inline `Container+BoxDecoration` badges
+- [ ] Navigation uses `AppPageRoute.detail()` or `.modal()` — no raw `MaterialPageRoute`
+- [ ] Notification badges use `Badge` widget — no `Stack+Positioned` overlay
+- [ ] Buttons are `FilledButton` or `OutlinedButton` — no `backgroundColor` override needed
+- [ ] No `Theme.of(context).colorScheme.*` surface/container references
+
 
 ## 📱 10. Current App State (v0.1.0)
 
