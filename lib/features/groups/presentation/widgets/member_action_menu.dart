@@ -1,5 +1,6 @@
 // Action menu for group member management (promote, demote, remove)
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -48,7 +49,7 @@ class MemberActionMenu extends StatelessWidget {
                     size: 20,
                     color: AppColors.secondary,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Text(
                     l10n.promoteToAdmin,
                     style: const TextStyle(color: AppColors.secondary),
@@ -71,7 +72,7 @@ class MemberActionMenu extends StatelessWidget {
                     size: 20,
                     color: AppColors.secondary,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Text(
                     l10n.demoteToMember,
                     style: const TextStyle(color: AppColors.secondary),
@@ -97,7 +98,7 @@ class MemberActionMenu extends StatelessWidget {
                     size: 20,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Text(
                     l10n.removeFromGroup,
                     style: TextStyle(

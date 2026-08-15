@@ -1,5 +1,6 @@
 // ELO trend indicator widget showing rating delta and direction.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -45,7 +46,7 @@ class ELOTrendIndicator extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             // Current ELO with trend
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -60,7 +61,7 @@ class ELOTrendIndicator extends StatelessWidget {
                   ),
                 ),
                 if (trendData != null && trendData['delta'] != 0) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   // Trend arrow
                   Icon(
                     trendData['isPositive']
@@ -69,7 +70,7 @@ class ELOTrendIndicator extends StatelessWidget {
                     size: 16,
                     color: trendData['isPositive'] ? AppColors.success : AppColors.danger,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   // Delta
                   Text(
                     '${trendData['delta'] > 0 ? '+' : ''}${trendData['delta'].toStringAsFixed(0)}',
@@ -85,7 +86,7 @@ class ELOTrendIndicator extends StatelessWidget {
             ),
             // Sub-label showing lookback period
             if (trendData != null && trendData['delta'] != 0) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 l10n.lastNGames(trendData['gamesCount'] as int),
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -93,7 +94,7 @@ class ELOTrendIndicator extends StatelessWidget {
                 ),
               ),
             ] else if (recentHistory.isEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 l10n.noGamesPlayedYet,
                 style: theme.textTheme.bodySmall?.copyWith(

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
@@ -162,7 +163,7 @@ class _TrainingSessionDetailsPageState
                             child: Row(
                               children: [
                                 const Icon(Icons.cancel, color: AppColors.danger),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppSpacing.sm),
                                 Text(
                                   l10n.cancelSession,
                                   style: const TextStyle(color: AppColors.danger),
@@ -262,7 +263,7 @@ class _TrainingSessionDetailsPageState
               _buildStatusBadge(session.status),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Description
           if (session.description != null)
@@ -287,7 +288,7 @@ class _TrainingSessionDetailsPageState
                     size: 16,
                     color: AppColors.secondary,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     isOrganizer
                         ? l10n.youAreOrganizing
@@ -305,25 +306,25 @@ class _TrainingSessionDetailsPageState
             },
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Date/Time
           Row(
             children: [
               Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 DateFormat('MMM dd, yyyy • HH:mm').format(session.startTime),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
 
           // Location
           Row(
             children: [
               Icon(Icons.location_on, size: 16, color: AppColors.secondary),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: Text(
                   session.location.name,
@@ -332,7 +333,7 @@ class _TrainingSessionDetailsPageState
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
 
           // Participant count
           Builder(
@@ -341,7 +342,7 @@ class _TrainingSessionDetailsPageState
               return Row(
                 children: [
                   Icon(Icons.people, size: 16, color: AppColors.secondary),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.participantsCount(
                       session.participantIds.length,
@@ -349,7 +350,7 @@ class _TrainingSessionDetailsPageState
                     ),
                   ),
                   if (session.isFull) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -377,7 +378,7 @@ class _TrainingSessionDetailsPageState
 
           // Notes (if available)
           if (session.notes != null && session.notes!.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -389,7 +390,7 @@ class _TrainingSessionDetailsPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Icon(Icons.note, size: 16, color: AppColors.secondary),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       session.notes!,
@@ -442,7 +443,7 @@ class _TrainingSessionDetailsPageState
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: 16, color: color),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 label,
                 style: TextStyle(
@@ -468,17 +469,17 @@ class _TrainingSessionDetailsPageState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.people_outline, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   l10n.noParticipantsYet,
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.beFirstToJoin,
                   style: const TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 // Show participation info even when empty
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -505,9 +506,9 @@ class _TrainingSessionDetailsPageState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(l10n.errorLoadingParticipants),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   snapshot.error.toString(),
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
@@ -545,7 +546,7 @@ class _TrainingSessionDetailsPageState
                   children: [
                     Text(participant.displayNameOrEmail),
                     if (isOrg) ...[
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppSpacing.sm),
                       const Icon(Icons.star, size: 16, color: AppColors.warning),
                     ],
                   ],

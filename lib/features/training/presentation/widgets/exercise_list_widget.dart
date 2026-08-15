@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -195,12 +196,12 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                           size: 64,
                           color: Colors.grey[400],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.lg),
                         Text(
                           'No exercises yet',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         if (state.canModify)
                           const Text(
                             'Tap "Add Exercise" to get started',
@@ -245,7 +246,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                   child: Row(
                     children: [
                       Icon(Icons.lock, color: AppColors.secondary),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
                           'Exercises cannot be modified after session starts',

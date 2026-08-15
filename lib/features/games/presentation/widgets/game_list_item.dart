@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -50,7 +51,7 @@ class GameListItem extends StatelessWidget {
                     size: 20,
                     color: isCancelled ? Colors.grey : AppColors.secondary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       game.title,
@@ -79,24 +80,24 @@ class GameListItem extends StatelessWidget {
                     _buildTypeBadge(context),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               _buildInfoRow(
                 context,
                 Icons.calendar_today,
                 _formatDateTime(context, game.scheduledAt),
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _buildInfoRow(
                 context,
                 Icons.location_on,
                 game.location.name,
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               if (isCompletedWithResult) ...[
                 const Divider(),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 SetScoresDisplay(result: game.result!),
               ] else if (!isCancelled) ...[
                 _buildPlayerCountBarWithBadge(context),
@@ -118,7 +119,7 @@ class GameListItem extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16, color: iconColor),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             text,
@@ -144,7 +145,7 @@ class GameListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             l10n.pendingVerification,
             style: TextStyle(
@@ -277,7 +278,7 @@ class GameListItem extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
@@ -290,7 +291,7 @@ class GameListItem extends StatelessWidget {
             ],
           ),
         ),
-        if (statusBadge != null) ...[const SizedBox(width: 12), statusBadge],
+        if (statusBadge != null) ...[const SizedBox(width: AppSpacing.md), statusBadge],
       ],
     );
   }

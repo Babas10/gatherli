@@ -1,5 +1,7 @@
 // Card displaying the next upcoming game on the homepage.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
@@ -137,16 +139,16 @@ class NextGameCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             _buildRsvpBadge(context, l10n),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Date/time + Location
         Row(
           children: [
             Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
                 _formatDateTime(context, game!.scheduledAt),
@@ -157,7 +159,7 @@ class NextGameCard extends StatelessWidget {
             ),
             const SizedBox(width: 15),
             Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
                 game!.location.name,
@@ -168,7 +170,7 @@ class NextGameCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Player count bar in gray container
         _buildPlayerBar(context),
       ],
@@ -251,7 +253,7 @@ class NextGameCard extends StatelessWidget {
               color: AppColors.onSurface,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
@@ -271,7 +273,7 @@ class NextGameCard extends StatelessWidget {
             const SizedBox(width: 6),
             Text(
               '+${game!.waitlistCount}',
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
           ],
         ],

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
@@ -170,7 +171,7 @@ class _MyGamesViewState extends State<_MyGamesView> {
                       ),
                     ],
                     if (past.isNotEmpty) ...[
-                      if (upcoming.isNotEmpty) const SizedBox(height: 8),
+                      if (upcoming.isNotEmpty) const SizedBox(height: AppSpacing.sm),
                       _SectionHeader(title: l10n.pastGames),
                       ...past.map(
                         (item) => MyGameTile(
@@ -227,7 +228,7 @@ class _MyGamesViewState extends State<_MyGamesView> {
             size: 64,
             color: AppColors.textMuted,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.noMyGamesYet,
             style: Theme.of(

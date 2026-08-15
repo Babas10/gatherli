@@ -1,5 +1,6 @@
 // Win streak badge widget displaying current win/loss streak.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -47,7 +48,7 @@ class WinStreakBadge extends StatelessWidget {
           children: [
             // Emoji
             Text(streakEmoji, style: const TextStyle(fontSize: 24)),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             // Streak text
             Text(
               _getStreakText(context),

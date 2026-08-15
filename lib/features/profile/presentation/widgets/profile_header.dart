@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
@@ -40,7 +41,7 @@ class ProfileHeader extends StatelessWidget {
                   )
                 : null,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Display name
           Text(
@@ -50,7 +51,7 @@ class ProfileHeader extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Email and verification badge
           Row(
@@ -66,7 +67,7 @@ class ProfileHeader extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               VerificationBadge(isVerified: user.isEmailVerified),
             ],
           ),

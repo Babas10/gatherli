@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -33,13 +34,13 @@ class FriendsList extends StatelessWidget {
                 size: 64,
                 color: Theme.of(context).colorScheme.secondary,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.noFriendsYet,
                 style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 l10n.searchForFriends,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

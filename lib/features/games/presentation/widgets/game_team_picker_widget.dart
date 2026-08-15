@@ -3,6 +3,7 @@
 
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -84,7 +85,7 @@ class GameTeamPickerWidget extends StatelessWidget {
                 : FontWeight.normal,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         ...combinations.map((combo) {
           final isSelected =
               selectedTeams != null && _teamsMatch(combo, selectedTeams!);

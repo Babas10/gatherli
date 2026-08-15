@@ -1,5 +1,6 @@
 // Widget displaying a single group in the list with name, member count, and photo
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/group_avatar.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
@@ -21,7 +22,7 @@ class GroupListItem extends StatelessWidget {
             children: [
               // Group photo or default icon
               _buildGroupPhoto(),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.lg),
 
               // Group info
               Expanded(
@@ -37,7 +38,7 @@ class GroupListItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (group.description != null) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Text(
                         group.description!,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -47,7 +48,7 @@ class GroupListItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Row(
                       children: [
                         Icon(
@@ -55,7 +56,7 @@ class GroupListItem extends StatelessWidget {
                           size: 16,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           l10n.memberCount(group.memberCount),
                           style: Theme.of(context).textTheme.bodySmall
@@ -65,7 +66,7 @@ class GroupListItem extends StatelessWidget {
                                 ).colorScheme.onSurfaceVariant,
                               ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSpacing.lg),
                         if (group.privacy != GroupPrivacy.private) ...[
                           Icon(
                             group.privacy == GroupPrivacy.public
@@ -74,7 +75,7 @@ class GroupListItem extends StatelessWidget {
                             size: 16,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xs),
                           Text(
                             _getPrivacyLabel(context, group.privacy),
                             style: Theme.of(context).textTheme.bodySmall

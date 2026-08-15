@@ -1,5 +1,6 @@
 // Admin-only form to create a new championship.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
@@ -163,14 +164,14 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Gender category (required)
               Text(
                 l10n.championshipCreateGenderLabel,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   Expanded(
@@ -184,7 +185,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: _GenderOption(
                       label: l10n.championshipGenderFemale,
@@ -199,10 +200,10 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Max teams
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               _SegmentedField<int>(
                 label: l10n.championshipCreateMaxTeamsLabel,
                 options: const [4, 6, 8, 10],
@@ -210,7 +211,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 labelFor: (v) => v.toString(),
                 onChanged: (v) => setState(() => _maxTeams = v),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Registration deadline (required)
               _DatePicker(
@@ -219,7 +220,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 placeholder: l10n.championshipCreateDatePlaceholder,
                 onTap: () => _pickDeadline(context),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
 
               // Start date (optional)
               _DatePicker(
@@ -228,7 +229,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 placeholder: l10n.championshipCreateDatePlaceholder,
                 onTap: () => _pickStartDate(context),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
 
               // End date (optional)
               _DatePicker(
@@ -237,7 +238,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 placeholder: l10n.championshipCreateDatePlaceholder,
                 onTap: () => _pickEndDate(context),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Country (optional)
               TextFormField(
@@ -249,7 +250,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 maxLength: 2,
                 textCapitalization: TextCapitalization.characters,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
 
               // Region (optional)
               TextFormField(
@@ -260,7 +261,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 ),
                 textCapitalization: TextCapitalization.words,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xxl),
 
               // Submit
               BlocBuilder<ChampionshipCreationBloc, ChampionshipCreationState>(
@@ -321,7 +322,7 @@ class _GenderOption extends StatelessWidget {
         child: Column(
           children: [
             Icon(icon, color: color, size: 28),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -363,7 +364,7 @@ class _SegmentedField<T> extends StatelessWidget {
           label,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Row(
           children: options.map((option) {
             final isSelected = option == selected;

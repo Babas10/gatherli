@@ -1,5 +1,6 @@
 // Error state placeholder for stat widgets.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// An error state widget for when stat calculation or data fetching fails.
 ///
@@ -70,7 +71,7 @@ class StatsErrorPlaceholder extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             // Message
             Text(
               message,
@@ -121,7 +122,7 @@ class CompactStatsError extends StatelessWidget {
               size: 20,
               color: theme.colorScheme.error.withValues(alpha: 0.7),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               message,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -131,7 +132,7 @@ class CompactStatsError extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             if (onRetry != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               TextButton(
                 onPressed: onRetry,
                 style: TextButton.styleFrom(

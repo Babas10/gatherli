@@ -1,5 +1,7 @@
 // Compact game list tile used in MyGamesPage (Story 28.11).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
@@ -35,7 +37,7 @@ class MyGameTile extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +55,7 @@ class MyGameTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       '${_formatDate(context, item.scheduledAt)}  ·  ${item.locationName}',
-                      style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                      style: AppTextStyles.cardSubtitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -73,7 +75,7 @@ class MyGameTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               item.isGroupGame
                   ? _OpenBadge(l10n: l10n)
                   : _StatusBadge(

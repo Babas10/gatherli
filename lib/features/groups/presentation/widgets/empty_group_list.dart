@@ -1,5 +1,6 @@
 // Widget displayed when user has no groups, encouraging them to create their first group
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class EmptyGroupList extends StatelessWidget {
@@ -22,7 +23,7 @@ class EmptyGroupList extends StatelessWidget {
                 context,
               ).colorScheme.primary.withValues(alpha: 0.3),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               l10n.noGroupsYet,
               style: Theme.of(
@@ -30,7 +31,7 @@ class EmptyGroupList extends StatelessWidget {
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Text(
               l10n.noGroupsMessage,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -38,7 +39,7 @@ class EmptyGroupList extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.useCreateGroupButton,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

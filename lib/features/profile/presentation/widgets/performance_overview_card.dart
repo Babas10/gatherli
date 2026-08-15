@@ -1,5 +1,6 @@
 // Performance overview card following the homepage gray-background / white-card pattern.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -45,7 +46,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             AppLocalizations.of(context)!.performanceOverview.toUpperCase(),
             style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // Row 1: Current ELO + Peak ELO
           IntrinsicHeight(
             child: Row(
@@ -54,14 +55,14 @@ class PerformanceOverviewCard extends StatelessWidget {
                 Expanded(
                   child: _StatCard(child: _buildCurrentEloContent(context)),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: _StatCard(child: _buildPeakEloContent(context)),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // Row 2: Win Rate + Games Played
           IntrinsicHeight(
             child: Row(
@@ -70,23 +71,23 @@ class PerformanceOverviewCard extends StatelessWidget {
                 Expanded(
                   child: _StatCard(child: _buildWinRateContent(context)),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: _StatCard(child: _buildGamesPlayedContent(context)),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // Best Win (full width)
           _StatCard(child: _buildBestWinContent(context)),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // Point Differential (full width)
           if (user.pointStats != null && user.pointStats!.totalSets > 0)
             _StatCard(child: _buildPointDiffContent(context, user.pointStats!))
           else
             _StatCard(child: _buildPointDiffPlaceholder(context)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -102,7 +103,7 @@ class PerformanceOverviewCard extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.currentElo,
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
             Icon(
               Icons.show_chart,
@@ -111,7 +112,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           user.eloRating.toStringAsFixed(0),
           style: const TextStyle(
@@ -134,12 +135,12 @@ class PerformanceOverviewCard extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.peakElo,
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
             const Icon(Icons.emoji_events, size: 16, color: AppColors.primary),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           user.eloPeak.toStringAsFixed(0),
           style: const TextStyle(
@@ -149,10 +150,10 @@ class PerformanceOverviewCard extends StatelessWidget {
           ),
         ),
         if (user.eloPeakDate != null) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             DateFormat('MMM d, yyyy').format(user.eloPeakDate!),
-            style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+            style: AppTextStyles.tinyCaption,
           ),
         ],
       ],
@@ -169,12 +170,9 @@ class PerformanceOverviewCard extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.winRate,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textMuted,
-                ),
+                style: AppTextStyles.caption,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 '${(user.winRate * 100).toStringAsFixed(1)}%',
                 style: const TextStyle(
@@ -186,10 +184,7 @@ class PerformanceOverviewCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 '${user.gamesWon}W - ${user.gamesLost}L',
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: AppColors.textMuted,
-                ),
+                style: AppTextStyles.tinyCaption,
               ),
             ],
           ),
@@ -231,9 +226,9 @@ class PerformanceOverviewCard extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.gamesPlayed,
-          style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+          style: AppTextStyles.caption,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Row(
           children: [
             Text(
@@ -270,7 +265,7 @@ class PerformanceOverviewCard extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.bestWin,
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
             Icon(
               bestWin != null
@@ -283,7 +278,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         if (bestWin != null) ...[
           // Opponent names — primary value
           if (bestWin.opponentNames != null)
@@ -297,7 +292,7 @@ class PerformanceOverviewCard extends StatelessWidget {
                 color: AppColors.secondary,
               ),
             ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           // Team ELO — secondary
           Text(
             AppLocalizations.of(context)!.teamEloLabel(bestWin.avgEloString),
@@ -324,7 +319,7 @@ class PerformanceOverviewCard extends StatelessWidget {
               color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             AppLocalizations.of(context)!.beatOpponentsToTrack,
             style: TextStyle(
@@ -354,11 +349,11 @@ class PerformanceOverviewCard extends StatelessWidget {
             const SizedBox(width: 6),
             Text(
               AppLocalizations.of(context)!.avgPointDifferential,
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         Row(
           children: [
             // Winning sets
@@ -373,7 +368,7 @@ class PerformanceOverviewCard extends StatelessWidget {
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     pointStats.avgWinsString,
                     style: TextStyle(
@@ -401,7 +396,7 @@ class PerformanceOverviewCard extends StatelessWidget {
               height: 50,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.lg),
             // Losing sets
             Expanded(
               child: Column(
@@ -414,7 +409,7 @@ class PerformanceOverviewCard extends StatelessWidget {
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     pointStats.avgLossesString,
                     style: TextStyle(
@@ -439,7 +434,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           pointStats.statsSubtitle,
           style: TextStyle(
@@ -462,7 +457,7 @@ class PerformanceOverviewCard extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.avgPointDiff,
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+              style: AppTextStyles.caption,
             ),
             Icon(
               Icons.trending_up_outlined,
@@ -471,7 +466,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           AppLocalizations.of(context)!.completeGameToUnlock,
           style: TextStyle(
@@ -480,7 +475,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           AppLocalizations.of(context)!.winAndLoseSetsToSee,
           style: TextStyle(

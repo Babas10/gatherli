@@ -1,5 +1,6 @@
 // Head-to-head rivalry screen showing comprehensive opponent statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -49,7 +50,7 @@ class HeadToHeadPage extends StatelessWidget {
                       size: 40,
                       color: AppColors.danger,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.md),
                     Text(
                       message,
                       textAlign: TextAlign.center,
@@ -72,7 +73,7 @@ class HeadToHeadPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildOpponentHeader(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           _buildSection(
             context,
             label: 'RIVALRY',
@@ -118,12 +119,12 @@ class HeadToHeadPage extends StatelessWidget {
             label,
             style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           Card(
             margin: EdgeInsets.zero,
             child: Padding(padding: const EdgeInsets.all(16), child: child),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -308,7 +309,7 @@ class HeadToHeadPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
         ],
         if (stats.recentMatchups.isEmpty)
           Text(
@@ -355,7 +356,7 @@ class HeadToHeadPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,10 +409,10 @@ class HeadToHeadPage extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           label,
-          style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+          style: AppTextStyles.tinyCaption,
         ),
       ],
     );

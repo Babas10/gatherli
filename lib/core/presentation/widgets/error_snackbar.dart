@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// Helper functions for displaying error messages as snackbars.
 class ErrorSnackbar {
@@ -19,7 +20,7 @@ class ErrorSnackbar {
         content: Row(
           children: [
             const Icon(Icons.error_outline, color: Colors.white),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(child: Text(message)),
           ],
         ),
@@ -46,7 +47,7 @@ class ErrorSnackbar {
         content: Row(
           children: [
             const Icon(Icons.check_circle_outline, color: Colors.white),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(child: Text(message)),
           ],
         ),
@@ -66,7 +67,7 @@ class ErrorSnackbar {
         content: Row(
           children: [
             const Icon(Icons.info_outline, color: Colors.white),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(child: Text(message)),
           ],
         ),
@@ -85,7 +86,7 @@ class ErrorSnackbar {
         content: Row(
           children: [
             const Icon(Icons.cloud_off, color: Colors.white),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             const Expanded(
               child: Text('You\'re offline. Changes will sync when online.'),
             ),

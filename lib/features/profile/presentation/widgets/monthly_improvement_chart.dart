@@ -1,6 +1,7 @@
 // Enhanced ELO progress chart with area fill and adaptive aggregation (Story 302.4).
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
@@ -94,7 +95,7 @@ class MonthlyImprovementChart extends StatelessWidget {
             size: 48,
             color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.noGamesInThisPeriod,
             style: theme.textTheme.titleMedium?.copyWith(
@@ -102,7 +103,7 @@ class MonthlyImprovementChart extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.noGamesPlayedInLast(
               _getPeriodDisplayName(context, timePeriod),
@@ -112,7 +113,7 @@ class MonthlyImprovementChart extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.trySelectingLongerPeriod,
             style: theme.textTheme.bodySmall?.copyWith(

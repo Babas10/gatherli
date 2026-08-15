@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/data/models/exercise_model.dart';
@@ -35,7 +36,7 @@ class ExerciseListItem extends StatelessWidget {
           children: [
             if (exercise.description != null &&
                 exercise.description!.isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 exercise.description!,
                 maxLines: 2,
@@ -43,11 +44,11 @@ class ExerciseListItem extends StatelessWidget {
               ),
             ],
             if (exercise.hasDuration) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 children: [
                   const Icon(Icons.timer, size: 16),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     exercise.formattedDuration,
                     style: Theme.of(context).textTheme.bodySmall,

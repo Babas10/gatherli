@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter/services.dart';
@@ -75,7 +76,7 @@ class _ScoreEntryView extends StatelessWidget {
                       size: 64,
                       color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(
                       state.message,
                       style: Theme.of(context).textTheme.titleMedium,
@@ -107,7 +108,7 @@ class _ScoreEntryView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(l10n.savingScores),
                 ],
               ),
@@ -140,7 +141,7 @@ class _GameCountSelector extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 12,
@@ -268,7 +269,7 @@ class _GameCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             // Team picker (shown only for 4-player games)
             if (allPlayerIds.length == 4)
               GameTeamPickerWidget(
@@ -281,12 +282,12 @@ class _GameCard extends StatelessWidget {
                   );
                 },
               ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             _GameFormatSelector(
               gameIndex: gameIndex,
               currentFormat: gameData.numberOfSets,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             ...List.generate(gameData.numberOfSets, (setIndex) {
               return _SetScoreInput(
                 key: ValueKey('game_${gameIndex}_set_$setIndex'),
@@ -318,7 +319,7 @@ class _GameFormatSelector extends StatelessWidget {
     return Row(
       children: [
         Text('Format:', style: Theme.of(context).textTheme.bodyMedium),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpacing.md),
         Expanded(
           child: SegmentedButton<int>(
             segments: const [
@@ -483,12 +484,12 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                     },
                   ),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 const Text(
                   '-',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: TextField(
                     key: Key(
@@ -538,7 +539,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
               ],
             ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           SizedBox(
             width: 24,
             child: widget.setData.isValid

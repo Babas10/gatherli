@@ -1,5 +1,6 @@
 // Widget section for generating and sharing group invite links.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
@@ -51,14 +52,14 @@ class InviteLinkSection extends StatelessWidget {
                   color: AppColors.secondary,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 l10n.inviteLinkDescription,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               _buildContent(context, state, l10n),
             ],
           ),
@@ -130,7 +131,7 @@ class InviteLinkSection extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Action buttons
         Row(
           children: [
@@ -146,7 +147,7 @@ class InviteLinkSection extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _shareLink(context, state.deepLinkUrl, l10n),
@@ -160,7 +161,7 @@ class InviteLinkSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         // Revoke button
         SizedBox(
           width: double.infinity,

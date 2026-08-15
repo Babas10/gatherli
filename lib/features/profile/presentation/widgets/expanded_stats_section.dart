@@ -1,5 +1,6 @@
 // Expanded statistics section for profile page with explore-level stats.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/momentum_consistency_card.dart';
@@ -48,7 +49,7 @@ class ExpandedStatsSection extends StatelessWidget {
         RoleBasedPerformanceCard(user: user),
 
         // Spacing at bottom
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
       ],
     );
   }

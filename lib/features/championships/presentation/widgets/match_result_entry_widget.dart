@@ -1,5 +1,6 @@
 // Widget for entering and submitting a championship match result.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
@@ -166,7 +167,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.check_circle, color: AppColors.success, size: 48),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   l10n.submitResultAwaitingVerification,
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -192,13 +193,13 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                   color: AppColors.secondary,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               // Column headers
               _TeamHeader(
                 teamAName: widget.teamAName,
                 teamBName: widget.teamBName,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               // Set 1
               _SetRow(
                 label: l10n.submitResultSet(1),
@@ -206,7 +207,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                 controllerB: _set1TeamB,
                 enabled: !isSubmitting,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               // Set 2
               _SetRow(
                 label: l10n.submitResultSet(2),
@@ -215,7 +216,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                 enabled: !isSubmitting,
               ),
               // Set 3 toggle
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               if (_hasSet3) ...[
                 _SetRow(
                   label: l10n.submitResultSet(3),
@@ -223,7 +224,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                   controllerB: _set3TeamB,
                   enabled: !isSubmitting,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 TextButton(
                   onPressed: isSubmitting
                       ? null
@@ -243,13 +244,13 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                 ),
               // Validation error
               if (_validationError != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   _validationError!,
                   style: const TextStyle(color: AppColors.danger, fontSize: 13),
                 ),
               ],
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -296,7 +297,7 @@ class _TeamHeader extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             teamBName,
@@ -337,7 +338,7 @@ class _SetRow extends StatelessWidget {
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: _PointsInput(controller: controllerA, enabled: enabled),
         ),

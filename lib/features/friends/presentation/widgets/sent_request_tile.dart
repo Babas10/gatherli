@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -39,7 +40,7 @@ class SentRequestTile extends StatelessWidget {
             ),
             padding: EdgeInsets.zero,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           TextButton(onPressed: onCancel, child: Text(l10n.cancel)),
         ],
       ),

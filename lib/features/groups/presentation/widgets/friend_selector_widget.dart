@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -123,7 +124,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
               ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
 
         // Description
         Text(
@@ -132,7 +133,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
             context,
           ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
 
         // Content — expands to fill the space above the Send button
         Expanded(
@@ -165,13 +166,13 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
         child: Column(
           children: [
             Icon(Icons.error_outline, color: AppColors.danger, size: 48),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               _errorMessage!,
               style: TextStyle(color: AppColors.danger),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             OutlinedButton.icon(
               onPressed: _loadFriends,
               icon: const Icon(Icons.refresh),
@@ -191,7 +192,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
         child: Column(
           children: [
             Icon(Icons.people_outline, color: AppColors.secondary, size: 48),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'No Friends Yet',
               style: TextStyle(
@@ -200,7 +201,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               'Add friends to invite them to groups',
               style: TextStyle(color: AppColors.secondary),
@@ -235,7 +236,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                   style: TextStyle(color: AppColors.secondary),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               TextButton.icon(
                 onPressed: _selectedFriendIds.isEmpty ? null : _clearAll,
                 icon: Icon(Icons.clear, size: 18, color: AppColors.secondary),

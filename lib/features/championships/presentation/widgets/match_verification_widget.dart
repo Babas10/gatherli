@@ -1,5 +1,6 @@
 // Widget for the opposing team to verify or dispute a submitted championship match result.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -138,14 +139,14 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                         color: AppColors.secondary,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   l10n.verifyResultSubmittedBy(widget.submittingTeamName),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 if (!_showDisputeForm) ...[
                   Row(
                     children: [
@@ -159,7 +160,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: isLoading
@@ -181,7 +182,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, fontSize: 13),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   TextField(
                     controller: _reasonController,
                     enabled: !isLoading,
@@ -195,7 +196,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   Row(
                     children: [
                       TextButton(
@@ -207,7 +208,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                                 }),
                         child: Text(l10n.cancel),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: FilledButton(
                           onPressed: isLoading
@@ -265,7 +266,7 @@ class _StatusCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: iconColor, size: 48),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium,

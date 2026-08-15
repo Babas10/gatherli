@@ -1,5 +1,6 @@
 // Widget displaying the per-match coordination chat for championship matches.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
@@ -136,7 +137,7 @@ class _MatchChatViewState extends State<_MatchChatView> {
                   color: AppColors.secondary,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   l10n.matchChatTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -146,14 +147,14 @@ class _MatchChatViewState extends State<_MatchChatView> {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               l10n.matchChatCoordinationHint,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textMuted,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (!widget.isTeamMember)
               SizedBox(
                 height: 80,
@@ -217,7 +218,7 @@ class _MatchChatViewState extends State<_MatchChatView> {
                                     ),
                               ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.sm),
                       _ChatInput(
                         controller: _textController,
                         isSending: isSending,
@@ -274,7 +275,7 @@ class _MatchMessageBubble extends StatelessWidget {
                   : MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (!isCurrentUser) const SizedBox(width: 4),
+                if (!isCurrentUser) const SizedBox(width: AppSpacing.xs),
                 Flexible(
                   child: Container(
                     constraints: BoxConstraints(
@@ -306,7 +307,7 @@ class _MatchMessageBubble extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Text(
                   timeFormat.format(message.sentAt),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -366,7 +367,7 @@ class _ChatInput extends StatelessWidget {
             enabled: !isSending,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         IconButton(
           onPressed: isSending ? null : onSend,
           icon: isSending

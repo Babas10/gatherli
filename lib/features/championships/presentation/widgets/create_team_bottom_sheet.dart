@@ -1,5 +1,6 @@
 // Bottom sheet for creating a championship team: team name + single-select partner picker.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_event.dart';
@@ -89,7 +90,7 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
                   l10n.createTeamTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
 
                 // Team name field
                 TextFormField(
@@ -109,14 +110,14 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
 
                 // Partner picker
                 Text(
                   l10n.selectPartnerLabel,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 BlocBuilder<PartnerPickerBloc, PartnerPickerState>(
                   builder: (context, state) {
                     if (state is PartnerPickerLoading) {
@@ -139,7 +140,7 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
                     return const SizedBox.shrink();
                   },
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xxl),
 
                 // Submit button
                 BlocBuilder<PartnerPickerBloc, PartnerPickerState>(

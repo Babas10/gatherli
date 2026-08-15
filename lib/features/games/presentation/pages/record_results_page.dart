@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -86,7 +87,7 @@ class _RecordResultsView extends StatelessWidget {
                       size: 64,
                       color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(
                       state.message,
                       style: Theme.of(context).textTheme.titleMedium,
@@ -111,12 +112,12 @@ class _RecordResultsView extends StatelessWidget {
                           AppLocalizations.of(context)!.assignPlayersToTeams,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         Text(
                           AppLocalizations.of(context)!.dragPlayersToAssign,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.xl),
                         if (state is RecordResultsLoaded) ...[
                           _TeamSection(
                             key: const Key('team_a_section'),
@@ -130,7 +131,7 @@ class _RecordResultsView extends StatelessWidget {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           _TeamSection(
                             key: const Key('team_b_section'),
                             title: AppLocalizations.of(context)!.teamB,
@@ -143,7 +144,7 @@ class _RecordResultsView extends StatelessWidget {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           _UnassignedPlayersSection(
                             key: const Key('unassigned_section'),
                             unassignedPlayerIds: state.unassignedPlayerIds,
@@ -223,7 +224,7 @@ class _TeamSection extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -242,7 +243,7 @@ class _TeamSection extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (playerIds.isEmpty)
               Container(
                 padding: const EdgeInsets.all(16.0),
@@ -302,7 +303,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
                 color: AppColors.secondary,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (unassignedPlayerIds.isEmpty)
               Container(
                 padding: const EdgeInsets.all(16.0),
@@ -323,7 +324,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
                         size: 16,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Text(
                       AppLocalizations.of(context)!.allPlayersAssigned,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -386,7 +387,7 @@ class _PlayerChip extends StatelessWidget {
       child: Row(
         children: [
           UserAvatar(name: playerName, radius: 16),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               playerName,
@@ -437,7 +438,7 @@ class _UnassignedPlayerItem extends StatelessWidget {
       child: Row(
         children: [
           UserAvatar(name: playerName, radius: 16),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               playerName,
@@ -455,7 +456,7 @@ class _UnassignedPlayerItem extends StatelessWidget {
                 ),
                 child: Text(AppLocalizations.of(context)!.teamA),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               ElevatedButton(
                 key: Key('assign_team_B_button_$playerId'),
                 onPressed: onAssignToTeamB,

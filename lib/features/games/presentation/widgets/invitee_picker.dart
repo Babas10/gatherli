@@ -1,5 +1,7 @@
 // Tabbed invitee picker: "My Community" (friends) and "Groups" tabs.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
@@ -162,17 +164,14 @@ class _InviteeRow extends StatelessWidget {
       child: Row(
         children: [
           UserAvatar(name: user.displayNameOrFallback, photoUrl: user.photoUrl),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   user.displayNameOrFallback,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: AppTextStyles.cardTitle,
                 ),
 
               ],
@@ -213,24 +212,18 @@ class _GroupRow extends StatelessWidget {
       child: Row(
         children: [
           GroupAvatar(name: group.name, radius: 22),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   group.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: AppTextStyles.cardTitle,
                 ),
                 Text(
                   l10n.groupMembersCount(group.members.length),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textMuted,
-                  ),
+                  style: AppTextStyles.cardSubtitle,
                 ),
               ],
             ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
@@ -169,7 +170,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                   onDateTimeChanged: (dt) => pickerTime = dt,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         );
@@ -281,7 +282,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Game Title
                       TextFormField(
@@ -306,7 +307,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                         },
                         enabled: !isSubmitting,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Description (Optional)
                       TextFormField(
@@ -320,7 +321,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                         maxLines: 3,
                         enabled: !isSubmitting,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Date and Time
                       ListTile(
@@ -358,7 +359,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                             ),
                           ),
                         ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Location
                       TextFormField(
@@ -377,7 +378,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                         },
                         enabled: !isSubmitting,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Address (Optional)
                       TextFormField(
@@ -390,7 +391,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
                         ),
                         enabled: !isSubmitting,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Submit Button
                       FilledButton(

@@ -1,6 +1,7 @@
 // Result view page for a completed game (Story 14.13).
 // Shows ELO rating changes with per-player win/loss counts and per-game team names.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -64,7 +65,7 @@ class GameResultViewPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.sports_score, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   l10n.noResultsAvailable,
                   style: const TextStyle(
@@ -72,7 +73,7 @@ class GameResultViewPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.scoresWillAppear,
                   textAlign: TextAlign.center,
@@ -116,7 +117,7 @@ class GameResultViewPage extends StatelessWidget {
                 color: AppColors.secondary,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             ...result.games.asMap().entries.map((entry) {
               final index = entry.key;
               final individualGame = entry.value;
@@ -175,7 +176,7 @@ class _EloUpdatesCard extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.trending_up, size: 20, color: AppColors.primary),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   l10n.eloRatingChanges,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -185,7 +186,7 @@ class _EloUpdatesCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             ...playersWithElo.map((playerId) {
               final eloEntry = playerEloUpdates[playerId];
               if (eloEntry == null) return const SizedBox.shrink();
@@ -214,7 +215,7 @@ class _EloUpdatesCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpacing.md),
                         // Previous ELO
                         Expanded(
                           flex: 2,
@@ -251,7 +252,7 @@ class _EloUpdatesCard extends StatelessWidget {
                             textAlign: TextAlign.right,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.sm),
                         // Change delta
                         SizedBox(
                           width: 60,
@@ -351,7 +352,7 @@ class _IndividualGameCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
                   l10n.gameNumber(gameNumber),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -370,7 +371,7 @@ class _IndividualGameCard extends StatelessWidget {
                 winner: game.winner,
               ),
             ],
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             // Sets won summary
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -384,9 +385,9 @@ class _IndividualGameCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             const Divider(),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             // Individual sets
             ...game.sets.map((set) {
               final setWinner = set.winner;
@@ -407,7 +408,7 @@ class _IndividualGameCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

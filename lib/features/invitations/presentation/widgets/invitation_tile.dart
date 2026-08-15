@@ -1,5 +1,6 @@
 // Widget for displaying a single invitation with accept/decline actions
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/data/models/invitation_model.dart';
@@ -35,7 +36,7 @@ class InvitationTile extends StatelessWidget {
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
 
             // Inviter info
             Row(
@@ -45,7 +46,7 @@ class InvitationTile extends StatelessWidget {
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Text(
                   AppLocalizations.of(
                     context,
@@ -56,7 +57,7 @@ class InvitationTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
 
             // Time ago
             Row(
@@ -66,7 +67,7 @@ class InvitationTile extends StatelessWidget {
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Text(
                   timeago.format(invitation.createdAt),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -75,7 +76,7 @@ class InvitationTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Action buttons
             Row(
@@ -90,7 +91,7 @@ class InvitationTile extends StatelessWidget {
                   ),
                   child: Text(AppLocalizations.of(context)!.decline),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
 
                 // Accept button
                 FilledButton(

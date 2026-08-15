@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,7 +100,7 @@ class EmailVerificationPage extends StatelessWidget {
               color: theme.colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
           Text(
             'Email Verified!',
             style: theme.textTheme.headlineSmall?.copyWith(
@@ -107,14 +108,14 @@ class EmailVerificationPage extends StatelessWidget {
               color: theme.colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             'Your email has been successfully verified.',
             style: theme.textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
           if (verifiedAt != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'Verified on: ${_formatDate(verifiedAt)}',
               style: theme.textTheme.bodySmall?.copyWith(
@@ -146,7 +147,7 @@ class EmailVerificationPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
 
           // Icon and title
           Center(
@@ -163,7 +164,7 @@ class EmailVerificationPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
 
           // Title
           Text(
@@ -173,7 +174,7 @@ class EmailVerificationPage extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Email display
           Container(
@@ -190,7 +191,7 @@ class EmailVerificationPage extends StatelessWidget {
                   size: 20,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Flexible(
                   child: Text(
                     email,
@@ -204,7 +205,7 @@ class EmailVerificationPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
 
           // Instructions
           _buildInstructionCard(
@@ -215,14 +216,14 @@ class EmailVerificationPage extends StatelessWidget {
                 ? 'We\'ve sent a verification email to your address.'
                 : 'Click the button below to send a verification email.',
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           _buildInstructionCard(
             context,
             icon: Icons.looks_two,
             title: 'Click the Link',
             description: 'Open the email and click the verification link.',
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           _buildInstructionCard(
             context,
             icon: Icons.looks_3,
@@ -232,7 +233,7 @@ class EmailVerificationPage extends StatelessWidget {
               const EmailVerificationEvent.refreshStatus(),
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
 
           // Action buttons
           if (!emailSent) ...[
@@ -255,7 +256,7 @@ class EmailVerificationPage extends StatelessWidget {
               icon: const Icon(Icons.refresh),
               label: const Text('Refresh Status'),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             OutlinedButton.icon(
               onPressed: cooldown > 0
                   ? null
@@ -270,7 +271,7 @@ class EmailVerificationPage extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
 
           // Troubleshooting section
           _buildTroubleshootingSection(context),
@@ -292,7 +293,7 @@ class EmailVerificationPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.error_outline, size: 80, color: theme.colorScheme.error),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           Text(
             'Something Went Wrong',
             style: theme.textTheme.headlineSmall?.copyWith(
@@ -300,7 +301,7 @@ class EmailVerificationPage extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -315,7 +316,7 @@ class EmailVerificationPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
           FilledButton.icon(
             onPressed: () {
               context.read<EmailVerificationBloc>().add(
@@ -325,7 +326,7 @@ class EmailVerificationPage extends StatelessWidget {
             icon: const Icon(Icons.refresh),
             label: const Text('Try Again'),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Back to Profile'),
@@ -367,7 +368,7 @@ class EmailVerificationPage extends StatelessWidget {
             ),
             child: Icon(icon, size: 24, color: theme.colorScheme.primary),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppSpacing.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,7 +379,7 @@ class EmailVerificationPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   description,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -389,7 +390,7 @@ class EmailVerificationPage extends StatelessWidget {
             ),
           ),
           if (onTap != null) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Icon(
               Icons.chevron_right,
               size: 20,
@@ -439,14 +440,14 @@ class EmailVerificationPage extends StatelessWidget {
                 context,
                 'Check your internet connection',
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 'Still having issues?',
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 'Contact support at support@gatherli.org',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -473,7 +474,7 @@ class EmailVerificationPage extends StatelessWidget {
             size: 16,
             color: theme.colorScheme.primary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(child: Text(tip, style: theme.textTheme.bodySmall)),
         ],
       ),

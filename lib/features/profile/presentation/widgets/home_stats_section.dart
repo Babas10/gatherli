@@ -1,5 +1,7 @@
 // Home screen statistics section with "Performance Overview" title and 4 stat cards.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -89,9 +91,9 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.eloRatingLabel,
-            style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             user.eloRating.toStringAsFixed(0),
             style: const TextStyle(
@@ -156,7 +158,7 @@ class HomeStatsSection extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   l10n.winRate,
-                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  style: AppTextStyles.caption,
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -207,9 +209,9 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.streakLabel,
-            style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           if (hasStreak)
             Text(
               isWinning
@@ -243,9 +245,9 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.gamesPlayed,
-            style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
               Text(

@@ -1,5 +1,6 @@
 // Lists championships in two tabs: Active (registration/active) and Completed.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
@@ -145,12 +146,19 @@ class _ChampionshipList extends StatelessWidget {
         ),
       );
     }
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-      itemCount: items.length,
-      itemBuilder: (_, i) => ChampionshipCard(
-        championship: items[i],
-        onTap: () => onTap(items[i]),
+    return RefreshIndicator(
+      color: AppColors.secondary,
+      onRefresh: () async {
+        // The BLoC stream refreshes automatically; just trigger a re-listen.
+        await Future.delayed(const Duration(milliseconds: 300));
+      },
+      child: ListView.builder(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        itemCount: items.length,
+        itemBuilder: (_, i) => ChampionshipCard(
+          championship: items[i],
+          onTap: () => onTap(items[i]),
+        ),
       ),
     );
   }
@@ -191,7 +199,7 @@ class ChampionshipCard extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   if (championship.genderCategory != null) ...[
                     _GenderBadge(
                       category: championship.genderCategory!,
@@ -202,11 +210,11 @@ class ChampionshipCard extends StatelessWidget {
                   _StatusBadge(championship: championship, l10n: l10n),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   Icon(Icons.group, size: 14, color: AppColors.textMuted),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.championshipTeamCountOf(
                       championship.teamsCount,
@@ -220,12 +228,12 @@ class ChampionshipCard extends StatelessWidget {
               ),
               if (championship.country != null ||
                   championship.region != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
                     Icon(Icons.location_on_outlined,
                         size: 14, color: AppColors.textMuted),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       [championship.region, championship.country]
                           .whereType<String>()
@@ -240,7 +248,7 @@ class ChampionshipCard extends StatelessWidget {
               if (championship.status == ChampionshipStatus.registration ||
                   championship.status ==
                       ChampionshipStatus.registrationClosed) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 _DeadlineRow(championship: championship, l10n: l10n),
               ],
             ],
@@ -331,7 +339,7 @@ class _DeadlineRow extends StatelessWidget {
     return Row(
       children: [
         Icon(Icons.schedule, size: 14, color: color),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppSpacing.xs),
         Text(
           text,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color),

@@ -2,6 +2,7 @@
 // Allows the user to accept or decline each invitation.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -118,9 +119,9 @@ class _PendingGameInvitationsViewState
                 size: 64,
                 color: Theme.of(context).colorScheme.error,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(state.message, textAlign: TextAlign.center),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               FilledButton(
                 onPressed: () => context.read<GameInvitationsBloc>().add(
                   const LoadGameInvitations(),
@@ -151,7 +152,7 @@ class _PendingGameInvitationsViewState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.noPendingGameInvitations,
               style: Theme.of(

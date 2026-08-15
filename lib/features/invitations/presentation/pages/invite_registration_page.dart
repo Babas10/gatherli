@@ -1,5 +1,6 @@
 // Registration page for users who arrived via an invite link.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -77,17 +78,17 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildGroupContextBanner(blocContext, l10n),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.xl),
                     _buildFirstNameField(l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildLastNameField(l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildDisplayNameField(l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildEmailField(l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildPasswordField(l10n),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
                       child: Text(
@@ -96,13 +97,13 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                             ?.copyWith(color: AppColors.textMuted),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.md),
                     _buildConfirmPasswordField(l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildGenderSelector(l10n),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppSpacing.xxl),
                     _buildSubmitButton(blocContext, l10n),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     _buildLoginLink(blocContext, l10n),
                   ],
                 ),
@@ -123,7 +124,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
           style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         Card(
           elevation: 2,
           child: Padding(
@@ -137,7 +138,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                     context,
                   ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   l10n.invitedBy(widget.inviterName),
                   style: Theme.of(
@@ -302,7 +303,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                 context,
               ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Tooltip(
               message: l10n.registrationGenderTooltip,
               triggerMode: TooltipTriggerMode.tap,
@@ -326,7 +327,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                 onTap: () => setState(() => _selectedGender = _kGenderMale),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: _GenderOption(
                 label: l10n.genderFemale,
@@ -335,7 +336,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                 onTap: () => setState(() => _selectedGender = _kGenderFemale),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: _GenderOption(
                 label: l10n.genderPreferNotToSay,

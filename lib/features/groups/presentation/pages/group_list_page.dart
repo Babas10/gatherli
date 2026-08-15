@@ -1,5 +1,6 @@
 // Displays a list of groups that the current user is a member of with real-time updates
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,12 +80,12 @@ class GroupListPage extends StatelessWidget {
                     size: 64,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(
                     AppLocalizations.of(context)!.errorLoadingGroups,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Text(
@@ -93,7 +94,7 @@ class GroupListPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.xl),
                   FilledButton.icon(
                     onPressed: () {
                       context.read<GroupBloc>().add(

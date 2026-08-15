@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -260,7 +261,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                   enabled: !isSaving,
                                 ),
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: AppSpacing.xxl),
 
                               // Display Name Field
                               TextFormField(
@@ -286,7 +287,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                   );
                                 },
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: AppSpacing.xxl),
 
                               // Preferences Section Header
                               Text(
@@ -295,7 +296,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const Divider(),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppSpacing.lg),
 
                               // Language Dropdown
                               DropdownButtonFormField<Locale>(
@@ -334,7 +335,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                         }
                                       },
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppSpacing.lg),
 
                               // Country Dropdown
                               DropdownButtonFormField<String>(
@@ -369,7 +370,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                         }
                                       },
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppSpacing.lg),
 
                               // Time Zone (Read-only)
                               TextFormField(
@@ -389,7 +390,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                     : 'Not detected',
                                 enabled: false,
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: AppSpacing.xxl),
 
                               // Save Button
                               FilledButton.icon(
@@ -417,7 +418,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                         )!.saveChanges,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: AppSpacing.md),
 
                               // Cancel Button
                               OutlinedButton.icon(
@@ -443,7 +444,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                               ),
 
                               // Info text
-                              const SizedBox(height: 24),
+                              const SizedBox(height: AppSpacing.xl),
                               Card(
                                 color: Theme.of(context)
                                     .colorScheme
@@ -460,7 +461,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                           context,
                                         ).colorScheme.primary,
                                       ),
-                                      const SizedBox(width: 12),
+                                      const SizedBox(width: AppSpacing.md),
                                       Expanded(
                                         child: Text(
                                           'Changes to your profile will be visible to other users.',

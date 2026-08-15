@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -50,9 +51,9 @@ class _NotificationSettingsView extends StatelessWidget {
                 children: [
                   const Icon(Icons.error_outline,
                       size: 48, color: AppColors.danger),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(message),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   FilledButton(
                     onPressed: () => context
                         .read<NotificationBloc>()
@@ -165,7 +166,7 @@ class _NotificationSettingsView extends StatelessWidget {
                 : null,
           ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
       ],
     );
   }

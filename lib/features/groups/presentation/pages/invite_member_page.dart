@@ -1,5 +1,6 @@
 // Page for inviting friends from My Community to a group
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,7 +179,7 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
                     child: Row(
                       children: [
                         Icon(Icons.info_outline, color: AppColors.secondary),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Text(
                             'Select friends from your community to invite to this group',

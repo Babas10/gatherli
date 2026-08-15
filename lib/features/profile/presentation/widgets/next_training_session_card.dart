@@ -1,5 +1,6 @@
 // Card displaying the next upcoming training session on the homepage.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
@@ -137,16 +138,16 @@ class NextTrainingSessionCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             _buildParticipationBadge(context, l10n),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Date/time + Location + Duration
         Row(
           children: [
             Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
                 _formatDateTime(context, session!.startTime),
@@ -175,7 +176,7 @@ class NextTrainingSessionCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Participant count bar in gray container
         _buildParticipantBar(context, l10n),
       ],
@@ -242,7 +243,7 @@ class NextTrainingSessionCard extends StatelessWidget {
               color: AppColors.onSurface,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),

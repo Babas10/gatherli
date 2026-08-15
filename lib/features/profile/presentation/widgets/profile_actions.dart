@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 /// Widget containing action buttons for profile operations
@@ -30,7 +31,7 @@ class ProfileActions extends StatelessWidget {
             icon: const Icon(Icons.settings),
             label: Text(l10n.accountSettings),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
 
           // Notification Settings button
           if (onNotificationSettings != null)
@@ -40,7 +41,7 @@ class ProfileActions extends StatelessWidget {
               label: Text(l10n.notificationSettings),
             ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
 
           // Sign Out button
           TextButton.icon(
@@ -51,7 +52,7 @@ class ProfileActions extends StatelessWidget {
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Delete Account button
           TextButton.icon(

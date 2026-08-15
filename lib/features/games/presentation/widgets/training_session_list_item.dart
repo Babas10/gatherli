@@ -1,5 +1,6 @@
 // Widget for displaying a training session in the group activity feed
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +47,7 @@ class TrainingSessionListItem extends StatelessWidget {
                     size: 20,
                     color: isCancelled ? Colors.grey : AppColors.secondary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       session.title,
@@ -64,7 +65,7 @@ class TrainingSessionListItem extends StatelessWidget {
                   _buildTypeBadge(context),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               // Date/Time
               _buildInfoRow(
                 context,
@@ -72,7 +73,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 _formatDateTime(context, session.startTime),
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               // Location
               _buildInfoRow(
                 context,
@@ -80,7 +81,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 session.location.name,
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               // Duration
               _buildInfoRow(
                 context,
@@ -88,7 +89,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 _formatDuration(context, session.duration),
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               // Min participants
               _buildInfoRow(
                 context,
@@ -96,7 +97,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 l10n.minParticipants(session.minParticipants),
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               // Participant count (no scores for training sessions)
               if (!isCancelled) _buildParticipantCountBarWithBadge(context),
             ],
@@ -170,7 +171,7 @@ class TrainingSessionListItem extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16, color: iconColor),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             text,
@@ -209,7 +210,7 @@ class TrainingSessionListItem extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
@@ -228,7 +229,7 @@ class TrainingSessionListItem extends StatelessWidget {
             ],
           ),
         ),
-        if (isParticipant) ...[const SizedBox(width: 12), const JoinedBadge()],
+        if (isParticipant) ...[const SizedBox(width: AppSpacing.md), const JoinedBadge()],
       ],
     );
   }

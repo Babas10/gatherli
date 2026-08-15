@@ -1,5 +1,7 @@
 // Widget for displaying a received friend request
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
@@ -28,23 +30,23 @@ class ReceivedRequestTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           UserAvatar(name: request.initiatorName),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   request.initiatorName,
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                  style: AppTextStyles.cardTitle,
                 ),
                 Text(
                   'Sent ${_formatDate(request.createdAt)}',
-                  style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                  style: AppTextStyles.cardSubtitle,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           // Accept — teal outlined (consistent with app button style)
           OutlinedButton(
             onPressed: onAccept,

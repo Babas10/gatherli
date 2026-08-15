@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/data/models/exercise_model.dart';
@@ -84,7 +85,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
                 textCapitalization: TextCapitalization.words,
                 maxLength: 100,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               TextFormField(
                 controller: _descriptionController,
                 decoration: const InputDecoration(
@@ -95,7 +96,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
                 maxLines: 3,
                 maxLength: 500,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               TextFormField(
                 controller: _durationController,
                 decoration: const InputDecoration(

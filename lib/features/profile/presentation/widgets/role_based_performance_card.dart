@@ -1,5 +1,6 @@
 // Adaptability stats: 3 individual AccentCards — one per role (Carry, Balanced, Weak-Link).
 import "package:flutter/material.dart";
+import "package:play_with_me/core/theme/app_spacing.dart";
 import "package:play_with_me/core/theme/app_text_styles.dart";
 import "package:play_with_me/core/data/models/user_model.dart";
 import "package:play_with_me/core/presentation/widgets/accent_card.dart";
@@ -30,7 +31,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
             l10n.adaptabilityStats.toUpperCase(),
             style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
 
           if (!hasData)
             _LockedCard(l10n: l10n)
@@ -61,7 +62,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
               ),
           ],
 
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
         ],
       ),
     );
@@ -116,25 +117,19 @@ class _RoleCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textMuted,
-                  ),
+                  style: AppTextStyles.caption,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 6),
                 Text(
                   '${stats.recordString}  ·  ${stats.games} games',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textMuted,
-                  ),
+                  style: AppTextStyles.caption,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -176,7 +171,7 @@ class _LockedCard extends StatelessWidget {
               size: 28,
               color: AppColors.textMuted.withValues(alpha: 0.4),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

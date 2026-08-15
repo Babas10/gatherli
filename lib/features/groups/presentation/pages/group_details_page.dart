@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
@@ -445,7 +446,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                     : Icons.notifications_off_outlined,
                                 size: 20,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.md),
                               Flexible(
                                 child: Text(
                                   isMuted
@@ -465,7 +466,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                 size: 20,
                                 color: AppColors.danger,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.md),
                               Flexible(
                                 child: Text(
                                   l10n.leaveGroup,
@@ -509,9 +510,9 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
               size: 64,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text('Error', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
@@ -520,7 +521,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             FilledButton.icon(
               onPressed: _subscribeToGroup,
               icon: const Icon(Icons.refresh),
@@ -617,7 +618,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
                               child: const Icon(Icons.person_add, color: AppColors.secondary),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.md),
                             Text(l10n.inviteMember,
                               style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
                           ],
@@ -638,7 +639,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
                                   : const Icon(Icons.link, color: AppColors.secondary),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.md),
                             Text(l10n.inviteWithLink,
                               style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
                           ],
@@ -749,7 +750,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                             label: Text(l10n.createGame),
                           ),
                         ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: OutlinedButton.icon(
                             onPressed: () => _navigateToTrainingCreation(context),
@@ -793,12 +794,12 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               context,
                             ).colorScheme.onSurfaceVariant,
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: AppSpacing.md),
                           Text(
                             l10n.noActivitiesYet,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(
                             l10n.createFirstActivity,
                             style: Theme.of(context).textTheme.bodyMedium
@@ -870,7 +871,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               child: Text(l10n.loadOlderActivities),
                             ),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                 ],
               ],
             ),
@@ -944,7 +945,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
               color: AppColors.secondary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           if (_group!.description != null && _group!.description!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -960,7 +961,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                 size: 16,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 '${_group!.memberCount} members',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

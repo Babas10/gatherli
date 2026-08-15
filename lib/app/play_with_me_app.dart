@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -755,7 +756,7 @@ class _HomeTabState extends State<_HomeTab> {
                             size: 48,
                             color: AppColors.danger,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           Text(
                             'Error loading stats: ${statsState.message}',
                             style: const TextStyle(color: AppColors.danger),
@@ -931,14 +932,14 @@ class _SplashScreen extends StatelessWidget {
               size: 64,
               color: Theme.of(context).primaryColor,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               'Gatherli${EnvironmentConfig.appSuffix}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             const CircularProgressIndicator(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(AppLocalizations.of(context)!.loading),
           ],
         ),

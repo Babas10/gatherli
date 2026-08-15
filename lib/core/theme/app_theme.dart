@@ -351,6 +351,11 @@ class AppTheme {
         elevation: 4,
       ),
 
+      // ── Refresh indicator ─────────────────────────────────────────────────────────
+      // Pull-to-refresh indicator colour — change here to update all list pages.
+      // Note: Flutter does not have a RefreshIndicatorTheme; colour is set via
+      // progressIndicatorTheme which also covers CircularProgressIndicator.
+
       // ── Progress indicator ────────────────────────────────────────────────────
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.secondary,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -34,7 +35,7 @@ class ProfileInfoCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Email and verification status
             Row(
@@ -44,7 +45,7 @@ class ProfileInfoCard extends StatelessWidget {
                     size: 20,
                     color: theme.colorScheme.primary,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,15 +56,15 @@ class ProfileInfoCard extends StatelessWidget {
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         Text(user.email, style: theme.textTheme.bodyMedium),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         Row(
                           children: [
                             VerificationBadge(isVerified: user.isEmailVerified),
                             if (!user.isEmailVerified &&
                                 onVerificationTap != null) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppSpacing.sm),
                               TextButton.icon(
                                 onPressed: onVerificationTap,
                                 icon: const Icon(Icons.send, size: 16),
@@ -140,7 +141,7 @@ class _InfoRow extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 20, color: theme.colorScheme.primary),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +152,7 @@ class _InfoRow extends StatelessWidget {
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(value, style: theme.textTheme.bodyMedium),
             ],
           ),

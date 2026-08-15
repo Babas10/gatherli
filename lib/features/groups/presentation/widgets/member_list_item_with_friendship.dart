@@ -1,5 +1,6 @@
 // Widget for displaying group member with friendship status and add friend button
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -47,7 +48,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           UserAvatar(name: user.fullDisplayName, photoUrl: user.photoUrl),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Row(
         children: [
@@ -62,7 +63,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
             ),
           ),
           if (isCurrentUser) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               '(You)',
               style: TextStyle(
@@ -72,7 +73,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
             ),
           ],
           if (isAdmin) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Chip(
               label: const Text('Admin', style: TextStyle(fontSize: 12)),
               backgroundColor: AppColors.avatarBackground,
@@ -84,7 +85,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
             ),
           ],
           if (isCreator) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Icon(Icons.star, size: 16, color: AppColors.warning),
           ],
           ],
@@ -113,7 +114,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.check_circle, size: 16, color: AppColors.success),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             'Friend',
             style: TextStyle(color: AppColors.success, fontSize: 12),
@@ -127,7 +128,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.schedule, size: 16, color: AppColors.warning),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             'Request Sent',
             style: TextStyle(color: AppColors.warning, fontSize: 12),
@@ -141,7 +142,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.person_add, size: 16, color: AppColors.info),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             'Wants to be friends',
             style: TextStyle(color: AppColors.info, fontSize: 12),

@@ -1,6 +1,7 @@
 // Championship detail screen: header info, standings table, per-round matches,
 // and an admin panel tab (visible to championship admins only).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -468,11 +469,11 @@ class _ChampionshipHeader extends StatelessWidget {
             ),
           ],
           if (genderBlockReason != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
                 Icon(Icons.info_outline, size: 14, color: AppColors.textMuted),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: Text(
                     genderBlockReason!,
@@ -494,7 +495,7 @@ class _ChampionshipHeader extends StatelessWidget {
               l10n: l10n,
             ),
           ],
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           ],
         ),
       ),
@@ -648,7 +649,7 @@ class _MyTeamSection extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.group, size: 18, color: AppColors.primary),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -672,7 +673,7 @@ class _MyTeamSection extends StatelessWidget {
                       ),
                     ),
                     if (_isCaptain && _isRegistrationPhase) ...[
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       InkWell(
                         onTap: () => _showRenameDialog(context),
                         borderRadius: BorderRadius.circular(12),
@@ -761,7 +762,7 @@ class _InfoChip extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 14, color: AppColors.textMuted),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppSpacing.xs),
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -855,7 +856,7 @@ class _StandingsTab extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       itemCount: teams.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (_, i) => _TeamCard(team: teams[i], position: i + 1),
     );
   }
@@ -1014,7 +1015,7 @@ class _TeamCard extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               team.name,
@@ -1025,7 +1026,7 @@ class _TeamCard extends StatelessWidget {
             ),
           ),
           Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             '${team.memberIds.length}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1122,7 +1123,7 @@ class _MatchesTab extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         const Divider(height: 1),
         // Match list
         Expanded(
@@ -1143,7 +1144,7 @@ class _MatchesTab extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   itemCount: matches.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
                   itemBuilder: (ctx, i) => _MatchCard(
                     match: matches[i],
                     teamAName: _teamName(matches[i].teamAId),
@@ -1243,7 +1244,7 @@ class _MatchCard extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
             ],
             Row(
               children: [
@@ -1437,7 +1438,7 @@ class _AdminTab extends StatelessWidget {
                               horizontal: 16, vertical: 12),
                           itemCount: state.matches.length,
                           separatorBuilder: (_, __) =>
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppSpacing.sm),
                           itemBuilder: (ctx, i) {
                             final match = state.matches[i];
                             return _AdminMatchCard(
@@ -1475,7 +1476,7 @@ class _AdminTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(l10n.startChampionshipConfirmBody),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.startChampionshipStartDateLabel,
                 style: Theme.of(ctx).textTheme.labelMedium,
@@ -1566,7 +1567,7 @@ class _AdminTab extends StatelessWidget {
                 ),
                 maxLength: 100,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               OutlinedButton.icon(
                 icon: const Icon(Icons.calendar_today_outlined, size: 16),
                 label: Text(
@@ -1692,7 +1693,7 @@ class _AdminActions extends StatelessWidget {
               label: Text(l10n.startChampionshipButton),
             ),
           if (canComplete || state.isCompleting) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             OutlinedButton.icon(
               onPressed: state.isCompleting ? null : onComplete,
               icon: state.isCompleting
@@ -1706,7 +1707,7 @@ class _AdminActions extends StatelessWidget {
             ),
           ],
           if (canEdit) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             OutlinedButton.icon(
               onPressed: state.isEditing ? null : onEdit,
               icon: state.isEditing
@@ -1726,7 +1727,7 @@ class _AdminActions extends StatelessWidget {
               style: const TextStyle(color: AppColors.danger, fontSize: 13),
             ),
           ],
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           const Divider(height: 1),
         ],
       ),
@@ -1779,7 +1780,7 @@ class _AdminMatchCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       'Round ${match.round}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1805,7 +1806,7 @@ class _AdminMatchCard extends StatelessWidget {
                       ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               const Icon(Icons.chevron_right, color: AppColors.textMuted),
             ],
           ),
@@ -1892,14 +1893,14 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                   fontWeight: FontWeight.w700,
                 ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             '${widget.teamAName}  vs  ${widget.teamBName}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textMuted,
                 ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           // Decision radio buttons
           RadioListTile<String>(
             title: Text(l10n.adminPanelDecisionSetResult),
@@ -1926,10 +1927,10 @@ class _DecisionSheetState extends State<_DecisionSheet> {
             contentPadding: EdgeInsets.zero,
           ),
           if (_decision == 'award_walkover') ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(l10n.adminPanelDecisionWinnerLabel,
                 style: Theme.of(context).textTheme.labelMedium),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Row(
               children: [
                 Expanded(
@@ -1957,7 +1958,7 @@ class _DecisionSheetState extends State<_DecisionSheet> {
               ],
             ),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           TextField(
             controller: _notesController,
             decoration: InputDecoration(
@@ -1977,7 +1978,7 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                   ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           BlocBuilder<AdminPanelBloc, AdminPanelState>(
             builder: (context, state) {
               final isDeciding =
@@ -1995,7 +1996,7 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                             color: Theme.of(context).colorScheme.error,
                           ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                   ],
                   FilledButton(
                     onPressed: isDeciding ? null : _submit,
@@ -2142,7 +2143,7 @@ class _MyMatchesTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   // Opponent + scheduled date
                   Expanded(
                     child: Column(
@@ -2203,7 +2204,7 @@ class _MyMatchesTab extends StatelessWidget {
                           ),
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Icon(Icons.chevron_right,
                       size: 18, color: AppColors.textMuted),
                 ],

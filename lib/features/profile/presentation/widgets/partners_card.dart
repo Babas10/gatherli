@@ -1,5 +1,6 @@
 // Partners card showing best partner statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -30,7 +31,7 @@ class PartnersCard extends StatelessWidget {
             l10n.bestPartner.toUpperCase(),
             style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // White card
           Card(
             margin: EdgeInsets.zero,
@@ -54,7 +55,7 @@ class PartnersCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -74,7 +75,7 @@ class PartnersCard extends StatelessWidget {
           backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
           child: const Icon(Icons.person, size: 28, color: AppColors.secondary),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.lg),
         // Partner stats
         Expanded(
           child: Column(
@@ -89,7 +90,7 @@ class PartnersCard extends StatelessWidget {
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 l10n.winRatePercent(winRate),
                 style: const TextStyle(
@@ -127,7 +128,7 @@ class PartnersCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.trending_up, size: 14, color: AppColors.success),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     '$winRate%',
                     style: const TextStyle(
@@ -139,7 +140,7 @@ class PartnersCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
@@ -161,7 +162,7 @@ class PartnersCard extends StatelessWidget {
           size: 32,
           color: AppColors.textMuted.withValues(alpha: 0.35),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

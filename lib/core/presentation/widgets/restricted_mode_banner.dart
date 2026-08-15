@@ -1,5 +1,6 @@
 // Banner displayed for users in restricted account status (7-30 days, email not verified).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class RestrictedModeBanner extends StatelessWidget {
@@ -40,7 +41,7 @@ class RestrictedModeBanner extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
               const Icon(Icons.schedule, color: Colors.white70, size: 16),

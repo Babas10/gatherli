@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// A widget that displays an email verification status badge
 class VerificationBadge extends StatelessWidget {
@@ -21,7 +22,7 @@ class VerificationBadge extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.verified, size: 16, color: theme.colorScheme.primary),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               'Verified',
               style: theme.textTheme.labelSmall?.copyWith(
@@ -48,7 +49,7 @@ class VerificationBadge extends StatelessWidget {
             size: 16,
             color: theme.colorScheme.error,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             'Not Verified',
             style: theme.textTheme.labelSmall?.copyWith(

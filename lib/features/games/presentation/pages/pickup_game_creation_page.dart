@@ -1,6 +1,7 @@
 // Page for creating a pickup game with optional player invitations.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/activity_context_type.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
@@ -234,7 +235,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
                   onDateTimeChanged: (dt) => pickerTime = dt,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         );
@@ -476,7 +477,7 @@ class _GameDetailsStep extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
 
             // Form fields card
             Card(
@@ -506,7 +507,7 @@ class _GameDetailsStep extends StatelessWidget {
               },
               enabled: !isSubmitting,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Description
             TextFormField(
@@ -520,7 +521,7 @@ class _GameDetailsStep extends StatelessWidget {
               maxLines: 3,
               enabled: !isSubmitting,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Date/Time picker
             Material(
@@ -547,7 +548,7 @@ class _GameDetailsStep extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Location
             TextFormField(
@@ -566,7 +567,7 @@ class _GameDetailsStep extends StatelessWidget {
               },
               enabled: !isSubmitting,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Address (optional)
             TextFormField(
@@ -583,7 +584,7 @@ class _GameDetailsStep extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Next button
             OutlinedButton(
@@ -649,7 +650,7 @@ class _InviteStep extends StatelessWidget {
                     child: Text(l10n.skipInvitations),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: OutlinedButton(
                     onPressed: isSubmitting ? null : onSubmit,

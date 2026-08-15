@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -48,7 +49,7 @@ class SearchResultTile extends StatelessWidget {
                 size: 48,
                 color: theme.colorScheme.secondary,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 l10n.cannotAddYourself,
                 style: theme.textTheme.titleMedium,
@@ -73,13 +74,13 @@ class SearchResultTile extends StatelessWidget {
                 size: 48,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 l10n.userNotFoundWithEmail(searchedEmail),
                 style: theme.textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 l10n.makeSureEmailCorrect,
                 style: theme.textTheme.bodyMedium?.copyWith(

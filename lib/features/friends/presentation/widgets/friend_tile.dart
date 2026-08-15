@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -26,25 +28,19 @@ class FriendTile extends StatelessWidget {
       child: Row(
         children: [
           UserAvatar(name: friend.displayNameOrEmail, photoUrl: friend.photoUrl),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   friend.displayName ?? friend.email,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: AppTextStyles.cardTitle,
                 ),
                 if (friend.displayName != null)
                   Text(
                     friend.email,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textMuted,
-                    ),
+                    style: AppTextStyles.cardSubtitle,
                   ),
               ],
             ),

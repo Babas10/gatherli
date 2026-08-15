@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'received_request_tile.dart';
@@ -39,7 +40,7 @@ class FriendRequestsList extends StatelessWidget {
                 size: 64,
                 color: Theme.of(context).colorScheme.secondary,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.noPendingRequests,
                 style: Theme.of(context).textTheme.titleMedium,

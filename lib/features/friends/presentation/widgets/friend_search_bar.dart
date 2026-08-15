@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_event.dart';
@@ -83,7 +84,7 @@ class _FriendSearchBarState extends State<FriendSearchBar> {
                   onSubmitted: (_) => _onSearchSubmitted(),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               FilledButton.icon(
                 onPressed: isSearching || _controller.text.trim().isEmpty
                     ? null

@@ -1,5 +1,6 @@
 // Compact stat card widget for home screen glance-level statistics display.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// A compact card widget for displaying a single statistic on the home screen.
 ///
@@ -50,7 +51,7 @@ class CompactStatCard extends StatelessWidget {
                   ),
                 ),
                 if (icon != null) ...[
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Icon(
                     icon,
                     size: 16,
@@ -59,7 +60,7 @@ class CompactStatCard extends StatelessWidget {
                 ],
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             // Value
             Text(
               value,
@@ -70,7 +71,7 @@ class CompactStatCard extends StatelessWidget {
             ),
             // Sub-label (optional)
             if (subLabel != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 subLabel!,
                 style: theme.textTheme.bodySmall?.copyWith(

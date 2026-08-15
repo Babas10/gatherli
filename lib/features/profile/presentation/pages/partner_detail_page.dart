@@ -1,5 +1,6 @@
 // Partner detail screen showing comprehensive teammate statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +54,7 @@ class PartnerDetailPage extends StatelessWidget {
                       size: 48,
                       color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(message, textAlign: TextAlign.center),
                   ],
                 ),
@@ -77,19 +78,19 @@ class PartnerDetailPage extends StatelessWidget {
         children: [
           // Partner header
           _buildPartnerHeader(context, partner),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
 
           // Overall record
           _buildRecordCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Point differential
           _buildPointDifferentialCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // ELO change together
           _buildEloCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Recent form
           _buildRecentFormCard(context, stats),
@@ -120,7 +121,7 @@ class PartnerDetailPage extends StatelessWidget {
                     )
                   : null,
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +166,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -216,7 +217,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -263,7 +264,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -334,7 +335,7 @@ class PartnerDetailPage extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             if (stats.recentGames.isEmpty)
               Center(
                 child: Text(
@@ -383,7 +384,7 @@ class PartnerDetailPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,7 +397,7 @@ class PartnerDetailPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Text(
                       '(${game.formattedPointDifferential})',
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -407,7 +408,7 @@ class PartnerDetailPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   AppLocalizations.of(
                     context,
@@ -441,7 +442,7 @@ class PartnerDetailPage extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(

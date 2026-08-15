@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -127,7 +128,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
 
                       // Group name field
                       TextFormField(
@@ -158,7 +159,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         maxLength: 50,
                         autofocus: true,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Description field (optional)
                       TextFormField(
@@ -190,7 +191,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         maxLength: 200,
                         textCapitalization: TextCapitalization.sentences,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
 
                       // Friend selector (only if repository is provided)
                       // Wrapped in SizedBox because this Column is inside
@@ -210,7 +211,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             initialSelection: _selectedFriendIds,
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.xl),
                       ],
 
                       // Info card
@@ -224,7 +225,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                                 Icons.info_outline,
                                 color: AppColors.secondary,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.md),
                               Expanded(
                                 child: Text(
                                   'You will automatically become the group admin and first member',
@@ -238,7 +239,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppSpacing.xxl),
 
                       // Create button
                       FilledButton.icon(
@@ -263,7 +264,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Cancel button
                       OutlinedButton(
