@@ -27,7 +27,7 @@ class FeedbackListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Anonymous avatar
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundColor: AppColors.primary,
                   radius: 18,
                   child: Icon(
@@ -59,16 +59,16 @@ class FeedbackListItem extends StatelessWidget {
                             style: AppTextStyles.caption,
                           ),
                           const SizedBox(width: AppSpacing.sm),
-                          Row(
+                          const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.privacy_tip_outlined,
                                 size: 11,
                                 color: AppColors.textMuted,
                               ),
-                              const SizedBox(width: 3),
-                              const Text(
+                              SizedBox(width: 3),
+                              Text(
                                 'Private',
                                 style: TextStyle(
                                   fontSize: 11,

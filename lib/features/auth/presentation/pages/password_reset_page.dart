@@ -140,7 +140,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          icon: Icon(Icons.check_circle, color: AppColors.success, size: 48),
+          icon: const Icon(Icons.check_circle, color: AppColors.success, size: 48),
           title: Text(l10n.emailSent),
           content: Column(
             mainAxisSize: MainAxisSize.min,

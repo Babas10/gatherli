@@ -219,7 +219,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
     }
 
     // Validate and submit
-    bloc.add(ValidateForm());
+    bloc.add(const ValidateForm());
     bloc.add(SubmitGame(createdBy: userId));
   }
 

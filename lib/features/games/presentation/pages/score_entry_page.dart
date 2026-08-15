@@ -452,7 +452,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                             : Colors.grey,
                       ),
                       border: const OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: AppColors.primary,
                           width: 2,
@@ -504,7 +504,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                             : Colors.grey,
                       ),
                       border: const OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: AppColors.primary,
                           width: 2,
@@ -592,13 +592,13 @@ class _SaveButton extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 8,
-            offset: const Offset(0, -2),
+            offset: Offset(0, -2),
           ),
         ],
       ),

@@ -1195,7 +1195,7 @@ class FirestoreGameRepository implements GameRepository {
 
         final updatedConfirmedBy = [...currentGame.confirmedBy, userId];
         // 1 confirmation is sufficient to complete the game
-        final newStatus = GameStatus.completed;
+        const newStatus = GameStatus.completed;
 
         final updatedGame = currentGame.copyWith(
           confirmedBy: updatedConfirmedBy,

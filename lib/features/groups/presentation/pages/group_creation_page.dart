@@ -134,14 +134,14 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                       TextFormField(
                         controller: _nameController,
                         enabled: !isLoading,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Group Name *',
                           hintText: 'e.g., Beach Volleyball Crew',
                           prefixIcon: Icon(
                             Icons.group,
                             color: AppColors.secondary,
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           floatingLabelStyle: TextStyle(
                             color: AppColors.secondary,
                           ),
@@ -165,7 +165,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                       TextFormField(
                         controller: _descriptionController,
                         enabled: !isLoading,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Description (Optional)',
                           hintText:
                               'e.g., Weekly beach volleyball games at Santa Monica',
@@ -173,7 +173,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             Icons.description,
                             color: AppColors.secondary,
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           floatingLabelStyle: TextStyle(
                             color: AppColors.secondary,
                           ),
@@ -217,15 +217,15 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                       // Info card
                       Card(
                         color: AppColors.primary.withValues(alpha: 0.2),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(12.0),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.info_outline,
                                 color: AppColors.secondary,
                               ),
-                              const SizedBox(width: AppSpacing.md),
+                              SizedBox(width: AppSpacing.md),
                               Expanded(
                                 child: Text(
                                   'You will automatically become the group admin and first member',

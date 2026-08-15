@@ -745,13 +745,13 @@ class _RsvpButtons extends StatelessWidget {
           // Show Enter Results icon if user can enter results
           if (canEnterResults) {
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bottomNavBackground,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadow,
                     blurRadius: 8,
-                    offset: const Offset(0, -2),
+                    offset: Offset(0, -2),
                   ),
                 ],
               ),
@@ -779,7 +779,7 @@ class _RsvpButtons extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.scoreboard,
                                 color: AppColors.secondary,
                                 size: 24,
@@ -787,7 +787,7 @@ class _RsvpButtons extends StatelessWidget {
                               const SizedBox(height: AppSpacing.xs),
                               Text(
                                 l10n.enterResults,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.navLabelColor,
                                   fontSize: 12,
                                 ),
@@ -816,13 +816,13 @@ class _RsvpButtons extends StatelessWidget {
 
           return Container(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.bottomNavBackground,
               boxShadow: [
                 BoxShadow(
                   color: AppColors.shadow,
                   blurRadius: 8,
-                  offset: const Offset(0, -2),
+                  offset: Offset(0, -2),
                 ),
               ],
             ),
@@ -936,7 +936,7 @@ class _ViewResultsCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.emoji_events, color: AppColors.primary, size: 28),
+                  const Icon(Icons.emoji_events, color: AppColors.primary, size: 28),
                   const SizedBox(width: AppSpacing.md),
                   Text(
                     'Game Results',
@@ -946,7 +946,7 @@ class _ViewResultsCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
                     color: AppColors.secondary,

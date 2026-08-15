@@ -223,7 +223,7 @@ class _MyGamesViewState extends State<_MyGamesView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.sports_volleyball_outlined,
             size: 64,
             color: AppColors.textMuted,
@@ -252,7 +252,7 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20, bottom: 8, top: 4),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w700,
           color: AppColors.textMuted,

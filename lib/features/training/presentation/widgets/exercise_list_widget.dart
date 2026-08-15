@@ -243,10 +243,10 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   color: AppColors.primary.withValues(alpha: 0.2),
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(Icons.lock, color: AppColors.secondary),
-                      const SizedBox(width: AppSpacing.sm),
+                      SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
                           'Exercises cannot be modified after session starts',

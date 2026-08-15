@@ -280,7 +280,7 @@ class _GroupCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.check_circle,
                       size: 18,
                       color: AppColors.success,
@@ -288,7 +288,7 @@ class _GroupCard extends StatelessWidget {
                     const SizedBox(width: AppSpacing.xs),
                     Text(
                       l10n.invitedLabel,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppColors.success,

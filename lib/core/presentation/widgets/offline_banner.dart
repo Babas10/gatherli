@@ -14,15 +14,15 @@ class OfflineBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       color: Colors.orange.shade700,
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.cloud_off, color: Colors.white, size: 16),
-          const SizedBox(width: AppSpacing.sm),
+          Icon(Icons.cloud_off, color: Colors.white, size: 16),
+          SizedBox(width: AppSpacing.sm),
           Flexible(
             child: Text(
               'You\'re offline. Changes will sync when connection is restored.',
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+              style: TextStyle(color: Colors.white, fontSize: 12),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

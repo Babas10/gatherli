@@ -74,14 +74,14 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
           emit(
             PlayerStatsLoaded(
               user: newUserModel,
-              history: [], // New user has no rating history
+              history: const [], // New user has no rating history
               ranking: null, // No ranking yet
               rankingLoadFailed: false,
             ),
           );
         } else {
           // Only emit error if we can't find the auth user either
-          emit(PlayerStatsError('User not found'));
+          emit(const PlayerStatsError('User not found'));
         }
 
         // Always set up the stream subscription so the UI updates as soon as

@@ -53,7 +53,7 @@ class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
               add(GameDetailsUpdated(game: game));
             },
             onError: (error) {
-              add(GameDetailsUpdated(game: null));
+              add(const GameDetailsUpdated(game: null));
             },
           );
     } on GameException catch (e) {

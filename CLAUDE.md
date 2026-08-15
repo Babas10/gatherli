@@ -998,6 +998,66 @@ Claude may proceed **without approval** if:
 
 ---
 
+## 🔧 9c. BLoC & State Management Standards
+
+### BLoC scoping — keep BLoCs close to their usage
+
+- Only **AuthenticationBloc** and **NotificationBloc** live at app root
+- All other BLoCs are provided at the route or page level via `BlocProvider`
+- Never provide a feature BLoC at the app root unless it must survive navigation
+
+### BLoC rebuild optimization — required in all BLoC builders
+
+```dart
+// ❌ WRONG — rebuilds entire page on any state change
+BlocBuilder<MyBloc, MyState>(
+  builder: (context, state) => Scaffold(body: _buildAll(state)),
+)
+
+// ✅ CORRECT — narrow scope with buildWhen
+BlocBuilder<MyBloc, MyState>(
+  buildWhen: (prev, curr) => prev.data != curr.data,
+  builder: (context, state) => _DataWidget(state.data),
+)
+
+// ✅ CORRECT — single field with BlocSelector
+BlocSelector<MyBloc, MyState, int>(
+  selector: (state) => state.count,
+  builder: (context, count) => Text('$count'),
+)
+```
+
+### StreamSubscription management — use BaseBloc
+
+When a BLoC holds a `StreamSubscription`, extend `BaseBloc` to prevent memory leaks:
+
+```dart
+// lib/core/presentation/bloc/base_bloc.dart
+class MyBloc extends BaseBloc<MyEvent, MyState> {
+  MyBloc(MyRepository repo) : super(MyInitial()) {
+    trackSubscription(
+      repo.watchItems().listen(_onItemsUpdated), // auto-cancelled on close()
+    );
+  }
+}
+// ❌ WRONG — manual cancel in close() is easy to forget
+```
+
+### Feature flags — gate new features
+
+Use `FeatureFlags` before showing any new feature UI. This allows disabling without a release:
+
+```dart
+// lib/core/services/feature_flags.dart
+if (await FeatureFlags.isEnabled(FeatureFlags.scoreEntry)) {
+  // show score entry button
+}
+```
+
+Add new flag names as constants in `FeatureFlags` — never use raw strings inline.
+
+---
+
 ## 🎨 9b. UI & Design System (Non-Negotiable)
 
 All visual styling in this app is centralized. **Before writing any UI code**, consult the files below and use the shared patterns. Never invent colors, sizes, or widget patterns from scratch.

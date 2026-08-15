@@ -118,7 +118,7 @@ class TrainingSessionParticipationBloc
       );
     } catch (e) {
       emit(
-        ParticipationError(
+        const ParticipationError(
           message: 'Failed to join training session. Please try again.',
         ),
       );
@@ -156,7 +156,7 @@ class TrainingSessionParticipationBloc
       );
     } catch (e) {
       emit(
-        ParticipationError(
+        const ParticipationError(
           message: 'Failed to leave training session. Please try again.',
         ),
       );
@@ -193,7 +193,7 @@ class TrainingSessionParticipationBloc
       );
     } catch (e) {
       emit(
-        ParticipationError(
+        const ParticipationError(
           message: 'Failed to cancel training session. Please try again.',
         ),
       );

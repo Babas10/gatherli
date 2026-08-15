@@ -147,7 +147,7 @@ class NextGameCard extends StatelessWidget {
         // Date/time + Location
         Row(
           children: [
-            Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
+            const Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
@@ -158,7 +158,7 @@ class NextGameCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-            Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
+            const Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
@@ -209,7 +209,7 @@ class NextGameCard extends StatelessWidget {
         ),
         child: Text(
           l10n.onWaitlist,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.warning,
             fontWeight: FontWeight.w600,
             fontSize: 11,

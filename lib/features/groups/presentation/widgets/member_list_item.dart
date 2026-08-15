@@ -26,7 +26,7 @@ class MemberListItem extends StatelessWidget {
           ? Chip(
               label: const Text('Admin', style: TextStyle(fontSize: 12)),
               backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 color: AppColors.secondary,
                 fontWeight: FontWeight.bold,
               ),

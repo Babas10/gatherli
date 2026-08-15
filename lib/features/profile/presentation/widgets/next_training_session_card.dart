@@ -146,7 +146,7 @@ class NextTrainingSessionCard extends StatelessWidget {
         // Date/time + Location + Duration
         Row(
           children: [
-            Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
+            const Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
@@ -157,7 +157,7 @@ class NextTrainingSessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
+            const Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
             const SizedBox(width: 2),
             Expanded(
               child: Text(
@@ -168,7 +168,7 @@ class NextTrainingSessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.access_time, size: 14, color: AppColors.textMuted),
+            const Icon(Icons.access_time, size: 14, color: AppColors.textMuted),
             const SizedBox(width: 2),
             Text(
               _formatDuration(context, session!.duration),

@@ -314,11 +314,11 @@ class _UnassignedPlayersSection extends StatelessWidget {
                     Container(
                       width: 24,
                       height: 24,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.check,
                         color: AppColors.secondary,
                         size: 16,
@@ -485,13 +485,13 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 8,
-            offset: const Offset(0, -2),
+            offset: Offset(0, -2),
           ),
         ],
       ),

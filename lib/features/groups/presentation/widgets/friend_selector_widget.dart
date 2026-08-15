@@ -165,11 +165,11 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Icon(Icons.error_outline, color: AppColors.danger, size: 48),
+            const Icon(Icons.error_outline, color: AppColors.danger, size: 48),
             const SizedBox(height: AppSpacing.sm),
             Text(
               _errorMessage!,
-              style: TextStyle(color: AppColors.danger),
+              style: const TextStyle(color: AppColors.danger),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.md),
@@ -187,12 +187,12 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
   Widget _buildEmptyState() {
     return Card(
       color: AppColors.primary.withValues(alpha: 0.2),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Icon(Icons.people_outline, color: AppColors.secondary, size: 48),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Text(
               'No Friends Yet',
               style: TextStyle(
@@ -201,7 +201,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs),
             Text(
               'Add friends to invite them to groups',
               style: TextStyle(color: AppColors.secondary),
@@ -226,12 +226,12 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 onPressed: _selectedFriendIds.length == _friends!.length
                     ? null
                     : _selectAll,
-                icon: Icon(
+                icon: const Icon(
                   Icons.check_box,
                   size: 18,
                   color: AppColors.secondary,
                 ),
-                label: Text(
+                label: const Text(
                   'Select All',
                   style: TextStyle(color: AppColors.secondary),
                 ),
@@ -239,8 +239,8 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
               const SizedBox(width: AppSpacing.sm),
               TextButton.icon(
                 onPressed: _selectedFriendIds.isEmpty ? null : _clearAll,
-                icon: Icon(Icons.clear, size: 18, color: AppColors.secondary),
-                label: Text(
+                icon: const Icon(Icons.clear, size: 18, color: AppColors.secondary),
+                label: const Text(
                   'Clear All',
                   style: TextStyle(color: AppColors.secondary),
                 ),

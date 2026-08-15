@@ -19,7 +19,7 @@ class PendingGameInvitationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = _PendingGameInvitationsView();
+    const child = _PendingGameInvitationsView();
     if (blocOverride != null) {
       return BlocProvider<GameInvitationsBloc>.value(
         value: blocOverride!,
@@ -151,7 +151,7 @@ class _PendingGameInvitationsViewState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
+            const Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
             const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.noPendingGameInvitations,

@@ -72,20 +72,20 @@ class AppTheme {
       ),
 
       // ── AppBar ───────────────────────────────────────────────────────────────
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.appBarBackground,
         foregroundColor: AppColors.secondary,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        titleTextStyle: const TextStyle(
+        titleTextStyle: TextStyle(
           color: AppColors.secondary,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
-        iconTheme: const IconThemeData(color: AppColors.secondary),
-        actionsIconTheme: const IconThemeData(color: AppColors.secondary),
+        iconTheme: IconThemeData(color: AppColors.secondary),
+        actionsIconTheme: IconThemeData(color: AppColors.secondary),
       ),
 
       // ── Cards ─────────────────────────────────────────────────────────────────
@@ -115,7 +115,7 @@ class AppTheme {
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
-        contentTextStyle: TextStyle(
+        contentTextStyle: const TextStyle(
           color: AppColors.textMuted,
           fontSize: 14,
           height: 1.5,
@@ -169,21 +169,21 @@ class AppTheme {
 
       // ── Tab Bar ───────────────────────────────────────────────────────────────
       // Tab bar — change indicator/label colors here to update ALL tabs at once.
-      tabBarTheme: TabBarThemeData(
+      tabBarTheme: const TabBarThemeData(
         labelColor: AppColors.navLabelColor,
         unselectedLabelColor: AppColors.navLabelColor,
         indicatorColor: AppColors.primary,
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: AppColors.divider,
-        labelStyle: const TextStyle(
+        labelStyle: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.normal,
         ),
-        indicator: const UnderlineTabIndicator(
+        indicator: UnderlineTabIndicator(
           borderSide: BorderSide(color: AppColors.primary, width: 2),
         ),
       ),

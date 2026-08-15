@@ -247,7 +247,7 @@ class TrainingSessionCreationBloc
           // Instance generation failed, but parent session was created
           // Log error but don't fail the creation
           emit(
-            TrainingSessionCreationError(
+            const TrainingSessionCreationError(
               message:
                   'Training session created, but failed to generate recurring instances. You can try again later.',
               errorCode: 'GENERATE_INSTANCES_ERROR',

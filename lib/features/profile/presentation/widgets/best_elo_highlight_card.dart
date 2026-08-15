@@ -96,7 +96,7 @@ class BestEloHighlightCard extends StatelessWidget {
           child: Row(
             children: [
               // Trophy icon
-              Icon(Icons.emoji_events, size: 20, color: AppColors.primary),
+              const Icon(Icons.emoji_events, size: 20, color: AppColors.primary),
               const SizedBox(width: AppSpacing.md),
               // Content
               Expanded(

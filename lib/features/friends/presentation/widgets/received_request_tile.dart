@@ -76,10 +76,10 @@ class ReceivedRequestTile extends StatelessWidget {
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
-    if (difference.inDays > 7) return "${date.day}/${date.month}/${date.year}";
-    if (difference.inDays > 0) return "${difference.inDays}d ago";
-    if (difference.inHours > 0) return "${difference.inHours}h ago";
-    if (difference.inMinutes > 0) return "${difference.inMinutes}m ago";
-    return "Just now";
+    if (difference.inDays > 7) return '${date.day}/${date.month}/${date.year}';
+    if (difference.inDays > 0) return '${difference.inDays}d ago';
+    if (difference.inHours > 0) return '${difference.inHours}h ago';
+    if (difference.inMinutes > 0) return '${difference.inMinutes}m ago';
+    return 'Just now';
   }
 }

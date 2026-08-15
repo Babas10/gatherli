@@ -42,7 +42,7 @@ class PlayWithMeAppBar {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.sports_volleyball, color: AppColors.secondary, size: 22),
+          const Icon(Icons.sports_volleyball, color: AppColors.secondary, size: 22),
           const SizedBox(width: 6),
           Flexible(
             child: Text(

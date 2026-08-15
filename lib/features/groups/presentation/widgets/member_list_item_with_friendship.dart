@@ -74,8 +74,8 @@ class MemberListItemWithFriendship extends StatelessWidget {
           ],
           if (isAdmin) ...[
             const SizedBox(width: AppSpacing.sm),
-            Chip(
-              label: const Text('Admin', style: TextStyle(fontSize: 12)),
+            const Chip(
+              label: Text('Admin', style: TextStyle(fontSize: 12)),
               backgroundColor: AppColors.avatarBackground,
               labelStyle: TextStyle(
                 color: AppColors.secondary,
@@ -86,7 +86,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
           ],
           if (isCreator) ...[
             const SizedBox(width: AppSpacing.sm),
-            Icon(Icons.star, size: 16, color: AppColors.warning),
+            const Icon(Icons.star, size: 16, color: AppColors.warning),
           ],
           ],
             ),
@@ -110,11 +110,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
 
   Widget _buildFriendshipStatus(BuildContext context) {
     if (isFriend) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.check_circle, size: 16, color: AppColors.success),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Friend',
             style: TextStyle(color: AppColors.success, fontSize: 12),
@@ -124,11 +124,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.schedule, size: 16, color: AppColors.warning),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Request Sent',
             style: TextStyle(color: AppColors.warning, fontSize: 12),
@@ -138,11 +138,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.receivedFromThem) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.person_add, size: 16, color: AppColors.info),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Wants to be friends',
             style: TextStyle(color: AppColors.info, fontSize: 12),
@@ -202,8 +202,8 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return Chip(
-        label: const Text('Pending'),
+      return const Chip(
+        label: Text('Pending'),
         backgroundColor: AppColors.warning,
         labelStyle: TextStyle(color: AppColors.warning, fontSize: 11),
       );

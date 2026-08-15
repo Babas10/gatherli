@@ -1,7 +1,7 @@
 // Centralized color constants for consistent theming across the app.
 // ALL colors used anywhere in the app must be defined here.
 // Never use hardcoded Color(0xFF...) or Colors.green/red/etc. directly in widgets.
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();

@@ -313,7 +313,7 @@ class FirestoreFriendRepository implements FriendRepository {
 
       // Check if already friends using cache
       if (friendIds.contains(userId)) {
-        return FriendshipStatusResult(isFriend: true, hasPendingRequest: false);
+        return const FriendshipStatusResult(isFriend: true, hasPendingRequest: false);
       }
 
       // Not in cache, check for pending requests
@@ -342,7 +342,7 @@ class FirestoreFriendRepository implements FriendRepository {
       }
 
       // No friendship or pending request
-      return FriendshipStatusResult(isFriend: false, hasPendingRequest: false);
+      return const FriendshipStatusResult(isFriend: false, hasPendingRequest: false);
     } on FriendshipException {
       rethrow;
     } on FirebaseException catch (e) {

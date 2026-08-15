@@ -83,11 +83,11 @@ class ErrorSnackbar {
   static void showOffline(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(
+        content: const Row(
           children: [
-            const Icon(Icons.cloud_off, color: Colors.white),
-            const SizedBox(width: AppSpacing.sm),
-            const Expanded(
+            Icon(Icons.cloud_off, color: Colors.white),
+            SizedBox(width: AppSpacing.sm),
+            Expanded(
               child: Text('You\'re offline. Changes will sync when online.'),
             ),
           ],

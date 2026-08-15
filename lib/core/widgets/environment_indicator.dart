@@ -162,11 +162,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
       onTap: () => setState(() => _isExpanded = true),
       child: Container(
         padding: const EdgeInsets.all(12),
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.bug_report, color: Colors.white, size: 20),
-            const SizedBox(width: AppSpacing.sm),
+            SizedBox(width: AppSpacing.sm),
             Text('Debug', style: TextStyle(color: Colors.white, fontSize: 12)),
           ],
         ),
@@ -186,9 +186,9 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
         children: [
           Row(
             children: [
-              Icon(Icons.bug_report, color: Colors.white, size: 16),
+              const Icon(Icons.bug_report, color: Colors.white, size: 16),
               const SizedBox(width: AppSpacing.sm),
-              Expanded(
+              const Expanded(
                 child: Text(
                   'Firebase Debug Panel',
                   style: TextStyle(
@@ -202,7 +202,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
               const SizedBox(width: AppSpacing.sm),
               GestureDetector(
                 onTap: () => setState(() => _isExpanded = false),
-                child: Icon(Icons.close, color: Colors.white, size: 16),
+                child: const Icon(Icons.close, color: Colors.white, size: 16),
               ),
             ],
           ),
@@ -223,7 +223,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
                 backgroundColor: Colors.blue,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              child: Text('Test Connection', style: TextStyle(fontSize: 12)),
+              child: const Text('Test Connection', style: TextStyle(fontSize: 12)),
             ),
           ),
         ],
@@ -247,7 +247,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
           Expanded(
             child: Text(
               value,
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
               overflow: TextOverflow.ellipsis,
             ),
           ),

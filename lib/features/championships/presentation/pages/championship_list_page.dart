@@ -213,7 +213,7 @@ class ChampionshipCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
-                  Icon(Icons.group, size: 14, color: AppColors.textMuted),
+                  const Icon(Icons.group, size: 14, color: AppColors.textMuted),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.championshipTeamCountOf(
@@ -231,7 +231,7 @@ class ChampionshipCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined,
+                    const Icon(Icons.location_on_outlined,
                         size: 14, color: AppColors.textMuted),
                     const SizedBox(width: AppSpacing.xs),
                     Text(

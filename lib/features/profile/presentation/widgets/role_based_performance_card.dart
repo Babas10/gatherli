@@ -1,11 +1,11 @@
 // Adaptability stats: 3 individual AccentCards — one per role (Carry, Balanced, Weak-Link).
-import "package:flutter/material.dart";
-import "package:play_with_me/core/theme/app_spacing.dart";
-import "package:play_with_me/core/theme/app_text_styles.dart";
-import "package:play_with_me/core/data/models/user_model.dart";
-import "package:play_with_me/core/presentation/widgets/accent_card.dart";
-import "package:play_with_me/core/theme/app_colors.dart";
-import "package:play_with_me/l10n/app_localizations.dart";
+import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/data/models/user_model.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/l10n/app_localizations.dart';
 
 // Gold accent bar, teal win rate text — consistent, minimal palette
 const _kAccentBarColor = AppColors.primary;    // gold left bar

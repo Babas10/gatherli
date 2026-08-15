@@ -94,7 +94,7 @@ class FirebaseService {
 
       // Verify we have a valid app
       if (_app == null) {
-        throw FirebaseInitializationException(
+        throw const FirebaseInitializationException(
           'Failed to obtain Firebase app instance',
         );
       }

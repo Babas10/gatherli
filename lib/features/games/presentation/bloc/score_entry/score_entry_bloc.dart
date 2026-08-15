@@ -111,9 +111,9 @@ class ScoreEntryBloc extends Bloc<ScoreEntryEvent, ScoreEntryState> {
     // Initialize games list with default single-set games (no teams selected)
     final games = List.generate(
       event.count,
-      (index) => GameData(
+      (index) => const GameData(
         numberOfSets: 1,
-        sets: [const SetScoreData()],
+        sets: [SetScoreData()],
         // no teams selected yet
       ),
     );

@@ -472,7 +472,7 @@ class _ChampionshipHeader extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                Icon(Icons.info_outline, size: 14, color: AppColors.textMuted),
+                const Icon(Icons.info_outline, size: 14, color: AppColors.textMuted),
                 const SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: Text(
@@ -1025,7 +1025,7 @@ class _TeamCard extends StatelessWidget {
                   ?.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
-          Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
+          const Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
           const SizedBox(width: AppSpacing.xs),
           Text(
             '${team.memberIds.length}',
@@ -1296,7 +1296,7 @@ class _MatchCard extends StatelessWidget {
                   ),
                   const Spacer(),
                 ] else if (match.scheduledAt != null) ...[
-                  Icon(Icons.schedule, size: 12, color: AppColors.secondary),
+                  const Icon(Icons.schedule, size: 12, color: AppColors.secondary),
                   const SizedBox(width: 3),
                   Text(
                     DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),

@@ -198,7 +198,7 @@ class _OpenBadge extends StatelessWidget {
       ),
       child: Text(
         l10n.open,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: AppColors.success,

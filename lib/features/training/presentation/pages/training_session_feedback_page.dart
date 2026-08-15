@@ -114,7 +114,7 @@ class _TrainingSessionFeedbackPageState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.check_circle_outline,
               size: 80,
               color: AppColors.primary,
@@ -264,7 +264,7 @@ class _TrainingSessionFeedbackPageState
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.privacy_tip_outlined,
                       color: AppColors.secondary,
                       size: 20,
@@ -273,7 +273,7 @@ class _TrainingSessionFeedbackPageState
                     Expanded(
                       child: Text(
                         l10n.feedbackPrivacyNotice,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.secondary,
                           fontSize: 12,
                         ),

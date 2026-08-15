@@ -72,7 +72,7 @@ class AppScaffold extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline, size: 48, color: AppColors.danger),
+              const Icon(Icons.error_outline, size: 48, color: AppColors.danger),
               const SizedBox(height: AppSpacing.lg),
               Text(
                 errorMessage!,

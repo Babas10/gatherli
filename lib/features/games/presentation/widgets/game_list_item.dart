@@ -144,11 +144,11 @@ class GameListItem extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
+          const Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
           const SizedBox(width: AppSpacing.xs),
           Text(
             l10n.pendingVerification,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.secondary,
               fontWeight: FontWeight.bold,
               fontSize: 12,
@@ -217,7 +217,7 @@ class GameListItem extends StatelessWidget {
         ),
         child: Text(
           l10n.onWaitlist,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.warning,
             fontWeight: FontWeight.bold,
             fontSize: 10,
@@ -236,7 +236,7 @@ class GameListItem extends StatelessWidget {
         ),
         child: Text(
           l10n.full,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.danger,
             fontWeight: FontWeight.bold,
             fontSize: 10,
@@ -285,7 +285,7 @@ class GameListItem extends StatelessWidget {
                   value: progress,
                   minHeight: 6,
                   backgroundColor: AppColors.divider,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
               ),
             ],

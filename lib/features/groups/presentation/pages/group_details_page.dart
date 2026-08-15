@@ -865,7 +865,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                   .add(const LoadOlderActivities()),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.secondary,
-                                side: BorderSide(color: AppColors.secondary),
+                                side: const BorderSide(color: AppColors.secondary),
                                 minimumSize: const Size(double.infinity, 44),
                               ),
                               child: Text(l10n.loadOlderActivities),

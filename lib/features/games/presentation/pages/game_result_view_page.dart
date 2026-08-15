@@ -175,7 +175,7 @@ class _EloUpdatesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.trending_up, size: 20, color: AppColors.primary),
+                const Icon(Icons.trending_up, size: 20, color: AppColors.primary),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   l10n.eloRatingChanges,
@@ -344,7 +344,7 @@ class _IndividualGameCard extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '$gameNumber',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColors.secondary,
                         fontSize: 16,
@@ -441,8 +441,8 @@ class _IndividualGameCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
                               '-',
                               style: TextStyle(

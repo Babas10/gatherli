@@ -311,7 +311,7 @@ class _TrainingSessionDetailsPageState
           // Date/Time
           Row(
             children: [
-              Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
+              const Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 DateFormat('MMM dd, yyyy • HH:mm').format(session.startTime),
@@ -323,7 +323,7 @@ class _TrainingSessionDetailsPageState
           // Location
           Row(
             children: [
-              Icon(Icons.location_on, size: 16, color: AppColors.secondary),
+              const Icon(Icons.location_on, size: 16, color: AppColors.secondary),
               const SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: Text(
@@ -341,7 +341,7 @@ class _TrainingSessionDetailsPageState
               final l10n = AppLocalizations.of(context)!;
               return Row(
                 children: [
-                  Icon(Icons.people, size: 16, color: AppColors.secondary),
+                  const Icon(Icons.people, size: 16, color: AppColors.secondary),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.participantsCount(
@@ -572,7 +572,7 @@ class _TrainingSessionDetailsPageState
                         ),
                         child: Text(
                           l10n.you,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.secondary,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,

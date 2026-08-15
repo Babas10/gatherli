@@ -66,11 +66,11 @@ class GameResultBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.emoji_events, size: 16, color: AppColors.success),
+            const Icon(Icons.emoji_events, size: 16, color: AppColors.success),
             const SizedBox(width: AppSpacing.xs),
             Text(
               scoreText,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.success,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,

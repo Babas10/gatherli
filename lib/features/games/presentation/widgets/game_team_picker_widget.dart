@@ -122,11 +122,11 @@ class GameTeamPickerWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     if (isSelected)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 8),
                         child: Icon(
                           Icons.check_circle,
-                          key: const Key('team_combo_selected_icon'),
+                          key: Key('team_combo_selected_icon'),
                           color: AppColors.primary,
                           size: 18,
                         ),
@@ -137,7 +137,7 @@ class GameTeamPickerWidget extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: teamANames,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.secondary,
                               ),
@@ -151,7 +151,7 @@ class GameTeamPickerWidget extends StatelessWidget {
                             ),
                             TextSpan(
                               text: teamBNames,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.secondary,
                               ),
