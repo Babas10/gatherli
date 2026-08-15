@@ -11,6 +11,8 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
+import 'package:play_with_me/core/presentation/widgets/offline_banner.dart';
+import 'package:play_with_me/core/services/connectivity_service.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 
@@ -59,6 +61,19 @@ class AppScaffold extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
+    // Show offline banner at the top when disconnected
+    if (!ConnectivityService.instance.isOnline) {
+      return Column(
+        children: [
+          const OfflineBanner(),
+          Expanded(child: _buildContent(context)),
+        ],
+      );
+    }
+    return _buildContent(context);
+  }
+
+  Widget _buildContent(BuildContext context) {
     if (isLoading) {
       return const Center(
         child: CircularProgressIndicator(color: AppColors.secondary),
