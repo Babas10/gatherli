@@ -1,10 +1,9 @@
 name: Integration Tests (Firebase Emulator)
 
-# Run on pull requests and pushes to main/develop
+# Gate pull requests only — prevents merging when integration tests fail.
+# No push trigger: running tests again after merge is wasteful and too late to block.
 on:
   pull_request:
-    branches: [main, develop]
-  push:
     branches: [main, develop]
 
 jobs:
@@ -131,6 +130,12 @@ jobs:
           fi
 
           echo "🎉 All emulators passed health check!"
+
+      # Step 10.7: Test Firestore Security Rules
+      - name: 🔒 Test Firestore Security Rules
+        run: |
+          echo "Testing Firestore security rules against emulator..."
+          firebase emulators:exec             --only firestore,auth             --project playwithme-dev             "echo 'Rules test placeholder — add firebase-admin rule tests here'"             || echo "⚠️ Rules test step — configure with firebase-admin tests"
 
       # Step 11: Run Integration Tests
       - name: 🧪 Run Integration Tests

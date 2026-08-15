@@ -46,7 +46,7 @@ jobs:
         run: dart run tools/generate_mock_firebase_configs.dart
 
       - name: 📊 Run Static Analysis
-        run: flutter analyze
+        run: flutter analyze --fatal-infos
 
       - name: 🎨 Check Code Formatting
         # Informational only — never fails the build.
@@ -60,11 +60,10 @@ jobs:
       - name: 🧪 Run Unit & Widget Tests
         run: flutter test --coverage --reporter=github --exclude-tags=integration test/unit/ test/widget/
 
-      - name: 📊 Check Coverage Threshold (BLoC + Repository ≥ 60%)
-        # Regression gate: fails if BLoC/Repository coverage drops below 60%.
-        # Current measured coverage: ~62%. Target from CLAUDE.md: 80%.
-        # Raise threshold gradually as test coverage improves.
-        run: bash tools/check_coverage.sh 60
+      - name: 📊 Check Coverage Threshold (BLoC + Repository ≥ 70%)
+        # Regression gate: fails if BLoC/Repository coverage drops below 70%.
+        # Raised from 60% — target is 80% per CLAUDE.md.
+        run: bash tools/check_coverage.sh 70
 
       - name: 📈 Upload Coverage to Codecov
         if: inputs.upload-coverage
