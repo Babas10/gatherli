@@ -356,6 +356,14 @@ class AppTheme {
         color: AppColors.secondary,
       ),
 
+      // ── Icon button — 48x48 minimum touch target for accessibility ─────────────
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          minimumSize: const Size(48, 48),
+          tapTargetSize: MaterialTapTargetSize.padded,
+        ),
+      ),
+
       // ── Icon theme ────────────────────────────────────────────────────────────
       iconTheme: const IconThemeData(color: AppColors.secondary, size: 24),
     );

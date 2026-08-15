@@ -28,6 +28,14 @@ class AppSpacing {
   /// Gap between two sibling widgets in a row/column
   static const double widgetGap = md;
 
+  // ── Icon sizes ───────────────────────────────────────────────────────────────
+  static const double iconXs  = 14;  // tiny inline (badge, tag)
+  static const double iconSm  = 16;  // secondary metadata icons
+  static const double iconMd  = 20;  // standard list tile icons
+  static const double iconLg  = 24;  // primary action icons (AppBar, FAB)
+  static const double iconXl  = 48;  // empty state illustrations
+  static const double iconXxl = 64;  // large empty state icons
+
   // ── Border radii ──────────────────────────────────────────────────────────
   /// Card and dialog corners (matches AppTheme.cardTheme)
   static const double cardRadius = 16;
