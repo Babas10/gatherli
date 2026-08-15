@@ -108,9 +108,7 @@ class PlayWithMeApp extends StatelessWidget {
             repository: sl<LocalePreferencesRepository>(),
           )..add(const LocalePreferencesEvent.loadPreferences()),
         ),
-        BlocProvider<ChampionshipListBloc>(
-          create: (context) => sl<ChampionshipListBloc>(),
-        ),
+        // ChampionshipListBloc is scoped to the Championships tab (see _pages)
       ],
       child: MultiBlocListener(
         listeners: [
@@ -346,7 +344,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: const GroupListPage(),
       ),
       const MyCommunityPage(),
-      const ChampionshipListPage(),
+      BlocProvider<ChampionshipListBloc>(
+        create: (context) => sl<ChampionshipListBloc>(),
+        child: const ChampionshipListPage(),
+      ),
     ];
   }
 
