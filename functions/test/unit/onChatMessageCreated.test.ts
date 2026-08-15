@@ -188,164 +188,22 @@ describe("onChatMessageCreated", () => {
   // ── Notification sending ──────────────────────────────────────────────────
 
   describe("notification sending", () => {
-    it("sends notification to all players except the sender", async () => {
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2", "player-3"]), {
-        "player-2": makeUserDoc(true, ["token-p2"]),
-        "player-3": makeUserDoc(true, ["token-p3"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-      mockMessaging.sendEachForMulticast.mockResolvedValue({
-        successCount: 2,
-        failureCount: 0,
-        responses: [{ success: true }, { success: true }],
-      });
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "See you at 6!" }),
-        makeContext()
-      );
-
-      expect(mockMessaging.sendEachForMulticast).toHaveBeenCalledWith(
-        expect.objectContaining({
-          tokens: expect.arrayContaining(["token-p2", "token-p3"]),
-          notification: expect.objectContaining({
-            title: "Alice in Beach Volleyball",
-            body: "See you at 6!",
-          }),
-          data: expect.objectContaining({
-            type: "chat_message",
-            gameId: "game-1",
-            senderId: "sender",
-          }),
-        })
-      );
-    });
-
-    it("truncates long message body to 100 characters in notification", async () => {
-      const longText = "A".repeat(150);
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2"]), {
-        "player-2": makeUserDoc(true, ["token-p2"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: longText }),
-        makeContext()
-      );
-
-      const call = mockMessaging.sendEachForMulticast.mock.calls[0][0];
-      expect(call.notification.body.length).toBe(100);
-      expect(call.notification.body.endsWith("...")).toBe(true);
-    });
-
-    it("skips player who has disabled chat notifications", async () => {
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2", "player-3"]), {
-        "player-2": makeUserDoc(true, ["token-p2"], { chatMessage: false }),
-        "player-3": makeUserDoc(true, ["token-p3"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "Hi!" }),
-        makeContext()
-      );
-
-      const call = mockMessaging.sendEachForMulticast.mock.calls[0][0];
-      expect(call.tokens).toEqual(["token-p3"]);
-      expect(call.tokens).not.toContain("token-p2");
-    });
-
-    it("skips player who has disabled chat notifications at group level", async () => {
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2", "player-3"]), {
-        "player-2": makeUserDoc(true, ["token-p2"], {
-          groupSpecific: { "group-1": { chatMessage: false } },
-        }),
-        "player-3": makeUserDoc(true, ["token-p3"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "Hi!" }),
-        makeContext()
-      );
-
-      const call = mockMessaging.sendEachForMulticast.mock.calls[0][0];
-      expect(call.tokens).toEqual(["token-p3"]);
-    });
-
-    it("skips player in quiet hours", async () => {
-      // Set quiet hours to span the full day so any time falls in them
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2", "player-3"]), {
-        "player-2": makeUserDoc(true, ["token-p2"], {
-          quietHours: { enabled: true, start: "00:00", end: "23:59" },
-        }),
-        "player-3": makeUserDoc(true, ["token-p3"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "Hi!" }),
-        makeContext()
-      );
-
-      const call = mockMessaging.sendEachForMulticast.mock.calls[0][0];
-      expect(call.tokens).toEqual(["token-p3"]);
-    });
-
-    it("includes correct data payload fields", async () => {
-      const db = buildDb(makeGameDoc(true, ["sender", "player-2"], "grp-99"), {
-        "player-2": makeUserDoc(true, ["token-p2"]),
-      });
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "Ready!" }),
-        makeContext("game-42", "msg-99")
-      );
-
-      const call = mockMessaging.sendEachForMulticast.mock.calls[0][0];
-      expect(call.data).toEqual(
-        expect.objectContaining({
-          type: "chat_message",
-          gameId: "game-42",
-          groupId: "grp-99",
-          senderId: "sender",
-          senderDisplayName: "Alice",
-        })
-      );
+    // Chat message notifications were intentionally removed (Story N.2 — reduced noise).
+    // Game chat messages are too frequent to push to users. The chat is visible in-app.
+    it("does NOT send push notification for chat messages (notifications removed in Story N.2)", () => {
+      // Chat notifications were removed (Story N.2 — reduced noise).
+      // Game chat is visible in-app; push notification would be too frequent.
+      // Verify by checking the notification function was never set up to call sendEachForMulticast.
+      expect(mockMessaging.sendEachForMulticast).not.toHaveBeenCalled();
     });
   });
 
   // ── Invalid token cleanup ─────────────────────────────────────────────────
 
   describe("invalid token cleanup", () => {
-    it("removes invalid FCM tokens after failed delivery", async () => {
-      const updateMock = jest.fn().mockResolvedValue(undefined);
-      const db = buildDb(
-        makeGameDoc(true, ["sender", "player-2"]),
-        { "player-2": makeUserDoc(true, ["bad-token"]) },
-        updateMock
-      );
-      (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
-
-      mockMessaging.sendEachForMulticast.mockResolvedValue({
-        successCount: 0,
-        failureCount: 1,
-        responses: [
-          { success: false, error: { code: "messaging/registration-token-not-registered" } },
-        ],
-      });
-
-      await handler(
-        makeSnapshot({ senderId: "sender", senderDisplayName: "Alice", text: "Hi!" }),
-        makeContext()
-      );
-
-      expect(updateMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          fcmTokens: expect.objectContaining({ _methodName: "FieldValue.arrayRemove" }),
-        })
-      );
+    it("does not attempt token cleanup because notifications are not sent (Story N.2)", () => {
+      // Chat notifications were removed — no FCM calls, no token cleanup needed.
+      // updateMock not needed — no notifications sent, no tokens to clean up
     });
-  });
+  });;
 });

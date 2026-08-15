@@ -99,29 +99,26 @@ describe("createChampionship", () => {
     });
   });
 
-  // ── Admin check ────────────────────────────────────────────────────────────
+  // ── Access control ─────────────────────────────────────────────────────────
+  // Championship creation is open to all authenticated users (Story 30.27).
+  // The original admin-only gate was removed so players can create their own leagues.
 
-  describe("admin permission", () => {
-    it("throws permission-denied when caller is not a platform admin", async () => {
-      mockAdminDocGet.mockResolvedValue({ exists: false });
+  describe("access control", () => {
+    it("allows any authenticated user to create a championship", async () => {
+      const result = await createChampionshipHandler(
+        { title: "Summer Championship", registrationDeadline: futureDate() },
+        makeContext("regular-user")
+      );
+      expect(result).toEqual({ championshipId: "champ-123" });
+    });
 
+    it("throws unauthenticated when no auth context", async () => {
       await expect(
         createChampionshipHandler(
           { title: "Summer Championship", registrationDeadline: futureDate() },
-          makeContext("regular-user")
+          { auth: undefined } as any
         )
-      ).rejects.toMatchObject({ code: "permission-denied" });
-    });
-
-    it("proceeds when caller is a platform admin", async () => {
-      mockAdminDocGet.mockResolvedValue({ exists: true });
-
-      const result = await createChampionshipHandler(
-        { title: "Summer Championship", registrationDeadline: futureDate() },
-        makeContext("admin-uid")
-      );
-
-      expect(result).toEqual({ championshipId: "champ-123" });
+      ).rejects.toMatchObject({ code: "unauthenticated" });
     });
   });
 

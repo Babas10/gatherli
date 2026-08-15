@@ -23,6 +23,10 @@ jest.mock("firebase-functions", () => {
   };
   fn.region = jest.fn(() => fn);
   fn.runWith = jest.fn(() => fn);
+  // Add firestore mock so championshipNotifications.ts (transitively imported) doesn't crash
+  fn.firestore = {
+    document: jest.fn(() => ({ onUpdate: jest.fn(), onCreate: jest.fn() })),
+  };
   return fn;
 });
 

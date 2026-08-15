@@ -1109,7 +1109,8 @@ export const onGameResultSubmitted = functions.region('europe-west6').firestore
 
         const prefs = playerData.notificationPreferences || {};
 
-        const shouldNotify = prefs.games !== false;
+        const groupMuted = groupId ? prefs.groupSpecific?.[groupId] === false : false;
+        const shouldNotify = !groupMuted && prefs.games !== false;
 
         if (!shouldNotify) {
           functions.logger.debug("Player has disabled game result notifications", {
