@@ -201,6 +201,36 @@ jobs:
       - name: 🔧 Generate Mock Firebase Configs
         run: dart run tools/generate_mock_firebase_configs.dart
 
+      - name: 📄 Generate mock google-services.json (dev flavor)
+        # The real google-services.json is never committed (it's a secret).
+        # For build verification we only need the file to exist with valid structure —
+        # the app won't actually connect to Firebase in this job.
+        run: |
+          mkdir -p android/app/src/dev
+          cat > android/app/src/dev/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "gatherli-dev",
+              "storage_bucket": "gatherli-dev.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                  "android_client_info": {
+                    "package_name": "org.gatherli.app.dev"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [{ "current_key": "mock-api-key-for-build-verification-only" }],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
       - name: 🏗️ Build Android APK (dev debug — no signing)
         # --android-skip-build-dependency-validation suppresses the Kotlin version warning
         # Retry once on failure (Maven Central occasionally rate-limits GitHub Actions IPs)
