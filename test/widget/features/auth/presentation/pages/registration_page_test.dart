@@ -1,6 +1,7 @@
 // Widget tests for RegistrationPage verifying UI rendering and user interactions.
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -143,7 +144,7 @@ void main() {
 
         // Tap create account button without filling fields
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -173,7 +174,7 @@ void main() {
         await tester.pump();
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -215,7 +216,7 @@ void main() {
         await tester.pump();
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -280,7 +281,7 @@ void main() {
 
           // Tap create account button
           final createButton = find.widgetWithText(
-            ElevatedButton,
+            FilledButton,
             'Create Account',
           );
           await tester.ensureVisible(createButton);
@@ -308,7 +309,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -340,10 +341,10 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
-        final elevatedButton = tester.widget<ElevatedButton>(
-          find.byType(ElevatedButton),
+        final filledButton = tester.widget<FilledButton>(
+          find.byType(FilledButton),
         );
-        expect(elevatedButton.onPressed, isNull);
+        expect(filledButton.onPressed, isNull);
       });
     });
 
@@ -384,7 +385,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 

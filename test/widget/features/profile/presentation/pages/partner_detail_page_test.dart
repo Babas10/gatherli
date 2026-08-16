@@ -1,6 +1,7 @@
 // Widget tests for PartnerDetailPage verifying UI rendering and state transitions.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -222,7 +223,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
-        expect(icon.color, Colors.red);
+        expect(icon.color, AppColors.danger);
       });
     });
 

@@ -122,7 +122,7 @@ void main() {
             const SizedBox(height: 16),
             Text(message),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: () {}, child: const Text('Retry')),
+            FilledButton(onPressed: () {}, child: const Text('Retry')),
           ],
         ),
       ),
@@ -311,7 +311,7 @@ void main() {
         );
 
         expect(find.text('Retry'), findsOneWidget);
-        expect(find.byType(ElevatedButton), findsOneWidget);
+        expect(find.byType(FilledButton), findsOneWidget);
       });
 
       testWidgets('displays different error messages', (tester) async {

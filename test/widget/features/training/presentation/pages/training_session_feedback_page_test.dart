@@ -2,6 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -271,7 +272,7 @@ void main() {
         await tester.pump();
 
         await tester.tap(
-          find.widgetWithText(ElevatedButton, 'Submit Feedback'),
+          find.widgetWithText(FilledButton, 'Submit Feedback'),
         );
         await tester.pump();
 
@@ -358,7 +359,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Scroll to submit button area
-        final submitButton = find.byType(ElevatedButton);
+        final submitButton = find.byType(FilledButton);
         await tester.ensureVisible(submitButton);
         await tester.pump();
 
@@ -375,12 +376,12 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Scroll to submit button
-        final submitButton = find.byType(ElevatedButton);
+        final submitButton = find.byType(FilledButton);
         await tester.ensureVisible(submitButton);
         await tester.pump();
 
-        final elevatedButton = tester.widget<ElevatedButton>(submitButton);
-        expect(elevatedButton.onPressed, isNull);
+        final filledButton = tester.widget<FilledButton>(submitButton);
+        expect(filledButton.onPressed, isNull);
       });
     });
 
@@ -422,7 +423,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.green);
+        expect(snackBar.backgroundColor, AppColors.success);
 
         // Advance past the 2-second navigation delay to clean up pending timer
         await tester.pump(const Duration(seconds: 3));
@@ -464,7 +465,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
   });

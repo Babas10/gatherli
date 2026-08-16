@@ -147,8 +147,9 @@ void main() {
           )),
       );
 
-      final card = tester.widget<Card>(find.byType(Card));
-      expect(card.color, AppColors.primary.withValues(alpha: 0.1));
+      // Background tinting was removed (PE-4: all game cards use same cardBackground)
+      // The card still exists — just verify it renders correctly
+      expect(find.byType(Card), findsOneWidget);
     });
 
     testWidgets('displays RSVP badge when not completed/cancelled', (

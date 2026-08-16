@@ -2,6 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -125,7 +126,7 @@ void main() {
 
         // Tap send reset button without entering email
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -144,7 +145,7 @@ void main() {
         await tester.pump();
 
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -161,7 +162,7 @@ void main() {
         await tester.pump();
 
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -186,7 +187,7 @@ void main() {
 
         // Tap send reset button
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -204,7 +205,7 @@ void main() {
 
         // Tap send reset without entering email
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -365,7 +366,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 
@@ -422,7 +423,7 @@ void main() {
         await tester.pump();
 
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -444,7 +445,7 @@ void main() {
         await tester.pump();
 
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);
@@ -461,7 +462,7 @@ void main() {
         await tester.pump();
 
         final sendButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Send Reset Email',
         );
         await tester.tap(sendButton);

@@ -623,13 +623,11 @@ class _SaveButton extends StatelessWidget {
               ),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: FilledButton(
                 onPressed: canSave ? onSave : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey.shade300,
+                  disabledBackgroundColor: AppColors.divider,
                 ),
                 child: Text(
                   canSave

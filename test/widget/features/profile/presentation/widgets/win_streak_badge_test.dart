@@ -1,5 +1,6 @@
 // Widget tests for WinStreakBadge
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/win_streak_badge.dart';
 import '../../../../../helpers/test_app.dart';
@@ -99,7 +100,7 @@ void main() {
       final card = tester.widget<Card>(find.byType(Card));
       expect(
         (card.color as Color).toARGB32(),
-        Colors.green.withValues(alpha: 0.1).toARGB32(),
+        AppColors.success.withValues(alpha: 0.1).toARGB32(),
       );
     });
 
@@ -112,7 +113,7 @@ void main() {
       final card = tester.widget<Card>(find.byType(Card));
       expect(
         (card.color as Color).toARGB32(),
-        Colors.blue.withValues(alpha: 0.1).toARGB32(),
+        AppColors.info.withValues(alpha: 0.1).toARGB32(),
       );
     });
   });

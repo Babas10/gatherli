@@ -2,6 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -466,7 +467,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 

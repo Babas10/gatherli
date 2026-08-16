@@ -182,7 +182,7 @@ void main() {
 
       // Verify the Save Scores button is enabled
       final saveButtonFinder = find.widgetWithText(
-        ElevatedButton,
+        FilledButton,
         'Save Scores',
       );
       expect(saveButtonFinder, findsOneWidget);
@@ -252,7 +252,7 @@ void main() {
 
       // Find the button and tap it
       final saveButtonFinder = find.widgetWithText(
-        ElevatedButton,
+        FilledButton,
         'Save Scores',
       );
       expect(saveButtonFinder, findsOneWidget);

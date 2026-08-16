@@ -19,14 +19,14 @@ void main() {
       await tester.pumpWidget(_wrap(const MixGameBadge()));
 
       final text = tester.widget<Text>(find.text('MIX'));
-      expect(text.style?.color, Colors.purple);
+      expect(text.style?.color, const Color(0xFF9B59B6));
     });
 
     testWidgets('has bold font weight', (tester) async {
       await tester.pumpWidget(_wrap(const MixGameBadge()));
 
       final text = tester.widget<Text>(find.text('MIX'));
-      expect(text.style?.fontWeight, FontWeight.bold);
+      expect(text.style?.fontWeight, FontWeight.w600);
     });
 
     testWidgets('renders as a Container with decoration', (tester) async {

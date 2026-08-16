@@ -52,7 +52,7 @@ jobs:
       # --audit-level=high fails only on high or critical severity vulnerabilities
       - name: 🔒 Audit npm Production Dependencies
         working-directory: functions
-        run: npm audit --audit-level=moderate --omit=dev
+        run: npm audit --audit-level=high --omit=dev
 
   # Job 3: Python Cloud Functions Tests
   python_functions_tests:

@@ -2,6 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -258,7 +259,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.green);
+        expect(snackBar.backgroundColor, AppColors.success);
       });
 
       testWidgets('reloads invitations after accepting', (tester) async {
@@ -350,7 +351,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.orange);
+        expect(snackBar.backgroundColor, AppColors.warning);
       });
 
       testWidgets('reloads invitations after declining', (tester) async {
@@ -409,7 +410,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
 
       testWidgets('reloads invitations after error', (tester) async {

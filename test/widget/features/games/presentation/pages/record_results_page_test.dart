@@ -183,7 +183,7 @@ void main() {
       }
 
       final saveButtonFinder = find.widgetWithText(
-        ElevatedButton,
+        FilledButton,
         'Save Teams',
       );
       await tester.scrollUntilVisible(saveButtonFinder, 500);

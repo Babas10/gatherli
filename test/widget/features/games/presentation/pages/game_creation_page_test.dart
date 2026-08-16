@@ -1,6 +1,7 @@
 // Widget tests for GameCreationPage verifying UI rendering and user interactions.
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -162,7 +163,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Scroll to make button visible
-        final createButton = find.widgetWithText(ElevatedButton, 'Create Game');
+        final createButton = find.widgetWithText(FilledButton, 'Create Game');
         await tester.ensureVisible(createButton);
         await tester.pumpAndSettle();
 
@@ -200,7 +201,7 @@ void main() {
         await tester.pump();
 
         // Scroll to and tap create game button
-        final createButton = find.widgetWithText(ElevatedButton, 'Create Game');
+        final createButton = find.widgetWithText(FilledButton, 'Create Game');
         await tester.ensureVisible(createButton);
         await tester.pumpAndSettle();
         await tester.tap(createButton);
@@ -223,7 +224,7 @@ void main() {
         await tester.pump();
 
         // Tap create game button
-        final createButton = find.widgetWithText(ElevatedButton, 'Create Game');
+        final createButton = find.widgetWithText(FilledButton, 'Create Game');
         await tester.ensureVisible(createButton);
         await tester.pumpAndSettle();
         await tester.tap(createButton);
@@ -271,7 +272,7 @@ void main() {
         await tester.pump();
 
         // Tap create game button
-        final createButton = find.widgetWithText(ElevatedButton, 'Create Game');
+        final createButton = find.widgetWithText(FilledButton, 'Create Game');
         await tester.ensureVisible(createButton);
         await tester.pumpAndSettle();
         await tester.tap(createButton);
@@ -457,7 +458,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Scroll to button
-        final createButton = find.byType(ElevatedButton);
+        final createButton = find.byType(FilledButton);
         await tester.ensureVisible(createButton);
         await tester.pump();
 
@@ -472,12 +473,12 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Scroll to button
-        final createButton = find.byType(ElevatedButton);
+        final createButton = find.byType(FilledButton);
         await tester.ensureVisible(createButton);
         await tester.pump();
 
-        final elevatedButton = tester.widget<ElevatedButton>(createButton);
-        expect(elevatedButton.onPressed, isNull);
+        final filledButton = tester.widget<FilledButton>(createButton);
+        expect(filledButton.onPressed, isNull);
       });
 
       testWidgets('form fields are disabled during loading', (tester) async {
@@ -558,7 +559,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.green);
+        expect(snackBar.backgroundColor, AppColors.success);
 
         // Complete the pending timer from Future.delayed in the source
         await tester.pump(const Duration(milliseconds: 600));
@@ -600,7 +601,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 
