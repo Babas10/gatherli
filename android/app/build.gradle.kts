@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId = "org.gatherli.app"
-        minSdk = flutter.minSdkVersion  // Firebase requires minimum API 23
+        minSdk = 23  // firebase-auth 23.2.1 requires minSdk 23 (was flutter.minSdkVersion which resolves to 16)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
