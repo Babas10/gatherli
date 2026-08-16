@@ -1,8 +1,13 @@
-// Cloud Function to propose a match schedule (Story 30.5 / 30.11).
-// Updates the match with scheduledAt/location, advances status to 'scheduled',
-// and adds a system message to the match coordination chat.
+// Cloud Function to propose a match schedule (Story 30.5 / 30.11 / 30.20).
+// Updates the match with scheduledAt/location/scheduledByTeamId, advances
+// status to 'scheduled', adds a system message to the match coordination chat,
+// and notifies the opposing team (Story 30.20).
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
+import {
+  sendChampionshipNotificationToUsers,
+} from "./championshipNotifications";
 
 // ============================================================================
 // Type Definitions
@@ -115,6 +120,10 @@ export async function proposeMatchScheduleHandler(
     );
   }
 
+  const proposingTeamId = isTeamAMember ? match.teamAId : match.teamBId;
+  const opposingTeamId = isTeamAMember ? match.teamBId : match.teamAId;
+  const opposingMembers: string[] = isTeamAMember ? teamBMembers : teamAMembers;
+
   const proposingTeamData = isTeamAMember
     ? teamASnap.data()
     : teamBSnap.data();
@@ -139,6 +148,7 @@ export async function proposeMatchScheduleHandler(
   const updatePayload: Record<string, unknown> = {
     status: "scheduled",
     scheduledAt: admin.firestore.Timestamp.fromDate(scheduledDate),
+    scheduledByTeamId: proposingTeamId,
   };
   if (data.location !== undefined && data.location !== null) {
     updatePayload.location = data.location;
@@ -164,6 +174,21 @@ export async function proposeMatchScheduleHandler(
     );
   }
 
+  // ── 8. Notify the opposing team ───────────────────────────────────────────
+  // Resolve unused variable warning — opposingTeamId is intentionally stored
+  // for potential future use but the notification uses the members list directly.
+  void opposingTeamId;
+
+  await sendChampionshipNotificationToUsers(db, opposingMembers, {
+    title: "Schedule Proposed",
+    body: `${teamName} proposed a match time. Accept or suggest another.`,
+    data: {
+      type: "championship_match",
+      championshipId: data.championshipId,
+      matchId: data.matchId,
+    },
+  });
+
   functions.logger.info("[proposeMatchSchedule] Schedule proposed", {
     matchId: data.matchId,
     scheduledAt: data.scheduledAt,
@@ -180,4 +205,4 @@ export async function proposeMatchScheduleHandler(
 export const proposeMatchSchedule = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(proposeMatchScheduleHandler);
+  .https.onCall(withLogging('proposeMatchSchedule', proposeMatchScheduleHandler));

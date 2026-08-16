@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "org.gatherli.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId = "org.gatherli.app"
-        minSdk = 23  // Firebase requires minimum API 23
+        minSdk = 23  // firebase-auth 23.2.1 requires minSdk 23 (was flutter.minSdkVersion which resolves to 16)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

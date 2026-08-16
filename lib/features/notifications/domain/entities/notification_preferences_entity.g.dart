@@ -32,6 +32,9 @@ _NotificationPreferencesEntity _$NotificationPreferencesEntityFromJson(
   trainingFeedbackReceived: json['trainingFeedbackReceived'] as bool? ?? true,
   trainingSessionCancelled: json['trainingSessionCancelled'] as bool? ?? true,
   championship: json['championship'] as bool? ?? true,
+  social: json['social'] as bool? ?? true,
+  games: json['games'] as bool? ?? true,
+  training: json['training'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$NotificationPreferencesEntityToJson(
@@ -55,4 +58,7 @@ Map<String, dynamic> _$NotificationPreferencesEntityToJson(
   'trainingFeedbackReceived': instance.trainingFeedbackReceived,
   'trainingSessionCancelled': instance.trainingSessionCancelled,
   'championship': instance.championship,
+  'social': instance.social,
+  'games': instance.games,
+  'training': instance.training,
 };

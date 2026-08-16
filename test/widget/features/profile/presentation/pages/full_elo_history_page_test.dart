@@ -1,9 +1,8 @@
 // Widget tests for FullEloHistoryPage verifying UI rendering and state transitions.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,6 +16,7 @@ import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/profile/presentation/pages/full_elo_history_page.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/best_elo_highlight_card.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/time_period_selector.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
@@ -76,7 +76,7 @@ void main() {
       () => mockInvitationBloc.stream,
     ).thenAnswer((_) => const Stream.empty());
     when(() => mockAuthBloc.state).thenReturn(
-      AuthenticationAuthenticated(
+      const AuthenticationAuthenticated(
         UserEntity(
           uid: 'test-user',
           email: 'test@example.com',
@@ -102,22 +102,13 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
-        child: FullEloHistoryPage(userId: testUserId),
-      ),
-    );
+        child: const FullEloHistoryPage(userId: testUserId),
+      ));
   }
 
   group('FullEloHistoryPage Widget Tests', () {
@@ -171,7 +162,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final icon = tester.widget<Icon>(find.byIcon(Icons.error_outline));
-        expect(icon.color, Colors.red);
+        expect(icon.color, AppColors.danger);
       });
     });
 

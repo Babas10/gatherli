@@ -2,8 +2,8 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
@@ -17,7 +17,7 @@ import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart
 import 'package:play_with_me/features/friends/presentation/bloc/friend_event.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_state.dart';
 import 'package:play_with_me/features/friends/presentation/pages/add_friend_page.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockFriendBloc extends MockBloc<FriendEvent, FriendState>
     implements FriendBloc {}
@@ -42,14 +42,14 @@ void main() {
   late MockAuthenticationBloc mockAuthBloc;
   late MockInvitationBloc mockInvitationBloc;
 
-  final testUser = UserEntity(
+  const testUser = UserEntity(
     uid: 'test-user-123',
     email: 'test@example.com',
     displayName: 'Test User',
     isEmailVerified: true,
   );
 
-  final searchedUser = UserEntity(
+  const searchedUser = UserEntity(
     uid: 'found-user-456',
     email: 'found@example.com',
     displayName: 'Found User',
@@ -72,7 +72,7 @@ void main() {
     when(() => mockFriendBloc.state).thenReturn(const FriendState.initial());
     when(
       () => mockAuthBloc.state,
-    ).thenReturn(AuthenticationAuthenticated(testUser));
+    ).thenReturn(const AuthenticationAuthenticated(testUser));
   });
 
   tearDown(() {
@@ -81,23 +81,14 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<FriendBloc>.value(value: mockFriendBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
         ],
         child: const AddFriendPage(),
-      ),
-    );
+      ));
   }
 
   group('AddFriendPage Widget Tests', () {
@@ -331,7 +322,7 @@ void main() {
     group('Search Results', () {
       testWidgets('displays search result when user found', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: false,
@@ -347,7 +338,7 @@ void main() {
 
       testWidgets('displays result for already friends', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: true,
             hasPendingRequest: false,
@@ -363,7 +354,7 @@ void main() {
 
       testWidgets('displays result for pending request sent', (tester) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: true,
@@ -382,7 +373,7 @@ void main() {
         tester,
       ) async {
         when(() => mockFriendBloc.state).thenReturn(
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: searchedUser,
             isFriend: false,
             hasPendingRequest: true,
@@ -476,7 +467,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 
@@ -485,7 +476,7 @@ void main() {
         tester,
       ) async {
         // Start with searchResult so _lastSearchSnapshot is captured on initial build
-        final searchResultState = FriendState.searchResult(
+        const searchResultState = FriendState.searchResult(
           user: searchedUser,
           isFriend: false,
           hasPendingRequest: false,

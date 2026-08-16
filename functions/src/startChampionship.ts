@@ -2,6 +2,8 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { generateRoundRobinFixtures } from "./roundRobinFixtures";
+import { sendChampionshipNotificationToUsers } from "./championshipNotifications";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -176,10 +178,33 @@ export async function startChampionshipHandler(
     matchesCreated: fixtures.length,
   });
 
+  // ── 7. Notify all registered team members (non-fatal) ─────────────────────
+  try {
+    const allMemberIds = teamsSnap.docs.flatMap(
+      (doc) => (doc.data().memberIds ?? []) as string[]
+    );
+    const uniqueMemberIds = [...new Set(allMemberIds)];
+
+    await sendChampionshipNotificationToUsers(db, uniqueMemberIds, {
+      title: "Championship started! 🏐",
+      body: "Your championship is now active. Start coordinating your first matches.",
+      data: {
+        type: "championship",
+        championshipId: data.championshipId,
+      },
+    });
+  } catch (notifErr) {
+    // Non-fatal — the championship is already started.
+    functions.logger.error("[startChampionship] Notification failed (non-fatal)", {
+      notifErr,
+      championshipId: data.championshipId,
+    });
+  }
+
   return { matchesCreated: fixtures.length };
 }
 
 export const startChampionship = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 60, memory: "256MB" })
-  .https.onCall(startChampionshipHandler);
+  .https.onCall(withLogging('startChampionship', startChampionshipHandler));

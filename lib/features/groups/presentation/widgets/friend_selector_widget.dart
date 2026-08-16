@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -122,7 +124,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
               ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
 
         // Description
         Text(
@@ -131,7 +133,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
             context,
           ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
 
         // Content — expands to fill the space above the Send button
         Expanded(
@@ -158,19 +160,19 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
 
   Widget _buildErrorState() {
     return Card(
-      color: Colors.red.shade50,
+      color: AppColors.danger,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Icon(Icons.error_outline, color: Colors.red.shade700, size: 48),
-            const SizedBox(height: 8),
+            const Icon(Icons.error_outline, color: AppColors.danger, size: 48),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               _errorMessage!,
-              style: TextStyle(color: Colors.red.shade900),
+              style: const TextStyle(color: AppColors.danger),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             OutlinedButton.icon(
               onPressed: _loadFriends,
               icon: const Icon(Icons.refresh),
@@ -185,12 +187,12 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
   Widget _buildEmptyState() {
     return Card(
       color: AppColors.primary.withValues(alpha: 0.2),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Icon(Icons.people_outline, color: AppColors.secondary, size: 48),
-            const SizedBox(height: 8),
+            SizedBox(height: AppSpacing.sm),
             Text(
               'No Friends Yet',
               style: TextStyle(
@@ -199,7 +201,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: AppSpacing.xs),
             Text(
               'Add friends to invite them to groups',
               style: TextStyle(color: AppColors.secondary),
@@ -224,21 +226,21 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 onPressed: _selectedFriendIds.length == _friends!.length
                     ? null
                     : _selectAll,
-                icon: Icon(
+                icon: const Icon(
                   Icons.check_box,
                   size: 18,
                   color: AppColors.secondary,
                 ),
-                label: Text(
+                label: const Text(
                   'Select All',
                   style: TextStyle(color: AppColors.secondary),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               TextButton.icon(
                 onPressed: _selectedFriendIds.isEmpty ? null : _clearAll,
-                icon: Icon(Icons.clear, size: 18, color: AppColors.secondary),
-                label: Text(
+                icon: const Icon(Icons.clear, size: 18, color: AppColors.secondary),
+                label: const Text(
                   'Clear All',
                   style: TextStyle(color: AppColors.secondary),
                 ),
@@ -264,23 +266,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 if (isInvited) {
                   // Show green tick — already invited, not selectable
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: AppColors.primary.withValues(
-                        alpha: 0.25,
-                      ),
-                      backgroundImage: friend.photoUrl != null
-                          ? NetworkImage(friend.photoUrl!)
-                          : null,
-                      child: friend.photoUrl == null
-                          ? Text(
-                              friend.displayNameOrEmail[0].toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.secondary,
-                              ),
-                            )
-                          : null,
-                    ),
+                    leading: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
                     title: Text(
                       friend.displayNameOrEmail,
                       style: TextStyle(
@@ -299,7 +285,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                         : null,
                     trailing: const Icon(
                       Icons.check_circle,
-                      color: Colors.green,
+                      color: AppColors.success,
                       size: 28,
                     ),
                   );
@@ -328,21 +314,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                           ),
                         )
                       : null,
-                  secondary: CircleAvatar(
-                    backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-                    backgroundImage: friend.photoUrl != null
-                        ? NetworkImage(friend.photoUrl!)
-                        : null,
-                    child: friend.photoUrl == null
-                        ? Text(
-                            friend.displayNameOrEmail[0].toUpperCase(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.secondary,
-                            ),
-                          )
-                        : null,
-                  ),
+                  secondary: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
                   controlAffinity: ListTileControlAffinity.trailing,
                 );
               },

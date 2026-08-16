@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
-import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 /// A horizontal selector for choosing time periods (Story 302.3).
@@ -41,7 +41,7 @@ class TimePeriodSelector extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: TimePeriod.values.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, index) {
           final period = TimePeriod.values[index];
           final isSelected = period == selectedPeriod;
@@ -71,8 +71,6 @@ class _PeriodChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
@@ -80,15 +78,6 @@ class _PeriodChip extends StatelessWidget {
         label: Text(label),
         selected: isSelected,
         onSelected: (_) => onTap(),
-        backgroundColor: theme.colorScheme.surface,
-        selectedColor: theme.colorScheme.primary,
-        checkmarkColor: AppColors.secondary,
-        labelStyle: TextStyle(
-          color: isSelected
-              ? theme.colorScheme.onPrimary
-              : theme.colorScheme.onSurface,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-        ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
     );

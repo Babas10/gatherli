@@ -2,6 +2,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/data/models/user_ranking.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -27,11 +28,11 @@ class RankingStatsCards extends StatelessWidget {
           return Column(
             children: [
               _GlobalRankCard(ranking: ranking),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _PercentileCard(ranking: ranking),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _FriendsRankCard(ranking: ranking),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _StreakCard(currentStreak: currentStreak),
             ],
           );
@@ -186,7 +187,7 @@ class _RankingStatCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           customIcon ?? Icon(icon, size: 18, color: iconColor),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(

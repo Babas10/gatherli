@@ -1,6 +1,7 @@
-// Cloud Function for creating championships — admin-only callable (Story 30.2)
+// Cloud Function for creating championships — any authenticated user (Story 30.2, updated)
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -9,8 +10,12 @@ import * as admin from "firebase-admin";
 interface CreateChampionshipRequest {
   title: string;
   registrationDeadline: string; // ISO 8601 date
+  startDate?: string; // ISO 8601 date — when matches begin
+  endDate?: string; // ISO 8601 date — last day of the championship
   country?: string; // ISO 3166-1 alpha-2
   region?: string;
+  genderCategory?: "male" | "female"; // null = no restriction
+  maxTeams?: number; // allowed: 4, 6, 8, 10 — default 10
 }
 
 interface CreateChampionshipResponse {
@@ -20,16 +25,6 @@ interface CreateChampionshipResponse {
 // ============================================================================
 // Helper Functions
 // ============================================================================
-
-/**
- * Checks whether the given uid is a platform admin.
- * Looks up the `platform_admins/{uid}` document — if it exists the caller is an admin.
- */
-async function isPlatformAdmin(uid: string): Promise<boolean> {
-  const db = admin.firestore();
-  const adminDoc = await db.collection("platform_admins").doc(uid).get();
-  return adminDoc.exists;
-}
 
 /**
  * Validates the championship title.
@@ -92,20 +87,19 @@ export async function createChampionshipHandler(
   });
 
   // ========================================
-  // 2. Admin Permission Check
+  // 2. Input Validation
   // ========================================
-  const adminCheck = await isPlatformAdmin(userId);
-  if (!adminCheck) {
-    functions.logger.warn("Non-admin attempted to create championship", { userId });
+  const allowedMaxTeams = [4, 6, 8, 10];
+  const maxTeams = data?.maxTeams ?? 10;
+  const teamSize = 2; // beach volleyball is always 2 players per team
+
+  if (!allowedMaxTeams.includes(maxTeams)) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "Only platform admins can create championships"
+      "invalid-argument",
+      `maxTeams must be one of: ${allowedMaxTeams.join(", ")}`
     );
   }
 
-  // ========================================
-  // 3. Input Validation
-  // ========================================
   if (!data || !data.title || !data.registrationDeadline) {
     throw new functions.https.HttpsError(
       "invalid-argument",
@@ -124,23 +118,32 @@ export async function createChampionshipHandler(
   }
 
   // ========================================
-  // 4. Create Championship Document
+  // 3. Create Championship Document
   // ========================================
   const db = admin.firestore();
 
   try {
+    const startDate = data.startDate ? new Date(data.startDate) : null;
+    const endDate = data.endDate ? new Date(data.endDate) : null;
+
+    // Round-robin: N teams → N-1 rounds, N/2 matches per round.
+    const totalRounds = maxTeams - 1;
+
     const championshipData = {
       title: data.title.trim(),
       status: "registration",
-      maxTeams: 10,
-      teamSize: 2,
+      maxTeams,
+      teamSize,
       adminIds: [userId],
       currentRound: 0,
-      totalRounds: 9,
+      totalRounds,
       teamsCount: 0,
       registrationDeadline: admin.firestore.Timestamp.fromDate(deadline),
+      startDate: startDate ? admin.firestore.Timestamp.fromDate(startDate) : null,
+      endDate: endDate ? admin.firestore.Timestamp.fromDate(endDate) : null,
       country: data.country?.toUpperCase() ?? null,
       region: data.region?.trim() ?? null,
+      genderCategory: data.genderCategory ?? null,
       createdBy: userId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
@@ -163,11 +166,11 @@ export async function createChampionshipHandler(
 }
 
 /**
- * Creates a new championship. Only platform admins may call this function.
+ * Creates a new championship. Any authenticated user may call this function.
+ * The caller becomes the championship admin (stored in adminIds and createdBy).
  *
  * Security:
  * - Validates authentication
- * - Validates caller is a platform admin (platform_admins/{uid} doc must exist)
  * - Validates all input parameters
  * - Uses Admin SDK to write to Firestore (bypasses security rules)
  */
@@ -177,4 +180,4 @@ export const createChampionship = functions
     timeoutSeconds: 30,
     memory: "256MB",
   })
-  .https.onCall(createChampionshipHandler);
+  .https.onCall(withLogging('createChampionship', createChampionshipHandler));

@@ -99,8 +99,16 @@ class NotificationService {
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
-    // Handle notification taps (app opened from terminated state)
+    // Handle notification taps when the app is in the background.
     FirebaseMessaging.onMessageOpenedApp.listen(onMessageTapped);
+
+    // Handle notification taps when the app was terminated (cold-start from
+    // a notification). getInitialMessage() returns the message that opened the
+    // app or null if the app was launched normally.
+    final initialMessage = await _fcm.getInitialMessage();
+    if (initialMessage != null) {
+      onMessageTapped(initialMessage);
+    }
 
     // Handle background messages
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);

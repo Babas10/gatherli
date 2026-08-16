@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -25,7 +27,7 @@ class FeedbackListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Anonymous avatar
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundColor: AppColors.primary,
                   radius: 18,
                   child: Icon(
@@ -34,7 +36,7 @@ class FeedbackListItem extends StatelessWidget {
                     size: 18,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
 
                 // Name + secondary line (timestamp + private badge)
                 Expanded(
@@ -54,22 +56,19 @@ class FeedbackListItem extends StatelessWidget {
                         children: [
                           Text(
                             timeago.format(feedback.submittedAt),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: AppColors.textMuted,
-                            ),
+                            style: AppTextStyles.caption,
                           ),
-                          const SizedBox(width: 8),
-                          Row(
+                          const SizedBox(width: AppSpacing.sm),
+                          const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.privacy_tip_outlined,
                                 size: 11,
                                 color: AppColors.textMuted,
                               ),
-                              const SizedBox(width: 3),
-                              const Text(
+                              SizedBox(width: 3),
+                              Text(
                                 'Private',
                                 style: TextStyle(
                                   fontSize: 11,
@@ -102,7 +101,7 @@ class FeedbackListItem extends StatelessWidget {
                         size: 14,
                         color: AppColors.primary,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       Text(
                         feedback.averageRating.toStringAsFixed(1),
                         style: const TextStyle(
@@ -181,7 +180,7 @@ class FeedbackListItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 14, color: AppColors.secondary),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppSpacing.xs),
         Text(
           rating.toString(),
           style: const TextStyle(
@@ -195,10 +194,10 @@ class FeedbackListItem extends StatelessWidget {
           '★',
           style: TextStyle(fontSize: 11, color: AppColors.primary),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppSpacing.xs),
         Text(
           label,
-          style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+          style: AppTextStyles.caption,
         ),
       ],
     );

@@ -2,8 +2,7 @@
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,6 +16,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/invitations/presentation/pages/pending_invitations_page.dart';
 import 'package:play_with_me/features/invitations/presentation/widgets/invitation_tile.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockInvitationBloc extends MockBloc<InvitationEvent, InvitationState>
     implements InvitationBloc {}
@@ -37,7 +37,7 @@ void main() {
   late MockInvitationBloc mockInvitationBloc;
   late MockAuthenticationBloc mockAuthBloc;
 
-  final testUser = UserEntity(
+  const testUser = UserEntity(
     uid: 'test-user-123',
     email: 'test@example.com',
     displayName: 'Test User',
@@ -80,7 +80,7 @@ void main() {
     when(() => mockInvitationBloc.state).thenReturn(const InvitationInitial());
     when(
       () => mockAuthBloc.state,
-    ).thenReturn(AuthenticationAuthenticated(testUser));
+    ).thenReturn(const AuthenticationAuthenticated(testUser));
   });
 
   tearDown(() {
@@ -89,22 +89,13 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
         child: const PendingInvitationsPage(),
-      ),
-    );
+      ));
   }
 
   group('PendingInvitationsPage Widget Tests', () {
@@ -268,7 +259,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.green);
+        expect(snackBar.backgroundColor, AppColors.success);
       });
 
       testWidgets('reloads invitations after accepting', (tester) async {
@@ -360,7 +351,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.orange);
+        expect(snackBar.backgroundColor, AppColors.warning);
       });
 
       testWidgets('reloads invitations after declining', (tester) async {
@@ -419,7 +410,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
 
       testWidgets('reloads invitations after error', (tester) async {
@@ -494,21 +485,12 @@ void main() {
         ).thenReturn(InvitationsLoaded(invitations: [testInvitation1]));
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: MultiBlocProvider(
+          testApp(child: MultiBlocProvider(
               providers: [
                 BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
               ],
               child: PendingInvitationsPage(blocOverride: overrideBloc),
-            ),
-          ),
+            )),
         );
         await tester.pump();
 

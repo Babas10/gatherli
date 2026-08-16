@@ -1,17 +1,11 @@
 // Validates FirestoreNotificationRepository handles preferences correctly
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/notifications/data/repositories/firestore_notification_repository.dart';
 import 'package:play_with_me/features/notifications/domain/entities/notification_preferences_entity.dart';
-
-class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
-
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockUser extends Mock implements User {}
+import '../../../../../helpers/mocks.dart';
 
 // ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock

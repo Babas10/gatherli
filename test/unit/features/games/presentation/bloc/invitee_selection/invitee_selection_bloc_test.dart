@@ -5,15 +5,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/invitee_selection/invitee_selection_state.dart';
-
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../../helpers/mocks.dart';
 
 UserEntity _makeUserEntity(String uid, {String? displayName}) => UserEntity(
       uid: uid,
@@ -181,13 +177,13 @@ void main() {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
         'adds group to selectedGroupIds and its members to selectedIds',
         build: () => makeBloc(),
-        seed: () => InviteeSelectionLoaded(
-          friends: const [],
+        seed: () => const InviteeSelectionLoaded(
+          friends: [],
           groups: [
             InvitableGroup(
               id: 'group-1',
               name: 'Team A',
-              members: const [InvitableUser(uid: 'member-a')],
+              members: [InvitableUser(uid: 'member-a')],
             ),
           ],
         ),
@@ -204,16 +200,16 @@ void main() {
       blocTest<InviteeSelectionBloc, InviteeSelectionState>(
         'removes group from selectedGroupIds when already selected',
         build: () => makeBloc(),
-        seed: () => InviteeSelectionLoaded(
-          friends: const [],
+        seed: () => const InviteeSelectionLoaded(
+          friends: [],
           groups: [
             InvitableGroup(
               id: 'group-1',
               name: 'Team A',
-              members: const [InvitableUser(uid: 'member-a')],
+              members: [InvitableUser(uid: 'member-a')],
             ),
           ],
-          selectedGroupIds: const {'group-1'},
+          selectedGroupIds: {'group-1'},
         ),
         act: (bloc) => bloc.add(const ToggleGroup(groupId: 'group-1')),
         expect: () => [

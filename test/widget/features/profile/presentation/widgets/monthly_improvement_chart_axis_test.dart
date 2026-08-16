@@ -1,12 +1,11 @@
 // Tests MonthlyImprovementChart axis lines visibility (Story 302.4.2).
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/monthly_improvement_chart.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   /// Helper to create test rating history
@@ -31,22 +30,13 @@ void main() {
       final history = createHistory([1600, 1625, 1650]);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1650,
               timePeriod: TimePeriod.thirtyDays,
             ),
-          ),
-        ),
+          )),
       );
 
       final chart = tester.widget<LineChart>(find.byType(LineChart));
@@ -64,22 +54,13 @@ void main() {
       final history = createHistory([1600, 1625, 1650]);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1650,
               timePeriod: TimePeriod.thirtyDays,
             ),
-          ),
-        ),
+          )),
       );
 
       final chart = tester.widget<LineChart>(find.byType(LineChart));
@@ -97,16 +78,9 @@ void main() {
       final history = createHistory([1600, 1625, 1650]);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
+        testApp(
           theme: ThemeData.light(),
-          home: Scaffold(
+          child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1650,
@@ -136,22 +110,13 @@ void main() {
       final history = createHistory([1600, 1625, 1650]);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1650,
               timePeriod: TimePeriod.thirtyDays,
             ),
-          ),
-        ),
+          )),
       );
 
       final chart = tester.widget<LineChart>(find.byType(LineChart));
@@ -204,22 +169,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: currentYearHistory,
               currentElo: 1650,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       // Verify month labels are present (3 letters, no digits)
@@ -278,22 +234,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: previousYearHistory,
               currentElo: 1650,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       // Verify year label appears (should be the full 4-digit year, not abbreviated)
@@ -355,22 +302,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: mixedYearHistory,
               currentElo: 1650,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final allText = tester.widgetList<Text>(find.byType(Text));
@@ -447,22 +385,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1650,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final chart = tester.widget<LineChart>(find.byType(LineChart));
@@ -493,22 +422,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: history,
               currentElo: 1620,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       // Verify Column widgets are used for label structure

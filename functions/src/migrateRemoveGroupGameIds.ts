@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Response interface for migrateRemoveGroupGameIds Cloud Function
@@ -169,4 +170,4 @@ export const migrateRemoveGroupGameIds = functions
     timeoutSeconds: 540, // Max 9 minutes — enough for large group collections
     memory: "512MB",
   })
-  .https.onCall(migrateRemoveGroupGameIdsHandler);
+  .https.onCall(withLogging('migrateRemoveGroupGameIds', migrateRemoveGroupGameIdsHandler));

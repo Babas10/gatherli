@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
-import 'package:play_with_me/core/presentation/bloc/group/group_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_event.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
@@ -17,23 +16,12 @@ import 'package:play_with_me/features/groups/presentation/pages/group_list_page.
 import 'package:play_with_me/features/groups/presentation/widgets/empty_group_list.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/group_list_item.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:play_with_me/features/profile/domain/entities/locale_preferences_entity.dart';
 import '../../../../helpers/test_helpers.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mock classes
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
-
-class MockGroupBloc extends Mock implements GroupBloc {}
-
-class MockInvitationBloc extends Mock implements InvitationBloc {}
 
 // Fakes for mocktail
-class FakeGroupEvent extends Fake implements GroupEvent {}
-
-class FakeGroupState extends Fake implements GroupState {}
-
-class FakeLocalePreferencesEntity extends Fake
-    implements LocalePreferencesEntity {}
 
 void main() {
   late MockAuthenticationBloc mockAuthBloc;
@@ -41,6 +29,7 @@ void main() {
   late MockInvitationBloc mockInvitationBloc;
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeGroupEvent());
     registerFallbackValue(FakeGroupState());
     registerFallbackValue(FakeLocalePreferencesEntity());

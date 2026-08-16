@@ -561,7 +561,7 @@ void main() {
     test('Feedback is anonymous (no direct user ID stored)', () async {
       await createTestSessionWithGroup();
 
-      final participantHash = 'anonymous_hash_123';
+      const participantHash = 'anonymous_hash_123';
 
       final feedbackId = await FirebaseEmulatorHelper.createTestFeedback(
         trainingSessionId: sessionId,

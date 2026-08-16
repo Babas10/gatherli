@@ -6,10 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitation_model.dart';
 import 'package:play_with_me/core/data/repositories/firestore_invitation_repository.dart';
-
-class MockFirebaseFunctions extends Mock implements FirebaseFunctions {}
-
-class MockHttpsCallable extends Mock implements HttpsCallable {}
+import '../../../../helpers/mocks.dart';
 
 class MockHttpsCallableResult extends Mock implements HttpsCallableResult {}
 

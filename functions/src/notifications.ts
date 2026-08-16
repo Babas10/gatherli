@@ -73,7 +73,7 @@ export const onInvitationCreated = functions.region('europe-west6').firestore
 
       // Check notification preferences
       const prefs = userData.notificationPreferences || {};
-      if (prefs.groupInvitations === false) {
+      if (prefs.social === false) {
         functions.logger.info("User has disabled group invitation notifications", {
           userId,
           invitationId,
@@ -191,123 +191,12 @@ export const onInvitationCreated = functions.region('europe-west6').firestore
  */
 export const onInvitationAccepted = functions.region('europe-west6').firestore
   .document("users/{userId}/invitations/{invitationId}")
-  .onUpdate(async (change, context) => {
-    const before = change.before.data();
-    const after = change.after.data();
-
-    // Only trigger if status changed to 'accepted'
-    if (before.status !== "pending" || after.status !== "accepted") {
-      return null;
-    }
-
-    const inviterId = after.invitedBy;
-    const invitationId = context.params.invitationId;
-    const userId = context.params.userId;
-
-    functions.logger.info("Invitation accepted, processing notification", {
-      inviterId,
-      userId,
-      invitationId,
-      groupId: after.groupId,
-    });
-
-    try{
-      // Get inviter's FCM tokens
-      const inviterDoc = await admin
-        .firestore()
-        .collection("users")
-        .doc(inviterId)
-        .get();
-
-      const inviterData = inviterDoc.data();
-      if (!inviterData) {
-        functions.logger.warn("Inviter not found", {
-          inviterId,
-          invitationId,
-        });
-        return null;
-      }
-
-      const fcmTokens = inviterData.fcmTokens || [];
-      if (fcmTokens.length === 0) {
-        functions.logger.info("Inviter has no FCM tokens", {
-          inviterId,
-          invitationId,
-        });
-        return null;
-      }
-
-      // Check preferences
-      const prefs = inviterData.notificationPreferences || {};
-      if (prefs.invitationAccepted === false) {
-        functions.logger.info("Inviter has disabled invitation accepted notifications", {
-          inviterId,
-          invitationId,
-        });
-        return null;
-      }
-
-      if (isQuietHours(prefs.quietHours)) {
-        functions.logger.info("Inviter is in quiet hours", {
-          inviterId,
-          invitationId,
-        });
-        return null;
-      }
-
-      // Get accepter's details
-      const accepterDoc = await admin
-        .firestore()
-        .collection("users")
-        .doc(context.params.userId)
-        .get();
-
-      const accepterData = accepterDoc.data();
-      const accepterName = accepterData?.displayName || "Someone";
-
-      // Get group details
-      const groupDoc = await admin
-        .firestore()
-        .collection("groups")
-        .doc(after.groupId)
-        .get();
-
-      const groupData = groupDoc.data();
-      const groupName = groupData?.name || "a group";
-
-      // Send notification
-      await admin.messaging().sendEachForMulticast({
-        tokens: fcmTokens,
-        notification: {
-          title: "Invitation Accepted",
-          body: `${accepterName} accepted your invitation to ${groupName}`,
-        },
-        data: {
-          type: "invitation_accepted",
-          groupId: after.groupId,
-          userId: context.params.userId,
-        },
-      });
-
-      functions.logger.info("Invitation accepted notification sent successfully", {
-        inviterId,
-        invitationId,
-        userId,
-      });
-      await writeAnalyticsEvent("invitation_accepted", { groupId: after.groupId });
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending invitation accepted notification", {
-        inviterId,
-        invitationId,
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async (_change, _context) => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    // The inviter sees the new member in the group list — no push needed.
+    return null;
+   
   });
-
 /**
  * Send notification when a new game is created
  * Notifies all group members except the creator
@@ -439,13 +328,12 @@ export const onGameCreated = functions.region('europe-west6').firestore
 
         const prefs = memberData.notificationPreferences || {};
 
-        // Check global and group-specific preferences
-        const groupPrefs = prefs.groupSpecific?.[groupId];
-        const shouldNotify =
-          groupPrefs?.gameCreated !== false && prefs.gameCreated !== false;
+        // Per-group mute: groupSpecific[groupId] === false means this group is muted.
+        const groupMuted = prefs.groupSpecific?.[groupId] === false;
+        const shouldNotify = !groupMuted && prefs.games !== false;
 
         if (!shouldNotify) {
-          functions.logger.debug("Member has disabled game notifications", {
+          functions.logger.debug("Member has disabled game notifications or muted this group", {
             memberId,
             groupId,
             gameId,
@@ -610,350 +498,29 @@ export const onMemberJoined = functions.region('europe-west6').firestore
 
     const groupId = context.params.groupId;
 
-    functions.logger.info("Member joined group, processing notifications", {
-      groupId,
-      newMemberCount: newMembers.length,
-      newMembers,
-    });
-
-    try {
-      // Get all admin IDs
-      const adminIds: string[] = after.adminIds || [];
-
-      for (const newMemberId of newMembers) {
-        // Get new member's details
-        const newMemberDoc = await admin
-          .firestore()
-          .collection("users")
-          .doc(newMemberId)
-          .get();
-
-        const newMemberData = newMemberDoc.data();
-        const memberName = newMemberData?.displayName || "Someone";
-
-        // Notify all admins
-        const adminTokens: string[] = [];
-
-        for (const adminId of adminIds) {
-          const adminDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(adminId)
-            .get();
-
-          const adminData = adminDoc.data();
-          if (!adminData) {
-            continue;
-          }
-
-          const prefs = adminData.notificationPreferences || {};
-          if (prefs.memberJoined === false) {
-            functions.logger.info("Admin has disabled member joined notifications", {
-              adminId,
-              groupId,
-              newMemberId,
-            });
-            continue;
-          }
-
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Admin is in quiet hours", {
-              adminId,
-              groupId,
-              newMemberId,
-            });
-            continue;
-          }
-
-          const tokens = adminData.fcmTokens || [];
-          adminTokens.push(...tokens);
-        }
-
-        if (adminTokens.length > 0) {
-          await admin.messaging().sendEachForMulticast({
-            tokens: adminTokens,
-            notification: {
-              title: "New Member Joined",
-              body: `${memberName} joined ${after.name}`,
-            },
-            data: {
-              type: "member_joined",
-              groupId: groupId,
-              userId: newMemberId,
-            },
-          });
-
-          functions.logger.info("Notified admins about new member", {
-            groupId,
-            newMemberId,
-            adminTokenCount: adminTokens.length,
-          });
-        }
-        await writeAnalyticsEvent("member_joined", { groupId, via: "unknown" });
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending member joined notification", {
-        groupId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    // Admins can see new members in the group view.
+    await writeAnalyticsEvent("member_joined", { groupId, via: "unknown" });
+    return null;
   });
-
 /**
  * Send notification when a member leaves the group
  */
 export const onMemberLeft = functions.region('europe-west6').firestore
   .document("groups/{groupId}")
-  .onUpdate(async (change, context) => {
-    const before = change.before.data();
-    const after = change.after.data();
-
-    const beforeMembers = before.memberIds || [];
-    const afterMembers = after.memberIds || [];
-
-    // Find removed members
-    const removedMembers = beforeMembers.filter((id: string) => !afterMembers.includes(id));
-
-    if (removedMembers.length === 0) {
-      return null;
-    }
-
-    const groupId = context.params.groupId;
-
-    functions.logger.info("Member left group, processing notifications", {
-      groupId,
-      removedMemberCount: removedMembers.length,
-      removedMembers,
-    });
-
-    try{
-      // Get all admin IDs
-      const adminIds: string[] = after.adminIds || [];
-
-      for (const removedMemberId of removedMembers) {
-        // Get removed member's name from before snapshot (might not exist anymore)
-        const removedMemberDoc = await admin
-          .firestore()
-          .collection("users")
-          .doc(removedMemberId)
-          .get();
-
-        const removedMemberData = removedMemberDoc.data();
-        const memberName = removedMemberData?.displayName || "Someone";
-
-        // Notify all admins
-        const adminTokens: string[] = [];
-
-        for (const adminId of adminIds) {
-          const adminDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(adminId)
-            .get();
-
-          const adminData = adminDoc.data();
-          if (!adminData) {
-            continue;
-          }
-
-          const prefs = adminData.notificationPreferences || {};
-          if (prefs.memberLeft === false) {
-            functions.logger.info("Admin has disabled member left notifications", {
-              adminId,
-              groupId,
-              removedMemberId,
-            });
-            continue;
-          }
-
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Admin is in quiet hours", {
-              adminId,
-              groupId,
-              removedMemberId,
-            });
-            continue;
-          }
-
-          const tokens = adminData.fcmTokens || [];
-          adminTokens.push(...tokens);
-        }
-
-        if (adminTokens.length > 0) {
-          await admin.messaging().sendEachForMulticast({
-            tokens: adminTokens,
-            notification: {
-              title: "Member Left",
-              body: `${memberName} left ${after.name}`,
-            },
-            data: {
-              type: "member_left",
-              groupId: groupId,
-              userId: removedMemberId,
-            },
-          });
-
-          functions.logger.info("Notified admins about member leaving", {
-            groupId,
-            removedMemberId,
-            adminTokenCount: adminTokens.length,
-          });
-        }
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending member left notification", {
-        groupId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });
-
 /**
  * Send notification when user's role changes (promoted to/demoted from admin)
  */
 export const onRoleChanged = functions.region('europe-west6').firestore
   .document("groups/{groupId}")
-  .onUpdate(async (change, context) => {
-    const before = change.before.data();
-    const after = change.after.data();
-
-    const beforeAdmins = before.adminIds || [];
-    const afterAdmins = after.adminIds || [];
-
-    // Find newly promoted admins
-    const promoted = afterAdmins.filter((id: string) => !beforeAdmins.includes(id));
-
-    // Find demoted admins
-    const demoted = beforeAdmins.filter((id: string) => !afterAdmins.includes(id));
-
-    const groupId = context.params.groupId;
-
-    if (promoted.length > 0 || demoted.length > 0) {
-      functions.logger.info("Role changes detected, processing notifications", {
-        groupId,
-        promotedCount: promoted.length,
-        demotedCount: demoted.length,
-        promoted,
-        demoted,
-      });
-    }
-
-    try {
-      // Notify promoted users
-      for (const userId of promoted) {
-        const userDoc = await admin.firestore().collection("users").doc(userId).get();
-
-        const userData = userDoc.data();
-        if (!userData) {
-          continue;
-        }
-
-        const prefs = userData.notificationPreferences || {};
-        if (prefs.roleChanged === false) {
-          functions.logger.info("User has disabled role changed notifications", {
-            userId,
-            groupId,
-          });
-          continue;
-        }
-
-        if (isQuietHours(prefs.quietHours)) {
-          functions.logger.debug("User is in quiet hours", {
-            userId,
-            groupId,
-          });
-          continue;
-        }
-
-        const tokens = userData.fcmTokens || [];
-        if (tokens.length > 0) {
-          await admin.messaging().sendEachForMulticast({
-            tokens: tokens,
-            notification: {
-              title: "Promoted to Admin",
-              body: `You are now an admin of ${after.name}`,
-            },
-            data: {
-              type: "role_changed",
-              groupId: groupId,
-              newRole: "admin",
-            },
-          });
-
-          functions.logger.info("Notified user about promotion", {
-            userId,
-            groupId,
-          });
-        }
-      }
-
-      // Notify demoted users
-      for (const userId of demoted) {
-        const userDoc = await admin.firestore().collection("users").doc(userId).get();
-
-        const userData = userDoc.data();
-        if (!userData) {
-          continue;
-        }
-
-        const prefs = userData.notificationPreferences || {};
-        if (prefs.roleChanged === false) {
-          functions.logger.info("User has disabled role changed notifications", {
-            userId,
-            groupId,
-          });
-          continue;
-        }
-
-        if (isQuietHours(prefs.quietHours)) {
-          functions.logger.debug("User is in quiet hours", {
-            userId,
-            groupId,
-          });
-          continue;
-        }
-
-        const tokens = userData.fcmTokens || [];
-        if (tokens.length > 0) {
-          await admin.messaging().sendEachForMulticast({
-            tokens: tokens,
-            notification: {
-              title: "Role Changed",
-              body: `You are no longer an admin of ${after.name}`,
-            },
-            data: {
-              type: "role_changed",
-              groupId: groupId,
-              newRole: "member",
-            },
-          });
-
-          functions.logger.info("Notified user about demotion", {
-            userId,
-            groupId,
-          });
-        }
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending role changed notification", {
-        groupId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });
-
 /**
  * Send notification when a friend request is sent
  */
@@ -1005,7 +572,7 @@ export const onFriendRequestSent = functions.region('europe-west6').firestore
 
       // Check notification preferences
       const prefs = recipientData.notificationPreferences || {};
-      if (prefs.friendRequestReceived === false) {
+      if (prefs.social === false) {
         functions.logger.info("Recipient has disabled friend request notifications", {
           friendshipId,
           recipientId,
@@ -1127,173 +694,37 @@ export const onFriendRequestAccepted = functions.region('europe-west6').firestor
       return null;
     }
 
+    // Notification removed (reduced noise) — friend_accepted push is not
+    // actionable enough to justify a ping. Only friendCount is updated.
+
     const initiatorId = after.initiatorId;
     const recipientId = after.recipientId;
     const friendshipId = context.params.friendshipId;
 
-    functions.logger.info("Friend request accepted, processing notification", {
-      friendshipId,
-      initiatorId,
-      recipientId,
-    });
-
     try {
-      // Get initiator's FCM tokens
-      const initiatorDoc = await admin
-        .firestore()
-        .collection("users")
-        .doc(initiatorId)
-        .get();
-
-      const initiatorData = initiatorDoc.data();
-      if (!initiatorData) {
-        functions.logger.warn("Initiator not found for friend accepted notification", {
-          friendshipId,
-          initiatorId,
-        });
-        return null;
-      }
-
-      const fcmTokens = initiatorData.fcmTokens || [];
-      if (fcmTokens.length === 0) {
-        functions.logger.info("Initiator has no FCM tokens", {
-          friendshipId,
-          initiatorId,
-        });
-        return null;
-      }
-
-      // Check notification preferences
-      const prefs = initiatorData.notificationPreferences || {};
-      if (prefs.friendRequestAccepted === false) {
-        functions.logger.info("Initiator has disabled friend request accepted notifications", {
-          friendshipId,
-          initiatorId,
-        });
-        return null;
-      }
-
-      // Check quiet hours
-      if (isQuietHours(prefs.quietHours)) {
-        functions.logger.info("Initiator is in quiet hours", {
-          friendshipId,
-          initiatorId,
-        });
-        return null;
-      }
-
-      // Get recipient details
-      const recipientDoc = await admin
-        .firestore()
-        .collection("users")
-        .doc(recipientId)
-        .get();
-
-      const recipientData = recipientDoc.data();
-      const recipientName =
-        after.recipientName ||
-        recipientData?.displayName ||
-        "Someone";
-
-      // Update both users' friendCount
       const db = admin.firestore();
       await db.runTransaction(async (transaction) => {
         const initiatorRef = db.collection("users").doc(initiatorId);
         const recipientRef = db.collection("users").doc(recipientId);
-
         transaction.update(initiatorRef, {
           friendCount: admin.firestore.FieldValue.increment(1),
         });
-
         transaction.update(recipientRef, {
           friendCount: admin.firestore.FieldValue.increment(1),
         });
       });
-
-      functions.logger.info("Updated friend caches", {
+      functions.logger.info("Updated friend caches on acceptance", {
         friendshipId,
         initiatorId,
         recipientId,
       });
-
-      // Send notification
-      const message: admin.messaging.MulticastMessage = {
-        tokens: fcmTokens,
-        notification: {
-          title: "Friend Request Accepted",
-          body: `${recipientName} accepted your friend request`,
-        },
-        data: {
-          type: "friend_accepted",
-          friendshipId: friendshipId,
-          recipientId: recipientId,
-        },
-        android: {
-          priority: "high",
-          notification: {
-            channelId: "high_importance_channel",
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-        },
-        apns: {
-          payload: {
-            aps: {
-              badge: 1,
-              sound: "default",
-            },
-          },
-        },
-      };
-
-      const response = await admin.messaging().sendEachForMulticast(message);
-      functions.logger.info("Friend request accepted notification sent successfully", {
-        friendshipId,
-        initiatorId,
-        recipientId,
-        successCount: response.successCount,
-        failureCount: response.failureCount,
-      });
-
-      // Remove invalid tokens
-      if (response.failureCount > 0) {
-        const tokensToRemove: string[] = [];
-        response.responses.forEach((resp, idx) => {
-          if (
-            !resp.success &&
-            (resp.error?.code === "messaging/invalid-registration-token" ||
-              resp.error?.code === "messaging/registration-token-not-registered")
-          ) {
-            tokensToRemove.push(fcmTokens[idx]);
-          }
-        });
-
-        if (tokensToRemove.length > 0) {
-          await admin
-            .firestore()
-            .collection("users")
-            .doc(initiatorId)
-            .update({
-              fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-            });
-          functions.logger.info("Removed invalid FCM tokens", {
-            friendshipId,
-            initiatorId,
-            removedCount: tokensToRemove.length,
-          });
-        }
-      }
-
-      return null;
     } catch (error) {
-      functions.logger.error("Error sending friend request accepted notification", {
+      functions.logger.error("Error updating friend caches", {
         friendshipId,
-        initiatorId,
-        recipientId,
         error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
       });
-      return null;
     }
+    return null;
   });
 
 /**
@@ -1403,536 +834,20 @@ export const onFriendRemoved = functions.region('europe-west6').firestore
  */
 export const onPlayerJoinedGame = functions.region('europe-west6').firestore
   .document("games/{gameId}")
-  .onUpdate(async (change, context) => {
-    const before = change.before.data();
-    const after = change.after.data();
-    const gameId = context.params.gameId;
-    const gameData = after;
-    const groupId = gameData.groupId; // Get groupId from game document
-
-    const beforePlayers = before.playerIds || [];
-    const afterPlayers = after.playerIds || [];
-
-    // Find new players (users who weren't in playerIds before but are now)
-    const newPlayers = afterPlayers.filter((id: string) => !beforePlayers.includes(id));
-
-    if (newPlayers.length === 0) {
-      return null;
-    }
-
-    functions.logger.info("Player(s) joined game, processing notifications", {
-      groupId,
-      gameId,
-      newPlayerCount: newPlayers.length,
-      newPlayers,
-    });
-
-    try {
-      // Get existing players (excluding the new joiner(s))
-      const existingPlayers = afterPlayers.filter(
-        (id: string) => !newPlayers.includes(id)
-      );
-
-      if (existingPlayers.length === 0) {
-        functions.logger.info("No existing players to notify (first player joined)", {
-          groupId,
-          gameId,
-        });
-        return null;
-      }
-
-      // Process each new player
-      for (const newPlayerId of newPlayers) {
-        // Get new player's details
-        const newPlayerDoc = await admin
-          .firestore()
-          .collection("users")
-          .doc(newPlayerId)
-          .get();
-
-        const newPlayerData = newPlayerDoc.data();
-
-        // Try to get player name in order of preference: firstName + lastName, displayName, email, or "Someone"
-        let playerName = "Someone";
-        if (newPlayerData) {
-          if (newPlayerData.firstName && newPlayerData.lastName) {
-            playerName = `${newPlayerData.firstName} ${newPlayerData.lastName}`;
-          } else if (newPlayerData.displayName) {
-            playerName = newPlayerData.displayName;
-          } else if (newPlayerData.email) {
-            playerName = newPlayerData.email;
-          }
-        }
-
-        // Track tokens per user for cleanup
-        const userTokenMap = new Map<string, string[]>();
-        const allTokens: string[] = [];
-
-        // Collect FCM tokens from existing players
-        for (const existingPlayerId of existingPlayers) {
-          const playerDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(existingPlayerId)
-            .get();
-
-          const playerData = playerDoc.data();
-          if (!playerData) {
-            functions.logger.debug("Player not found", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const fcmTokens = playerData.fcmTokens || [];
-          if (fcmTokens.length === 0) {
-            functions.logger.debug("Player has no FCM tokens", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const prefs = playerData.notificationPreferences || {};
-
-          // Check global and group-specific preferences
-          const groupPrefs = prefs.groupSpecific?.[groupId];
-          const shouldNotify =
-            groupPrefs?.playerJoined !== false && prefs.playerJoined !== false;
-
-          if (!shouldNotify) {
-            functions.logger.debug("Player has disabled player joined notifications", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Check quiet hours
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Player is in quiet hours", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Add tokens to map for later cleanup if needed
-          userTokenMap.set(existingPlayerId, fcmTokens);
-          allTokens.push(...fcmTokens);
-        }
-
-        if (allTokens.length === 0) {
-          functions.logger.info("No existing players to notify for this joiner", {
-            groupId,
-            gameId,
-            newPlayerId,
-          });
-          continue;
-        }
-
-        // Format the game date
-        const gameDate = after.scheduledAt?.toDate();
-        let dateStr = "";
-        if (gameDate) {
-          const options: Intl.DateTimeFormatOptions = {
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-          };
-          dateStr = ` for ${gameDate.toLocaleDateString("en-US", options)}`;
-        }
-
-        // Send notification
-        const message: admin.messaging.MulticastMessage = {
-          tokens: allTokens,
-          notification: {
-            title: "New Player Joined!",
-            body: `${playerName} joined ${after.title || "the game"}${dateStr}`,
-          },
-          data: {
-            type: "player_joined",
-            groupId: groupId,
-            gameId: gameId,
-            playerId: newPlayerId,
-            playerName: playerName,
-          },
-          android: {
-            priority: "high",
-            notification: {
-              channelId: "high_importance_channel",
-              clickAction: "FLUTTER_NOTIFICATION_CLICK",
-            },
-          },
-          apns: {
-            payload: {
-              aps: {
-                badge: 1,
-                sound: "default",
-              },
-            },
-          },
-        };
-
-        const response = await admin.messaging().sendEachForMulticast(message);
-
-        functions.logger.info("Player joined notification sent successfully", {
-          groupId,
-          gameId,
-          newPlayerId,
-          successCount: response.successCount,
-          failureCount: response.failureCount,
-        });
-
-        // Log failures for debugging
-        if (response.failureCount > 0) {
-          response.responses.forEach((resp, idx) => {
-            if (!resp.success) {
-              functions.logger.error("Failed to send notification to token", {
-                groupId,
-                gameId,
-                newPlayerId,
-                tokenIndex: idx,
-                error: resp.error?.code,
-                errorMessage: resp.error?.message,
-              });
-            }
-          });
-        }
-
-        // Remove invalid tokens
-        if (response.failureCount > 0) {
-          const invalidTokensByUser = new Map<string, string[]>();
-
-          response.responses.forEach((resp, idx) => {
-            if (
-              !resp.success &&
-              (resp.error?.code === "messaging/invalid-registration-token" ||
-                resp.error?.code === "messaging/registration-token-not-registered")
-            ) {
-              const invalidToken = allTokens[idx];
-
-              // Find which user this token belongs to
-              for (const [userId, tokens] of userTokenMap.entries()) {
-                if (tokens.includes(invalidToken)) {
-                  if (!invalidTokensByUser.has(userId)) {
-                    invalidTokensByUser.set(userId, []);
-                  }
-                  invalidTokensByUser.get(userId)!.push(invalidToken);
-                  break;
-                }
-              }
-            }
-          });
-
-          // Clean up invalid tokens per user
-          for (const [userId, tokensToRemove] of invalidTokensByUser.entries()) {
-            await admin
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .update({
-                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-              });
-
-            functions.logger.info("Removed invalid FCM tokens", {
-              userId,
-              groupId,
-              gameId,
-              removedCount: tokensToRemove.length,
-            });
-          }
-        }
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending player joined notification", {
-        groupId,
-        gameId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });
-
 /**
  * Send notification when a player leaves a game
  * Notifies all remaining players except the one who left
  */
 export const onPlayerLeftGame = functions.region('europe-west6').firestore
   .document("games/{gameId}")
-  .onUpdate(async (change, context) => {
-    const before = change.before.data();
-    const after = change.after.data();
-    const gameId = context.params.gameId;
-    const gameData = after;
-    const groupId = gameData.groupId; // Get groupId from game document
-
-    const beforePlayers = before.playerIds || [];
-    const afterPlayers = after.playerIds || [];
-
-    // Find players who left (users who were in playerIds before but not now)
-    const leftPlayers = beforePlayers.filter((id: string) => !afterPlayers.includes(id));
-
-    if (leftPlayers.length === 0) {
-      return null;
-    }
-
-    // Don't notify if game is cancelled
-    if (after.status === "cancelled") {
-      functions.logger.info("Game is cancelled, skipping player left notifications", {
-        groupId,
-        gameId,
-      });
-      return null;
-    }
-
-    functions.logger.info("Player(s) left game, processing notifications", {
-      groupId,
-      gameId,
-      leftPlayerCount: leftPlayers.length,
-      leftPlayers,
-    });
-
-    try {
-      // Get remaining players (excluding the ones who left)
-      const remainingPlayers = afterPlayers;
-
-      if (remainingPlayers.length === 0) {
-        functions.logger.info("No remaining players to notify (last player left)", {
-          groupId,
-          gameId,
-        });
-        return null;
-      }
-
-      // Process each player who left
-      for (const leftPlayerId of leftPlayers) {
-        // Get left player's details
-        const leftPlayerDoc = await admin
-          .firestore()
-          .collection("users")
-          .doc(leftPlayerId)
-          .get();
-
-        const leftPlayerData = leftPlayerDoc.data();
-
-        // Try to get player name in order of preference: firstName + lastName, displayName, email, or "Someone"
-        let playerName = "Someone";
-        if (leftPlayerData) {
-          if (leftPlayerData.firstName && leftPlayerData.lastName) {
-            playerName = `${leftPlayerData.firstName} ${leftPlayerData.lastName}`;
-          } else if (leftPlayerData.displayName) {
-            playerName = leftPlayerData.displayName;
-          } else if (leftPlayerData.email) {
-            playerName = leftPlayerData.email;
-          }
-        }
-
-        // Calculate current player count
-        const currentPlayers = afterPlayers.length;
-        const maxPlayers = after.maxPlayers || 8;
-
-        // Track tokens per user for cleanup
-        const userTokenMap = new Map<string, string[]>();
-        const allTokens: string[] = [];
-
-        // Collect FCM tokens from remaining players
-        for (const remainingPlayerId of remainingPlayers) {
-          const playerDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(remainingPlayerId)
-            .get();
-
-          const playerData = playerDoc.data();
-          if (!playerData) {
-            functions.logger.debug("Player not found", {
-              remainingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const fcmTokens = playerData.fcmTokens || [];
-          if (fcmTokens.length === 0) {
-            functions.logger.debug("Player has no FCM tokens", {
-              remainingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const prefs = playerData.notificationPreferences || {};
-
-          // Check global and group-specific preferences
-          const groupPrefs = prefs.groupSpecific?.[groupId];
-          const shouldNotify =
-            groupPrefs?.playerLeft !== false && prefs.playerLeft !== false;
-
-          if (!shouldNotify) {
-            functions.logger.debug("Player has disabled player left notifications", {
-              remainingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Check quiet hours
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Player is in quiet hours", {
-              remainingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Add tokens to map for later cleanup if needed
-          userTokenMap.set(remainingPlayerId, fcmTokens);
-          allTokens.push(...fcmTokens);
-        }
-
-        if (allTokens.length === 0) {
-          functions.logger.info("No remaining players to notify for this leaver", {
-            groupId,
-            gameId,
-            leftPlayerId,
-          });
-          continue;
-        }
-
-        // Send notification
-        const message: admin.messaging.MulticastMessage = {
-          tokens: allTokens,
-          notification: {
-            title: "Player Left Game",
-            body: `${playerName} left ${after.title || "the game"} (${currentPlayers}/${maxPlayers} players)`,
-          },
-          data: {
-            type: "player_left",
-            groupId: groupId,
-            gameId: gameId,
-            playerId: leftPlayerId,
-            playerName: playerName,
-            currentPlayers: currentPlayers.toString(),
-            maxPlayers: maxPlayers.toString(),
-          },
-          android: {
-            priority: "high",
-            notification: {
-              channelId: "high_importance_channel",
-              clickAction: "FLUTTER_NOTIFICATION_CLICK",
-            },
-          },
-          apns: {
-            payload: {
-              aps: {
-                badge: 1,
-                sound: "default",
-              },
-            },
-          },
-        };
-
-        const response = await admin.messaging().sendEachForMulticast(message);
-
-        functions.logger.info("Player left notification sent successfully", {
-          groupId,
-          gameId,
-          leftPlayerId,
-          successCount: response.successCount,
-          failureCount: response.failureCount,
-        });
-
-        // Log failures for debugging
-        if (response.failureCount > 0) {
-          response.responses.forEach((resp, idx) => {
-            if (!resp.success) {
-              functions.logger.error("Failed to send notification to token", {
-                groupId,
-                gameId,
-                leftPlayerId,
-                tokenIndex: idx,
-                error: resp.error?.code,
-                errorMessage: resp.error?.message,
-              });
-            }
-          });
-        }
-
-        // Remove invalid tokens
-        if (response.failureCount > 0) {
-          const invalidTokensByUser = new Map<string, string[]>();
-
-          response.responses.forEach((resp, idx) => {
-            if (
-              !resp.success &&
-              (resp.error?.code === "messaging/invalid-registration-token" ||
-                resp.error?.code === "messaging/registration-token-not-registered")
-            ) {
-              const invalidToken = allTokens[idx];
-
-              // Find which user this token belongs to
-              for (const [userId, tokens] of userTokenMap.entries()) {
-                if (tokens.includes(invalidToken)) {
-                  if (!invalidTokensByUser.has(userId)) {
-                    invalidTokensByUser.set(userId, []);
-                  }
-                  invalidTokensByUser.get(userId)!.push(invalidToken);
-                  break;
-                }
-              }
-            }
-          });
-
-          // Clean up invalid tokens per user
-          for (const [userId, tokensToRemove] of invalidTokensByUser.entries()) {
-            await admin
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .update({
-                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-              });
-
-            functions.logger.info("Removed invalid FCM tokens", {
-              userId,
-              groupId,
-              gameId,
-              removedCount: tokensToRemove.length,
-            });
-          }
-        }
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending player left notification", {
-        groupId,
-        gameId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });
-
-/**
- * Send notification when a waitlist user is promoted to player
- * Notifies the promoted user and all current players
- */
 export const onWaitlistPromoted = functions.region('europe-west6').firestore
   .document("games/{gameId}")
   .onUpdate(async (change, context) => {
@@ -1992,31 +907,13 @@ export const onWaitlistPromoted = functions.region('europe-west6').firestore
 
         const promotedUserData = promotedUserDoc.data();
 
-        // Try to get player name in order of preference: firstName + lastName, displayName, email, or "Someone"
-        let playerName = "Someone";
-        if (promotedUserData) {
-          if (promotedUserData.firstName && promotedUserData.lastName) {
-            playerName = `${promotedUserData.firstName} ${promotedUserData.lastName}`;
-          } else if (promotedUserData.displayName) {
-            playerName = promotedUserData.displayName;
-          } else if (promotedUserData.email) {
-            playerName = promotedUserData.email;
-          }
-        }
-
-        // Calculate current player count
-        const currentPlayers = afterPlayers.length;
-        const maxPlayers = after.maxPlayers || 8;
-
-        // 1. Notify the promoted user with "You's In!" message
+        // 1. Notify the promoted user with "You're In!" message
         const promotedUserTokens = promotedUserData?.fcmTokens || [];
         if (promotedUserTokens.length > 0 && promotedUserData) {
           const promotedUserPrefs = promotedUserData.notificationPreferences || {};
 
-          // Check global and group-specific preferences for waitlist notifications
-          const groupPrefs = promotedUserPrefs.groupSpecific?.[groupId];
-          const shouldNotifyPromoted =
-            groupPrefs?.waitlistPromoted !== false && promotedUserPrefs.waitlistPromoted !== false;
+          // Check games category preference (Story N.3)
+          const shouldNotifyPromoted = promotedUserPrefs.games !== false;
 
           if (shouldNotifyPromoted && !isQuietHours(promotedUserPrefs.quietHours)) {
             const promotedMessage: admin.messaging.MulticastMessage = {
@@ -2096,192 +993,7 @@ export const onWaitlistPromoted = functions.region('europe-west6').firestore
           }
         }
 
-        // 2. Notify existing players (excluding the promoted user)
-        const existingPlayers = afterPlayers.filter((id: string) => id !== promotedId);
-
-        if (existingPlayers.length === 0) {
-          functions.logger.info("No existing players to notify (promoted user is first player)", {
-            groupId,
-            gameId,
-            promotedId,
-          });
-          continue;
-        }
-
-        // Track tokens per user for cleanup
-        const userTokenMap = new Map<string, string[]>();
-        const allTokens: string[] = [];
-
-        // Collect FCM tokens from existing players
-        for (const existingPlayerId of existingPlayers) {
-          const playerDoc = await admin
-            .firestore()
-            .collection("users")
-            .doc(existingPlayerId)
-            .get();
-
-          const playerData = playerDoc.data();
-          if (!playerData) {
-            functions.logger.debug("Player not found", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const fcmTokens = playerData.fcmTokens || [];
-          if (fcmTokens.length === 0) {
-            functions.logger.debug("Player has no FCM tokens", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          const prefs = playerData.notificationPreferences || {};
-
-          // Check global and group-specific preferences
-          const groupPrefs = prefs.groupSpecific?.[groupId];
-          const shouldNotify =
-            groupPrefs?.waitlistJoined !== false && prefs.waitlistJoined !== false;
-
-          if (!shouldNotify) {
-            functions.logger.debug("Player has disabled waitlist joined notifications", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Check quiet hours
-          if (isQuietHours(prefs.quietHours)) {
-            functions.logger.debug("Player is in quiet hours", {
-              existingPlayerId,
-              groupId,
-              gameId,
-            });
-            continue;
-          }
-
-          // Add tokens to map for later cleanup if needed
-          userTokenMap.set(existingPlayerId, fcmTokens);
-          allTokens.push(...fcmTokens);
-        }
-
-        if (allTokens.length === 0) {
-          functions.logger.info("No existing players to notify for this promotion", {
-            groupId,
-            gameId,
-            promotedId,
-          });
-          continue;
-        }
-
-        // Send notification to existing players
-        const message: admin.messaging.MulticastMessage = {
-          tokens: allTokens,
-          notification: {
-            title: "Waitlist Player Joined!",
-            body: `${playerName} was moved from waitlist to ${after.title || "the game"} (${currentPlayers}/${maxPlayers} players)`,
-          },
-          data: {
-            type: "waitlist_joined",
-            groupId: groupId,
-            gameId: gameId,
-            playerId: promotedId,
-            playerName: playerName,
-            currentPlayers: currentPlayers.toString(),
-            maxPlayers: maxPlayers.toString(),
-          },
-          android: {
-            priority: "high",
-            notification: {
-              channelId: "high_importance_channel",
-              clickAction: "FLUTTER_NOTIFICATION_CLICK",
-            },
-          },
-          apns: {
-            payload: {
-              aps: {
-                badge: 1,
-                sound: "default",
-              },
-            },
-          },
-        };
-
-        const response = await admin.messaging().sendEachForMulticast(message);
-
-        functions.logger.info("Waitlist promotion notification sent to existing players", {
-          groupId,
-          gameId,
-          promotedId,
-          successCount: response.successCount,
-          failureCount: response.failureCount,
-        });
-
-        // Log failures for debugging
-        if (response.failureCount > 0) {
-          response.responses.forEach((resp, idx) => {
-            if (!resp.success) {
-              functions.logger.error("Failed to send notification to token", {
-                groupId,
-                gameId,
-                promotedId,
-                tokenIndex: idx,
-                error: resp.error?.code,
-                errorMessage: resp.error?.message,
-              });
-            }
-          });
-        }
-
-        // Remove invalid tokens
-        if (response.failureCount > 0) {
-          const invalidTokensByUser = new Map<string, string[]>();
-
-          response.responses.forEach((resp, idx) => {
-            if (
-              !resp.success &&
-              (resp.error?.code === "messaging/invalid-registration-token" ||
-                resp.error?.code === "messaging/registration-token-not-registered")
-            ) {
-              const invalidToken = allTokens[idx];
-
-              // Find which user this token belongs to
-              for (const [userId, tokens] of userTokenMap.entries()) {
-                if (tokens.includes(invalidToken)) {
-                  if (!invalidTokensByUser.has(userId)) {
-                    invalidTokensByUser.set(userId, []);
-                  }
-                  invalidTokensByUser.get(userId)!.push(invalidToken);
-                  break;
-                }
-              }
-            }
-          });
-
-          // Clean up invalid tokens per user
-          for (const [userId, tokensToRemove] of invalidTokensByUser.entries()) {
-            await admin
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .update({
-                fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-              });
-
-            functions.logger.info("Removed invalid FCM tokens", {
-              userId,
-              groupId,
-              gameId,
-              removedCount: tokensToRemove.length,
-            });
-          }
-        }
+        // Existing-player broadcast removed — only the promoted user is notified.
       }
 
       await writeAnalyticsEvent("waitlist_promoted", { groupId, gameId });
@@ -2397,10 +1109,8 @@ export const onGameResultSubmitted = functions.region('europe-west6').firestore
 
         const prefs = playerData.notificationPreferences || {};
 
-        // Check global and group-specific preferences
-        const groupPrefs = prefs.groupSpecific?.[groupId];
-        const shouldNotify =
-          groupPrefs?.gameResultSubmitted !== false && prefs.gameResultSubmitted !== false;
+        const groupMuted = groupId ? prefs.groupSpecific?.[groupId] === false : false;
+        const shouldNotify = !groupMuted && prefs.games !== false;
 
         if (!shouldNotify) {
           functions.logger.debug("Player has disabled game result notifications", {
@@ -2596,7 +1306,7 @@ export const onGameCancelled = functions.region('europe-west6').firestore
         const prefs = userData.notificationPreferences || {};
         // Use a generic 'gameUpdates' preference if specific 'gameCancelled' doesn't exist
         // or just default to true as cancellation is important
-        if (prefs.gameUpdates === false) continue;
+        if (prefs.games === false) continue;
 
         if (isQuietHours(prefs.quietHours)) continue;
 
@@ -2697,173 +1407,8 @@ export const onGameCancelled = functions.region('europe-west6').firestore
 export const onChatMessageCreated = functions
   .region("europe-west6")
   .firestore.document("games/{gameId}/messages/{messageId}")
-  .onCreate(async (snapshot, context) => {
-    const messageData = snapshot.data();
-    const gameId = context.params.gameId;
-
-    if (!messageData) {
-      functions.logger.warn("[onChatMessageCreated] Message data missing", { gameId });
-      return null;
-    }
-
-    const senderId: string = messageData.senderId;
-    const senderDisplayName: string = messageData.senderDisplayName || "Someone";
-    const text: string = messageData.text || "";
-
-    // Truncate message body for the notification (max 100 chars)
-    const bodyText = text.length > 100 ? `${text.substring(0, 97)}...` : text;
-
-    functions.logger.info("[onChatMessageCreated] New chat message, processing notifications", {
-      gameId,
-      senderId,
-    });
-
-    try {
-      // Fetch the parent game to get playerIds and groupId
-      const gameDoc = await admin.firestore().collection("games").doc(gameId).get();
-      if (!gameDoc.exists) {
-        functions.logger.warn("[onChatMessageCreated] Game not found", { gameId });
-        return null;
-      }
-
-      const gameData = gameDoc.data()!;
-      const playerIds: string[] = gameData.playerIds || [];
-      const groupId: string = gameData.groupId || "";
-
-      if (playerIds.length === 0) {
-        functions.logger.info("[onChatMessageCreated] No players to notify", { gameId });
-        return null;
-      }
-
-      // Track tokens per user for later invalid-token cleanup
-      const userTokenMap = new Map<string, string[]>();
-      const allTokens: string[] = [];
-
-      for (const playerId of playerIds) {
-        // Don't notify the sender
-        if (playerId === senderId) continue;
-
-        const playerDoc = await admin.firestore().collection("users").doc(playerId).get();
-        const playerData = playerDoc.data();
-        if (!playerData) continue;
-
-        const fcmTokens: string[] = playerData.fcmTokens || [];
-        if (fcmTokens.length === 0) continue;
-
-        const prefs = playerData.notificationPreferences || {};
-        const groupPrefs = prefs.groupSpecific?.[groupId];
-        const shouldNotify =
-          groupPrefs?.chatMessage !== false && prefs.chatMessage !== false;
-
-        if (!shouldNotify) {
-          functions.logger.debug("[onChatMessageCreated] Player disabled chat notifications", {
-            playerId,
-            gameId,
-          });
-          continue;
-        }
-
-        if (isQuietHours(prefs.quietHours)) {
-          functions.logger.debug("[onChatMessageCreated] Player in quiet hours", {
-            playerId,
-            gameId,
-          });
-          continue;
-        }
-
-        userTokenMap.set(playerId, fcmTokens);
-        allTokens.push(...fcmTokens);
-      }
-
-      if (allTokens.length === 0) {
-        functions.logger.info("[onChatMessageCreated] No tokens to notify", { gameId });
-        return null;
-      }
-
-      const message: admin.messaging.MulticastMessage = {
-        tokens: allTokens,
-        notification: {
-          title: `${senderDisplayName} in ${gameData.title || "your game"}`,
-          body: bodyText,
-        },
-        data: {
-          type: "chat_message",
-          gameId,
-          groupId,
-          senderId,
-          senderDisplayName,
-        },
-        android: {
-          priority: "high",
-          notification: {
-            channelId: "high_importance_channel",
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-        },
-        apns: {
-          payload: {
-            aps: {
-              badge: 1,
-              sound: "default",
-            },
-          },
-        },
-      };
-
-      const response = await admin.messaging().sendEachForMulticast(message);
-
-      functions.logger.info("[onChatMessageCreated] Notification sent", {
-        gameId,
-        senderId,
-        successCount: response.successCount,
-        failureCount: response.failureCount,
-      });
-
-      // Remove invalid tokens
-      if (response.failureCount > 0) {
-        const invalidTokensByUser = new Map<string, string[]>();
-
-        response.responses.forEach((resp, idx) => {
-          if (
-            !resp.success &&
-            (resp.error?.code === "messaging/invalid-registration-token" ||
-              resp.error?.code === "messaging/registration-token-not-registered")
-          ) {
-            const invalidToken = allTokens[idx];
-            for (const [userId, tokens] of userTokenMap.entries()) {
-              if (tokens.includes(invalidToken)) {
-                if (!invalidTokensByUser.has(userId)) {
-                  invalidTokensByUser.set(userId, []);
-                }
-                invalidTokensByUser.get(userId)!.push(invalidToken);
-                break;
-              }
-            }
-          }
-        });
-
-        for (const [userId, tokensToRemove] of invalidTokensByUser.entries()) {
-          await admin
-            .firestore()
-            .collection("users")
-            .doc(userId)
-            .update({
-              fcmTokens: admin.firestore.FieldValue.arrayRemove(...tokensToRemove),
-            });
-          functions.logger.info("[onChatMessageCreated] Removed invalid FCM tokens", {
-            userId,
-            gameId,
-            removedCount: tokensToRemove.length,
-          });
-        }
-      }
-
-      return null;
-    } catch (error) {
-      functions.logger.error("[onChatMessageCreated] Error sending chat notification", {
-        gameId,
-        error: error instanceof Error ? error.message : String(error),
-      });
-      return null;
-    }
+  .onCreate(async () => {
+    // Notification removed (reduced noise) — game chat messages are too frequent
+    // for push notifications; users check chat when they open the game.
+    return null;
   });

@@ -1,5 +1,7 @@
 // Rivals card showing nemesis statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/head_to_head_page.dart';
@@ -27,14 +29,9 @@ class RivalsCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           Text(
             AppLocalizations.of(context)!.rival.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // White card
           Card(
             margin: EdgeInsets.zero,
@@ -59,7 +56,7 @@ class RivalsCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -90,7 +87,7 @@ class RivalsCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Record
         Row(
           children: [
@@ -99,7 +96,7 @@ class RivalsCard extends StatelessWidget {
               size: 16,
               color: AppColors.textMuted.withValues(alpha: 0.7),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               nemesis.recordString,
               style: TextStyle(
@@ -107,7 +104,7 @@ class RivalsCard extends StatelessWidget {
                 color: AppColors.onSurface.withValues(alpha: 0.8),
               ),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               '(${AppLocalizations.of(context)!.matchups(nemesis.gamesPlayed)})',
               style: TextStyle(
@@ -117,7 +114,7 @@ class RivalsCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         // Win rate
         Row(
           children: [
@@ -126,7 +123,7 @@ class RivalsCard extends StatelessWidget {
               size: 16,
               color: AppColors.textMuted.withValues(alpha: 0.7),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               AppLocalizations.of(
                 context,
@@ -143,7 +140,7 @@ class RivalsCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         // Tap hint chip
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

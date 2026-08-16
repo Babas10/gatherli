@@ -34,9 +34,9 @@ void main() {
   group('Profile Management - Profile Display', () {
     test('User can view their profile with current data', () async {
       // 1. Create a complete test user
-      final testEmail = 'profile-view@test.com';
-      final testPassword = 'password123';
-      final testDisplayName = 'Test Profile User';
+      const testEmail = 'profile-view@test.com';
+      const testPassword = 'password123';
+      const testDisplayName = 'Test Profile User';
 
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -113,7 +113,7 @@ void main() {
       );
 
       // 2. Update display name in Firestore
-      final newDisplayName = 'Updated Name';
+      const newDisplayName = 'Updated Name';
       await FirebaseFirestore.instance.collection('users').doc(user.uid).update(
         {
           'displayName': newDisplayName,
@@ -133,8 +133,8 @@ void main() {
 
     test('Display name update is reflected in Firebase Auth profile', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'auth-name@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'auth-name@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -149,7 +149,7 @@ void main() {
       );
 
       // 2. Update display name in Firebase Auth
-      final newDisplayName = 'Auth Updated';
+      const newDisplayName = 'Auth Updated';
       await FirebaseAuth.instance.currentUser?.updateDisplayName(
         newDisplayName,
       );
@@ -207,8 +207,8 @@ void main() {
 
     test('Photo URL update is reflected in Firebase Auth profile', () async {
       // 1. Create and sign in a test user
-      final testEmail = 'auth-photo@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'auth-photo@test.com';
+      const testPassword = 'password123';
 
       await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -789,8 +789,8 @@ void main() {
   group('Profile Management - Data Persistence', () {
     test('Profile changes persist across sign out and sign in', () async {
       // 1. Create a test user
-      final testEmail = 'persist@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'persist@test.com';
+      const testPassword = 'password123';
 
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -831,8 +831,8 @@ void main() {
 
     test('Locale preferences persist in subcollection', () async {
       // 1. Create a test user
-      final testEmail = 'locale-persist@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'locale-persist@test.com';
+      const testPassword = 'password123';
 
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,

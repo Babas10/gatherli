@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-08-13T13:04:03.204Z",
+  "project": "gatherli-dev",
+  "password": "test1010",
+  "primaryUser": {
+    "email": "test1@mysta.com",
+    "uid": "kaRj2DFKRybwiI0pQfyAXXCxkbt1",
+    "note": "admin + Women's captain (Les Perles) + Men's championship creator"
+  },
+  "users": [
+    {
+      "n": 1,
+      "email": "test1@mysta.com",
+      "uid": "kaRj2DFKRybwiI0pQfyAXXCxkbt1"
+    },
+    {
+      "n": 2,
+      "email": "test2@mysta.com",
+      "uid": "2mhxzcHc1VQqXUml6TbkMgf327i2"
+    },
+    {
+      "n": 3,
+      "email": "test3@mysta.com",
+      "uid": "yOzEPWf6BxM3OeLjTZ7H56WSHy62"
+    },
+    {
+      "n": 4,
+      "email": "test4@mysta.com",
+      "uid": "UWKvuB2cqZYPnT8sdN6zVEm2bg33"
+    },
+    {
+      "n": 5,
+      "email": "test5@mysta.com",
+      "uid": "Iur8hZC8l6NB8X5XzVmh7iYQ9w23"
+    },
+    {
+      "n": 6,
+      "email": "test6@mysta.com",
+      "uid": "DvUod3GDI8hCP2Mwrk34Bebx0x92"
+    },
+    {
+      "n": 7,
+      "email": "test7@mysta.com",
+      "uid": "YnVx2Vo4I3cuYR1p50ahhBK1Avd2"
+    },
+    {
+      "n": 8,
+      "email": "test8@mysta.com",
+      "uid": "4HvdFnqM46MbyIBTtyeX3U8wGLM2"
+    },
+    {
+      "n": 9,
+      "email": "test9@mysta.com",
+      "uid": "ebx894USy0enyUazXtyFGND5gwl1"
+    },
+    {
+      "n": 10,
+      "email": "test10@mysta.com",
+      "uid": "G5NhQOnWoIeKpgtuZhTk9eK4QfB2"
+    },
+    {
+      "n": 11,
+      "email": "test11@mysta.com",
+      "uid": "LyNYgmOnl3UatgJ0kfx9Mns0WOD2"
+    },
+    {
+      "n": 12,
+      "email": "test12@mysta.com",
+      "uid": "mEH3MxGgzIVD2mrVVNT51GKftRw2"
+    },
+    {
+      "n": 13,
+      "email": "test13@mysta.com",
+      "uid": "dJyasMRXmNUDQteOxuB1xPK8wGy2"
+    },
+    {
+      "n": 14,
+      "email": "test14@mysta.com",
+      "uid": "93Vj8CMB3vYfAEVNpXPfTnX3Fsk1"
+    },
+    {
+      "n": 15,
+      "email": "test15@mysta.com",
+      "uid": "8sCy6hWyE6cjUSnWuMHEAdLrx0s2"
+    }
+  ],
+  "groups": {
+    "group1": "KOlbcSAbqJGxumbljB8U",
+    "group2": "FrBjxctDDjXPVf4vvfL0"
+  },
+  "championships": {
+    "womensOpen": {
+      "id": "zrPIyWo6rL8jw1Yvw5h2",
+      "status": "active",
+      "note": "round 3/5, 5/6 teams"
+    },
+    "mensClassic": {
+      "id": "vw3yRePo4Rskhwah2nwe",
+      "status": "registration",
+      "note": "3/4 teams, 1 slot free"
+    },
+    "springShowdown": {
+      "id": "zWanwZ8GmKgehwO6JOUR",
+      "status": "completed",
+      "note": "champion = Golden Spikers (test1+2)"
+    }
+  },
+  "quickStart": {
+    "admin": "test1@mysta.com  / test1010",
+    "womensPlayer": "test3@mysta.com  / test1010  (Vagues d'Or captain)",
+    "opponentPlayer": "test5@mysta.com  / test1010  (Les Sirènes captain)",
+    "mensPlayer": "test11@mysta.com / test1010  (Alpha Squad captain)",
+    "friendRequester": "test15@mysta.com / test1010  (2 pending requests out)"
+  }
+}

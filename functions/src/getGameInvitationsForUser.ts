@@ -6,6 +6,7 @@
 
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 const db = () => admin.firestore();
 
@@ -172,4 +173,4 @@ export const getGameInvitationsForUserHandler = async (
 
 export const getGameInvitationsForUser = functions
   .region("europe-west6")
-  .https.onCall(getGameInvitationsForUserHandler);
+  .https.onCall(withLogging('getGameInvitationsForUser', getGameInvitationsForUserHandler));

@@ -1,19 +1,14 @@
 // Validates DeepLinkBloc emits correct states during initialization, token reception, and clearing.
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_state.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
-import 'package:play_with_me/core/services/pending_invite_storage.dart';
+import '../../../../../helpers/mocks.dart';
 
 class MockDeepLinkService extends Mock implements DeepLinkService {}
-
-class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
 void main() {
   late MockDeepLinkService mockDeepLinkService;

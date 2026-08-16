@@ -1,7 +1,9 @@
 // Widget displaying a single group in the list with name, member count, and photo
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/group_avatar.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
-import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class GroupListItem extends StatelessWidget {
@@ -14,18 +16,13 @@ class GroupListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+    return AccentCard(
+      onTap: onTap,
+      child: Row(
             children: [
               // Group photo or default icon
               _buildGroupPhoto(),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.lg),
 
               // Group info
               Expanded(
@@ -41,7 +38,7 @@ class GroupListItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (group.description != null) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Text(
                         group.description!,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -51,7 +48,7 @@ class GroupListItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Row(
                       children: [
                         Icon(
@@ -59,7 +56,7 @@ class GroupListItem extends StatelessWidget {
                           size: 16,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
                           l10n.memberCount(group.memberCount),
                           style: Theme.of(context).textTheme.bodySmall
@@ -69,7 +66,7 @@ class GroupListItem extends StatelessWidget {
                                 ).colorScheme.onSurfaceVariant,
                               ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSpacing.lg),
                         if (group.privacy != GroupPrivacy.private) ...[
                           Icon(
                             group.privacy == GroupPrivacy.public
@@ -78,7 +75,7 @@ class GroupListItem extends StatelessWidget {
                             size: 16,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xs),
                           Text(
                             _getPrivacyLabel(context, group.privacy),
                             style: Theme.of(context).textTheme.bodySmall
@@ -101,49 +98,16 @@ class GroupListItem extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ],
-          ),
-        ),
       ),
     );
   }
 
   Widget _buildGroupPhoto() {
-    if (group.photoUrl != null && group.photoUrl!.isNotEmpty) {
-      return CircleAvatar(
-        radius: 32,
-        backgroundImage: NetworkImage(group.photoUrl!),
-      );
-    }
-
-    // Default group icon
-    return CircleAvatar(
-      radius: 32,
-      backgroundColor: _getGroupColor(),
-      child: Text(
-        _getGroupInitials(),
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.secondary,
-        ),
-      ),
-    );
+    return GroupAvatar(name: group.name, photoUrl: group.photoUrl, radius: 28);
   }
 
-  String _getGroupInitials() {
-    final words = group.name.trim().split(' ');
-    if (words.length >= 2) {
-      return '${words[0][0]}${words[1][0]}'.toUpperCase();
-    }
-    return group.name
-        .substring(0, group.name.length >= 2 ? 2 : 1)
-        .toUpperCase();
-  }
 
-  Color _getGroupColor() {
-    // Use the app theme primary color for group avatars
-    return AppColors.primary;
-  }
+
 
   String _getPrivacyLabel(BuildContext context, GroupPrivacy privacy) {
     final l10n = AppLocalizations.of(context)!;

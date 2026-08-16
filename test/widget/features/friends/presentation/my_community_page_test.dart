@@ -6,8 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_event.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_state.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import '../../../../helpers/test_app.dart';
 
 class MockFriendBloc extends Mock implements FriendBloc {}
 
@@ -23,21 +22,12 @@ void main() {
   });
 
   Widget createTestWidget(Widget child) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(
+    return testApp(child: Scaffold(
         body: BlocProvider<FriendBloc>.value(
           value: mockFriendBloc,
           child: child,
         ),
-      ),
-    );
+      ));
   }
 
   group('MyCommunityPage Widget Tests', () {

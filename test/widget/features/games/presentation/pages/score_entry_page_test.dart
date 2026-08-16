@@ -1,8 +1,6 @@
 // Widget tests for ScoreEntryPage verifying UI and interaction.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,6 +17,7 @@ import 'package:play_with_me/features/games/presentation/widgets/game_team_picke
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
+import '../../../../../helpers/test_app.dart';
 
 // Mock classes
 class MockGameRepository extends Mock implements GameRepository {}
@@ -125,16 +124,7 @@ void main() {
         BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
       ],
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        home: ScoreEntryPage(gameId: gameId),
-      ),
+      child: testApp(child: ScoreEntryPage(gameId: gameId)),
     );
   }
 
@@ -148,17 +138,8 @@ void main() {
             BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
             BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           ],
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: ScoreEntryPage(gameId: testGameId),
-            navigatorObservers: [mockObserver],
-          ),
+          child: testApp(child: const ScoreEntryPage(gameId: testGameId),
+            navigatorObserver: mockObserver),
         ),
       );
       await tester.pumpAndSettle();
@@ -201,7 +182,7 @@ void main() {
 
       // Verify the Save Scores button is enabled
       final saveButtonFinder = find.widgetWithText(
-        ElevatedButton,
+        FilledButton,
         'Save Scores',
       );
       expect(saveButtonFinder, findsOneWidget);
@@ -242,17 +223,8 @@ void main() {
             BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
             BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
           ],
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: ScoreEntryPage(gameId: testGameId),
-            navigatorObservers: [mockObserver],
-          ),
+          child: testApp(child: const ScoreEntryPage(gameId: testGameId),
+            navigatorObserver: mockObserver),
         ),
       );
       await tester.pumpAndSettle();
@@ -280,7 +252,7 @@ void main() {
 
       // Find the button and tap it
       final saveButtonFinder = find.widgetWithText(
-        ElevatedButton,
+        FilledButton,
         'Save Scores',
       );
       expect(saveButtonFinder, findsOneWidget);

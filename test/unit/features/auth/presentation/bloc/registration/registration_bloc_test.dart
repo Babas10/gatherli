@@ -1,14 +1,12 @@
 // Verifies that RegistrationBloc correctly handles registration events and emits appropriate states.
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_event.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_state.dart';
 import '../../../data/mock_auth_repository.dart';
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
+import '../../../../../../helpers/mocks.dart' hide MockAuthRepository;
 
 void main() {
   group('RegistrationBloc', () {

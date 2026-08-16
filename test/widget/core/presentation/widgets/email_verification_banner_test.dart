@@ -1,9 +1,8 @@
 // Validates EmailVerificationBanner renders correctly and handles user interactions.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/presentation/widgets/email_verification_banner.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../helpers/test_app.dart';
 
 void main() {
   Widget buildTestWidget({
@@ -11,22 +10,13 @@ void main() {
     VoidCallback? onVerifyNow,
     VoidCallback? onDismiss,
   }) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(
+    return testApp(child: Scaffold(
         body: EmailVerificationBanner(
           daysRemaining: daysRemaining,
           onVerifyNow: onVerifyNow ?? () {},
           onDismiss: onDismiss ?? () {},
         ),
-      ),
-    );
+      ));
   }
 
   group('EmailVerificationBanner', () {

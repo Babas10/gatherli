@@ -7,14 +7,12 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/auth/presentation/pages/login_page.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
-import 'package:play_with_me/features/profile/domain/entities/locale_preferences_entity.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'helpers/test_helpers.dart';
+import '../helpers/mocks.dart';
 
 // Fake for mocktail matchers
-class FakeLocalePreferencesEntity extends Fake
-    implements LocalePreferencesEntity {}
 
 void main() {
   setUpAll(() {

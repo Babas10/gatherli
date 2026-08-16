@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,14 +66,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           } else if (state is RegistrationSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.accountCreatedSuccess),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
             Navigator.of(context).pop();
@@ -85,25 +86,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 Icon(
                   Icons.sports_volleyball,
                   size: 64,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 Text(
                   l10n.joinPlayWithMe,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.createAccountSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xxl),
                 AuthFormField(
                   controller: _firstNameController,
                   hintText: l10n.firstNameHint,
@@ -119,7 +120,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 AuthFormField(
                   controller: _lastNameController,
                   hintText: l10n.lastNameHint,
@@ -135,7 +136,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 AuthFormField(
                   controller: _displayNameController,
                   hintText: l10n.displayNameHintRequired,
@@ -154,7 +155,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 AuthFormField(
                   controller: _emailController,
                   hintText: l10n.emailHint,
@@ -183,7 +184,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Tooltip(
                       message: l10n.registrationGenderTooltip,
                       triggerMode: TooltipTriggerMode.tap,
@@ -208,7 +209,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             setState(() => _selectedGender = _kGenderMale),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: _GenderOption(
                         label: l10n.genderFemale,
@@ -218,7 +219,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             setState(() => _selectedGender = _kGenderFemale),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: _GenderOption(
                         label: l10n.genderPreferNotToSay,
@@ -276,7 +277,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Text(
@@ -286,7 +287,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 AuthFormField(
                   controller: _confirmPasswordController,
                   hintText: l10n.confirmPassword,
@@ -316,7 +317,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   },
                   onFieldSubmitted: (_) => _submitRegistration(),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 BlocBuilder<RegistrationBloc, RegistrationState>(
                   builder: (context, state) {
                     return AuthButton(
@@ -326,7 +327,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     );
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -339,7 +340,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(

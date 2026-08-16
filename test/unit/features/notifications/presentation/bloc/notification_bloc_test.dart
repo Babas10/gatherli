@@ -4,13 +4,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/notifications/domain/entities/notification_preferences_entity.dart';
-import 'package:play_with_me/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:play_with_me/features/notifications/presentation/bloc/notification_bloc.dart';
 import 'package:play_with_me/features/notifications/presentation/bloc/notification_event.dart';
 import 'package:play_with_me/features/notifications/presentation/bloc/notification_state.dart';
-
-class MockNotificationRepository extends Mock
-    implements NotificationRepository {}
+import '../../../../../helpers/mocks.dart';
 
 // Create a fake class for registration with Mocktail
 class FakeNotificationPreferencesEntity extends Fake
@@ -18,6 +15,7 @@ class FakeNotificationPreferencesEntity extends Fake
 
 void main() {
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeNotificationPreferencesEntity());
   });
 

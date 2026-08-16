@@ -1,13 +1,12 @@
 // Validates RestrictedActionGuard blocks restricted users and allows active/pending users.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
 import 'package:play_with_me/core/presentation/widgets/restricted_action_guard.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../helpers/test_app.dart';
 
 class MockAccountStatusBloc extends Mock implements AccountStatusBloc {
   final AccountStatusState _state;
@@ -64,15 +63,7 @@ void main() {
     }) {
       final bloc = MockAccountStatusBloc(accountState);
 
-      return MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        home: BlocProvider<AccountStatusBloc>.value(
+      return testApp(child: BlocProvider<AccountStatusBloc>.value(
           value: bloc,
           child: Builder(
             builder: (context) {
@@ -88,8 +79,7 @@ void main() {
               );
             },
           ),
-        ),
-      );
+        ));
     }
 
     testWidgets('calls onAllowed when account is active', (tester) async {

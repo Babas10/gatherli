@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for leaveGroup Cloud Function
@@ -195,4 +196,4 @@ export async function leaveGroupHandler(
  * - Prevents last admin from leaving
  * - Atomic batch operation for data consistency
  */
-export const leaveGroup = functions.region('europe-west6').https.onCall(leaveGroupHandler);
+export const leaveGroup = functions.region('europe-west6').https.onCall(withLogging('leaveGroup', leaveGroupHandler));

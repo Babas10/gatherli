@@ -26,8 +26,8 @@ void main() {
   group('Group Creation Flow', () {
     test('User can create a new group with valid data', () async {
       // 1. Create and authenticate a test user
-      final testEmail = 'creator@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'creator@test.com';
+      const testPassword = 'password123';
 
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: testEmail,
@@ -183,7 +183,7 @@ void main() {
       );
 
       final firestore = FirebaseFirestore.instance;
-      final groupName = 'Special Characters & Unicode 日本語';
+      const groupName = 'Special Characters & Unicode 日本語';
 
       final groupRef = await firestore.collection('groups').add({
         'name': groupName,

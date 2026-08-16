@@ -1,5 +1,6 @@
 // Widget tests for CompactStatCard
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/compact_stat_card.dart';
 
@@ -28,7 +29,7 @@ void main() {
               label: 'ELO Rating',
               value: '1650',
               icon: Icons.trending_up,
-              iconColor: Colors.green,
+              iconColor: AppColors.success,
             ),
           ),
         ),

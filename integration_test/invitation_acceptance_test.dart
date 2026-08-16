@@ -296,7 +296,7 @@ void main() {
         name: 'Test Group',
       );
 
-      final fakeGroupId = 'fake-group-id';
+      const fakeGroupId = 'fake-group-id';
 
       // 2. Create invitation
       final invitationRef = FirebaseEmulatorHelper.firestore

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
@@ -55,20 +57,20 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
+                  const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(
                     'Error loading feedback',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.grey),
                   ),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
+                  const SizedBox(height: AppSpacing.xl),
+                  FilledButton.icon(
                     onPressed: () {
                       context.read<TrainingFeedbackBloc>().add(
                         LoadAggregatedFeedback(widget.trainingSessionId),
@@ -111,12 +113,12 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.feedback_outlined, size: 80, color: Colors.grey[400]),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               'No Feedback Yet',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Text(
               hasUserSubmitted
                   ? 'You have submitted feedback, but no other participants have provided feedback yet.'
@@ -124,13 +126,13 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey, fontSize: 16),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             if (!hasUserSubmitted)
-              ElevatedButton.icon(
+              FilledButton.icon(
                 onPressed: () => _navigateToSubmitFeedback(context),
                 icon: const Icon(Icons.rate_review),
                 label: const Text('Submit Feedback'),
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
                     vertical: 16,
@@ -170,7 +172,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
                         Icons.rate_review,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: Text(
                           'Share your thoughts about this session',
@@ -209,14 +211,9 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               children: [
                 const Text(
                   'INDIVIDUAL FEEDBACK',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textMuted,
-                    letterSpacing: 0.8,
-                  ),
+                  style: AppTextStyles.sectionLabel,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,

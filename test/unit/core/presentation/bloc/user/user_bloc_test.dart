@@ -36,7 +36,7 @@ void main() {
     });
 
     group('LoadUserById', () {
-      final testUser = UserModel(
+      const testUser = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -49,7 +49,7 @@ void main() {
           return userBloc;
         },
         act: (bloc) => bloc.add(const LoadUserById(uid: 'test-uid')),
-        expect: () => [const UserLoading(), UserLoaded(user: testUser)],
+        expect: () => [const UserLoading(), const UserLoaded(user: testUser)],
       );
 
       blocTest<UserBloc, UserState>(
@@ -70,7 +70,7 @@ void main() {
     });
 
     group('UpdateUserProfile', () {
-      final originalUser = UserModel(
+      const originalUser = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -98,7 +98,7 @@ void main() {
     });
 
     group('UpdateUserPreferences', () {
-      final updatedUser = UserModel(
+      const updatedUser = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,
@@ -123,13 +123,13 @@ void main() {
 
     group('SearchUsers', () {
       final users = [
-        UserModel(
+        const UserModel(
           uid: 'user-1',
           email: 'user1@example.com',
           isEmailVerified: true,
           displayName: 'User One',
         ),
-        UserModel(
+        const UserModel(
           uid: 'user-2',
           email: 'user2@example.com',
           isEmailVerified: true,
@@ -154,7 +154,7 @@ void main() {
     });
 
     group('DeleteUser', () {
-      final testUser = UserModel(
+      const testUser = UserModel(
         uid: 'test-uid',
         email: 'test@example.com',
         isEmailVerified: true,

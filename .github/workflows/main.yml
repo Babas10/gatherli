@@ -168,11 +168,83 @@ jobs:
             --lockfile=pubspec.lock
             --format=table
 
+  # Job 4b: Flutter Build Verification (debug, no signing required)
+  # Catches compilation errors that static analysis misses (missing assets, codegen, etc.)
+  build_verification:
+    name: 🏗️ Build Verification (Android debug)
+    runs-on: ubuntu-latest
+    needs: analyze_and_test  # only build if tests pass
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: 🔧 Setup Flutter
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff  # v2.18.0
+        with:
+          flutter-version: '3.32.6'
+          channel: 'stable'
+          cache: true
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12  # v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          # cache: gradle enables built-in Gradle dependency caching via setup-java
+          # This pre-populates ~/.gradle before any build runs, preventing 429s from Maven Central
+          cache: gradle
+
+      - name: 📦 Get Dependencies
+        run: flutter pub get
+
+      - name: 🔧 Generate Mock Firebase Configs
+        run: dart run tools/generate_mock_firebase_configs.dart
+
+      - name: 📄 Generate mock google-services.json (dev flavor)
+        # The real google-services.json is never committed (it's a secret).
+        # For build verification we only need the file to exist with valid structure —
+        # the app won't actually connect to Firebase in this job.
+        run: |
+          mkdir -p android/app/src/dev
+          cat > android/app/src/dev/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "gatherli-dev",
+              "storage_bucket": "gatherli-dev.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                  "android_client_info": {
+                    "package_name": "org.gatherli.app.dev"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [{ "current_key": "mock-api-key-for-build-verification-only" }],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
+      - name: 🏗️ Build Android APK (dev debug — no signing)
+        # --android-skip-build-dependency-validation suppresses the Kotlin version warning
+        # Retry once on failure (Maven Central occasionally rate-limits GitHub Actions IPs)
+        run: |
+          flutter build apk --flavor dev -t lib/main_dev.dart --debug \
+            --android-skip-build-dependency-validation \
+            || flutter build apk --flavor dev -t lib/main_dev.dart --debug \
+               --android-skip-build-dependency-validation
+
   # Job 5: Final Status Check
   ci_success:
     name: ✅ CI Success
     runs-on: ubuntu-latest
-    needs: [analyze_and_test, cloud_functions_tests, python_functions_tests, security_audit]
+    needs: [analyze_and_test, cloud_functions_tests, python_functions_tests, security_audit, build_verification]
     if: always()
 
     steps:
@@ -180,13 +252,14 @@ jobs:
         if: |
           needs.analyze_and_test.result == 'success' &&
           needs.cloud_functions_tests.result == 'success' &&
+          needs.build_verification.result == 'success' &&
           (needs.python_functions_tests.result == 'success' || needs.python_functions_tests.result == 'skipped') &&
           needs.security_audit.result == 'success'
         run: |
           echo "🎉 All CI/CD checks passed successfully!"
-          echo "✅ Static Analysis: Passed"
-          echo "✅ Flutter Tests: Passed"
+          echo "✅ Static Analysis & Tests: Passed"
           echo "✅ TypeScript Cloud Functions Tests: Passed"
+          echo "✅ Android Build Verification: Passed"
           echo "🐍 Python Cloud Functions Tests: ${{ needs.python_functions_tests.result }}"
           echo "✅ Security Audit: Passed"
           echo ""
@@ -198,14 +271,40 @@ jobs:
         if: |
           needs.analyze_and_test.result != 'success' ||
           needs.cloud_functions_tests.result != 'success' ||
+          needs.build_verification.result != 'success' ||
           (needs.python_functions_tests.result != 'success' && needs.python_functions_tests.result != 'skipped') ||
           needs.security_audit.result != 'success'
         run: |
           echo "❌ CI/CD pipeline failed!"
           echo "📊 Flutter Analysis & Tests: ${{ needs.analyze_and_test.result }}"
           echo "☁️ TypeScript Cloud Functions Tests: ${{ needs.cloud_functions_tests.result }}"
+          echo "🏗️ Build Verification: ${{ needs.build_verification.result }}"
           echo "🐍 Python Cloud Functions Tests: ${{ needs.python_functions_tests.result }}"
           echo "🔒 Security Audit: ${{ needs.security_audit.result }}"
           echo ""
           echo "🛑 Please fix the failing checks before merging."
           exit 1
+
+      # Post a comment on the PR when CI fails so the author gets notified immediately
+      - name: 💬 Comment Failure on PR
+        if: |
+          failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: `## ❌ CI Failed
+
+            | Check | Status |
+            |---|---|
+            | Flutter Analysis & Tests | ${{ needs.analyze_and_test.result }} |
+            | Cloud Functions Tests | ${{ needs.cloud_functions_tests.result }} |
+            | Build Verification | ${{ needs.build_verification.result }} |
+            | Security Audit | ${{ needs.security_audit.result }} |
+
+            Please fix the failing checks before merging.
+            [View run](${context.payload.repository.html_url}/actions/runs/${context.runId})`
+            });

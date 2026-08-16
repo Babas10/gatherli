@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for checkPendingInvitation Cloud Function
@@ -120,4 +121,4 @@ export async function checkPendingInvitationHandler(
  * - Uses Admin SDK to query Firestore (bypasses security rules)
  * - Returns only a boolean (no sensitive data exposed)
  */
-export const checkPendingInvitation = functions.region('europe-west6').https.onCall(checkPendingInvitationHandler);
+export const checkPendingInvitation = functions.region('europe-west6').https.onCall(withLogging('checkPendingInvitation', checkPendingInvitationHandler));

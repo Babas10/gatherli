@@ -2,6 +2,7 @@
 // Story 11.12: Search Users via Cloud Function
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 interface SearchUsersRequest {
   query: string;
@@ -181,4 +182,4 @@ export async function searchUsersHandler(
  *
  * Following Epic 11's Cloud Function-first architecture.
  */
-export const searchUsers = functions.region('europe-west6').https.onCall(searchUsersHandler);
+export const searchUsers = functions.region('europe-west6').https.onCall(withLogging('searchUsers', searchUsersHandler));

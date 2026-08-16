@@ -3,12 +3,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
-import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_chat/game_chat_state.dart';
-
-class MockMessageRepository extends Mock implements MessageRepository {}
+import '../../../../../../helpers/mocks.dart';
 
 void main() {
   late MockMessageRepository mockMessageRepository;
@@ -24,7 +22,8 @@ void main() {
   );
 
   setUpAll(() {
-    registerFallbackValue(Stream<List<ChatMessageModel>>.empty());
+    registerFallbackValues();
+    registerFallbackValue(const Stream<List<ChatMessageModel>>.empty());
   });
 
   setUp(() {

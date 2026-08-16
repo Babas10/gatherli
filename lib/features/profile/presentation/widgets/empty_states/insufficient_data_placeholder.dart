@@ -1,5 +1,6 @@
 // Empty state placeholder for users with no game data.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// A friendly empty state widget for users who haven't played any games yet.
 ///
@@ -37,7 +38,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
               size: 64,
               color: theme.colorScheme.primary.withValues(alpha: 0.5),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             // Title
             Text(
               title,
@@ -47,7 +48,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             // Message
             Text(
               message,
@@ -58,7 +59,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
             ),
             // Unlock message (if provided)
             if (unlockMessage != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -82,7 +83,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
                       size: 16,
                       color: theme.colorScheme.primary,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Flexible(
                       child: Text(
                         unlockMessage!,
@@ -143,7 +144,7 @@ class InsufficientDataPlaceholder extends StatelessWidget {
             size: 48,
             color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             featureName,
             style: theme.textTheme.titleMedium?.copyWith(
@@ -151,7 +152,7 @@ class InsufficientDataPlaceholder extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             requirement,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -160,7 +161,7 @@ class InsufficientDataPlaceholder extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           if (currentProgress != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Text(
               currentProgress!,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -170,7 +171,7 @@ class InsufficientDataPlaceholder extends StatelessWidget {
             ),
           ],
           if (message != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               message!,
               style: theme.textTheme.bodySmall?.copyWith(

@@ -7,10 +7,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/profile/data/repositories/locale_preferences_repository_impl.dart';
 import 'package:play_with_me/features/profile/domain/entities/locale_preferences_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../helpers/mocks.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
-
-class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 // ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock
@@ -77,7 +76,7 @@ void main() {
 
     group('savePreferences', () {
       test('saves preferences to SharedPreferences', () async {
-        final preferences = const LocalePreferencesEntity(
+        const preferences = LocalePreferencesEntity(
           locale: Locale('fr'),
           country: 'France',
           timeZone: 'Europe/Paris',
@@ -132,7 +131,7 @@ void main() {
         when(() => mockCollection.doc('locale')).thenReturn(mockDoc);
         when(() => mockDoc.set(any(), any())).thenAnswer((_) async {});
 
-        final preferences = const LocalePreferencesEntity(
+        const preferences = LocalePreferencesEntity(
           locale: Locale('de'),
           country: 'Germany',
           timeZone: 'Europe/Berlin',
@@ -161,7 +160,7 @@ void main() {
           () => mockDoc.set(any(), any()),
         ).thenThrow(Exception('Network error'));
 
-        final preferences = const LocalePreferencesEntity(
+        const preferences = LocalePreferencesEntity(
           locale: Locale('de'),
           country: 'Germany',
           timeZone: 'Europe/Berlin',
@@ -294,7 +293,7 @@ void main() {
           () => mockSharedPreferences.setString(any(), any()),
         ).thenThrow(Exception('Storage full'));
 
-        final preferences = const LocalePreferencesEntity(
+        const preferences = LocalePreferencesEntity(
           locale: Locale('fr'),
           country: 'France',
           timeZone: 'Europe/Paris',

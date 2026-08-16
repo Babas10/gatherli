@@ -1,5 +1,6 @@
 // UI guard that blocks restricted account actions and shows an explanation dialog.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
@@ -64,7 +65,7 @@ class RestrictedActionGuard {
         title: Row(
           children: [
             Icon(Icons.block, color: Colors.red.shade700, size: 24),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(l10n.featureRestrictedTitle),
           ],
         ),
@@ -73,10 +74,10 @@ class RestrictedActionGuard {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n.featureRestricted),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(l10n.verifyToUnlock),
             if (daysUntilDeletion > 0) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

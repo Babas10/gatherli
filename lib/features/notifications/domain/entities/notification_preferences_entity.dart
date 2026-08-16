@@ -26,6 +26,12 @@ abstract class NotificationPreferencesEntity with _$NotificationPreferencesEntit
     @Default(true) bool trainingSessionCancelled,
     // Championship notification preferences (Story 30.13)
     @Default(true) bool championship,
+    // Consolidated category toggles (Story N.3)
+    // When false, all notifications in that category are suppressed.
+    // Missing key (undefined in Firestore) defaults to true (enabled).
+    @Default(true) bool social,
+    @Default(true) bool games,
+    @Default(true) bool training,
   }) = _NotificationPreferencesEntity;
 
   const NotificationPreferencesEntity._();

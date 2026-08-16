@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/config/environment_config.dart';
 import 'package:play_with_me/core/services/firebase_service.dart';
 
@@ -40,7 +41,7 @@ class EnvironmentIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(_getEnvironmentIcon(), size: 16, color: Colors.white),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppSpacing.xs),
         Text(
           '${EnvironmentConfig.environmentName} Environment',
           style: const TextStyle(
@@ -49,7 +50,7 @@ class EnvironmentIndicator extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Icon(
           FirebaseService.isInitialized ? Icons.cloud_done : Icons.cloud_off,
           size: 16,
@@ -68,7 +69,7 @@ class EnvironmentIndicator extends StatelessWidget {
         Row(
           children: [
             Icon(_getEnvironmentIcon(), size: 16, color: Colors.white),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               '${EnvironmentConfig.environmentName} Environment',
               style: const TextStyle(
@@ -85,7 +86,7 @@ class EnvironmentIndicator extends StatelessWidget {
               size: 16,
               color: Colors.white,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               FirebaseService.isInitialized ? 'Connected' : 'Disconnected',
               style: const TextStyle(color: Colors.white, fontSize: 10),
@@ -161,11 +162,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
       onTap: () => setState(() => _isExpanded = true),
       child: Container(
         padding: const EdgeInsets.all(12),
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.bug_report, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
+            SizedBox(width: AppSpacing.sm),
             Text('Debug', style: TextStyle(color: Colors.white, fontSize: 12)),
           ],
         ),
@@ -185,9 +186,9 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
         children: [
           Row(
             children: [
-              Icon(Icons.bug_report, color: Colors.white, size: 16),
-              const SizedBox(width: 8),
-              Expanded(
+              const Icon(Icons.bug_report, color: Colors.white, size: 16),
+              const SizedBox(width: AppSpacing.sm),
+              const Expanded(
                 child: Text(
                   'Firebase Debug Panel',
                   style: TextStyle(
@@ -198,14 +199,14 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               GestureDetector(
                 onTap: () => setState(() => _isExpanded = false),
-                child: Icon(Icons.close, color: Colors.white, size: 16),
+                child: const Icon(Icons.close, color: Colors.white, size: 16),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           _buildInfoRow('Environment:', EnvironmentConfig.environmentName),
           _buildInfoRow('Project ID:', connectionInfo['projectId']),
           _buildInfoRow(
@@ -213,7 +214,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
             connectionInfo['isInitialized'].toString(),
           ),
           _buildInfoRow('App Name:', connectionInfo['appName'] ?? 'N/A'),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -222,7 +223,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
                 backgroundColor: Colors.blue,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              child: Text('Test Connection', style: TextStyle(fontSize: 12)),
+              child: const Text('Test Connection', style: TextStyle(fontSize: 12)),
             ),
           ),
         ],
@@ -246,7 +247,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
           Expanded(
             child: Text(
               value,
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
               overflow: TextOverflow.ellipsis,
             ),
           ),

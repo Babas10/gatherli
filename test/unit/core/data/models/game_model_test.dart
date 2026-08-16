@@ -192,8 +192,8 @@ void main() {
       });
 
       test('properly serializes GameResult with sets and games', () {
-        final result = GameResult(
-          games: const [
+        const result = GameResult(
+          games: [
             IndividualGame(
               gameNumber: 1,
               sets: [SetScore(teamAPoints: 21, teamBPoints: 15, setNumber: 1)],

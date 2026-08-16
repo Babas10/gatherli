@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -46,7 +48,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           } else if (state is PasswordResetSuccess) {
@@ -66,19 +68,19 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   size: 64,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 Text(
                   l10n.forgotYourPassword,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.forgotPasswordInstructions,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xxl),
                 AuthFormField(
                   controller: _emailController,
                   hintText: l10n.emailHint,
@@ -98,7 +100,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   },
                   onFieldSubmitted: (_) => _submitPasswordReset(),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 BlocBuilder<PasswordResetBloc, PasswordResetState>(
                   builder: (context, state) {
                     return AuthButton(
@@ -108,7 +110,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                     );
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -138,19 +140,19 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          icon: Icon(Icons.check_circle, color: Colors.green, size: 48),
+          icon: const Icon(Icons.check_circle, color: AppColors.success, size: 48),
           title: Text(l10n.emailSent),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(l10n.resetLinkSentTo, textAlign: TextAlign.center),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 email,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.checkEmailResetInstructions,
                 textAlign: TextAlign.center,

@@ -4,6 +4,7 @@
 // compatibility with invitations created before the migration.
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for declineInvitation Cloud Function
@@ -161,4 +162,4 @@ export async function declineInvitationHandler(
  */
 export const declineInvitation = functions
   .region("europe-west6")
-  .https.onCall(declineInvitationHandler);
+  .https.onCall(withLogging('declineInvitation', declineInvitationHandler));

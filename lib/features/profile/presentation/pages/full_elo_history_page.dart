@@ -1,5 +1,7 @@
 // Full ELO history screen with comprehensive rating timeline.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
@@ -79,9 +81,9 @@ class FullEloHistoryPage extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 48,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(message, textAlign: TextAlign.center),
                   ],
                 ),
@@ -144,9 +146,9 @@ class FullEloHistoryPage extends StatelessWidget {
               size: 64,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text('No ELO history yet', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'Play some games to see your rating history',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -181,16 +183,16 @@ class FullEloHistoryPage extends StatelessWidget {
                 context,
                 'Games',
                 history.length.toString(),
-                Colors.blue,
+                AppColors.info,
               ),
-              _buildStatChip(context, 'W-L', '$wins-$losses', Colors.orange),
+              _buildStatChip(context, 'W-L', '$wins-$losses', AppColors.warning),
               _buildStatChip(
                 context,
                 'Total',
                 totalChange >= 0
                     ? '+${totalChange.toStringAsFixed(0)}'
                     : totalChange.toStringAsFixed(0),
-                totalChange >= 0 ? Colors.green : Colors.red,
+                totalChange >= 0 ? AppColors.success : AppColors.danger,
               ),
               _buildStatChip(
                 context,
@@ -198,7 +200,7 @@ class FullEloHistoryPage extends StatelessWidget {
                 avgChange >= 0
                     ? '+${avgChange.toStringAsFixed(1)}'
                     : avgChange.toStringAsFixed(1),
-                avgChange >= 0 ? Colors.green : Colors.red,
+                avgChange >= 0 ? AppColors.success : AppColors.danger,
               ),
             ],
           ),
@@ -249,7 +251,7 @@ class FullEloHistoryPage extends StatelessWidget {
           },
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
 
         // Filter indicator
         if (filterStartDate != null && filterEndDate != null)
@@ -263,7 +265,7 @@ class FullEloHistoryPage extends StatelessWidget {
                   size: 16,
                   color: theme.colorScheme.onPrimaryContainer,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
                     'Showing ${DateFormat.yMMMd().format(filterStartDate)} - ${DateFormat.yMMMd().format(filterEndDate)}',
@@ -326,8 +328,8 @@ class FullEloHistoryPage extends StatelessWidget {
     bool isLatest,
   ) {
     final theme = Theme.of(context);
-    final resultColor = entry.won ? Colors.green : Colors.red;
-    final changeColor = entry.isGain ? Colors.green : Colors.red;
+    final resultColor = entry.won ? AppColors.success : AppColors.danger;
+    final changeColor = entry.isGain ? AppColors.success : AppColors.danger;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -362,7 +364,7 @@ class FullEloHistoryPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.lg),
 
               // Game details
               Expanded(
@@ -377,7 +379,7 @@ class FullEloHistoryPage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       DateFormat('MMM d, y').format(entry.timestamp),
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -402,7 +404,7 @@ class FullEloHistoryPage extends StatelessWidget {
                         color: changeColor,
                         size: 20,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       Text(
                         entry.formattedChange,
                         style: theme.textTheme.titleMedium?.copyWith(
@@ -412,7 +414,7 @@ class FullEloHistoryPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     entry.formattedNewRating,
                     style: theme.textTheme.bodyMedium?.copyWith(

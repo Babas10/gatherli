@@ -1,5 +1,5 @@
 // Validates MatchDetailBloc state transitions for loading match details,
-// determining team membership, and proposing a schedule.
+// determining team membership, and proposing / accepting / rejecting a schedule.
 import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,13 +7,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
 
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
+import '../../../../../helpers/mocks.dart';
 
 // ── Factories ────────────────────────────────────────────────────────────────
 
@@ -86,6 +84,7 @@ void main() {
   }
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(_makeMatch());
     registerFallbackValue(_makeTeam());
   });
@@ -383,6 +382,184 @@ void main() {
       act: (bloc) => bloc.add(
         ProposeSchedule(scheduledAt: DateTime(2026, 7, 15, 18)),
       ),
+      expect: () => [],
+    );
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────
+  group('AcceptSchedule', () {
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'calls confirmMatchSchedule and clears isAcceptingSchedule on success',
+      build: () {
+        final match = _makeMatch(
+          status: ChampionshipMatchStatus.scheduled,
+          scheduledAt: DateTime(2026, 7, 20, 18),
+        );
+        final teamA = _makeTeam(id: 'teamA', memberIds: [userId, 'user-2']);
+        final teamB =
+            _makeTeam(id: 'teamB', name: 'Team B', memberIds: ['user-3']);
+        stubMatch(match: match, teamA: teamA, teamB: teamB);
+        when(
+          () => mockRepo.confirmMatchSchedule(
+            championshipId: any(named: 'championshipId'),
+            matchId: any(named: 'matchId'),
+          ),
+        ).thenAnswer((_) async {});
+        return makeBloc();
+      },
+      act: (bloc) async {
+        bloc.add(const LoadMatchDetail(
+          championshipId: championshipId,
+          matchId: matchId,
+          currentUserId: userId,
+        ));
+        await Future.delayed(const Duration(milliseconds: 50));
+        bloc.add(const AcceptSchedule());
+      },
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final state = bloc.state;
+        expect(state, isA<MatchDetailLoaded>());
+        expect((state as MatchDetailLoaded).isAcceptingSchedule, isFalse);
+        expect(state.scheduleConfirmError, isNull);
+        verify(
+          () => mockRepo.confirmMatchSchedule(
+            championshipId: championshipId,
+            matchId: matchId,
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'sets scheduleConfirmError on ChampionshipException',
+      build: () {
+        final match = _makeMatch(
+          status: ChampionshipMatchStatus.scheduled,
+          scheduledAt: DateTime(2026, 7, 20, 18),
+        );
+        final teamA = _makeTeam(id: 'teamA', memberIds: [userId, 'user-2']);
+        final teamB =
+            _makeTeam(id: 'teamB', name: 'Team B', memberIds: ['user-3']);
+        stubMatch(match: match, teamA: teamA, teamB: teamB);
+        when(
+          () => mockRepo.confirmMatchSchedule(
+            championshipId: any(named: 'championshipId'),
+            matchId: any(named: 'matchId'),
+          ),
+        ).thenThrow(ChampionshipException('Not allowed', code: 'DENIED'));
+        return makeBloc();
+      },
+      act: (bloc) async {
+        bloc.add(const LoadMatchDetail(
+          championshipId: championshipId,
+          matchId: matchId,
+          currentUserId: userId,
+        ));
+        await Future.delayed(const Duration(milliseconds: 50));
+        bloc.add(const AcceptSchedule());
+      },
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final state = bloc.state as MatchDetailLoaded;
+        expect(state.isAcceptingSchedule, isFalse);
+        expect(state.scheduleConfirmError, isNotNull);
+      },
+    );
+
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'AcceptSchedule is ignored when state is not Loaded',
+      build: makeBloc,
+      act: (bloc) => bloc.add(const AcceptSchedule()),
+      expect: () => [],
+    );
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────
+  group('RejectSchedule', () {
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'calls rejectMatchSchedule and clears isRejectingSchedule on success',
+      build: () {
+        final match = _makeMatch(
+          status: ChampionshipMatchStatus.scheduled,
+          scheduledAt: DateTime(2026, 7, 20, 18),
+        );
+        final teamA = _makeTeam(id: 'teamA', memberIds: [userId, 'user-2']);
+        final teamB =
+            _makeTeam(id: 'teamB', name: 'Team B', memberIds: ['user-3']);
+        stubMatch(match: match, teamA: teamA, teamB: teamB);
+        when(
+          () => mockRepo.rejectMatchSchedule(
+            championshipId: any(named: 'championshipId'),
+            matchId: any(named: 'matchId'),
+          ),
+        ).thenAnswer((_) async {});
+        return makeBloc();
+      },
+      act: (bloc) async {
+        bloc.add(const LoadMatchDetail(
+          championshipId: championshipId,
+          matchId: matchId,
+          currentUserId: userId,
+        ));
+        await Future.delayed(const Duration(milliseconds: 50));
+        bloc.add(const RejectSchedule());
+      },
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final state = bloc.state;
+        expect(state, isA<MatchDetailLoaded>());
+        expect((state as MatchDetailLoaded).isRejectingSchedule, isFalse);
+        expect(state.scheduleConfirmError, isNull);
+        verify(
+          () => mockRepo.rejectMatchSchedule(
+            championshipId: championshipId,
+            matchId: matchId,
+          ),
+        ).called(1);
+      },
+    );
+
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'sets scheduleConfirmError on ChampionshipException',
+      build: () {
+        final match = _makeMatch(
+          status: ChampionshipMatchStatus.scheduled,
+          scheduledAt: DateTime(2026, 7, 20, 18),
+        );
+        final teamA = _makeTeam(id: 'teamA', memberIds: [userId, 'user-2']);
+        final teamB =
+            _makeTeam(id: 'teamB', name: 'Team B', memberIds: ['user-3']);
+        stubMatch(match: match, teamA: teamA, teamB: teamB);
+        when(
+          () => mockRepo.rejectMatchSchedule(
+            championshipId: any(named: 'championshipId'),
+            matchId: any(named: 'matchId'),
+          ),
+        ).thenThrow(ChampionshipException('Server error', code: 'INTERNAL'));
+        return makeBloc();
+      },
+      act: (bloc) async {
+        bloc.add(const LoadMatchDetail(
+          championshipId: championshipId,
+          matchId: matchId,
+          currentUserId: userId,
+        ));
+        await Future.delayed(const Duration(milliseconds: 50));
+        bloc.add(const RejectSchedule());
+      },
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final state = bloc.state as MatchDetailLoaded;
+        expect(state.isRejectingSchedule, isFalse);
+        expect(state.scheduleConfirmError, isNotNull);
+      },
+    );
+
+    blocTest<MatchDetailBloc, MatchDetailState>(
+      'RejectSchedule is ignored when state is not Loaded',
+      build: makeBloc,
+      act: (bloc) => bloc.add(const RejectSchedule()),
       expect: () => [],
     );
   });

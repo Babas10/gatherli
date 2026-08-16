@@ -2,14 +2,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/partner_detail/partner_detail_state.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;
@@ -28,7 +26,7 @@ void main() {
     blocTest<PartnerDetailBloc, PartnerDetailState>(
       'emits [loading, loaded] when stats and partner profile are found',
       build: () {
-        final testStats = TeammateStats(
+        const testStats = TeammateStats(
           userId: 'partner-123',
           gamesPlayed: 10,
           gamesWon: 7,
@@ -39,7 +37,7 @@ void main() {
           recentGames: [],
         );
 
-        final testPartner = UserModel(
+        const testPartner = UserModel(
           uid: 'partner-123',
           email: 'partner@example.com',
           displayName: 'Partner User',
@@ -77,7 +75,7 @@ void main() {
           () => mockUserRepository.getTeammateStats('user-123', 'partner-123'),
         ).thenAnswer((_) async => null);
         when(() => mockUserRepository.getUserById('partner-123')).thenAnswer(
-          (_) async => UserModel(
+          (_) async => const UserModel(
             uid: 'partner-123',
             email: 'partner@example.com',
             isEmailVerified: true,
@@ -106,7 +104,7 @@ void main() {
         when(
           () => mockUserRepository.getTeammateStats('user-123', 'partner-123'),
         ).thenAnswer(
-          (_) async => TeammateStats(
+          (_) async => const TeammateStats(
             userId: 'partner-123',
             gamesPlayed: 10,
             gamesWon: 7,

@@ -1,25 +1,16 @@
 // Unit tests for FirestoreFriendRepository - validates friendship management operations
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/repositories/firestore_friend_repository.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
+import '../../../../helpers/mocks.dart';
 
 // Mocks
-class MockFirebaseFunctions extends Mock implements FirebaseFunctions {}
-
-class MockHttpsCallable extends Mock implements HttpsCallable {}
 
 class MockHttpsCallableResult<T> extends Mock
     implements HttpsCallableResult<T> {}
-
-class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
-
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockUser extends Mock implements User {}
 
 // ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock
@@ -51,6 +42,7 @@ void main() {
   late FirestoreFriendRepository repository;
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeHttpsCallableOptions());
   });
 

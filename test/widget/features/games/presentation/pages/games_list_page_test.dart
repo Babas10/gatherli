@@ -2,10 +2,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/group_activity_item.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
@@ -16,6 +14,7 @@ import 'package:play_with_me/features/games/presentation/bloc/games_list/games_l
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_state.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_list_item.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockGamesListBloc extends MockBloc<GamesListEvent, GamesListState>
     implements GamesListBloc {}
@@ -64,22 +63,14 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<GamesListBloc>.value(value: mockGamesListBloc),
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: Text('$testGroupName Games'),
+            title: const Text('$testGroupName Games'),
             centerTitle: true,
           ),
           body: BlocBuilder<GamesListBloc, GamesListState>(
@@ -197,8 +188,7 @@ void main() {
             label: const Text('Create Game'),
           ),
         ),
-      ),
-    );
+      ));
   }
 
   group('GamesListPage Widget Tests', () {
@@ -304,7 +294,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -313,7 +303,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(upcomingGame)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -332,7 +322,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now().subtract(const Duration(days: 10)),
           scheduledAt: DateTime.now().subtract(const Duration(days: 7)),
-          location: GameLocation(name: 'Santa Monica'),
+          location: const GameLocation(name: 'Santa Monica'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -340,7 +330,7 @@ void main() {
 
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
-            upcomingActivities: [],
+            upcomingActivities: const [],
             pastActivities: [GroupActivityItem.game(pastGame)],
             userId: testUserId,
           ),
@@ -360,7 +350,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Venice Beach'),
+          location: const GameLocation(name: 'Venice Beach'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -373,7 +363,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now().subtract(const Duration(days: 10)),
           scheduledAt: DateTime.now().subtract(const Duration(days: 7)),
-          location: GameLocation(name: 'Santa Monica'),
+          location: const GameLocation(name: 'Santa Monica'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -414,7 +404,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.training(trainingSession)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -433,7 +423,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Test Location'),
+          location: const GameLocation(name: 'Test Location'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -442,7 +432,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(game)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );
@@ -462,7 +452,7 @@ void main() {
           createdBy: testUserId,
           createdAt: DateTime.now(),
           scheduledAt: DateTime.now().add(const Duration(days: 1)),
-          location: GameLocation(name: 'Test Location'),
+          location: const GameLocation(name: 'Test Location'),
           maxPlayers: 4,
           minPlayers: 2,
           playerIds: [testUserId],
@@ -471,7 +461,7 @@ void main() {
         when(() => mockGamesListBloc.state).thenReturn(
           GamesListLoaded(
             upcomingActivities: [GroupActivityItem.game(game)],
-            pastActivities: [],
+            pastActivities: const [],
             userId: testUserId,
           ),
         );

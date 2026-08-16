@@ -1,15 +1,13 @@
 // Home screen statistics section with "Performance Overview" title and 4 stat cards.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 // Golden Hour theme colors
-const _kSecondary = Color(0xFF004E64);
-const _kDanger = Color(0xFFEF476F);
-const _kPrimary = Color(0xFFEACE6A);
-const _kTextMuted = Color(0xFF64748B);
-const _kShadow = Color(0x14004E64);
 
 /// A section widget displaying performance statistics on the home screen.
 ///
@@ -48,7 +46,7 @@ class HomeStatsSection extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: _kTextMuted,
+                color: AppColors.textMuted,
                 letterSpacing: 0.8,
               ),
             ),
@@ -93,15 +91,15 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.eloRatingLabel,
-            style: const TextStyle(fontSize: 12, color: _kTextMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             user.eloRating.toStringAsFixed(0),
             style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.w600,
-              color: _kSecondary,
+              color: AppColors.secondary,
             ),
           ),
           if (trendData != null && trendData['delta'] != 0) ...[
@@ -114,7 +112,7 @@ class HomeStatsSection extends StatelessWidget {
                       ? Icons.arrow_upward
                       : Icons.arrow_downward,
                   size: 13,
-                  color: trendData['isPositive'] ? _kPrimary : _kDanger,
+                  color: trendData['isPositive'] ? AppColors.primary : AppColors.danger,
                 ),
                 const SizedBox(width: 2),
                 Text(
@@ -122,7 +120,7 @@ class HomeStatsSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: trendData['isPositive'] ? _kPrimary : _kDanger,
+                    color: trendData['isPositive'] ? AppColors.primary : AppColors.danger,
                   ),
                 ),
               ],
@@ -132,7 +130,7 @@ class HomeStatsSection extends StatelessWidget {
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 l10n.noGamesPlayedYet,
-                style: const TextStyle(fontSize: 10, color: _kTextMuted),
+                style: const TextStyle(fontSize: 10, color: AppColors.textMuted),
               ),
             ),
         ],
@@ -154,18 +152,18 @@ class HomeStatsSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
-                    color: _kSecondary,
+                    color: AppColors.secondary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   l10n.winRate,
-                  style: const TextStyle(fontSize: 12, color: _kTextMuted),
+                  style: AppTextStyles.caption,
                 ),
                 const SizedBox(height: 2),
                 Text(
                   l10n.winsLosses(user.gamesWon, user.gamesLost),
-                  style: const TextStyle(fontSize: 10, color: _kTextMuted),
+                  style: const TextStyle(fontSize: 10, color: AppColors.textMuted),
                 ),
               ],
             ),
@@ -184,10 +182,10 @@ class HomeStatsSection extends StatelessWidget {
                     value: user.winRate,
                     strokeWidth: 6,
                     backgroundColor: const Color(0xFFEEEEEE),
-                    valueColor: const AlwaysStoppedAnimation<Color>(_kPrimary),
+                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                   ),
                 ),
-                const Icon(Icons.emoji_events, size: 16, color: _kPrimary),
+                const Icon(Icons.emoji_events, size: 16, color: AppColors.primary),
               ],
             ),
           ),
@@ -211,9 +209,9 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.streakLabel,
-            style: const TextStyle(fontSize: 12, color: _kTextMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           if (hasStreak)
             Text(
               isWinning
@@ -222,7 +220,7 @@ class HomeStatsSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: isWinning ? _kPrimary : _kDanger,
+                color: isWinning ? AppColors.primary : AppColors.danger,
               ),
             )
           else
@@ -231,7 +229,7 @@ class HomeStatsSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: _kTextMuted.withValues(alpha: 0.5),
+                color: AppColors.textMuted.withValues(alpha: 0.5),
               ),
             ),
         ],
@@ -247,9 +245,9 @@ class HomeStatsSection extends StatelessWidget {
         children: [
           Text(
             l10n.gamesPlayed,
-            style: const TextStyle(fontSize: 12, color: _kTextMuted),
+            style: AppTextStyles.caption,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
               Text(
@@ -257,14 +255,14 @@ class HomeStatsSection extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w600,
-                  color: _kSecondary,
+                  color: AppColors.secondary,
                 ),
               ),
               const Spacer(),
               Icon(
                 Icons.sports_volleyball,
                 size: 24,
-                color: _kTextMuted.withValues(alpha: 0.5),
+                color: AppColors.textMuted.withValues(alpha: 0.5),
               ),
             ],
           ),
@@ -307,7 +305,7 @@ class _StatsCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: const [
-            BoxShadow(color: _kShadow, blurRadius: 20, offset: Offset(0, 8)),
+            BoxShadow(color: AppColors.shadow, blurRadius: 20, offset: Offset(0, 8)),
           ],
         ),
         padding: const EdgeInsets.all(16),

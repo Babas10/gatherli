@@ -7,14 +7,10 @@ import 'package:play_with_me/core/domain/entities/friendship_status_result.dart'
 import 'package:play_with_me/core/domain/entities/user_search_result.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_event.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_state.dart';
-
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-class MockAuthRepository extends Mock implements AuthRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late FriendBloc friendBloc;
@@ -35,14 +31,14 @@ void main() {
   });
 
   group('FriendBloc', () {
-    final testUser = UserEntity(
+    const testUser = UserEntity(
       uid: 'test-user-id',
       email: 'test@example.com',
       displayName: 'Test User',
       isEmailVerified: true,
     );
 
-    final testFriend = UserEntity(
+    const testFriend = UserEntity(
       uid: 'friend-user-id',
       email: 'friend@example.com',
       displayName: 'Friend User',
@@ -275,7 +271,7 @@ void main() {
         act: (bloc) => bloc.add(const FriendEvent.loadRequested()),
         expect: () => [
           const FriendState.loading(),
-          FriendState.loaded(
+          const FriendState.loaded(
             friends: [testFriend],
             receivedRequests: [],
             sentRequests: [],
@@ -415,7 +411,7 @@ void main() {
         expect: () => [
           const FriendState.actionSuccess(message: 'Friend request accepted'),
           const FriendState.loading(),
-          FriendState.loaded(
+          const FriendState.loaded(
             friends: [testFriend],
             receivedRequests: [],
             sentRequests: [],
@@ -598,7 +594,7 @@ void main() {
           when(
             () => mockFriendRepository.searchUserByEmail('friend@example.com'),
           ).thenAnswer(
-            (_) async => UserSearchResult(
+            (_) async => const UserSearchResult(
               user: testFriend,
               isFriend: false,
               hasPendingRequest: false,
@@ -611,7 +607,7 @@ void main() {
         ),
         expect: () => [
           const FriendState.searchLoading(),
-          FriendState.searchResult(
+          const FriendState.searchResult(
             user: testFriend,
             isFriend: false,
             hasPendingRequest: false,
@@ -650,7 +646,7 @@ void main() {
           when(
             () => mockFriendRepository.searchUserByEmail('unknown@example.com'),
           ).thenAnswer(
-            (_) async => UserSearchResult(
+            (_) async => const UserSearchResult(
               user: null,
               isFriend: false,
               hasPendingRequest: false,

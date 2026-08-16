@@ -85,15 +85,15 @@ void main() {
       loading: () => const Center(child: CircularProgressIndicator()),
       loaded: (games, hasMore, filter, startDate, endDate, isLoadingMore) {
         if (games.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.history, size: 64),
-                const SizedBox(height: 16),
-                const Text('No completed games yet'),
-                const SizedBox(height: 8),
-                const Text('Games will appear here after they are completed'),
+                Icon(Icons.history, size: 64),
+                SizedBox(height: 16),
+                Text('No completed games yet'),
+                SizedBox(height: 8),
+                Text('Games will appear here after they are completed'),
               ],
             ),
           );
@@ -122,7 +122,7 @@ void main() {
             const SizedBox(height: 16),
             Text(message),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: () {}, child: const Text('Retry')),
+            FilledButton(onPressed: () {}, child: const Text('Retry')),
           ],
         ),
       ),
@@ -311,7 +311,7 @@ void main() {
         );
 
         expect(find.text('Retry'), findsOneWidget);
-        expect(find.byType(ElevatedButton), findsOneWidget);
+        expect(find.byType(FilledButton), findsOneWidget);
       });
 
       testWidgets('displays different error messages', (tester) async {

@@ -1,6 +1,7 @@
 // Game History Screen with pagination and filters (Story 14.7)
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -226,10 +227,10 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.error_outline, size: 48),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(message),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
+                    const SizedBox(height: AppSpacing.lg),
+                    FilledButton(
                       onPressed: () {
                         context.read<GameHistoryBloc>().add(
                           GameHistoryEvent.load(
@@ -263,14 +264,14 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
       child: Row(
         children: [
           Text(l10n.activeFilters),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           if (filter == GameHistoryFilter.myGames)
             Chip(
               label: Text(l10n.myGames),
               onDeleted: () => _applyFilter(GameHistoryFilter.all),
             ),
           if (startDate != null) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Chip(
               label: Text(
                 '${startDate.month}/${startDate.day} - ${endDate?.month}/${endDate?.day}',
@@ -294,12 +295,12 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
             size: 64,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.noCompletedGamesYet,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.gamesWillAppearAfterCompleted,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

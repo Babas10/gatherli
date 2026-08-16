@@ -1,5 +1,6 @@
 // Profile page displaying user identity, account information and settings.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
@@ -58,12 +59,13 @@ class ProfilePage extends StatelessWidget {
                   content: Text(
                     AppLocalizations.of(context)!.deleteAccountError,
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.danger,
                 ),
               );
           }
         },
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           builder: (context, state) {
             if (state is AuthenticationAuthenticated) {
               return _ProfileContent(state: state);
@@ -98,7 +100,7 @@ class _ProfileContent extends StatelessWidget {
         children: [
           // Profile header with avatar and name
           ProfileHeader(user: state.user),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Account information card
           ProfileInfoCard(
@@ -106,7 +108,7 @@ class _ProfileContent extends StatelessWidget {
             onVerificationTap: () => _navigateToEmailVerification(context),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Action buttons
           ProfileActions(

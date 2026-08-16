@@ -1,5 +1,7 @@
 // Partner detail screen showing comprehensive teammate statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
@@ -50,9 +52,9 @@ class PartnerDetailPage extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 48,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(message, textAlign: TextAlign.center),
                   ],
                 ),
@@ -76,19 +78,19 @@ class PartnerDetailPage extends StatelessWidget {
         children: [
           // Partner header
           _buildPartnerHeader(context, partner),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
 
           // Overall record
           _buildRecordCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Point differential
           _buildPointDifferentialCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // ELO change together
           _buildEloCard(context, stats),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
 
           // Recent form
           _buildRecentFormCard(context, stats),
@@ -119,7 +121,7 @@ class PartnerDetailPage extends StatelessWidget {
                     )
                   : null,
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +166,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -172,19 +174,19 @@ class PartnerDetailPage extends StatelessWidget {
                   context,
                   l10n.games,
                   stats.gamesPlayed.toString(),
-                  Colors.blue,
+                  AppColors.info,
                 ),
                 _buildStatColumn(
                   context,
                   l10n.winRate,
                   '${stats.winRate.toStringAsFixed(1)}%',
-                  Colors.green,
+                  AppColors.success,
                 ),
                 _buildStatColumn(
                   context,
                   l10n.record,
                   stats.recordString,
-                  Colors.orange,
+                  AppColors.warning,
                 ),
               ],
             ),
@@ -215,7 +217,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -223,19 +225,19 @@ class PartnerDetailPage extends StatelessWidget {
                   context,
                   l10n.avgPerGame,
                   stats.formattedPointDifferential,
-                  isPositive ? Colors.green : Colors.red,
+                  isPositive ? AppColors.success : AppColors.danger,
                 ),
                 _buildStatColumn(
                   context,
                   l10n.pointsFor,
                   stats.avgPointsScored.toStringAsFixed(1),
-                  Colors.blue,
+                  AppColors.info,
                 ),
                 _buildStatColumn(
                   context,
                   l10n.pointsAgainst,
                   stats.avgPointsAllowed.toStringAsFixed(1),
-                  Colors.orange,
+                  AppColors.warning,
                 ),
               ],
             ),
@@ -262,7 +264,7 @@ class PartnerDetailPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -270,7 +272,7 @@ class PartnerDetailPage extends StatelessWidget {
                   context,
                   l10n.totalChange,
                   stats.formattedEloChange,
-                  isPositive ? Colors.green : Colors.red,
+                  isPositive ? AppColors.success : AppColors.danger,
                 ),
                 _buildStatColumn(
                   context,
@@ -278,7 +280,7 @@ class PartnerDetailPage extends StatelessWidget {
                   stats.avgEloChange >= 0
                       ? '+${stats.avgEloChange.toStringAsFixed(1)}'
                       : stats.avgEloChange.toStringAsFixed(1),
-                  stats.avgEloChange >= 0 ? Colors.green : Colors.red,
+                  stats.avgEloChange >= 0 ? AppColors.success : AppColors.danger,
                 ),
               ],
             ),
@@ -315,8 +317,8 @@ class PartnerDetailPage extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: stats.isOnWinningStreak
-                          ? Colors.green.withValues(alpha: 0.1)
-                          : Colors.red.withValues(alpha: 0.1),
+                          ? AppColors.success.withValues(alpha: 0.1)
+                          : AppColors.danger.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
@@ -325,15 +327,15 @@ class PartnerDetailPage extends StatelessWidget {
                           : l10n.streakLosses(stats.currentStreak.abs()),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: stats.isOnWinningStreak
-                            ? Colors.green
-                            : Colors.red,
+                            ? AppColors.success
+                            : AppColors.danger,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             if (stats.recentGames.isEmpty)
               Center(
                 child: Text(
@@ -353,7 +355,7 @@ class PartnerDetailPage extends StatelessWidget {
 
   Widget _buildGameTile(BuildContext context, RecentGameResult game) {
     final theme = Theme.of(context);
-    final resultColor = game.won ? Colors.green : Colors.red;
+    final resultColor = game.won ? AppColors.success : AppColors.danger;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -382,7 +384,7 @@ class PartnerDetailPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -395,7 +397,7 @@ class PartnerDetailPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Text(
                       '(${game.formattedPointDifferential})',
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -406,13 +408,13 @@ class PartnerDetailPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   AppLocalizations.of(
                     context,
                   )!.eloLabel(game.formattedEloChange),
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: game.eloChange >= 0 ? Colors.green : Colors.red,
+                    color: game.eloChange >= 0 ? AppColors.success : AppColors.danger,
                   ),
                 ),
               ],
@@ -440,7 +442,7 @@ class PartnerDetailPage extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(

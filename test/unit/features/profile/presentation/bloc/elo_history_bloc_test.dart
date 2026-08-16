@@ -3,14 +3,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/best_elo_record.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_state.dart';
-
-class MockUserRepository extends Mock implements UserRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;

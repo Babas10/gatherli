@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
@@ -87,10 +89,10 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
             onPressed: () => Navigator.of(context).pop(false),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.danger,
               foregroundColor: Colors.white,
             ),
             child: const Text('Delete'),
@@ -115,7 +117,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
       listener: (context, state) {
         if (state is ExerciseError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
           );
         } else if (state is ExercisesLocked) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -128,28 +130,28 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppColors.warning,
             ),
           );
         } else if (state is ExerciseAdded) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Exercise added successfully'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         } else if (state is ExerciseUpdated) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Exercise updated successfully'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         } else if (state is ExerciseDeleted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Exercise deleted successfully'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         }
@@ -170,15 +172,10 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                   children: [
                     Text(
                       'EXERCISES (${state.exercises.length})',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textMuted,
-                        letterSpacing: 0.8,
-                      ),
+                      style: AppTextStyles.sectionLabel,
                     ),
                     if (state.canModify)
-                      ElevatedButton.icon(
+                      OutlinedButton.icon(
                         onPressed: _showAddExerciseDialog,
                         icon: const Icon(Icons.add),
                         label: const Text('Add Exercise'),
@@ -199,12 +196,12 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                           size: 64,
                           color: Colors.grey[400],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.lg),
                         Text(
                           'No exercises yet',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         if (state.canModify)
                           const Text(
                             'Tap "Add Exercise" to get started',
@@ -246,10 +243,10 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   color: AppColors.primary.withValues(alpha: 0.2),
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(Icons.lock, color: AppColors.secondary),
-                      const SizedBox(width: 8),
+                      SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
                           'Exercises cannot be modified after session starts',

@@ -1,5 +1,6 @@
 // Displays the group activity feed with games and training sessions.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -159,9 +160,9 @@ class _GamesListPageContent extends StatelessWidget {
             size: 64,
             color: Theme.of(context).colorScheme.error,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text('Error', style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Text(
@@ -170,7 +171,7 @@ class _GamesListPageContent extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           FilledButton.icon(
             onPressed: () {
               context.read<GamesListBloc>().add(const RefreshGamesList());
@@ -194,19 +195,19 @@ class _GamesListPageContent extends StatelessWidget {
             size: 64,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.noActivitiesYet,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.createFirstActivity,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           FilledButton.icon(
             onPressed: () => _showCreateMenu(context),
             icon: const Icon(Icons.add),
@@ -220,13 +221,13 @@ class _GamesListPageContent extends StatelessWidget {
   Widget _buildBottomNavBar(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 8,
-            offset: const Offset(0, -2),
+            offset: Offset(0, -2),
           ),
         ],
       ),
@@ -264,10 +265,10 @@ class _GamesListPageContent extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: AppColors.primary, size: 24),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               label,
-              style: TextStyle(color: AppColors.navLabelColor, fontSize: 12),
+              style: const TextStyle(color: AppColors.navLabelColor, fontSize: 12),
             ),
           ],
         ),
@@ -288,13 +289,13 @@ class _GamesListPageContent extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.sports_volleyball,
                     color: AppColors.secondary,
                   ),
                   title: Text(
                     l10n.createGame,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -311,13 +312,13 @@ class _GamesListPageContent extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.fitness_center,
                     color: AppColors.secondary,
                   ),
                   title: Text(
                     l10n.createTrainingSession,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),

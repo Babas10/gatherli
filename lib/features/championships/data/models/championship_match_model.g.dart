@@ -64,6 +64,7 @@ _ChampionshipMatchModel _$ChampionshipMatchModelFromJson(
       ChampionshipMatchStatus.pending,
   scheduledAt: const NullableTimestampConverter().fromJson(json['scheduledAt']),
   location: json['location'] as String?,
+  scheduledByTeamId: json['scheduledByTeamId'] as String?,
   result: const MatchResultConverter().fromJson(
     json['result'] as Map<String, dynamic>?,
   ),
@@ -91,6 +92,7 @@ Map<String, dynamic> _$ChampionshipMatchModelToJson(
     instance.scheduledAt,
   ),
   'location': instance.location,
+  'scheduledByTeamId': instance.scheduledByTeamId,
   'result': const MatchResultConverter().toJson(instance.result),
   'submittedByTeamId': instance.submittedByTeamId,
   'submittedByUserId': instance.submittedByUserId,

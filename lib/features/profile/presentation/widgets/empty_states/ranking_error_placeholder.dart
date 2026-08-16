@@ -1,5 +1,6 @@
 // Error placeholder with retry functionality for ranking load failures (Story 302.7).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// Error state widget for ranking load failures with retry functionality.
 ///
@@ -31,7 +32,7 @@ class RankingErrorPlaceholder extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.error_outline, color: theme.colorScheme.error),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Text(
                     message,

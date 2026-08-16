@@ -2,6 +2,7 @@
 // Part of Story 28.7 — receive and respond to game invitations.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -58,7 +59,7 @@ class GameInvitationCard extends StatelessWidget {
                   color: AppColors.onSurface,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
 
               // ── Date & time ─────────────────────────────────────────────────
               _InfoRow(
@@ -69,7 +70,7 @@ class GameInvitationCard extends StatelessWidget {
 
               // ── Location (if available) ─────────────────────────────────────
               if (invitation.gameLocationName.isNotEmpty) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 _InfoRow(
                   icon: Icons.location_on_outlined,
                   text: invitation.gameLocationName,
@@ -78,7 +79,7 @@ class GameInvitationCard extends StatelessWidget {
 
               // ── Group ───────────────────────────────────────────────────────
               if (invitation.groupName.isNotEmpty) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 _InfoRow(
                   icon: Icons.group_outlined,
                   text: l10n.fromGroup(invitation.groupName),
@@ -87,14 +88,14 @@ class GameInvitationCard extends StatelessWidget {
 
               // ── Inviter ─────────────────────────────────────────────────────
               if (invitation.inviterDisplayName.isNotEmpty) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 _InfoRow(
                   icon: Icons.person_outline,
                   text: l10n.invitedBy(invitation.inviterDisplayName),
                 ),
               ],
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // ── Action buttons ──────────────────────────────────────────────
               Row(
@@ -117,7 +118,7 @@ class GameInvitationCard extends StatelessWidget {
                     ),
                     child: Text(l10n.decline),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   FilledButton(
                     onPressed: isProcessing ? null : onAccept,
                     child: Text(l10n.accept),

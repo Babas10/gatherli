@@ -1,5 +1,7 @@
 // Partners card showing best partner statistics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
@@ -27,14 +29,9 @@ class PartnersCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           Text(
             l10n.bestPartner.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           // White card
           Card(
             margin: EdgeInsets.zero,
@@ -58,7 +55,7 @@ class PartnersCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -78,7 +75,7 @@ class PartnersCard extends StatelessWidget {
           backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
           child: const Icon(Icons.person, size: 28, color: AppColors.secondary),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.lg),
         // Partner stats
         Expanded(
           child: Column(
@@ -93,12 +90,12 @@ class PartnersCard extends StatelessWidget {
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 l10n.winRatePercent(winRate),
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Colors.green,
+                  color: AppColors.success,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -124,26 +121,26 @@ class PartnersCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.trending_up, size: 14, color: Colors.green),
-                  const SizedBox(width: 4),
+                  const Icon(Icons.trending_up, size: 14, color: AppColors.success),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     '$winRate%',
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.green,
+                      color: AppColors.success,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
@@ -165,7 +162,7 @@ class PartnersCard extends StatelessWidget {
           size: 32,
           color: AppColors.textMuted.withValues(alpha: 0.35),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

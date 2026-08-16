@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-06-06T15:34:51.700Z",
+  "password": "test1010",
+  "genderMapping": {
+    "male": "test1–test20@mysta.com",
+    "female": "test21–test41@mysta.com  (test41 has no team)",
+    "noGender": "test42–test50@mysta.com"
+  },
+  "admin": {
+    "email": "test1@mysta.com",
+    "uid": "Pm1rmiGXy5dQ3Sr12W6LINeFH4I3",
+    "note": "Platform admin — can use the Create Championship form in-app. Also captain of 'Les Titans' in Men's."
+  },
+  "championships": {
+    "womensOpen": {
+      "id": "DpZVFoOE3TWEWvMQtxi7",
+      "title": "Women's Beach Volleyball Open 2026",
+      "status": "active",
+      "currentRound": 5,
+      "totalRounds": 9,
+      "teams": [
+        {
+          "teamId": "d2U9OXzEt9HNAzlgc5SS",
+          "name": "Les Perles",
+          "captain": "test21@mysta.com",
+          "partner": "test22@mysta.com"
+        },
+        {
+          "teamId": "nXBjJzpZzEDlYASjWmgF",
+          "name": "Vagues d'Or",
+          "captain": "test23@mysta.com",
+          "partner": "test24@mysta.com"
+        },
+        {
+          "teamId": "cffHG6BRwb7AX1tmMlvj",
+          "name": "Les Sirènes",
+          "captain": "test25@mysta.com",
+          "partner": "test26@mysta.com"
+        },
+        {
+          "teamId": "iRElUzeXfiXZrFwj5Pox",
+          "name": "Soleil Levant",
+          "captain": "test27@mysta.com",
+          "partner": "test28@mysta.com"
+        },
+        {
+          "teamId": "v7D61ivBl5VARuKVn6r0",
+          "name": "Les Gazelles",
+          "captain": "test29@mysta.com",
+          "partner": "test30@mysta.com"
+        },
+        {
+          "teamId": "J6Nh8jYXk1zToFADxk5x",
+          "name": "Étoiles du Sud",
+          "captain": "test31@mysta.com",
+          "partner": "test32@mysta.com"
+        },
+        {
+          "teamId": "OGS6XEkgiiFdO08pPti7",
+          "name": "Filles du Vent",
+          "captain": "test33@mysta.com",
+          "partner": "test34@mysta.com"
+        },
+        {
+          "teamId": "e8LlxlnGutcbKnmyw6e0",
+          "name": "Plage Royale",
+          "captain": "test35@mysta.com",
+          "partner": "test36@mysta.com"
+        },
+        {
+          "teamId": "wrtha3QKLPmbHUpPMROz",
+          "name": "Les Dauphines",
+          "captain": "test37@mysta.com",
+          "partner": "test38@mysta.com"
+        },
+        {
+          "teamId": "CZIpuFVujvxJnOxdPLOz",
+          "name": "Tempête Rose",
+          "captain": "test39@mysta.com",
+          "partner": "test40@mysta.com"
+        }
+      ]
+    },
+    "mensOpen": {
+      "id": "u8Pclbc9SoFhSooQE7yf",
+      "title": "Men's Beach Volleyball Open 2026",
+      "status": "registration",
+      "teamsCount": 9,
+      "registrationDeadline": "2026-06-10",
+      "freeSlot": {
+        "note": "Log in as test19, pick test20 as partner to register the 10th team",
+        "captain": {
+          "email": "test19@mysta.com",
+          "uid": "KYmbZnz9zcTI0qujPDgwf2Zd3Jg1"
+        },
+        "partner": {
+          "email": "test20@mysta.com",
+          "uid": "wriszUXH7hWleR9INR1hJkRmuhD2"
+        }
+      },
+      "teams": [
+        {
+          "teamId": "YyY7JdLLGQwQ3VPh0V5k",
+          "name": "Les Titans",
+          "captain": "test1@mysta.com",
+          "partner": "test2@mysta.com"
+        },
+        {
+          "teamId": "4CIOosOVkxK6erUwIiFd",
+          "name": "Vague Bleue",
+          "captain": "test3@mysta.com",
+          "partner": "test4@mysta.com"
+        },
+        {
+          "teamId": "HkUsQyt88jcOyg3RnrPk",
+          "name": "Sable d'Or",
+          "captain": "test5@mysta.com",
+          "partner": "test6@mysta.com"
+        },
+        {
+          "teamId": "kALimQRCsMOcIs4mz1Il",
+          "name": "Tempête Noire",
+          "captain": "test7@mysta.com",
+          "partner": "test8@mysta.com"
+        },
+        {
+          "teamId": "YDmXkMt9riplDNGuToJQ",
+          "name": "Les Requins",
+          "captain": "test9@mysta.com",
+          "partner": "test10@mysta.com"
+        },
+        {
+          "teamId": "IhYGnuV0bSQtwOnLXRwS",
+          "name": "Horizon FC",
+          "captain": "test11@mysta.com",
+          "partner": "test12@mysta.com"
+        },
+        {
+          "teamId": "KbCiiqsY3n8OtvRhLG23",
+          "name": "Les Guerriers",
+          "captain": "test13@mysta.com",
+          "partner": "test14@mysta.com"
+        },
+        {
+          "teamId": "618iEFPg7Ch0kUxS3o4k",
+          "name": "Vent du Large",
+          "captain": "test15@mysta.com",
+          "partner": "test16@mysta.com"
+        },
+        {
+          "teamId": "RoKBFVyLubNJQXOmeVpg",
+          "name": "Côte Sauvage",
+          "captain": "test17@mysta.com",
+          "partner": "test18@mysta.com"
+        }
+      ]
+    }
+  },
+  "quickStart": [
+    "Admin / create championship  →  test1@mysta.com   / test1010",
+    "Women's team captain         →  test21@mysta.com  / test1010",
+    "Register 10th team (Men's)   →  test19@mysta.com  / test1010  (partner: test20@mysta.com)",
+    "Gender gate test             →  test42@mysta.com  / test1010  (no gender set)"
+  ]
+}

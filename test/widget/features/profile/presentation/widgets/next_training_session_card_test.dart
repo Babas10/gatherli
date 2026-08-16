@@ -1,11 +1,10 @@
 // Widget tests for NextTrainingSessionCard
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/next_training_session_card.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('NextTrainingSessionCard Widget Tests', () {
@@ -18,22 +17,13 @@ void main() {
       VoidCallback? onTap,
     }) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: NextTrainingSessionCard(
               session: session,
               userId: testUserId,
               onTap: onTap,
             ),
-          ),
-        ),
+          )),
       );
     }
 

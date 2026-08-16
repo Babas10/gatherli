@@ -32,7 +32,9 @@ export {leaveChampionshipTeam} from "./leaveChampionshipTeam"; // Story 30.3 (Te
 export {startChampionship} from "./startChampionship"; // Story 30.4 (Fixture Generation)
 export {submitChampionshipMatchResult} from "./submitChampionshipMatchResult"; // Story 30.6 (Result Submission)
 export {verifyChampionshipMatchResult} from "./verifyChampionshipMatchResult"; // Story 30.7 (Result Verification)
-export {proposeMatchSchedule} from "./proposeMatchSchedule"; // Story 30.5/30.11 (Schedule Proposal)
+export {proposeMatchSchedule} from "./proposeMatchSchedule"; // Story 30.5/30.11/30.20 (Schedule Proposal)
+export {confirmMatchSchedule} from "./confirmMatchSchedule"; // Story 30.20 (Schedule Confirm)
+export {rejectMatchSchedule} from "./rejectMatchSchedule"; // Story 30.20 (Schedule Reject)
 export {onChampionshipMatchVerified} from "./onChampionshipMatchVerified"; // Story 30.8 (Standings Recalculation)
 export {adminDecideChampionshipMatch} from "./adminDecideChampionshipMatch"; // Story 30.12 (Admin Match Decision)
 export {
@@ -161,3 +163,18 @@ export {migrateRemoveUserArrays} from "./migrateRemoveUserArrays";
 // Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
 export {sendInvitation} from "./sendInvitation";
 
+// Story 30.x: List all championships via Admin SDK (bypasses Firestore rules for regular users)
+export {getChampionships} from "./getChampionships";
+
+
+// Story 30.16: Mark championship as completed (admin-only)
+export {completeChampionship} from "./completeChampionship";
+
+// Story 30.28: Edit championship title/deadline (admin-only, before start)
+export {editChampionship} from "./editChampionship";
+
+// Story 30.33: Team captain can rename their team during registration
+export {renameChampionshipTeam} from "./renameChampionshipTeam";
+
+// Story 30.19: Enforce registration deadlines (scheduled — hourly)
+export {enforceRegistrationDeadlines} from "./enforceRegistrationDeadlines";

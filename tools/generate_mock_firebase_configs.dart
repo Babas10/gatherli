@@ -31,7 +31,7 @@ void main() {
 }
 
 void generateMockDevConfig() {
-  final content = '''// MOCK FILE - FOR CI TESTING ONLY
+  const content = '''// MOCK FILE - FOR CI TESTING ONLY
 // This is a mock Firebase configuration file generated for CI environments
 // Real configurations are securely excluded from the repository
 
@@ -75,7 +75,7 @@ class FirebaseConfigDev extends FirebaseConfigBase {
 }
 
 void generateMockProdConfig() {
-  final content = '''// MOCK FILE - FOR CI TESTING ONLY
+  const content = '''// MOCK FILE - FOR CI TESTING ONLY
 // This is a mock Firebase configuration file generated for CI environments
 // Real configurations are securely excluded from the repository
 

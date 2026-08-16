@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -104,14 +105,14 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                           children: [
                             Text(l10n.requests),
                             if (count > 0) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppSpacing.sm),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 6,
                                   vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: AppColors.danger,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 constraints: const BoxConstraints(
@@ -159,7 +160,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(message),
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColors.danger,
                         ),
                       );
                     },
@@ -255,20 +256,20 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                               const Icon(
                                 Icons.error_outline,
                                 size: 64,
-                                color: Colors.red,
+                                color: AppColors.danger,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppSpacing.lg),
                               Text(
                                 l10n.errorLoadingFriends,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppSpacing.sm),
                               Text(
                                 message,
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppSpacing.lg),
                               FilledButton(
                                 onPressed: () {
                                   context.read<FriendBloc>().add(
@@ -300,8 +301,6 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
   Widget _buildAddFriendButton(BuildContext context, AppLocalizations l10n) {
     return FloatingActionButton.extended(
       heroTag: 'add_friend_fab', // Unique tag to avoid Hero conflicts
-      backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-      foregroundColor: AppColors.secondary,
       elevation: 0,
       highlightElevation: 0,
       onPressed: () {

@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { withLogging } from './utils/logger';
 
 /**
  * Request interface for inviteGuestToGame Cloud Function
@@ -230,4 +231,4 @@ export async function inviteGuestToGameHandler(
  */
 export const inviteGuestToGame = functions
   .region("europe-west6")
-  .https.onCall(inviteGuestToGameHandler);
+  .https.onCall(withLogging('inviteGuestToGame', inviteGuestToGameHandler));

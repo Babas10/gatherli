@@ -1,12 +1,13 @@
 // Manages real-time in-game chat messages and send actions.
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'game_chat_event.dart';
 import 'game_chat_state.dart';
 
-class GameChatBloc extends Bloc<GameChatEvent, GameChatState> {
+class GameChatBloc extends BaseBloc<GameChatEvent, GameChatState> {
   final MessageRepository _messageRepository;
   StreamSubscription<dynamic>? _messagesSubscription;
 

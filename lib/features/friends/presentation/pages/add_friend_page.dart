@@ -1,5 +1,7 @@
 // Page for searching and adding friends by email
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
@@ -54,6 +56,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return Scaffold(
@@ -118,13 +121,13 @@ class _AddFriendPageState extends State<AddFriendPage> {
                   },
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               FilledButton.icon(
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(
                     0xFFEACE6A,
                   ).withValues(alpha: 0.25),
-                  foregroundColor: const Color(0xFF004E64),
+                  foregroundColor: AppColors.secondary,
                 ),
                 onPressed: isSearching || _searchController.text.trim().isEmpty
                     ? null
@@ -159,7 +162,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
         state.whenOrNull(
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message), backgroundColor: Colors.red),
+              SnackBar(content: Text(message), backgroundColor: AppColors.danger),
             );
           },
           actionSuccess: (_) {
@@ -274,12 +277,12 @@ class _AddFriendPageState extends State<AddFriendPage> {
             size: 64,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.searchForFriendsToAdd,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Text(

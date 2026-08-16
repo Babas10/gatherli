@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/best_elo_record.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
@@ -50,7 +51,7 @@ class BestEloHighlightCard extends StatelessWidget {
               size: 18,
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               AppLocalizations.of(context)!.noGamesInThisPeriod,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -95,8 +96,8 @@ class BestEloHighlightCard extends StatelessWidget {
           child: Row(
             children: [
               // Trophy icon
-              Icon(Icons.emoji_events, size: 20, color: AppColors.primary),
-              const SizedBox(width: 12),
+              const Icon(Icons.emoji_events, size: 20, color: AppColors.primary),
+              const SizedBox(width: AppSpacing.md),
               // Content
               Expanded(
                 child: Column(

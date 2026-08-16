@@ -16,6 +16,7 @@ class ChampionshipListBloc
         super(const ChampionshipListInitial()) {
     on<LoadChampionships>(_onLoad);
     on<ChampionshipsUpdated>(_onUpdated);
+    on<ChampionshipsLoadFailed>(_onLoadFailed);
     on<FilterChampionships>(_onFilter);
   }
 
@@ -31,7 +32,9 @@ class ChampionshipListBloc
         final msg = e is ChampionshipException
             ? e.message
             : 'Failed to load championships';
-        emit(ChampionshipListError(message: msg));
+        // Route error through an event — calling emit() directly here would
+        // fail because the _onLoad handler has already completed.
+        add(ChampionshipsLoadFailed(msg));
       },
     );
   }
@@ -48,6 +51,13 @@ class ChampionshipListBloc
       allChampionships: event.championships,
       activeFilter: currentFilter,
     ));
+  }
+
+  void _onLoadFailed(
+    ChampionshipsLoadFailed event,
+    Emitter<ChampionshipListState> emit,
+  ) {
+    emit(ChampionshipListError(message: event.message));
   }
 
   void _onFilter(

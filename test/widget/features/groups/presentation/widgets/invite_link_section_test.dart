@@ -4,14 +4,13 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_event.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/invite_link_section.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockGroupInviteLinkBloc
     extends MockBloc<GroupInviteLinkEvent, GroupInviteLinkState>
@@ -25,21 +24,12 @@ void main() {
   });
 
   Widget buildTestWidget({String groupId = 'group-123'}) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(
+    return testApp(child: Scaffold(
         body: BlocProvider<GroupInviteLinkBloc>.value(
           value: mockBloc,
           child: InviteLinkSection(groupId: groupId),
         ),
-      ),
-    );
+      ));
   }
 
   group('InviteLinkSection', () {

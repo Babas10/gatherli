@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,7 +132,7 @@ class _TrainingSessionDetailsPageState
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(l10n.trainingCancelled),
-                            backgroundColor: AppColors.primary,
+                            backgroundColor: AppColors.danger,
                           ),
                         );
                         // Navigate back after cancellation
@@ -158,11 +162,11 @@ class _TrainingSessionDetailsPageState
                             value: 'cancel',
                             child: Row(
                               children: [
-                                const Icon(Icons.cancel, color: Colors.red),
-                                const SizedBox(width: 8),
+                                const Icon(Icons.cancel, color: AppColors.danger),
+                                const SizedBox(width: AppSpacing.sm),
                                 Text(
                                   l10n.cancelSession,
-                                  style: const TextStyle(color: Colors.red),
+                                  style: const TextStyle(color: AppColors.danger),
                                 ),
                               ],
                             ),
@@ -181,27 +185,12 @@ class _TrainingSessionDetailsPageState
                   _buildSessionHeader(context, session, isOrganizer),
 
                   // Tabs — icon turns yellow when selected, text stays gray
-                  TabBar(
-                    labelColor: AppColors.navLabelColor,
-                    unselectedLabelColor: AppColors.navLabelColor,
-                    indicatorColor: AppColors.primary,
+                  SectionTabBar(
                     tabs: [
-                      _TrainingTab(
-                        tabIndex: 0,
-                        icon: Icons.people,
-                        label: l10n.participants,
-                      ),
-                      _TrainingTab(
-                        tabIndex: 1,
-                        icon: Icons.fitness_center,
-                        label: l10n.exercises,
-                      ),
+                      AppTabItem(icon: Icons.people, label: l10n.participants),
+                      AppTabItem(icon: Icons.fitness_center, label: l10n.exercises),
                       if (showFeedbackTab)
-                        _TrainingTab(
-                          tabIndex: 2,
-                          icon: Icons.feedback_outlined,
-                          label: l10n.feedback,
-                        ),
+                        AppTabItem(icon: Icons.feedback_outlined, label: l10n.feedback),
                     ],
                   ),
 
@@ -274,7 +263,7 @@ class _TrainingSessionDetailsPageState
               _buildStatusBadge(session.status),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Description
           if (session.description != null)
@@ -299,7 +288,7 @@ class _TrainingSessionDetailsPageState
                     size: 16,
                     color: AppColors.secondary,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     isOrganizer
                         ? l10n.youAreOrganizing
@@ -317,25 +306,25 @@ class _TrainingSessionDetailsPageState
             },
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
 
           // Date/Time
           Row(
             children: [
-              Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
-              const SizedBox(width: 4),
+              const Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 DateFormat('MMM dd, yyyy • HH:mm').format(session.startTime),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
 
           // Location
           Row(
             children: [
-              Icon(Icons.location_on, size: 16, color: AppColors.secondary),
-              const SizedBox(width: 4),
+              const Icon(Icons.location_on, size: 16, color: AppColors.secondary),
+              const SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: Text(
                   session.location.name,
@@ -344,7 +333,7 @@ class _TrainingSessionDetailsPageState
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
 
           // Participant count
           Builder(
@@ -352,8 +341,8 @@ class _TrainingSessionDetailsPageState
               final l10n = AppLocalizations.of(context)!;
               return Row(
                 children: [
-                  Icon(Icons.people, size: 16, color: AppColors.secondary),
-                  const SizedBox(width: 4),
+                  const Icon(Icons.people, size: 16, color: AppColors.secondary),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.participantsCount(
                       session.participantIds.length,
@@ -361,7 +350,7 @@ class _TrainingSessionDetailsPageState
                     ),
                   ),
                   if (session.isFull) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -370,14 +359,14 @@ class _TrainingSessionDetailsPageState
                       decoration: BoxDecoration(
                         color: Colors.red.withAlpha(26),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.red),
+                        border: Border.all(color: AppColors.danger),
                       ),
                       child: Text(
                         l10n.full.toUpperCase(),
                         style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                          color: AppColors.danger,
                         ),
                       ),
                     ),
@@ -389,7 +378,7 @@ class _TrainingSessionDetailsPageState
 
           // Notes (if available)
           if (session.notes != null && session.notes!.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -401,7 +390,7 @@ class _TrainingSessionDetailsPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Icon(Icons.note, size: 16, color: AppColors.secondary),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       session.notes!,
@@ -432,12 +421,12 @@ class _TrainingSessionDetailsPageState
             label = l10n.scheduled;
             break;
           case TrainingStatus.completed:
-            color = Colors.green;
+            color = AppColors.success;
             icon = Icons.check_circle;
             label = l10n.completed;
             break;
           case TrainingStatus.cancelled:
-            color = Colors.red;
+            color = AppColors.danger;
             icon = Icons.cancel;
             label = l10n.cancelled;
             break;
@@ -454,7 +443,7 @@ class _TrainingSessionDetailsPageState
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: 16, color: color),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 label,
                 style: TextStyle(
@@ -480,17 +469,17 @@ class _TrainingSessionDetailsPageState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.people_outline, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   l10n.noParticipantsYet,
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.beFirstToJoin,
                   style: const TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
                 // Show participation info even when empty
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -516,10 +505,10 @@ class _TrainingSessionDetailsPageState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
+                const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+                const SizedBox(height: AppSpacing.lg),
                 Text(l10n.errorLoadingParticipants),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   snapshot.error.toString(),
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
@@ -552,20 +541,13 @@ class _TrainingSessionDetailsPageState
             return Card(
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: participant.photoUrl != null
-                      ? NetworkImage(participant.photoUrl!)
-                      : null,
-                  child: participant.photoUrl == null
-                      ? Text(participant.displayNameOrEmail[0].toUpperCase())
-                      : null,
-                ),
+                leading: UserAvatar(name: participant.displayName ?? participant.email, photoUrl: participant.photoUrl),
                 title: Row(
                   children: [
                     Text(participant.displayNameOrEmail),
                     if (isOrg) ...[
-                      const SizedBox(width: 8),
-                      const Icon(Icons.star, size: 16, color: Colors.amber),
+                      const SizedBox(width: AppSpacing.sm),
+                      const Icon(Icons.star, size: 16, color: AppColors.warning),
                     ],
                   ],
                 ),
@@ -573,7 +555,7 @@ class _TrainingSessionDetailsPageState
                     ? Text(
                         l10n.organizer,
                         style: const TextStyle(
-                          color: Colors.amber,
+                          color: AppColors.warning,
                           fontWeight: FontWeight.bold,
                         ),
                       )
@@ -590,7 +572,7 @@ class _TrainingSessionDetailsPageState
                         ),
                         child: Text(
                           l10n.you,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.secondary,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
@@ -619,12 +601,7 @@ class _TrainingSessionDetailsPageState
               children: [
                 Text(
                   l10n.participation.toUpperCase(),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textMuted,
-                    letterSpacing: 0.8,
-                  ),
+                  style: AppTextStyles.sectionLabel,
                 ),
                 const Divider(),
                 _buildParticipationRow(
@@ -694,7 +671,7 @@ class _TrainingSessionDetailsPageState
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.joinedTrainingSuccess),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         } else if (state is LeftSession) {
@@ -706,7 +683,7 @@ class _TrainingSessionDetailsPageState
           );
         } else if (state is ParticipationError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
           );
         }
       },
@@ -787,16 +764,14 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.cancel),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 LeaveTrainingSession(widget.trainingSessionId),
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.secondary,
+            style: FilledButton.styleFrom(
             ),
             child: Text(l10n.leave),
           ),
@@ -821,14 +796,14 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.keepSession),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 CancelTrainingSession(widget.trainingSessionId),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
             child: Text(l10n.cancelSession),
           ),
         ],
@@ -840,32 +815,3 @@ class _TrainingSessionDetailsPageState
 /// Tab widget that shows a yellow icon when selected, gray when not selected.
 /// Text label always stays gray (matches the app's bottom nav bar pattern).
 /// Explicit Icon.color takes precedence over the inherited IconTheme from TabBar.
-class _TrainingTab extends StatelessWidget {
-  final int tabIndex;
-  final IconData icon;
-  final String label;
-
-  const _TrainingTab({
-    required this.tabIndex,
-    required this.icon,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = DefaultTabController.of(context);
-    return AnimatedBuilder(
-      animation: controller.animation!,
-      builder: (context, _) {
-        final isSelected = controller.index == tabIndex;
-        return Tab(
-          icon: Icon(
-            icon,
-            color: isSelected ? AppColors.primary : AppColors.navLabelColor,
-          ),
-          text: label,
-        );
-      },
-    );
-  }
-}

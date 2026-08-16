@@ -1,32 +1,22 @@
 // Validates BestEloHighlightCard displays best ELO data and empty states correctly.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/best_elo_record.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/best_elo_highlight_card.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('BestEloHighlightCard', () {
     testWidgets('shows empty state when bestElo is null', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: const Scaffold(
             body: BestEloHighlightCard(
               bestElo: null,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('No Games in This Period'), findsOneWidget);
@@ -42,21 +32,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       // ELO should be displayed without decimals
@@ -72,21 +53,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final expectedDate = DateFormat('MMM d, yyyy').format(date);
@@ -101,21 +73,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       expect(find.byIcon(Icons.emoji_events), findsOneWidget);
@@ -130,21 +93,12 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Scaffold(
+          testApp(child: Scaffold(
               body: BestEloHighlightCard(
                 bestElo: bestElo,
                 timePeriod: TimePeriod.thirtyDays,
               ),
-            ),
-          ),
+            )),
         );
 
         expect(find.text('Best ELO This Month'), findsOneWidget);
@@ -158,21 +112,12 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Scaffold(
+          testApp(child: Scaffold(
               body: BestEloHighlightCard(
                 bestElo: bestElo,
                 timePeriod: TimePeriod.ninetyDays,
               ),
-            ),
-          ),
+            )),
         );
 
         expect(find.text('Best ELO Past 90 Days'), findsOneWidget);
@@ -186,21 +131,12 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Scaffold(
+          testApp(child: Scaffold(
               body: BestEloHighlightCard(
                 bestElo: bestElo,
                 timePeriod: TimePeriod.oneYear,
               ),
-            ),
-          ),
+            )),
         );
 
         expect(find.text('Best ELO This Year'), findsOneWidget);
@@ -214,21 +150,12 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Scaffold(
+          testApp(child: Scaffold(
               body: BestEloHighlightCard(
                 bestElo: bestElo,
                 timePeriod: TimePeriod.allTime,
               ),
-            ),
-          ),
+            )),
         );
 
         expect(find.text('Best ELO All Time'), findsOneWidget);
@@ -244,15 +171,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
@@ -260,8 +179,7 @@ void main() {
                 tapped = true;
               },
             ),
-          ),
-        ),
+          )),
       );
 
       await tester.tap(find.byType(InkWell));
@@ -279,15 +197,7 @@ void main() {
 
       bool tapped = false;
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
@@ -295,8 +205,7 @@ void main() {
                 tapped = true;
               },
             ),
-          ),
-        ),
+          )),
       );
 
       await tester.tap(find.byType(InkWell));
@@ -311,22 +220,13 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
               onTap: null,
             ),
-          ),
-        ),
+          )),
       );
 
       expect(find.byType(BestEloHighlightCard), findsOneWidget);
@@ -341,21 +241,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final container = tester.widget<Container>(
@@ -380,21 +271,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final card = tester.widget<Card>(find.byType(Card));
@@ -412,21 +294,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('10000'), findsOneWidget);
@@ -440,21 +313,12 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: BestEloHighlightCard(
               bestElo: bestElo,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       expect(find.text('100'), findsOneWidget);
@@ -462,21 +326,12 @@ void main() {
 
     testWidgets('empty state has proper styling', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: const Scaffold(
             body: BestEloHighlightCard(
               bestElo: null,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
 
       final card = tester.widget<Card>(find.byType(Card));

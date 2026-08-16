@@ -9,7 +9,7 @@ void main() {
       tester,
     ) async {
       // We need to construct a result with valid data so scoreDescription returns a valid description.
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -21,7 +21,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: GameResultBadge(result: validResult)),
         ),
       );
@@ -33,7 +33,7 @@ void main() {
     testWidgets('displays winner name and score correctly for Team B', (
       tester,
     ) async {
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,
@@ -45,7 +45,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: GameResultBadge(result: validResult)),
         ),
       );
@@ -55,7 +55,7 @@ void main() {
 
     testWidgets('calls onTap when tapped', (tester) async {
       bool tapped = false;
-      final validResult = const GameResult(
+      const validResult = GameResult(
         games: [
           IndividualGame(
             gameNumber: 1,

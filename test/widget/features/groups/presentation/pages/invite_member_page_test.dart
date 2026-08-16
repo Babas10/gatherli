@@ -1,9 +1,7 @@
 // Widget tests for InviteMemberPage with friend selector
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/domain/repositories/group_repository.dart';
@@ -15,6 +13,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/groups/presentation/pages/invite_member_page.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockFriendRepository extends Mock implements FriendRepository {}
 
@@ -72,15 +71,7 @@ void main() {
       (_) => Stream.value(const AuthenticationAuthenticated(testUser)),
     );
 
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>.value(value: mockAuthenticationBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
@@ -92,8 +83,7 @@ void main() {
           groupRepositoryOverride: mockGroupRepository,
           invitationRepositoryOverride: mockInvitationRepository,
         ),
-      ),
-    );
+      ));
   }
 
   group('InviteMemberPage', () {

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
@@ -12,7 +13,7 @@ import 'package:play_with_me/core/data/models/user_model.dart';
 import 'game_details_event.dart';
 import 'game_details_state.dart';
 
-class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
+class GameDetailsBloc extends BaseBloc<GameDetailsEvent, GameDetailsState> {
   final GameRepository _gameRepository;
   final UserRepository _userRepository;
   final InvitationRepository? _invitationsRepository;
@@ -53,7 +54,7 @@ class GameDetailsBloc extends Bloc<GameDetailsEvent, GameDetailsState> {
               add(GameDetailsUpdated(game: game));
             },
             onError: (error) {
-              add(GameDetailsUpdated(game: null));
+              add(const GameDetailsUpdated(game: null));
             },
           );
     } on GameException catch (e) {

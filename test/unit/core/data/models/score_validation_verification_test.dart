@@ -111,7 +111,7 @@ void main() {
 
     group('UI Error Message Verification', () {
       test('Returns correct error for scores < 21', () {
-        final data = SetScoreData(teamAPoints: 20, teamBPoints: 18);
+        const data = SetScoreData(teamAPoints: 20, teamBPoints: 18);
         expect(data.isValid, isFalse);
         expect(
           data.validationError,
@@ -120,7 +120,7 @@ void main() {
       });
 
       test('Returns correct error for 21-20 (not winning by 2)', () {
-        final data = SetScoreData(teamAPoints: 21, teamBPoints: 20);
+        const data = SetScoreData(teamAPoints: 21, teamBPoints: 20);
         expect(data.isValid, isFalse);
         expect(
           data.validationError,
@@ -129,7 +129,7 @@ void main() {
       });
 
       test('Returns correct error for > 21 and diff != 2', () {
-        final data = SetScoreData(teamAPoints: 25, teamBPoints: 22);
+        const data = SetScoreData(teamAPoints: 25, teamBPoints: 22);
         expect(data.isValid, isFalse);
         expect(
           data.validationError,
@@ -138,7 +138,7 @@ void main() {
       });
 
       test('Returns null for valid scores', () {
-        final data = SetScoreData(teamAPoints: 21, teamBPoints: 19);
+        const data = SetScoreData(teamAPoints: 21, teamBPoints: 19);
         expect(data.isValid, isTrue);
         expect(data.validationError, isNull);
       });

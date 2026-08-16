@@ -1,5 +1,6 @@
 // Widget for displaying a user search result with invite action
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 
 class UserSearchResultTile extends StatelessWidget {
@@ -19,21 +20,7 @@ class UserSearchResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
-        backgroundImage: user.photoUrl != null
-            ? NetworkImage(user.photoUrl!)
-            : null,
-        child: user.photoUrl == null
-            ? Text(
-                _getInitials(user.displayName ?? user.email),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF004E64),
-                ),
-              )
-            : null,
-      ),
+      leading: UserAvatar(name: user.displayName ?? user.email, photoUrl: user.photoUrl),
       title: Text(
         user.displayName ?? user.email,
         style: const TextStyle(fontWeight: FontWeight.w500),
@@ -73,14 +60,5 @@ class UserSearchResultTile extends StatelessWidget {
       ),
       child: const Text('Invite'),
     );
-  }
-
-  String _getInitials(String name) {
-    final parts = name.trim().split(' ');
-    if (parts.isEmpty) return '?';
-    if (parts.length == 1) {
-      return parts[0].substring(0, 1).toUpperCase();
-    }
-    return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
   }
 }

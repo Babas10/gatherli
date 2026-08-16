@@ -1,21 +1,11 @@
 // Widget tests for MixGameBadge — verifies label, colour, and visibility rules (Story 26.5)
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 Widget _wrap(Widget child) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Scaffold(body: child),
-  );
+  return testApp(child: Scaffold(body: child));
 }
 
 void main() {
@@ -29,14 +19,14 @@ void main() {
       await tester.pumpWidget(_wrap(const MixGameBadge()));
 
       final text = tester.widget<Text>(find.text('MIX'));
-      expect(text.style?.color, Colors.purple);
+      expect(text.style?.color, const Color(0xFF9B59B6));
     });
 
     testWidgets('has bold font weight', (tester) async {
       await tester.pumpWidget(_wrap(const MixGameBadge()));
 
       final text = tester.widget<Text>(find.text('MIX'));
-      expect(text.style?.fontWeight, FontWeight.bold);
+      expect(text.style?.fontWeight, FontWeight.w600);
     });
 
     testWidgets('renders as a Container with decoration', (tester) async {

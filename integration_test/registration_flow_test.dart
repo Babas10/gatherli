@@ -26,8 +26,8 @@ void main() {
 
   group('Registration Flow - Successful Registration', () {
     test('New user can register with valid email and password', () async {
-      final testEmail = 'newuser@test.com';
-      final testPassword = 'validPassword123';
+      const testEmail = 'newuser@test.com';
+      const testPassword = 'validPassword123';
 
       // 1. Verify user doesn't exist
       expect(FirebaseAuth.instance.currentUser, isNull);
@@ -50,8 +50,8 @@ void main() {
     });
 
     test('Registration creates user with correct email', () async {
-      final testEmail = 'correctemail@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'correctemail@test.com';
+      const testPassword = 'password123';
 
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -78,9 +78,9 @@ void main() {
 
   group('Registration Flow - Firestore Profile Creation', () {
     test('User document is created in Firestore after registration', () async {
-      final testEmail = 'firestoreuser@test.com';
-      final testPassword = 'password123';
-      final testDisplayName = 'Firestore User';
+      const testEmail = 'firestoreuser@test.com';
+      const testPassword = 'password123';
+      const testDisplayName = 'Firestore User';
 
       // 1. Register user
       final userCredential = await FirebaseAuth.instance
@@ -116,9 +116,9 @@ void main() {
     });
 
     test('User profile contains all required fields after creation', () async {
-      final testEmail = 'completeprofile@test.com';
-      final testPassword = 'password123';
-      final testDisplayName = 'Complete Profile User';
+      const testEmail = 'completeprofile@test.com';
+      const testPassword = 'password123';
+      const testDisplayName = 'Complete Profile User';
 
       // 1. Register and create complete user profile
       final user = await FirebaseEmulatorHelper.createCompleteTestUser(
@@ -299,8 +299,8 @@ void main() {
 
   group('Registration Flow - Duplicate Email', () {
     test('Registration fails when email already exists', () async {
-      final testEmail = 'duplicate@test.com';
-      final testPassword = 'password123';
+      const testEmail = 'duplicate@test.com';
+      const testPassword = 'password123';
 
       // 1. Register first user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -321,7 +321,7 @@ void main() {
     });
 
     test('Duplicate email error contains appropriate error code', () async {
-      final testEmail = 'duplicatecode@test.com';
+      const testEmail = 'duplicatecode@test.com';
 
       // Register first user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -366,9 +366,9 @@ void main() {
 
   group('Registration Flow - Display Name', () {
     test('Display name can be set during registration', () async {
-      final testEmail = 'displayname@test.com';
-      final testPassword = 'password123';
-      final testDisplayName = 'Test Display Name';
+      const testEmail = 'displayname@test.com';
+      const testPassword = 'password123';
+      const testDisplayName = 'Test Display Name';
 
       // 1. Register user
       final userCredential = await FirebaseAuth.instance
@@ -387,9 +387,9 @@ void main() {
     });
 
     test('Display name persists after re-authentication', () async {
-      final testEmail = 'persistname@test.com';
-      final testPassword = 'password123';
-      final testDisplayName = 'Persistent Name';
+      const testEmail = 'persistname@test.com';
+      const testPassword = 'password123';
+      const testDisplayName = 'Persistent Name';
 
       // 1. Register and set display name
       final userCredential = await FirebaseAuth.instance
@@ -473,9 +473,9 @@ void main() {
     test(
       'Complete registration flow creates auth user and Firestore document',
       () async {
-        final testEmail = 'complete@test.com';
-        final testPassword = 'password123';
-        final testDisplayName = 'Complete User';
+        const testEmail = 'complete@test.com';
+        const testPassword = 'password123';
+        const testDisplayName = 'Complete User';
 
         // 1. Use helper to create complete user
         final user = await FirebaseEmulatorHelper.createCompleteTestUser(

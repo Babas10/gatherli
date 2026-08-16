@@ -5,12 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_chat/match_chat_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_chat/match_chat_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_chat/match_chat_state.dart';
 
-class MockMessageRepository extends Mock implements MessageRepository {}
+import '../../../../../helpers/mocks.dart';
 
 ChatMessageModel _message({
   String id = 'msg-1',
@@ -36,6 +35,7 @@ void main() {
   const String contextPath = 'championships/$championshipId/matches/$matchId';
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(_message());
   });
 

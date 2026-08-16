@@ -1,6 +1,8 @@
 // Game details page displaying game information and allowing RSVP actions.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -116,20 +118,20 @@ class _GameDetailsView extends StatelessWidget {
                 size: 64,
                 color: Theme.of(context).colorScheme.error,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.error(state.message),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 state.message,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               if (state.isRetryable) ...[
-                const SizedBox(height: 16),
-                ElevatedButton(
+                const SizedBox(height: AppSpacing.lg),
+                FilledButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -154,19 +156,19 @@ class _GameDetailsView extends StatelessWidget {
                 size: 64,
                 color: Theme.of(context).colorScheme.error,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 l10n.gameNotFound,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 state.message,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
+              const SizedBox(height: AppSpacing.lg),
+              FilledButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(l10n.goBack),
               ),
@@ -200,14 +202,14 @@ class _GameDetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _GameInfoCard(game: game),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   // Verification Section
                   if (game.status == GameStatus.verification) ...[
                     _VerificationSection(
                       game: game,
                       isOperationInProgress: isOperationInProgress,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                   ],
                   // Show results card if game has results
                   if (game.result != null) ...[
@@ -216,10 +218,10 @@ class _GameDetailsView extends StatelessWidget {
                       players: players,
                       playerEloUpdates: playerEloUpdates,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                   ],
                   _PlayersCard(game: game),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   _ChatSectionWrapper(game: game),
                 ],
               ),
@@ -287,38 +289,38 @@ class _GameInfoCard extends StatelessWidget {
                   ),
                 ),
                 if (game.gameGenderType == GameGenderType.mix) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   const MixGameBadge(),
                 ],
               ],
             ),
             if (game.description != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 game.description!,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             _InfoRow(
               icon: Icons.calendar_today,
               label: 'Date',
               value: dateFormat.format(game.scheduledAt),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               icon: Icons.access_time,
               label: 'Time',
               value: timeFormat.format(game.scheduledAt),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               icon: Icons.people,
               label: 'Players',
               value:
                   '${game.currentPlayerCount}/${game.maxPlayers} (min: ${game.minPlayers})',
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               icon: Icons.location_on,
               label: 'Location',
@@ -336,16 +338,16 @@ class _GameInfoCard extends StatelessWidget {
               ),
             ],
             if (game.notes != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               const Divider(),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 'Notes',
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(game.notes!, style: Theme.of(context).textTheme.bodyMedium),
             ],
           ],
@@ -371,7 +373,7 @@ class _InfoRow extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 20, color: AppColors.primary),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
         ),
@@ -451,7 +453,7 @@ class _PlayersCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 if (game.playerIds.isEmpty)
                   Center(
                     child: Padding(
@@ -486,15 +488,7 @@ class _PlayersCard extends StatelessWidget {
                       return ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.primary.withValues(
-                            alpha: 0.25,
-                          ),
-                          child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(color: AppColors.secondary),
-                          ),
-                        ),
+                        leading: UserAvatar(name: displayName),
                         title: Text(
                           displayName,
                           style: const TextStyle(fontWeight: FontWeight.w500),
@@ -511,16 +505,16 @@ class _PlayersCard extends StatelessWidget {
                     },
                   ),
                 if (game.waitlistIds.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   const Divider(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     'Waitlist (${game.waitlistIds.length})',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   ...game.waitlistIds.asMap().entries.map((entry) {
                     final playerId = entry.value;
                     final isCurrentUser = playerId == currentUserId;
@@ -531,12 +525,7 @@ class _PlayersCard extends StatelessWidget {
                     return ListTile(
                       dense: true,
                       contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(
-                          context,
-                        ).colorScheme.surface.withValues(alpha: 0.5),
-                        child: Text('${entry.key + 1}'),
-                      ),
+                      leading: UserAvatar(name: displayName, radius: 16),
                       title: Text(displayName),
                       trailing:
                           isCurrentUser && game.status == GameStatus.scheduled
@@ -564,7 +553,7 @@ class _PlayersCard extends StatelessWidget {
                                           context,
                                         ).colorScheme.error,
                                       ),
-                                      const SizedBox(width: 12),
+                                      const SizedBox(width: AppSpacing.md),
                                       Text(
                                         l10n.leaveWaitlist,
                                         style: TextStyle(
@@ -644,7 +633,7 @@ class _PlayersCard extends StatelessWidget {
                         size: 20,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                       Text(
                         l10n.leaveGame,
                         style: TextStyle(
@@ -699,7 +688,7 @@ class _PlayersCard extends StatelessWidget {
                   size: 20,
                   color: Theme.of(context).colorScheme.error,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
                   l10n.leaveGame,
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -742,6 +731,7 @@ class _RsvpButtons extends StatelessWidget {
         }
       },
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
         builder: (context, authState) {
           if (authState is! AuthenticationAuthenticated) {
             return const SizedBox.shrink();
@@ -756,13 +746,13 @@ class _RsvpButtons extends StatelessWidget {
           // Show Enter Results icon if user can enter results
           if (canEnterResults) {
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bottomNavBackground,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadow,
                     blurRadius: 8,
-                    offset: const Offset(0, -2),
+                    offset: Offset(0, -2),
                   ),
                 ],
               ),
@@ -790,15 +780,15 @@ class _RsvpButtons extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.scoreboard,
                                 color: AppColors.secondary,
                                 size: 24,
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppSpacing.xs),
                               Text(
                                 l10n.enterResults,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.navLabelColor,
                                   fontSize: 12,
                                 ),
@@ -827,20 +817,20 @@ class _RsvpButtons extends StatelessWidget {
 
           return Container(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.bottomNavBackground,
               boxShadow: [
                 BoxShadow(
                   color: AppColors.shadow,
                   blurRadius: 8,
-                  offset: const Offset(0, -2),
+                  offset: Offset(0, -2),
                 ),
               ],
             ),
             child: SafeArea(
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: isOperationInProgress
                       ? null
                       : () {
@@ -865,10 +855,8 @@ class _RsvpButtons extends StatelessWidget {
                         )
                       : const Icon(Icons.add_circle_outline),
                   label: Text(game.isFull ? 'Join Waitlist' : 'I\'m In'),
-                  style: ElevatedButton.styleFrom(
+                  style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
                   ),
                 ),
               ),
@@ -949,8 +937,8 @@ class _ViewResultsCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.emoji_events, color: AppColors.primary, size: 28),
-                  const SizedBox(width: 12),
+                  const Icon(Icons.emoji_events, color: AppColors.primary, size: 28),
+                  const SizedBox(width: AppSpacing.md),
                   Text(
                     'Game Results',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -959,14 +947,14 @@ class _ViewResultsCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
                     color: AppColors.secondary,
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -992,7 +980,7 @@ class _ViewResultsCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Center(
                 child: Text(
                   'Tap to view detailed results',
@@ -1035,14 +1023,9 @@ class _QuickScoreDisplay extends StatelessWidget {
       backgroundColor = AppColors.secondary;
       textColor = Colors.white;
       borderColor = AppColors.secondary;
-    } else if (isTied) {
-      // Tie: Team A gets yellow/gold, Team B gets blue — visually distinct
-      backgroundColor = isTeamA ? AppColors.primary : AppColors.secondary;
-      textColor = isTeamA ? AppColors.secondary : Colors.white;
-      borderColor = isTeamA ? AppColors.primary : AppColors.secondary;
     } else {
-      backgroundColor = AppColors.primary;
-      textColor = AppColors.secondary;
+      backgroundColor = AppColors.avatarBackground;
+      textColor = AppColors.avatarForeground;
       borderColor = AppColors.primary;
     }
 
@@ -1067,7 +1050,7 @@ class _QuickScoreDisplay extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           teamName,
           textAlign: TextAlign.center,
@@ -1095,6 +1078,7 @@ class _VerificationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return const SizedBox.shrink();
@@ -1107,7 +1091,7 @@ class _VerificationSection extends StatelessWidget {
 
         if (!isParticipant) return const SizedBox.shrink();
 
-        Color bannerColor = Colors.orange;
+        Color bannerColor = AppColors.warning;
         String title = 'Result Verification Pending';
         String message = 'Please verify the game results.';
         IconData icon = Icons.warning_amber_rounded;
@@ -1118,7 +1102,7 @@ class _VerificationSection extends StatelessWidget {
           message = 'Waiting for other players to confirm.';
           icon = Icons.info_outline;
         } else if (hasConfirmed) {
-          bannerColor = Colors.green;
+          bannerColor = AppColors.success;
           title = 'Confirmed';
           message = 'You have confirmed this result.';
           icon = Icons.check_circle_outline;
@@ -1137,7 +1121,7 @@ class _VerificationSection extends StatelessWidget {
               Row(
                 children: [
                   Icon(icon, color: bannerColor),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Text(
                     title,
                     style: TextStyle(
@@ -1148,14 +1132,14 @@ class _VerificationSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(message),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Row(
                 children: [
                   if (!isSubmitter && !hasConfirmed)
                     Expanded(
-                      child: ElevatedButton.icon(
+                      child: FilledButton.icon(
                         onPressed: isOperationInProgress
                             ? null
                             : () {
@@ -1169,14 +1153,14 @@ class _VerificationSection extends StatelessWidget {
                         icon: const Icon(Icons.check),
                         label: const Text('Confirm'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: AppColors.success,
                           foregroundColor: Colors.white,
                         ),
                       ),
                     ),
-                  if (!isSubmitter && !hasConfirmed) const SizedBox(width: 8),
+                  if (!isSubmitter && !hasConfirmed) const SizedBox(width: AppSpacing.sm),
                   Expanded(
-                    child: ElevatedButton.icon(
+                    child: FilledButton.icon(
                       onPressed: isOperationInProgress
                           ? null
                           : () {
@@ -1190,7 +1174,7 @@ class _VerificationSection extends StatelessWidget {
                             },
                       icon: const Icon(Icons.edit),
                       label: const Text('Edit / Dispute'),
-                      style: ElevatedButton.styleFrom(
+                      style: FilledButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,
                       ),

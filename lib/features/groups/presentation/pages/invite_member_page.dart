@@ -1,5 +1,6 @@
 // Page for inviting friends from My Community to a group
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,8 +72,8 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
   ) async {
     if (_selectedFriendIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please select at least one friend to invite'),
+        const SnackBar(
+          content: Text('Please select at least one friend to invite'),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -137,6 +138,7 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return Scaffold(
@@ -173,12 +175,12 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
                 padding: const EdgeInsets.all(16),
                 child: Card(
                   color: AppColors.primary.withValues(alpha: 0.2),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(12.0),
                     child: Row(
                       children: [
                         Icon(Icons.info_outline, color: AppColors.secondary),
-                        const SizedBox(width: 12),
+                        SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Text(
                             'Select friends from your community to invite to this group',

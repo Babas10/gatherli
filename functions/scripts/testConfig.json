@@ -1,105 +1,200 @@
 {
-  "timestamp": "2026-03-09T18:36:40.673Z",
+  "timestamp": "2026-04-03T20:17:22.358Z",
   "project": "gatherli-dev",
+  "script": "setupMainTestEnvironment",
   "credentials": {
     "password": "test1010"
   },
   "users": [
     {
       "index": 1,
-      "uid": "14Y1FNZp4sXEamC5uafx0XWPeWD3",
+      "uid": "88JuvpgSuiMOMWtXtiyOPQvb8qz2",
       "email": "test1@mysta.com",
-      "displayName": "Test1"
+      "displayName": "Test1",
+      "gender": "male"
     },
     {
       "index": 2,
-      "uid": "QAqcfrtRmqQDFtMXUmX1UFnfoVw1",
+      "uid": "7IIPP48QgacrV537NduE1t2hbcN2",
       "email": "test2@mysta.com",
-      "displayName": "Test2"
+      "displayName": "Test2",
+      "gender": "male"
     },
     {
       "index": 3,
-      "uid": "QzV7I0n3nrZQIGGwApkWqtDYFMS2",
+      "uid": "4VHKpD7YVMQRoUQMDgdQuduIjlB3",
       "email": "test3@mysta.com",
-      "displayName": "Test3"
+      "displayName": "Test3",
+      "gender": "male"
     },
     {
       "index": 4,
-      "uid": "4qsNZmGas3gH2H9VrvFeVkyRhVQ2",
+      "uid": "yJ4662NoHyQ6rhhKvlgvfKBRVfD3",
       "email": "test4@mysta.com",
-      "displayName": "Test4"
+      "displayName": "Test4",
+      "gender": "male"
     },
     {
       "index": 5,
-      "uid": "ryfj2tDFv7admLYtmXjsadNbPHJ2",
+      "uid": "fpCkczB3cgXfjY4EQAoie7Am7Os1",
       "email": "test5@mysta.com",
-      "displayName": "Test5"
+      "displayName": "Test5",
+      "gender": "male"
     },
     {
       "index": 6,
-      "uid": "jek0yAZmJ1RvEK9Gje5AeJg00pQ2",
+      "uid": "jd2KM7cZTgU8wDoA56bSTxGGRur1",
       "email": "test6@mysta.com",
-      "displayName": "Test6"
+      "displayName": "Test6",
+      "gender": "female"
     },
     {
       "index": 7,
-      "uid": "HLzeaUcFLxgt5u93Gvo40Xl17K33",
+      "uid": "oAWLyHf79FOpgd771IwRuv0IKF93",
       "email": "test7@mysta.com",
-      "displayName": "Test7"
+      "displayName": "Test7",
+      "gender": "female"
     },
     {
       "index": 8,
-      "uid": "kuSfElRdqogGJYCwJppGAr9m0b72",
+      "uid": "ErNuRIOTABgNr23TUS1XmXhrC0y1",
       "email": "test8@mysta.com",
-      "displayName": "Test8"
+      "displayName": "Test8",
+      "gender": "female"
     },
     {
       "index": 9,
-      "uid": "2Eg1ik7S6kX9mck4JsfzgXMV4Qu1",
+      "uid": "FMzznbaTMPhMfh4OkhDJDekzdM23",
       "email": "test9@mysta.com",
-      "displayName": "Test9"
+      "displayName": "Test9",
+      "gender": "female"
     },
     {
       "index": 10,
-      "uid": "POpdoZA6sacVw4nluIjFtL51I4k2",
+      "uid": "SSU5GZ0NGYaLu9MV0Vfl8tLvYRv2",
       "email": "test10@mysta.com",
-      "displayName": "Test10"
+      "displayName": "Test10",
+      "gender": "female"
+    },
+    {
+      "index": 11,
+      "uid": "gNTmaYa7vjTAatRApYmt38PnwPO2",
+      "email": "test11@mysta.com",
+      "displayName": "Test11",
+      "gender": "none"
+    },
+    {
+      "index": 12,
+      "uid": "HvijsRtafsRInId5cXCHN2mKhfe2",
+      "email": "test12@mysta.com",
+      "displayName": "Test12",
+      "gender": "none"
+    },
+    {
+      "index": 13,
+      "uid": "UNLjKH0DFsW6dBihsEU86DrQcdj1",
+      "email": "test13@mysta.com",
+      "displayName": "Test13",
+      "gender": "none"
+    },
+    {
+      "index": 14,
+      "uid": "aHg1MD4SUrQZtDozbk6wHyuUDl33",
+      "email": "test14@mysta.com",
+      "displayName": "Test14",
+      "gender": "none"
+    },
+    {
+      "index": 15,
+      "uid": "0LidAKg7a2NZ5DMCicYOdEhplFJ2",
+      "email": "test15@mysta.com",
+      "displayName": "Test15",
+      "gender": "none"
     }
   ],
-  "groupId": "JgxtCgZ4dof523Bhdxeb",
+  "groupId": "QndFjt3CLXLGntp7g7YO",
   "games": {
     "past": [
-      "Dh6PbWvt8le28ZmKWZEd",
-      "YwFQsE5dU4phe7eCb9Mh",
-      "qxkl7BpOpouTY2pJjLiY",
-      "MzGF5DHVEVZklMc6R4kE",
-      "8NwKQx47naK1YkBXyCPx",
-      "SqrSK1aFprUAdTOHKYFC",
-      "psUFxgcXJ1K8Fm8bJKXM",
-      "UcHeOPbFJOQofugDAhrj",
-      "4UW07W4wCJWWJWE0Cxdv",
-      "gvfZBIVimcPo9iCgLBvE",
-      "CK3STpnBsWmxGyEwqmTK",
-      "F09FwCB5lChnxsmJsUyO"
+      "XblMsXWd1qXs68xhqMcY",
+      "rKE39p2FIZomDT3p2RS2",
+      "lRmAC9FzVMpkRyYVJ8Vr",
+      "nh75iifvbkVBBRWJla7M",
+      "y2RQyqLJKlAHayq3ztdA",
+      "rZ89TujvI8CLUuO9pkPE",
+      "46vnNG7cKe6i9rV3EZbE",
+      "NHbw1gBAEAD42QH9v21N",
+      "NGX6WotsQGW5bG10jtgQ",
+      "HslqDGNNztkrYQ1aWPmL",
+      "MGbBLGkJY7NvLoILUJ4d",
+      "QeVSbORAQmgUBfsyfoa0",
+      "UIxY4G714lBMgfhDcjXW",
+      "D2Ib2KeSZK4o5uuVkOkV",
+      "Sm7on2cnEYQRi08Pwvu3",
+      "PDkcBKnC5IbkAXBRiKUw",
+      "7qpZfaMBOjwwgioLM9F4",
+      "5OT7JCQA2bUH1Cq4xe45",
+      "F2hv7fp1YixILKllAIIi",
+      "oYUzX9nSX0OLlc8KhZn4",
+      "RqG7Ohy61HM5DryV6sIO",
+      "oqN6OVnZMIiu2sQPCuId",
+      "xgwpwwWsH17yGKS1lqtB",
+      "vhFEFYLoZBMc22nLbRiw",
+      "KFzIkiL8mZEWJOj7Hr7l",
+      "4C5Tj8W4Yt1ZfphJCtE8",
+      "T2eUZKGSpwfHMEbwmYVc",
+      "SWQYsjFARQPwq4hL158b",
+      "dQpejWCk2BMMU0Mt1Qqk",
+      "CU9ti5FpNHKVVJTF7OiH",
+      "hwv33p5jQVp3FnUSfL4r",
+      "LGAzXJraxN19cpHufF6P",
+      "u16i8c55iqLp18lpf9QZ",
+      "dwo6urs0udjTKVeQFzEa"
     ],
     "future": [
-      "fDivmht4RYtP4f6GXXrw",
-      "DH8OWm7MyMQ9x28BRBV2",
-      "34jRUom2tDvIMkGhMeoK"
-    ]
-  },
-  "trainingSessions": {
-    "past": [
-      "onpc9BK8bmSxNErJqVj0",
-      "jzkHvgRLlo7lNyeoCMng",
-      "PhehBlv2GFr8bgH5hfcK",
-      "4XxTFV3iS0eNiGMKPQ6u",
-      "czvwlVgHhsaRPjpMN4gZ"
+      "RjEs4uV6Xr3a6o3M93Kp",
+      "JxsW1uObR5OOCWcHco9b",
+      "ln3s7SvLtkGCS1Z2c7kL",
+      "QA5MJke7vnTtGj7aJ7bR"
     ],
-    "future": [
-      "1kfCXrOx8tBLqyWKfOUm",
-      "KEqKXWUel5pazVPbAUgH",
-      "z0rtzpELPmpor6R35oAj"
+    "male": [
+      "XblMsXWd1qXs68xhqMcY",
+      "rKE39p2FIZomDT3p2RS2",
+      "lRmAC9FzVMpkRyYVJ8Vr",
+      "nh75iifvbkVBBRWJla7M",
+      "y2RQyqLJKlAHayq3ztdA",
+      "rZ89TujvI8CLUuO9pkPE",
+      "46vnNG7cKe6i9rV3EZbE",
+      "NHbw1gBAEAD42QH9v21N",
+      "NGX6WotsQGW5bG10jtgQ",
+      "HslqDGNNztkrYQ1aWPmL",
+      "MGbBLGkJY7NvLoILUJ4d",
+      "QeVSbORAQmgUBfsyfoa0"
+    ],
+    "female": [
+      "UIxY4G714lBMgfhDcjXW",
+      "D2Ib2KeSZK4o5uuVkOkV",
+      "Sm7on2cnEYQRi08Pwvu3",
+      "PDkcBKnC5IbkAXBRiKUw",
+      "7qpZfaMBOjwwgioLM9F4",
+      "5OT7JCQA2bUH1Cq4xe45",
+      "F2hv7fp1YixILKllAIIi",
+      "oYUzX9nSX0OLlc8KhZn4",
+      "RqG7Ohy61HM5DryV6sIO",
+      "oqN6OVnZMIiu2sQPCuId",
+      "xgwpwwWsH17yGKS1lqtB",
+      "vhFEFYLoZBMc22nLbRiw"
+    ],
+    "mixed": [
+      "KFzIkiL8mZEWJOj7Hr7l",
+      "4C5Tj8W4Yt1ZfphJCtE8",
+      "T2eUZKGSpwfHMEbwmYVc",
+      "SWQYsjFARQPwq4hL158b",
+      "dQpejWCk2BMMU0Mt1Qqk",
+      "CU9ti5FpNHKVVJTF7OiH",
+      "hwv33p5jQVp3FnUSfL4r",
+      "LGAzXJraxN19cpHufF6P",
+      "u16i8c55iqLp18lpf9QZ",
+      "dwo6urs0udjTKVeQFzEa"
     ]
   }
 }

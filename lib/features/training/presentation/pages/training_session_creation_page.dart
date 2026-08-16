@@ -1,6 +1,7 @@
 // Training session creation page - simplified version for Story 15.4
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -227,7 +228,7 @@ class _TrainingSessionCreationPageState
                   onDateTimeChanged: (dt) => pickerTime = dt,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         );
@@ -342,7 +343,7 @@ class _TrainingSessionCreationPageState
                   onDateTimeChanged: (dt) => pickerTime = dt,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         );
@@ -431,12 +432,12 @@ class _TrainingSessionCreationPageState
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.trainingCreatedSuccess),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
             ),
           );
         } else if (state is TrainingSessionCreationError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
           );
         }
       },
@@ -449,6 +450,7 @@ class _TrainingSessionCreationPageState
               title: l10n.createTrainingSession,
             ),
             body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
               builder: (context, authState) {
                 if (authState is! AuthenticationAuthenticated) {
                   return Center(child: Text(l10n.pleaseLogInToCreateTraining));
@@ -473,7 +475,7 @@ class _TrainingSessionCreationPageState
                               widget.groupName,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppSpacing.xl),
                             TextFormField(
                               controller: _titleController,
                               decoration: InputDecoration(
@@ -489,7 +491,7 @@ class _TrainingSessionCreationPageState
                               },
                               enabled: !isLoading,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.lg),
                             TextFormField(
                               controller: _descriptionController,
                               decoration: InputDecoration(
@@ -500,7 +502,7 @@ class _TrainingSessionCreationPageState
                               maxLines: 3,
                               enabled: !isLoading,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.lg),
                             TextFormField(
                               controller: _locationController,
                               decoration: InputDecoration(
@@ -516,7 +518,7 @@ class _TrainingSessionCreationPageState
                               },
                               enabled: !isLoading,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.lg),
                             ListTile(
                               title: Text(l10n.startTime),
                               subtitle: Text(
@@ -535,7 +537,7 @@ class _TrainingSessionCreationPageState
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.lg),
                             ListTile(
                               title: Text(l10n.endTime),
                               subtitle: Text(
@@ -554,7 +556,7 @@ class _TrainingSessionCreationPageState
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.lg),
                             Row(
                               children: [
                                 Expanded(
@@ -597,7 +599,7 @@ class _TrainingSessionCreationPageState
                                     ],
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: AppSpacing.lg),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -640,7 +642,7 @@ class _TrainingSessionCreationPageState
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppSpacing.xl),
                             FilledButton(
                               onPressed: isLoading
                                   ? null

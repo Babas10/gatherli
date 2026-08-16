@@ -1,5 +1,6 @@
 // Loading skeleton widgets for stat cards.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// A shimmer loading skeleton for stat cards.
 ///
@@ -89,20 +90,20 @@ class LoadingStatCard extends StatelessWidget {
           children: [
             // Title skeleton
             const StatsLoadingSkeleton(height: 24, width: 180),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             // Stats grid skeleton
             Row(
               children: [
                 Expanded(child: _StatItemSkeleton()),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(child: _StatItemSkeleton()),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Row(
               children: [
                 Expanded(child: _StatItemSkeleton()),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(child: _StatItemSkeleton()),
               ],
             ),
@@ -125,14 +126,14 @@ class _StatItemSkeleton extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Label skeleton
-          const StatsLoadingSkeleton(height: 12, width: 80),
-          const SizedBox(height: 8),
+          StatsLoadingSkeleton(height: 12, width: 80),
+          SizedBox(height: AppSpacing.sm),
           // Value skeleton
-          const StatsLoadingSkeleton(height: 20, width: 50),
+          StatsLoadingSkeleton(height: 20, width: 50),
         ],
       ),
     );
@@ -148,12 +149,12 @@ class CompactStatLoadingSkeleton extends StatelessWidget {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(12.0),
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const StatsLoadingSkeleton(height: 14, width: 70),
-            const SizedBox(height: 8),
-            const StatsLoadingSkeleton(height: 24, width: 50),
+            StatsLoadingSkeleton(height: 14, width: 70),
+            SizedBox(height: AppSpacing.sm),
+            StatsLoadingSkeleton(height: 24, width: 50),
           ],
         ),
       ),

@@ -1,34 +1,24 @@
 // Widget tests for enhanced MonthlyImprovementChart (Story 302.4, 302.7)
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/monthly_improvement_chart.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/empty_states/insufficient_data_placeholder.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('MonthlyImprovementChart Widget Tests', () {
     testWidgets('shows placeholder when history is empty', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: const Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: [],
               currentElo: 1600.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -76,22 +66,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: singleMonthHistory,
               currentElo: 1640.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -137,22 +118,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: twoMonthHistory,
               currentElo: 1650.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -195,22 +167,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: multiMonthHistory,
               currentElo: 1640.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -254,22 +217,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: sameMonthGames,
               currentElo: 1650.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -295,22 +249,13 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: dailyHistory,
               currentElo: 1700.0,
               timePeriod: TimePeriod.thirtyDays,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -334,22 +279,13 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: weeklyHistory,
               currentElo: 1700.0,
               timePeriod: TimePeriod.ninetyDays,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -372,23 +308,14 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: monthlyHistory,
               currentElo: 1720.0,
               timePeriod: TimePeriod
                   .allTime, // Story 302.7: Use allTime for 2024 test data
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -412,22 +339,13 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: largeDataset,
               currentElo: 1700.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -452,22 +370,13 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: smallDataset,
               currentElo: 1650.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 
@@ -511,22 +420,13 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(
+        testApp(child: Scaffold(
             body: MonthlyImprovementChart(
               ratingHistory: historyData,
               currentElo: 1650.0,
               timePeriod: TimePeriod.allTime,
             ),
-          ),
-        ),
+          )),
       );
       await tester.pumpAndSettle();
 

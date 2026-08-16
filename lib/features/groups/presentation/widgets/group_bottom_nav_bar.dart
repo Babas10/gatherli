@@ -32,13 +32,13 @@ class GroupBottomNavBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.sports_volleyball,
                     color: AppColors.secondary,
                   ),
                   title: Text(
                     l10n.createGame,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -55,13 +55,13 @@ class GroupBottomNavBar extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.fitness_center,
                     color: AppColors.secondary,
                   ),
                   title: Text(
                     l10n.createTrainingSession,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -117,7 +117,7 @@ class GroupBottomNavBar extends StatelessWidget {
           tooltip: isAdmin ? l10n.inviteMembers : l10n.adminOnly,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle, color: AppColors.primary),
+          icon: const Icon(Icons.add_circle, color: AppColors.primary),
           label: l10n.create,
           tooltip: l10n.createGameOrTraining,
         ),
@@ -125,7 +125,7 @@ class GroupBottomNavBar extends StatelessWidget {
           icon: Badge(
             label: Text(upcomingGamesCount > 9 ? '9+' : '$upcomingGamesCount'),
             isLabelVisible: upcomingGamesCount > 0,
-            child: Icon(Icons.list, color: AppColors.primary),
+            child: const Icon(Icons.list, color: AppColors.primary),
           ),
           label: l10n.activities,
           tooltip: l10n.viewAllActivities,

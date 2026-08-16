@@ -19,14 +19,15 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
         _functions = functions;
 
   @override
-  Stream<List<ChampionshipModel>> getOpenChampionships() {
+  Stream<List<ChampionshipModel>> getChampionships() {
     try {
       return _firestore
           .collection('championships')
-          .where('status', isEqualTo: 'registration')
+          .orderBy('createdAt', descending: true)
           .snapshots()
-          .map((snap) =>
-              snap.docs.map((d) => ChampionshipModel.fromFirestore(d)).toList())
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipModel.fromFirestore(d))
+              .toList())
           .handleError((e) {
         throw ChampionshipException(
           'Failed to load championships: $e',
@@ -42,26 +43,11 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
-  Stream<List<ChampionshipModel>> getChampionships() {
-    try {
-      return _firestore
-          .collection('championships')
-          .orderBy('createdAt', descending: true)
-          .snapshots()
-          .map((snap) =>
-              snap.docs.map((d) => ChampionshipModel.fromFirestore(d)).toList())
-          .handleError((e) {
-        throw ChampionshipException(
-          'Failed to load championships: $e',
-          code: 'LOAD_CHAMPIONSHIPS_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load championships: $e',
-        code: 'LOAD_CHAMPIONSHIPS_ERROR',
-      ));
-    }
+  Stream<List<ChampionshipModel>> getOpenChampionships() {
+    return getChampionships().map(
+      (all) =>
+          all.where((c) => c.status == ChampionshipStatus.registration).toList(),
+    );
   }
 
   @override
@@ -116,6 +102,32 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       return Stream.error(ChampionshipException(
         'Failed to load standings: $e',
         code: 'LOAD_STANDINGS_ERROR',
+      ));
+    }
+  }
+
+  @override
+  Stream<List<ChampionshipTeamModel>> getTeams(String championshipId) {
+    try {
+      return _firestore
+          .collection('championships')
+          .doc(championshipId)
+          .collection('teams')
+          .orderBy('createdAt')
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => ChampionshipTeamModel.fromFirestore(d))
+              .toList())
+          .handleError((e) {
+        throw ChampionshipException(
+          'Failed to load teams: $e',
+          code: 'LOAD_TEAMS_ERROR',
+        );
+      });
+    } catch (e) {
+      return Stream.error(ChampionshipException(
+        'Failed to load teams: $e',
+        code: 'LOAD_TEAMS_ERROR',
       ));
     }
   }
@@ -400,6 +412,48 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }
 
   @override
+  Future<void> confirmMatchSchedule({
+    required String championshipId,
+    required String matchId,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('confirmMatchSchedule');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to confirm schedule',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to confirm schedule: $e');
+    }
+  }
+
+  @override
+  Future<void> rejectMatchSchedule({
+    required String championshipId,
+    required String matchId,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('rejectMatchSchedule');
+      await callable.call({
+        'championshipId': championshipId,
+        'matchId': matchId,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to reject schedule',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to reject schedule: $e');
+    }
+  }
+
+  @override
   Future<ChampionshipTeamModel?> getTeamById({
     required String championshipId,
     required String teamId,
@@ -476,6 +530,102 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       );
     } catch (e) {
       throw ChampionshipException('Failed to apply admin decision: $e');
+    }
+  }
+
+  @override
+  Future<String> createChampionship({
+    required String title,
+    required DateTime registrationDeadline,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? country,
+    String? region,
+    ChampionshipGenderCategory? genderCategory,
+    int maxTeams = 10,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('createChampionship');
+      final result = await callable.call({
+        'title': title,
+        'registrationDeadline': registrationDeadline.toIso8601String(),
+        if (startDate != null) 'startDate': startDate.toIso8601String(),
+        if (endDate != null) 'endDate': endDate.toIso8601String(),
+        if (country != null && country.isNotEmpty) 'country': country,
+        if (region != null && region.isNotEmpty) 'region': region,
+        if (genderCategory != null) 'genderCategory': genderCategory.name,
+        'maxTeams': maxTeams,
+      });
+      return result.data['championshipId'] as String;
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to create championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to create championship: $e');
+    }
+  }
+
+  @override
+  Future<void> completeChampionship({required String championshipId}) async {
+    try {
+      final callable = _functions.httpsCallable('completeChampionship');
+      await callable.call({'championshipId': championshipId});
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to complete championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to complete championship: $e');
+    }
+  }
+
+  @override
+  Future<void> renameTeam({
+    required String championshipId,
+    required String teamId,
+    required String newName,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('renameChampionshipTeam');
+      await callable.call({
+        'championshipId': championshipId,
+        'teamId': teamId,
+        'newName': newName,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to rename team',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to rename team: $e');
+    }
+  }
+
+  @override
+  Future<void> editChampionship({
+    required String championshipId,
+    String? title,
+    DateTime? registrationDeadline,
+  }) async {
+    try {
+      final callable = _functions.httpsCallable('editChampionship');
+      await callable.call({
+        'championshipId': championshipId,
+        if (title != null) 'title': title,
+        if (registrationDeadline != null)
+          'registrationDeadline': registrationDeadline.toIso8601String(),
+      });
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to edit championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to edit championship: $e');
     }
   }
 }

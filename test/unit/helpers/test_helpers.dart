@@ -11,7 +11,6 @@ import 'package:play_with_me/core/domain/repositories/group_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
-import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
@@ -26,42 +25,12 @@ import 'package:play_with_me/core/domain/repositories/group_invite_link_reposito
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_creation/championship_creation_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import '../features/auth/data/mock_auth_repository.dart';
 import '../core/data/repositories/mock_group_repository.dart';
-
-// Mock for LocalePreferencesRepository
-class MockLocalePreferencesRepository extends Mock
-    implements LocalePreferencesRepository {}
-
-// Mock for UserRepository
-class MockUserRepository extends Mock implements UserRepository {}
-
-// Mock for InvitationRepository
-class MockInvitationRepository extends Mock implements InvitationRepository {}
-
-// Mock for FriendRepository
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-// Mock for DeepLinkService
-class MockDeepLinkService extends Mock implements DeepLinkService {}
-
-// Mock for PendingInviteStorage
-class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
-
-// Mock for FirebaseAnalytics
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
-
-// Mock for GroupInviteLinkRepository
-class MockGroupInviteLinkRepository extends Mock
-    implements GroupInviteLinkRepository {}
-
-// Mock for ChampionshipRepository
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
-
-// Fake for UserModel (required for mocktail's any() matcher)
-class FakeUserModel extends Fake implements UserModel {}
+import '../../helpers/mocks.dart'
+    hide MockGroupRepository, MockAuthRepository;
 
 // Global test repository instances for control during tests
 MockAuthRepository? _globalMockRepo;
@@ -267,11 +236,22 @@ Future<void> initializeTestDependencies({
       .thenAnswer((_) => Stream.value([]));
   when(() => mockChampionshipRepo.getOpenChampionships())
       .thenAnswer((_) => Stream.value([]));
+  when(() => mockChampionshipRepo.createChampionship(
+        title: any(named: 'title'),
+        registrationDeadline: any(named: 'registrationDeadline'),
+        startDate: any(named: 'startDate'),
+        endDate: any(named: 'endDate'),
+        country: any(named: 'country'),
+        region: any(named: 'region'),
+      )).thenAnswer((_) async => 'mock-champ-id');
   sl.registerLazySingleton<ChampionshipRepository>(
     () => mockChampionshipRepo,
   );
   sl.registerFactory<ChampionshipListBloc>(
     () => ChampionshipListBloc(repository: sl<ChampionshipRepository>()),
+  );
+  sl.registerFactory<ChampionshipCreationBloc>(
+    () => ChampionshipCreationBloc(repository: sl<ChampionshipRepository>()),
   );
 }
 

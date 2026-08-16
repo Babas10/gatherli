@@ -12,7 +12,7 @@ import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitat
 class MockGameGuestInvitationRepository extends Mock
     implements InvitationRepository {}
 
-final _player = InvitablePlayerModel(
+const _player = InvitablePlayerModel(
   uid: 'player-1',
   displayName: 'Alice',
   sourceGroupId: 'group-x',
@@ -38,7 +38,7 @@ void main() {
       act: (bloc) => bloc.add(const LoadInvitablePlayers(gameId: 'game-1')),
       expect: () => [
         const InvitablePlayersLoading(),
-        InvitablePlayersLoaded(players: [_player]),
+        const InvitablePlayersLoaded(players: [_player]),
       ],
     );
 
@@ -115,8 +115,8 @@ void main() {
       },
       skip: 2, // skip [loading, loaded] from LoadInvitablePlayers
       expect: () => [
-        InvitePlayerSending(players: [_player], inviteeId: 'player-1'),
-        InvitePlayerSuccess(players: [_player], inviteeId: 'player-1'),
+        const InvitePlayerSending(players: [_player], inviteeId: 'player-1'),
+        const InvitePlayerSuccess(players: [_player], inviteeId: 'player-1'),
       ],
     );
 
@@ -145,8 +145,8 @@ void main() {
       },
       skip: 2,
       expect: () => [
-        InvitePlayerSending(players: [_player], inviteeId: 'player-1'),
-        InvitePlayerError(
+        const InvitePlayerSending(players: [_player], inviteeId: 'player-1'),
+        const InvitePlayerError(
           players: [_player],
           message: 'Already exists',
           errorCode: 'already-exists',
@@ -184,7 +184,7 @@ void main() {
   });
 
   group('InviteGroupPlayers', () {
-    final player2 = InvitablePlayerModel(
+    const player2 = InvitablePlayerModel(
       uid: 'player-2',
       displayName: 'Carol',
       sourceGroupId: 'group-x',

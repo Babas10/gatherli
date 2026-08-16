@@ -6,8 +6,7 @@ import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_event.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_state.dart';
-
-class MockFriendRepository extends Mock implements FriendRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockFriendRepository mockFriendRepository;

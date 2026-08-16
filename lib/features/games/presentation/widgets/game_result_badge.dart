@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 
@@ -57,19 +59,19 @@ class GameResultBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.green.shade100,
+          color: AppColors.success,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.green.shade300),
+          border: Border.all(color: AppColors.success),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.emoji_events, size: 16, color: Colors.green.shade700),
-            const SizedBox(width: 4),
+            const Icon(Icons.emoji_events, size: 16, color: AppColors.success),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               scoreText,
-              style: TextStyle(
-                color: Colors.green.shade800,
+              style: const TextStyle(
+                color: AppColors.success,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),

@@ -2,6 +2,7 @@
 // Allows the user to accept or decline each invitation.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -18,7 +19,7 @@ class PendingGameInvitationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = _PendingGameInvitationsView();
+    const child = _PendingGameInvitationsView();
     if (blocOverride != null) {
       return BlocProvider<GameInvitationsBloc>.value(
         value: blocOverride!,
@@ -72,7 +73,7 @@ class _PendingGameInvitationsViewState
                 : l10n.gameInvitationDeclined,
           ),
           backgroundColor: state.accepted
-              ? Colors.green.shade600
+              ? AppColors.success
               : AppColors.textMuted,
         ),
       );
@@ -118,9 +119,9 @@ class _PendingGameInvitationsViewState
                 size: 64,
                 color: Theme.of(context).colorScheme.error,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Text(state.message, textAlign: TextAlign.center),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               FilledButton(
                 onPressed: () => context.read<GameInvitationsBloc>().add(
                   const LoadGameInvitations(),
@@ -150,8 +151,8 @@ class _PendingGameInvitationsViewState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
-            const SizedBox(height: 16),
+            const Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.noPendingGameInvitations,
               style: Theme.of(

@@ -1,5 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:play_with_me/app/route_generator.dart';
@@ -55,13 +57,20 @@ import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/domain/repositories/training_session_repository.dart';
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
+import 'package:play_with_me/features/groups/presentation/pages/group_details_page.dart';
 import 'package:play_with_me/features/training/presentation/pages/training_session_details_page.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_theme.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/presentation/bloc/group/group_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/pickup_game_creation_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_list_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/create_championship_page.dart';
+import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class PlayWithMeApp extends StatelessWidget {
@@ -99,6 +108,12 @@ class PlayWithMeApp extends StatelessWidget {
             repository: sl<LocalePreferencesRepository>(),
           )..add(const LocalePreferencesEvent.loadPreferences()),
         ),
+        // ChampionshipListBloc is at app root so the authentication listener
+        // (below) can call LoadChampionships after auth is confirmed.
+        // Moving it to tab scope would break the listener.
+        BlocProvider<ChampionshipListBloc>(
+          create: (context) => sl<ChampionshipListBloc>(),
+        ),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -110,6 +125,11 @@ class PlayWithMeApp extends StatelessWidget {
                 );
                 context.read<GameInvitationsBloc>().add(
                   const LoadGameInvitations(),
+                );
+                // Championships are loaded after auth — firing before auth
+                // is ready causes PERMISSION_DENIED on the Firestore query.
+                context.read<ChampionshipListBloc>().add(
+                  const LoadChampionships(),
                 );
                 // Check for pending invite token (from "I Have an Account" flow).
                 // If found, navigate to join confirmation and clear the stack.
@@ -236,26 +256,7 @@ class PlayWithMeApp extends StatelessWidget {
               navigatorKey: PlayWithMeApp.navigatorKey,
               debugShowCheckedModeBanner: false,
               title: 'Gatherli${EnvironmentConfig.appSuffix}',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary)
-                    .copyWith(
-                      primary: AppColors.primary,
-                      secondary: AppColors.secondary,
-                      error: AppColors.danger,
-                      onSurface: AppColors.onSurface,
-                      onSurfaceVariant: AppColors.textMuted,
-                    ),
-                scaffoldBackgroundColor: AppColors.scaffoldBackground,
-                cardTheme: CardThemeData(
-                  elevation: 0,
-                  color: Colors.white,
-                  shadowColor: AppColors.shadow,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                useMaterial3: true,
-              ),
+              theme: AppTheme.light,
               locale: currentLocale,
               supportedLocales: LocalePreferencesEntity.supportedLocales,
               localizationsDelegates: const [
@@ -265,6 +266,7 @@ class PlayWithMeApp extends StatelessWidget {
                 GlobalCupertinoLocalizations.delegate,
               ],
               home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
                 builder: (context, authState) {
                   if (authState is AuthenticationAuthenticated) {
                     return const HomePage();
@@ -399,14 +401,136 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
         );
         break;
+      // Group membership events — navigate to the group detail (Story N.1).
       case 'member_joined':
       case 'member_left':
       case 'role_changed':
-        debugPrint('Group event notification tapped for group: $groupId');
+        if (groupId != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GroupDetailsPage(groupId: groupId),
+            ),
+          );
+        }
         break;
+
+      // Social — navigate to MyCommunityPage for friend events (Story N.1).
+      case 'friend_request':
+      case 'friend_accepted':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const MyCommunityPage()),
+        );
+        break;
+
+      // Game-level events — navigate to the specific game detail (Story N.1).
+      case 'player_joined':
+      case 'player_left':
+      case 'waitlist_promoted':
+      case 'waitlist_joined':
+      case 'game_result_submitted':
+      case 'game_cancelled':
+      case 'chat_message':
+        _navigateToGame(data);
+        break;
+
+      // Training session events — navigate to the session detail (Story N.1).
+      case 'training_session_created':
+      case 'training_session_cancelled':
+      case 'training_min_participants_reached':
+      case 'training_feedback_received':
+      case 'training_participant_joined':
+      case 'training_participant_left':
+        _navigateToTrainingSession(data);
+        break;
+
+      // Championship match notification — navigate directly to the match (Story 30.22).
+      case 'championship_match':
+        _navigateToMatch(data);
+        break;
+
+      // Championship-level notification — navigate to the championship detail (Story 30.22).
+      case 'championship':
+        _navigateToChampionship(data);
+        break;
+
       default:
         debugPrint('Unknown notification type: $type');
     }
+  }
+
+  /// Deep-links into [GameDetailsPage] from a game-level notification.
+  void _navigateToGame(Map<String, dynamic> data) {
+    final gameId = data['gameId'] as String?;
+    if (gameId == null) {
+      debugPrint('[notification] game payload missing gameId');
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => GameDetailsPage(gameId: gameId)),
+    );
+  }
+
+  /// Deep-links into [TrainingSessionDetailsPage] from a training notification.
+  void _navigateToTrainingSession(Map<String, dynamic> data) {
+    final sessionId = data['sessionId'] as String?;
+    if (sessionId == null) {
+      debugPrint('[notification] training payload missing sessionId');
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            TrainingSessionDetailsPage(trainingSessionId: sessionId),
+      ),
+    );
+  }
+
+  /// Deep-links into [MatchDetailPage] from a championship_match notification.
+  void _navigateToMatch(Map<String, dynamic> data) {
+    final champId = data['championshipId'] as String?;
+    final matchId = data['matchId'] as String?;
+
+    if (champId == null || matchId == null) {
+      debugPrint('[notification] championship_match payload missing IDs');
+      return;
+    }
+
+    final authState = context.read<AuthenticationBloc>().state;
+    if (authState is! AuthenticationAuthenticated) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MatchDetailPage(
+          championshipId: champId,
+          matchId: matchId,
+          currentUserId: authState.user.uid,
+          currentUserDisplayName:
+              authState.user.displayName ?? authState.user.email,
+        ),
+      ),
+    );
+  }
+
+  /// Deep-links into [ChampionshipDetailPage] from a championship notification.
+  void _navigateToChampionship(Map<String, dynamic> data) {
+    final champId = data['championshipId'] as String?;
+
+    if (champId == null) {
+      debugPrint('[notification] championship payload missing championshipId');
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChampionshipDetailPage(championshipId: champId),
+      ),
+    );
   }
 
   @override
@@ -521,31 +645,61 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 );
               },
             ),
-        floatingActionButton: _selectedIndex == 0
-            ? FloatingActionButton(
-                heroTag: 'pickup_game_fab',
-                onPressed: () {
-                  final groupState = _groupBloc.state;
-                  final userGroups = groupState is GroupsLoaded
-                      ? {for (final g in groupState.groups) g.id: g.name}
-                      : <String, String>{};
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider<AuthenticationBloc>.value(
-                        value: context.read<AuthenticationBloc>(),
-                        child: PickupGameCreationPage(userGroups: userGroups),
-                      ),
-                    ),
-                  );
-                },
-                backgroundColor: AppColors.secondary,
-                tooltip: AppLocalizations.of(context)!.createPickupGame,
-                child: const Icon(Icons.flash_on, color: Colors.white),
-              )
-            : null,
+        floatingActionButton: _buildFab(context),
       ),
     );
+  }
+
+  Widget? _buildFab(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (_selectedIndex == 0) {
+      return FloatingActionButton(
+        heroTag: 'pickup_game_fab',
+        onPressed: () {
+          final groupState = _groupBloc.state;
+          final userGroups = groupState is GroupsLoaded
+              ? {for (final g in groupState.groups) g.id: g.name}
+              : <String, String>{};
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider<AuthenticationBloc>.value(
+                value: context.read<AuthenticationBloc>(),
+                child: PickupGameCreationPage(userGroups: userGroups),
+              ),
+            ),
+          );
+        },
+        backgroundColor: AppColors.secondary,
+        tooltip: l10n.createPickupGame,
+        child: const Icon(Icons.flash_on, color: Colors.white),
+      );
+    }
+
+    if (_selectedIndex == 4) {
+      return FloatingActionButton(
+        heroTag: 'championship_create_fab',
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CreateChampionshipPage(),
+            ),
+          );
+          if (context.mounted) {
+            context
+                .read<ChampionshipListBloc>()
+                .add(const LoadChampionships());
+          }
+        },
+        backgroundColor: AppColors.primary,
+        tooltip: l10n.championshipCreate,
+        child: const Icon(Icons.add, color: Colors.white),
+      );
+    }
+
+    return null;
   }
 }
 
@@ -575,6 +729,7 @@ class _HomeTabState extends State<_HomeTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
           return Center(
@@ -586,6 +741,7 @@ class _HomeTabState extends State<_HomeTab> {
         }
 
         return BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
           builder: (context, statsState) {
             if (statsState is PlayerStatsLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -604,12 +760,12 @@ class _HomeTabState extends State<_HomeTab> {
                           const Icon(
                             Icons.error_outline,
                             size: 48,
-                            color: Colors.red,
+                            color: AppColors.danger,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           Text(
                             'Error loading stats: ${statsState.message}',
-                            style: const TextStyle(color: Colors.red),
+                            style: const TextStyle(color: AppColors.danger),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -642,12 +798,7 @@ class _HomeTabState extends State<_HomeTab> {
                       padding: const EdgeInsets.only(left: 20.0, bottom: 15.0),
                       child: Text(
                         AppLocalizations.of(context)!.nextGame.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textMuted,
-                          letterSpacing: 0.8,
-                        ),
+                        style: AppTextStyles.sectionLabel,
                       ),
                     ),
 
@@ -703,12 +854,7 @@ class _HomeTabState extends State<_HomeTab> {
                         AppLocalizations.of(
                           context,
                         )!.nextTrainingSession.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textMuted,
-                          letterSpacing: 0.8,
-                        ),
+                        style: AppTextStyles.sectionLabel,
                       ),
                     ),
 
@@ -792,14 +938,14 @@ class _SplashScreen extends StatelessWidget {
               size: 64,
               color: Theme.of(context).primaryColor,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               'Gatherli${EnvironmentConfig.appSuffix}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             const CircularProgressIndicator(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(AppLocalizations.of(context)!.loading),
           ],
         ),

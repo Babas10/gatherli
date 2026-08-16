@@ -14,10 +14,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/games/presentation/pages/game_result_view_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
+import '../../../../../helpers/mocks.dart';
 
 RatingHistoryEntry _elo({
   required double oldRating,

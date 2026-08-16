@@ -12,8 +12,7 @@ import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/profile/presentation/pages/stats_page.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_event.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
@@ -23,7 +22,7 @@ void main() {
 
   const userId = 'test-uid';
 
-  final testUserModel = UserModel(
+  const testUserModel = UserModel(
     uid: userId,
     email: 'test@example.com',
     isEmailVerified: true,
@@ -76,21 +75,12 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider<PlayerStatsBloc>(
+    return testApp(child: BlocProvider<PlayerStatsBloc>(
         create: (_) =>
             PlayerStatsBloc(userRepository: mockUserRepository)
-              ..add(LoadPlayerStats(userId)),
+              ..add(const LoadPlayerStats(userId)),
         child: const Scaffold(body: StatsPage()),
-      ),
-    );
+      ));
   }
 
   testWidgets('StatsPage displays ExpandedStatsSection and correct stats', (

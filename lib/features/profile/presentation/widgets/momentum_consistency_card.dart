@@ -1,5 +1,7 @@
 // Momentum and consistency card showing streak and monthly improvement.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
@@ -60,14 +62,9 @@ class MomentumConsistencyCard extends StatelessWidget {
               AppLocalizations.of(
                 context,
               )!.momentumAndConsistency.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-                letterSpacing: 0.8,
-              ),
+              style: AppTextStyles.sectionLabel,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             // Streak white card
             Card(
               margin: EdgeInsets.zero,
@@ -80,14 +77,9 @@ class MomentumConsistencyCard extends StatelessWidget {
             // ELO Progress section label
             Text(
               AppLocalizations.of(context)!.eloProgress.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-                letterSpacing: 0.8,
-              ),
+              style: AppTextStyles.sectionLabel,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             // Ranking Stats Cards — sit directly on gray background (Story 302.5)
             BlocListener<PlayerStatsBloc, PlayerStatsState>(
               listener: (context, statsState) {
@@ -97,6 +89,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                 }
               },
               child: BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+                buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
                 builder: (context, statsState) {
                   if (statsState is PlayerStatsLoaded) {
                     return Column(
@@ -105,7 +98,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                           ranking: statsState.ranking,
                           currentStreak: user.currentStreak,
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.md),
                       ],
                     );
                   }
@@ -132,13 +125,13 @@ class MomentumConsistencyCard extends StatelessWidget {
                             );
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.lg),
                         MonthlyImprovementChart(
                           ratingHistory: state.filteredHistory,
                           currentElo: user.eloRating,
                           timePeriod: state.selectedPeriod,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.lg),
                         BestEloHighlightCard(
                           bestElo: state.bestEloInPeriod,
                           timePeriod: state.selectedPeriod,
@@ -149,7 +142,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
           ],
         ),
       ),
@@ -166,7 +159,7 @@ class MomentumConsistencyCard extends StatelessWidget {
 
     final isWinning = user.currentStreak > 0;
     final streakValue = user.currentStreak.abs();
-    final streakColor = isWinning ? Colors.green : Colors.red;
+    final streakColor = isWinning ? AppColors.success : AppColors.danger;
     final streakIcon = isWinning ? Icons.trending_up : Icons.trending_down;
     final streakLabel = isWinning
         ? AppLocalizations.of(context)!.winStreak
@@ -195,7 +188,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                   color: streakColor,
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 streakLabel,
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -223,7 +216,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                   color: streakColor.withValues(alpha: 0.8),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
@@ -236,7 +229,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                       color: streakColor,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Text(
                     AppLocalizations.of(context)!
                         .gamesCount(streakValue)
@@ -264,7 +257,7 @@ class MomentumConsistencyCard extends StatelessWidget {
           size: 28,
           color: AppColors.textMuted.withValues(alpha: 0.35),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

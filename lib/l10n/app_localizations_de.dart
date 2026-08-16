@@ -2297,6 +2297,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get championshipStatusBadgeCompleted => 'Abgeschlossen';
 
   @override
+  String get championshipMyMatchesTab => 'Meine Spiele';
+
+  @override
+  String get championshipMyMatchesEmpty =>
+      'Deine Spiele erscheinen hier, sobald die Meisterschaft beginnt.';
+
+  @override
+  String championshipMyMatchesVs(String opponent) {
+    return 'vs $opponent';
+  }
+
+  @override
+  String get championshipTabActive => 'Aktiv';
+
+  @override
+  String get championshipTabCompleted => 'Abgeschlossen';
+
+  @override
+  String get championshipNoCompletedYet =>
+      'Noch keine abgeschlossenen Meisterschaften.';
+
+  @override
   String get championshipNoResults => 'Derzeit keine Meisterschaften.';
 
   @override
@@ -2314,6 +2336,27 @@ class AppLocalizationsDe extends AppLocalizations {
   String championshipTeamCountOf(int count, int max) {
     return '$count / $max Teams';
   }
+
+  @override
+  String get championshipGenderMale => 'Männer';
+
+  @override
+  String get championshipGenderFemale => 'Frauen';
+
+  @override
+  String get championshipGenderBlockNoGender =>
+      'Sie müssen Ihr Geschlecht in Ihrem Profil festlegen, um sich anzumelden.';
+
+  @override
+  String get championshipGenderBlockMaleOnly =>
+      'Diese Meisterschaft ist nur für Männer.';
+
+  @override
+  String get championshipGenderBlockFemaleOnly =>
+      'Diese Meisterschaft ist nur für Frauen.';
+
+  @override
+  String get championshipCreateGenderLabel => 'Geschlechtskategorie (optional)';
 
   @override
   String get championshipDetailStandingsTab => 'Tabelle';
@@ -2349,6 +2392,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get championshipDetailNoStandings => 'Noch keine Tabelle.';
+
+  @override
+  String get championshipDetailTeamsTab => 'Teams';
+
+  @override
+  String get championshipDetailNoTeamsYet =>
+      'Noch keine Teams angemeldet.\nSeien Sie das erste Team!';
 
   @override
   String get championshipDetailNoMatchesForRound =>
@@ -2446,4 +2496,231 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get adminPanelDecisionErrorWinnerRequired =>
       'Wählen Sie einen Gewinner für den Walkover';
+
+  @override
+  String get championshipCreate => 'Meisterschaft erstellen';
+
+  @override
+  String get championshipCreateTitleLabel => 'Titel';
+
+  @override
+  String get championshipCreateTitleHint => 'z.B. Sommer Open 2026';
+
+  @override
+  String get championshipCreateTitleRequired => 'Titel ist erforderlich';
+
+  @override
+  String get championshipCreateTitleTooShort =>
+      'Der Titel muss mindestens 3 Zeichen lang sein';
+
+  @override
+  String get championshipCreateDeadlineLabel => 'Anmeldefrist';
+
+  @override
+  String get championshipCreateDeadlinePlaceholder => 'Datum auswählen';
+
+  @override
+  String get championshipCreateCountryLabel => 'Land (optional)';
+
+  @override
+  String get championshipCreateCountryHint => 'z.B. DE';
+
+  @override
+  String get championshipCreateRegionLabel => 'Region (optional)';
+
+  @override
+  String get championshipCreateRegionHint => 'z.B. Bayern';
+
+  @override
+  String get championshipCreateMaxTeamsLabel => 'Max. Mannschaften';
+
+  @override
+  String get championshipCreateTeamSizeLabel => 'Spieler pro Team';
+
+  @override
+  String championshipCreateTeamSizeOption(int count) {
+    return '$count Spieler';
+  }
+
+  @override
+  String get championshipCreateSubmit => 'Meisterschaft erstellen';
+
+  @override
+  String get championshipCreateSuccess => 'Meisterschaft erstellt';
+
+  @override
+  String get championshipCreateStartDateLabel => 'Startdatum (optional)';
+
+  @override
+  String get championshipCreateEndDateLabel => 'Enddatum (optional)';
+
+  @override
+  String get championshipCreateDatePlaceholder => 'Datum auswählen';
+
+  @override
+  String get myTeamSectionTitle => 'Mein Team';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Partner: $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'Du hast die Meisterschaft verlassen.';
+
+  @override
+  String get startChampionshipButton => 'Meisterschaft starten';
+
+  @override
+  String get startChampionshipConfirmTitle => 'Meisterschaft starten?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'Dies generiert alle Spiele und kann nicht rückgängig gemacht werden. Stelle sicher, dass alle Teams registriert sind.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Meisterschaft gestartet — $count Spiele erstellt.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'Spielfenster beginnt';
+
+  @override
+  String get completeChampionshipButton => 'Als abgeschlossen markieren';
+
+  @override
+  String get teamRenameTitle => 'Team umbenennen';
+
+  @override
+  String get teamRenameLabel => 'Teamname';
+
+  @override
+  String get teamRenameSuccess => 'Team erfolgreich umbenannt.';
+
+  @override
+  String get teamRenameError => 'Team konnte nicht umbenannt werden';
+
+  @override
+  String get standingsTiebreakerTitle => 'So funktioniert das Ranking';
+
+  @override
+  String get standingsTiebreakerBody =>
+      'Punkte: Sieg 2-0 = 3Pkt · Sieg 2-1 = 2Pkt · Niederlage 1-2 = 1Pkt · Niederlage 0-2 = 0Pkt\n\nKriterium 1: Direktes Duell\nKriterium 2: Satzverhältnis (Sätze gewonnen − verloren)';
+
+  @override
+  String get editChampionshipButton => 'Details bearbeiten';
+
+  @override
+  String get editChampionshipTitle => 'Meisterschaft bearbeiten';
+
+  @override
+  String get editChampionshipChangeDeadline => 'Frist ändern';
+
+  @override
+  String get completeChampionshipConfirmTitle => 'Meisterschaft abschließen?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'Nur verwenden, wenn alle Spiele abgeschlossen sind. Kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get completeChampionshipSuccess =>
+      'Meisterschaft als abgeschlossen markiert.';
+
+  @override
+  String get championshipChampionLabel => 'Champion';
+
+  @override
+  String get championshipMyMatch => 'Mein Spiel';
+
+  @override
+  String get matchScheduleWaitingTitle => 'Warte auf Bestätigung';
+
+  @override
+  String matchScheduleWaitingBody(String datetime) {
+    return 'Dein Vorschlag ($datetime) wartet auf die Antwort des gegnerischen Teams.';
+  }
+
+  @override
+  String get matchScheduleConfirmTitle => 'Spieltermin vorgeschlagen';
+
+  @override
+  String matchScheduleConfirmBody(String teamName, String datetime) {
+    return '$teamName hat vorgeschlagen: $datetime';
+  }
+
+  @override
+  String get matchScheduleAcceptButton => 'Annehmen';
+
+  @override
+  String get matchScheduleRejectButton => 'Ablehnen';
+
+  @override
+  String get matchDisputedTitle => 'Strittiges Spiel';
+
+  @override
+  String get matchDisputedExplanation =>
+      'Dieses Ergebnis wurde angefochten. Ein Administrator wird die Punkte prüfen und eine endgültige Entscheidung treffen. Das Ranking wird nach der Entscheidung aktualisiert.';
+
+  @override
+  String get notificationSettingsTitle => 'Benachrichtigungen';
+
+  @override
+  String get notificationSettingsCategories => 'Benachrichtigungskategorien';
+
+  @override
+  String get notifCategorySocial => 'Soziales';
+
+  @override
+  String get notifCategorySocialSubtitle =>
+      'Freundschaftsanfragen, Gruppeneinladungen';
+
+  @override
+  String get notifCategoryGames => 'Spiele';
+
+  @override
+  String get notifCategoryGamesSubtitle =>
+      'Neue Spiele, Ergebnisse, Absagen, Chat';
+
+  @override
+  String get notifCategoryTraining => 'Training';
+
+  @override
+  String get notifCategoryTrainingSubtitle =>
+      'Sitzungen erstellt, abgesagt, Feedback';
+
+  @override
+  String get notifCategoryChampionships => 'Meisterschaften';
+
+  @override
+  String get notifCategoryChampionshipsSubtitle =>
+      'Ergebnisse, Fristen, Streitigkeiten, Terminplanung';
+
+  @override
+  String get notifQuietHoursTitle => 'Ruhezeiten';
+
+  @override
+  String get notifQuietHoursEnable => 'Ruhezeiten aktivieren';
+
+  @override
+  String get notifQuietHoursSubtitle =>
+      'Benachrichtigungen zu bestimmten Zeiten pausieren';
+
+  @override
+  String notifQuietHoursRange(String start, String end) {
+    return 'Keine Benachrichtigungen von $start bis $end';
+  }
+
+  @override
+  String get notifQuietHoursAdjust => 'Ruhezeiten anpassen';
+
+  @override
+  String get retryButton => 'Erneut versuchen';
+
+  @override
+  String get groupMuteNotifications => 'Benachrichtigungen stummschalten';
+
+  @override
+  String get groupUnmuteNotifications => 'Benachrichtigungen aktivieren';
 }

@@ -86,27 +86,29 @@ describe("classifyGameGenderType", () => {
     expect(result).toBe("mix");
   });
 
-  test("returns 'mix' when a player has no gender set", async () => {
+  // ── Missing gender field (never set) ────────────────────────────────────────
+
+  test("skips player with missing gender field, classifies on remaining players", async () => {
     (admin.firestore as unknown as jest.Mock).mockReturnValue(
       makeDb({ u1: "male", u2: undefined })
     );
     const result = await classifyGameGenderType(["u1", "u2"]);
-    expect(result).toBe("mix");
+    expect(result).toBe("male");
   });
 
-  test("returns 'mix' when a player has gender = 'prefer_not_to_say'", async () => {
+  test("returns null when ALL players have a missing gender field (the reported bug)", async () => {
     (admin.firestore as unknown as jest.Mock).mockReturnValue(
-      makeDb({ u1: "female", u2: "prefer_not_to_say" })
+      makeDb({ u1: undefined })
     );
-    const result = await classifyGameGenderType(["u1", "u2"]);
-    expect(result).toBe("mix");
+    const result = await classifyGameGenderType(["u1"]);
+    expect(result).toBeNull();
   });
 
-  test("short-circuits after first player with unknown gender", async () => {
+  test("processes all players when gender field is missing — does not short-circuit", async () => {
     let callCount = 0;
     const db = {
       collection: jest.fn(() => ({
-        doc: jest.fn((id: string) => ({
+        doc: jest.fn(() => ({
           get: jest.fn().mockImplementation(() => {
             callCount++;
             return Promise.resolve({ data: jest.fn().mockReturnValue({}) });
@@ -117,8 +119,34 @@ describe("classifyGameGenderType", () => {
     (admin.firestore as unknown as jest.Mock).mockReturnValue(db);
 
     const result = await classifyGameGenderType(["u1", "u2", "u3"]);
+    expect(result).toBeNull();
+    expect(callCount).toBe(3);
+  });
+
+  // ── Explicit non-binary gender ('none' / 'prefer_not_to_say') ────────────────
+
+  test("returns 'mix' immediately when a player has gender = 'none'", async () => {
+    (admin.firestore as unknown as jest.Mock).mockReturnValue(
+      makeDb({ u1: "male", u2: "none" })
+    );
+    const result = await classifyGameGenderType(["u1", "u2"]);
     expect(result).toBe("mix");
-    expect(callCount).toBe(1);
+  });
+
+  test("returns 'mix' immediately when a player has gender = 'prefer_not_to_say'", async () => {
+    (admin.firestore as unknown as jest.Mock).mockReturnValue(
+      makeDb({ u1: "female", u2: "prefer_not_to_say" })
+    );
+    const result = await classifyGameGenderType(["u1", "u2"]);
+    expect(result).toBe("mix");
+  });
+
+  test("returns 'mix' for a single player who chose 'none'", async () => {
+    (admin.firestore as unknown as jest.Mock).mockReturnValue(
+      makeDb({ u1: "none" })
+    );
+    const result = await classifyGameGenderType(["u1"]);
+    expect(result).toBe("mix");
   });
 
   test("returns 'male' for a single male player", async () => {

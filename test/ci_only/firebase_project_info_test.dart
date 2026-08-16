@@ -4,7 +4,7 @@ import 'package:play_with_me/core/models/firebase_project_info.dart';
 void main() {
   group('FirebaseProjectInfo', () {
     test('should create instance with required fields', () {
-      final projectInfo = FirebaseProjectInfo(
+      const projectInfo = FirebaseProjectInfo(
         environment: 'dev',
         expectedProjectId: 'gatherli-dev',
         status: FirebaseProjectStatus.created,
@@ -39,7 +39,7 @@ void main() {
 
     group('JSON serialization', () {
       test('should serialize to JSON correctly', () {
-        final projectInfo = FirebaseProjectInfo(
+        const projectInfo = FirebaseProjectInfo(
           environment: 'dev',
           expectedProjectId: 'gatherli-dev',
           actualProjectId: 'gatherli-dev-custom',
@@ -80,12 +80,12 @@ void main() {
     test('should create tracker with projects', () {
       final trackedAt = DateTime.now();
       final projects = [
-        FirebaseProjectInfo(
+        const FirebaseProjectInfo(
           environment: 'dev',
           expectedProjectId: 'gatherli-dev',
           status: FirebaseProjectStatus.created,
         ),
-        FirebaseProjectInfo(
+        const FirebaseProjectInfo(
           environment: 'prod',
           expectedProjectId: 'gatherli-prod',
           status: FirebaseProjectStatus.pending,
@@ -108,7 +108,7 @@ void main() {
       test('should serialize tracker to JSON correctly', () {
         final trackedAt = DateTime.parse('2024-01-01T12:00:00Z');
         final projects = [
-          FirebaseProjectInfo(
+          const FirebaseProjectInfo(
             environment: 'dev',
             expectedProjectId: 'gatherli-dev',
             status: FirebaseProjectStatus.created,
@@ -199,14 +199,14 @@ void main() {
 
     test('should validate completion criteria', () {
       final allCreated = [
-        FirebaseProjectInfo(
+        const FirebaseProjectInfo(
           environment: 'dev',
           expectedProjectId: 'gatherli-dev',
           actualProjectId: 'gatherli-dev',
           status: FirebaseProjectStatus.created,
           matchesExpected: true,
         ),
-        FirebaseProjectInfo(
+        const FirebaseProjectInfo(
           environment: 'prod',
           expectedProjectId: 'gatherli-prod',
           actualProjectId: 'gatherli-prod',

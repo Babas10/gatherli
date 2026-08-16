@@ -1,62 +1,29 @@
 // Validates ChampionshipListPage renders states and handles filter interactions.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
-import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_state.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_list_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
-class MockChampionshipRepository extends Mock
-    implements ChampionshipRepository {}
+import '../../../helpers/mocks.dart';
+import '../../../helpers/test_app.dart';
+import '../../../helpers/fixtures.dart';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-ChampionshipModel _makeChamp({
-  required String id,
-  required String title,
-  ChampionshipStatus status = ChampionshipStatus.registration,
-  int teamsCount = 4,
-  int maxTeams = 10,
-  int currentRound = 0,
-  String? country,
-}) {
-  return ChampionshipModel(
-    id: id,
-    title: title,
-    status: status,
-    teamsCount: teamsCount,
-    maxTeams: maxTeams,
-    currentRound: currentRound,
-    totalRounds: 9,
-    createdBy: 'admin',
-    createdAt: DateTime(2026, 1, 1),
-    registrationDeadline: DateTime.now().add(const Duration(days: 7)),
-    country: country,
-  );
-}
-
 Widget _buildTestWidget(ChampionshipListBloc bloc) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Scaffold(
+  return testApp(
+    child: Scaffold(
       body: BlocProvider.value(
         value: bloc,
-        // Test the internal view directly, bypassing sl<> dependency
         child: Builder(
-          builder: (context) => BlocBuilder<ChampionshipListBloc,
-              ChampionshipListState>(
+          builder: (context) =>
+              BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
             builder: (context, state) {
               if (state is ChampionshipListLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -93,6 +60,8 @@ Widget _buildTestWidget(ChampionshipListBloc bloc) {
 void main() {
   late MockChampionshipRepository mockRepo;
 
+  setUpAll(registerFallbackValues);
+
   setUp(() {
     mockRepo = MockChampionshipRepository();
   });
@@ -128,8 +97,8 @@ void main() {
 
     testWidgets('shows championship cards when data is loaded', (tester) async {
       final championships = [
-        _makeChamp(id: 'c1', title: 'Summer Cup'),
-        _makeChamp(id: 'c2', title: 'Winter League'),
+        makeChampionship(id: 'c1', title: 'Summer Cup'),
+        makeChampionship(id: 'c2', title: 'Winter League'),
       ];
       when(() => mockRepo.getChampionships())
           .thenAnswer((_) => Stream.value(championships));
@@ -157,7 +126,7 @@ void main() {
   group('ChampionshipCard', () {
     testWidgets('shows title, team count and registration status badge',
         (tester) async {
-      final champ = _makeChamp(
+      final champ = makeChampionship(
         id: 'c1',
         title: 'Beach Open',
         status: ChampionshipStatus.registration,
@@ -165,18 +134,9 @@ void main() {
         maxTeams: 10,
       );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: ChampionshipCard(championship: champ)),
-        ),
-      );
+      await tester.pumpWidget(testApp(
+        child: Scaffold(body: ChampionshipCard(championship: champ)),
+      ));
       await tester.pumpAndSettle();
 
       expect(find.text('Beach Open'), findsOneWidget);
@@ -185,73 +145,42 @@ void main() {
     });
 
     testWidgets('shows active status badge with round info', (tester) async {
-      final champ = _makeChamp(
+      final champ = makeChampionship(
         id: 'c1',
         title: 'Active Champ',
         status: ChampionshipStatus.active,
         currentRound: 3,
       );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: ChampionshipCard(championship: champ)),
-        ),
-      );
+      await tester.pumpWidget(testApp(
+        child: Scaffold(body: ChampionshipCard(championship: champ)),
+      ));
       await tester.pumpAndSettle();
 
       expect(find.text('Round 3/9'), findsOneWidget);
     });
 
     testWidgets('shows completed status badge', (tester) async {
-      final champ = _makeChamp(
+      final champ = makeChampionship(
         id: 'c1',
         title: 'Done Champ',
         status: ChampionshipStatus.completed,
       );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: ChampionshipCard(championship: champ)),
-        ),
-      );
+      await tester.pumpWidget(testApp(
+        child: Scaffold(body: ChampionshipCard(championship: champ)),
+      ));
       await tester.pumpAndSettle();
 
       expect(find.text('Completed'), findsOneWidget);
     });
 
     testWidgets('shows location when country is set', (tester) async {
-      final champ = _makeChamp(
-        id: 'c1',
-        title: 'Loc Champ',
-        country: 'Switzerland',
-      );
+      final champ = makeChampionship(id: 'c1', title: 'Loc Champ', country: 'Switzerland');
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: ChampionshipCard(championship: champ)),
-        ),
-      );
+      await tester.pumpWidget(testApp(
+        child: Scaffold(body: ChampionshipCard(championship: champ)),
+      ));
       await tester.pumpAndSettle();
 
       expect(find.text('Switzerland'), findsOneWidget);
@@ -259,27 +188,18 @@ void main() {
 
     testWidgets('shows deadline countdown for registration championship',
         (tester) async {
-      final champ = _makeChamp(
+      final champ = makeChampionship(
         id: 'c1',
         title: 'Deadline Champ',
         status: ChampionshipStatus.registration,
+        registrationDeadline: DateTime.now().add(const Duration(days: 7)),
       );
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: Scaffold(body: ChampionshipCard(championship: champ)),
-        ),
-      );
+      await tester.pumpWidget(testApp(
+        child: Scaffold(body: ChampionshipCard(championship: champ)),
+      ));
       await tester.pumpAndSettle();
 
-      // Should show "X days left" (7 days deadline)
       expect(find.textContaining('days left'), findsOneWidget);
     });
   });
@@ -287,9 +207,9 @@ void main() {
   group('Filter behaviour', () {
     test('ChampionshipListLoaded.championships filters by active', () {
       final all = [
-        _makeChamp(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
-        _makeChamp(id: 'a', title: 'Act', status: ChampionshipStatus.active),
-        _makeChamp(id: 'c', title: 'Com', status: ChampionshipStatus.completed),
+        makeChampionship(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
+        makeChampionship(id: 'a', title: 'Act', status: ChampionshipStatus.active),
+        makeChampionship(id: 'c', title: 'Com', status: ChampionshipStatus.completed),
       ];
 
       final state =
@@ -301,8 +221,8 @@ void main() {
     test('ChampionshipListLoaded.championships returns all when filter is null',
         () {
       final all = [
-        _makeChamp(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
-        _makeChamp(id: 'a', title: 'Act', status: ChampionshipStatus.active),
+        makeChampionship(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
+        makeChampionship(id: 'a', title: 'Act', status: ChampionshipStatus.active),
       ];
 
       final state =
@@ -310,13 +230,11 @@ void main() {
       expect(state.championships.length, 2);
     });
 
-    test(
-        'ChampionshipListLoaded.championships includes registrationClosed in registration filter',
-        () {
+    test('includes registrationClosed in registration filter', () {
       final all = [
-        _makeChamp(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
-        _makeChamp(id: 'rc', title: 'RC', status: ChampionshipStatus.registrationClosed),
-        _makeChamp(id: 'a', title: 'Act', status: ChampionshipStatus.active),
+        makeChampionship(id: 'r', title: 'Reg', status: ChampionshipStatus.registration),
+        makeChampionship(id: 'rc', title: 'RC', status: ChampionshipStatus.registrationClosed),
+        makeChampionship(id: 'a', title: 'Act', status: ChampionshipStatus.active),
       ];
 
       final state = ChampionshipListLoaded(

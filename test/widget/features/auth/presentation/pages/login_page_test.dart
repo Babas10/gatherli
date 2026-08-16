@@ -1,8 +1,7 @@
 // Widget tests for LoginPage verifying UI rendering and user interactions.
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,6 +11,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/login/login_state.d
 import 'package:play_with_me/features/auth/presentation/pages/login_page.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_form_field.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockLoginBloc extends MockBloc<LoginEvent, LoginState>
     implements LoginBloc {}
@@ -40,15 +40,7 @@ void main() {
   Widget createTestWidget({
     Route<dynamic>? Function(RouteSettings)? onGenerateRoute,
   }) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider<LoginBloc>.value(
+    return testApp(child: BlocProvider<LoginBloc>.value(
         value: mockLoginBloc,
         child: const LoginPage(),
       ),
@@ -67,8 +59,7 @@ void main() {
               );
             }
             return null;
-          },
-    );
+          });
   }
 
   group('LoginPage Widget Tests', () {
@@ -154,7 +145,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Tap login button without entering email
-        final loginButton = find.widgetWithText(ElevatedButton, 'Login');
+        final loginButton = find.widgetWithText(FilledButton, 'Login');
         await tester.tap(loginButton);
         await tester.pumpAndSettle();
 
@@ -175,7 +166,7 @@ void main() {
         await tester.enterText(passwordField, 'password123');
         await tester.pump();
 
-        final loginButton = find.widgetWithText(ElevatedButton, 'Login');
+        final loginButton = find.widgetWithText(FilledButton, 'Login');
         await tester.tap(loginButton);
         await tester.pumpAndSettle();
 
@@ -245,7 +236,7 @@ void main() {
         await tester.enterText(emailField, 'test@example.com');
         await tester.pump();
 
-        final loginButton = find.widgetWithText(ElevatedButton, 'Login');
+        final loginButton = find.widgetWithText(FilledButton, 'Login');
         await tester.tap(loginButton);
         await tester.pumpAndSettle();
 
@@ -269,7 +260,7 @@ void main() {
         await tester.pump();
 
         // Tap login button
-        final loginButton = find.widgetWithText(ElevatedButton, 'Login');
+        final loginButton = find.widgetWithText(FilledButton, 'Login');
         await tester.tap(loginButton);
         await tester.pump();
 
@@ -287,7 +278,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Tap login without entering anything
-        final loginButton = find.widgetWithText(ElevatedButton, 'Login');
+        final loginButton = find.widgetWithText(FilledButton, 'Login');
         await tester.tap(loginButton);
         await tester.pump();
 
@@ -309,11 +300,11 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
-        // Find the ElevatedButton (Login button)
-        final elevatedButton = tester.widget<ElevatedButton>(
-          find.byType(ElevatedButton),
+        // Find the FilledButton (Login button)
+        final filledButton = tester.widget<FilledButton>(
+          find.byType(FilledButton),
         );
-        expect(elevatedButton.onPressed, isNull);
+        expect(filledButton.onPressed, isNull);
       });
     });
 
@@ -388,7 +379,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 

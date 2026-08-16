@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +67,7 @@ class _TrainingSessionFeedbackPageState
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.thankYouFeedback),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
               ),
             );
             // Navigate back after short delay
@@ -80,7 +81,7 @@ class _TrainingSessionFeedbackPageState
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           } else if (state is FeedbackSubmissionChecked && state.hasSubmitted) {
@@ -113,25 +114,25 @@ class _TrainingSessionFeedbackPageState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.check_circle_outline,
               size: 80,
               color: AppColors.primary,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               l10n.feedbackAlreadySubmitted,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.alreadyProvidedFeedback(widget.sessionTitle),
               style: const TextStyle(fontSize: 16, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
-            ElevatedButton(
+            const SizedBox(height: AppSpacing.xxl),
+            FilledButton(
               onPressed: () => Navigator.pop(context),
               child: Text(l10n.backToSession),
             ),
@@ -167,12 +168,12 @@ class _TrainingSessionFeedbackPageState
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       widget.sessionTitle,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       l10n.feedbackIsAnonymous,
                       style: const TextStyle(color: Colors.grey, fontSize: 14),
@@ -181,7 +182,7 @@ class _TrainingSessionFeedbackPageState
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
 
             // Exercises Quality Rating
             _buildIconRating(
@@ -190,7 +191,7 @@ class _TrainingSessionFeedbackPageState
               _exercisesQuality,
               (rating) => setState(() => _exercisesQuality = rating),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Training Intensity
             _buildIconRating(
@@ -199,7 +200,7 @@ class _TrainingSessionFeedbackPageState
               _trainingIntensity,
               (rating) => setState(() => _trainingIntensity = rating),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // Coaching Clarity Rating
             _buildIconRating(
@@ -208,14 +209,14 @@ class _TrainingSessionFeedbackPageState
               _coachingClarity,
               (rating) => setState(() => _coachingClarity = rating),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
 
             // Comment section
             Text(
               l10n.additionalCommentsOptional,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             TextFormField(
               controller: _commentController,
               maxLines: 5,
@@ -227,12 +228,12 @@ class _TrainingSessionFeedbackPageState
                 fillColor: Colors.white,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
 
             // Submit button
-            ElevatedButton(
+            FilledButton(
               onPressed: isSubmitting ? null : () => _submitFeedback(context),
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.secondary,
                 foregroundColor: Colors.white,
@@ -254,7 +255,7 @@ class _TrainingSessionFeedbackPageState
                       ),
                     ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Anonymous reminder
             Card(
@@ -263,16 +264,16 @@ class _TrainingSessionFeedbackPageState
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.privacy_tip_outlined,
                       color: AppColors.secondary,
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
                         l10n.feedbackPrivacyNotice,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.secondary,
                           fontSize: 12,
                         ),
@@ -301,9 +302,9 @@ class _TrainingSessionFeedbackPageState
           label,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(subtitle, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(5, (index) {
@@ -324,7 +325,7 @@ class _TrainingSessionFeedbackPageState
             );
           }),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Builder(
           builder: (context) {
             final l10n = AppLocalizations.of(context)!;

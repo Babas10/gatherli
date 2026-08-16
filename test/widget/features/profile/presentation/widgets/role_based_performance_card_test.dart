@@ -1,10 +1,9 @@
 // Tests for RoleBasedPerformanceCard widget - validates UI rendering for role-based stats.
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/role_based_performance_card.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   group('RoleBasedPerformanceCard Widget Tests', () {
@@ -55,16 +54,7 @@ void main() {
       );
     });
 
-    Widget buildWidget(UserModel user) => MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(body: RoleBasedPerformanceCard(user: user)),
-    );
+    Widget buildWidget(UserModel user) => testApp(child: Scaffold(body: RoleBasedPerformanceCard(user: user)));
 
     testWidgets('displays section label', (tester) async {
       await tester.pumpWidget(buildWidget(userWithNoData));
@@ -82,7 +72,7 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(find.byIcon(Icons.analytics_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
     });
 
     testWidgets('displays all three roles when available', (tester) async {
@@ -111,7 +101,7 @@ void main() {
       await tester.pump();
 
       expect(find.text('Leading the Team'), findsOneWidget);
-      expect(find.text('8W - 2L (10 games)'), findsOneWidget);
+      expect(find.text('8W - 2L  ·  10 games'), findsOneWidget);
       expect(find.text('80.0%'), findsOneWidget);
       expect(find.text('Playing with Stronger Partners'), findsNothing);
       expect(find.text('Balanced Teams'), findsNothing);
@@ -128,7 +118,7 @@ void main() {
           find.text('When playing with more experienced teammates'),
           findsOneWidget,
         );
-        expect(find.text('4W - 2L (6 games)'), findsOneWidget);
+        expect(find.text('4W - 2L  ·  6 games'), findsOneWidget);
         expect(find.text('66.7%'), findsOneWidget);
         expect(find.textContaining('weak'), findsNothing);
         expect(find.textContaining('Weak'), findsNothing);
@@ -170,8 +160,8 @@ void main() {
       final weakLinkIcon = tester.widget<Icon>(find.byIcon(Icons.people));
       expect(
         weakLinkIcon.color,
-        const Color(0xFF004E64),
-      ); // AppColors.secondary
+        const Color(0xFFEACE6A),
+      ); // AppColors.primary — all role icons use gold accent
 
       final balancedIcon = tester.widget<Icon>(find.byIcon(Icons.balance));
       expect(balancedIcon.color, const Color(0xFFEACE6A)); // AppColors.primary
@@ -190,10 +180,8 @@ void main() {
       await tester.pumpWidget(buildWidget(userWithAllRoles));
       await tester.pump();
 
-      expect(
-        find.text('See how you perform in different team roles'),
-        findsOneWidget,
-      );
+      // "See how you perform" text removed — each role is its own AccentCard
+      expect(find.text('Leading the Team'), findsOneWidget);
     });
   });
 }

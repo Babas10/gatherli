@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import '../../../domain/repositories/game_repository.dart';
 import 'game_event.dart';
 import 'game_state.dart';
 
-class GameBloc extends Bloc<GameEvent, GameState> {
+class GameBloc extends BaseBloc<GameEvent, GameState> {
   final GameRepository _gameRepository;
   StreamSubscription<dynamic>? _gamesSubscription;
   StreamSubscription<dynamic>? _upcomingGamesSubscription;

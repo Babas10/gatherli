@@ -2,6 +2,8 @@
 // Shows one card per source group; tapping a card invites all its members.
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -221,7 +223,7 @@ class _GroupCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isInvited ? Colors.green.shade200 : Colors.grey.shade200,
+          color: isInvited ? AppColors.success : Colors.grey.shade200,
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -261,15 +263,12 @@ class _GroupCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       l10n.groupMembersCount(members.length),
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF64748B),
-                      ),
+                      style: AppTextStyles.cardSubtitle,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               // Trailing state
               if (isSending)
                 const SizedBox(
@@ -281,18 +280,18 @@ class _GroupCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.check_circle,
                       size: 18,
-                      color: Colors.green.shade600,
+                      color: AppColors.success,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       l10n.invitedLabel,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.green.shade600,
+                        color: AppColors.success,
                       ),
                     ),
                   ],
@@ -301,7 +300,7 @@ class _GroupCard extends StatelessWidget {
                 const Icon(
                   Icons.chevron_right,
                   size: 20,
-                  color: Color(0xFF64748B),
+                  color: AppColors.textMuted,
                 ),
             ],
           ),
@@ -333,10 +332,10 @@ class _ErrorView extends StatelessWidget {
               size: 48,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            ElevatedButton(
+            const SizedBox(height: AppSpacing.md),
+            FilledButton(
               onPressed: () => context.read<GameGuestInvitationBloc>().add(
                 LoadInvitablePlayers(gameId: gameId),
               ),

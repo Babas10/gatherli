@@ -1,8 +1,7 @@
 // Widget tests for RegistrationPage verifying UI rendering and user interactions.
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,6 +11,7 @@ import 'package:play_with_me/features/auth/presentation/bloc/registration/regist
 import 'package:play_with_me/features/auth/presentation/pages/registration_page.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_form_field.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockRegistrationBloc
     extends MockBloc<RegistrationEvent, RegistrationState>
@@ -46,20 +46,11 @@ void main() {
   });
 
   Widget createTestWidget({bool withNavigatorObserver = false}) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider<RegistrationBloc>.value(
+    return testApp(child: BlocProvider<RegistrationBloc>.value(
         value: mockRegistrationBloc,
         child: const RegistrationPage(),
       ),
-      navigatorObservers: withNavigatorObserver ? [mockNavigatorObserver] : [],
-    );
+      navigatorObserver: withNavigatorObserver ? mockNavigatorObserver : null);
   }
 
   group('RegistrationPage Widget Tests', () {
@@ -153,7 +144,7 @@ void main() {
 
         // Tap create account button without filling fields
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -183,7 +174,7 @@ void main() {
         await tester.pump();
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -225,7 +216,7 @@ void main() {
         await tester.pump();
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -290,7 +281,7 @@ void main() {
 
           // Tap create account button
           final createButton = find.widgetWithText(
-            ElevatedButton,
+            FilledButton,
             'Create Account',
           );
           await tester.ensureVisible(createButton);
@@ -318,7 +309,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         final createButton = find.widgetWithText(
-          ElevatedButton,
+          FilledButton,
           'Create Account',
         );
         await tester.ensureVisible(createButton);
@@ -350,10 +341,10 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
-        final elevatedButton = tester.widget<ElevatedButton>(
-          find.byType(ElevatedButton),
+        final filledButton = tester.widget<FilledButton>(
+          find.byType(FilledButton),
         );
-        expect(elevatedButton.onPressed, isNull);
+        expect(filledButton.onPressed, isNull);
       });
     });
 
@@ -394,7 +385,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 100));
 
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        expect(snackBar.backgroundColor, Colors.red);
+        expect(snackBar.backgroundColor, AppColors.danger);
       });
     });
 
@@ -412,15 +403,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en')],
-            home: Builder(
+          testApp(child: Builder(
               builder: (context) => Scaffold(
                 body: TextButton(
                   onPressed: () {
@@ -436,8 +419,7 @@ void main() {
                   child: const Text('Go to Registration'),
                 ),
               ),
-            ),
-          ),
+            )),
         );
 
         await tester.tap(find.text('Go to Registration'));

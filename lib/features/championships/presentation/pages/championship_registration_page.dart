@@ -1,5 +1,6 @@
 // Displays open championships with team registration/leave actions.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
@@ -9,6 +10,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
+import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 
@@ -90,6 +93,13 @@ class _ChampionshipRegistrationPageState
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.championshipsTitle)),
+      bottomNavigationBar: GlobalBottomNavBar(
+        selectedIndex: 4,
+        onTabSelected: (index) {
+          HomePage.onNavigateToTab?.call(index);
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+      ),
       body: BlocConsumer<TeamRegistrationBloc, TeamRegistrationState>(
         listener: (context, state) {
           if (state is TeamCreated) {
@@ -187,18 +197,18 @@ class _ChampionshipCard extends StatelessWidget {
               championship.title,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(l10n.championshipTeamsCount(championship.teamsCount)),
             Text(l10n.championshipSlotsLeft(championship.availableSlots)),
             Text(l10n.championshipDeadlineLabel(deadlineFormatted)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (myTeam != null) ...[
               Text(
                 l10n.yourTeam,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               Text(myTeam!.name),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               OutlinedButton(
                 onPressed: () => onLeave(myTeam!.id),
                 child: Text(l10n.leaveTeam),

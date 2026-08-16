@@ -80,7 +80,7 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 1",
         fcmTokens: ["token1", "token2"],
         notificationPreferences: {
-          gameCreated: true,
+          games: true,
           quietHours: {enabled: false},
         },
       }),
@@ -92,7 +92,7 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 2",
         fcmTokens: ["token3"],
         notificationPreferences: {
-          gameCreated: true,
+          games: true,
           quietHours: {enabled: false},
         },
       }),
@@ -251,7 +251,7 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameCreated: false, // Disabled globally
+          games: false, // Disabled globally
         },
       });
 
@@ -279,11 +279,9 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameCreated: true,
+          games: true,
           groupSpecific: {
-            group123: {
-              gameCreated: false, // Disabled for this specific group
-            },
+            group123: false,
           },
         },
       });
@@ -314,7 +312,7 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameCreated: true,
+          games: true,
           quietHours: {
             enabled: true,
             start: "00:00",
@@ -375,7 +373,7 @@ describe("onGameCreated Cloud Function", () => {
         displayName: "Member 1",
         fcmTokens: [], // No tokens
         notificationPreferences: {
-          gameCreated: true,
+          games: true,
         },
       });
 

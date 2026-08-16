@@ -224,8 +224,8 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest(group: group));
       await tester.pumpAndSettle();
 
-      // Should display first two letters "VO"
-      expect(find.text('VO'), findsOneWidget);
+      // GroupAvatar shows first letter for single-word names
+      expect(find.text('V'), findsOneWidget);
     });
 
     testWidgets('calls onTap when tapped', (tester) async {
@@ -248,7 +248,7 @@ void main() {
       expect(tapped, true);
     });
 
-    testWidgets('is wrapped in a Card widget', (tester) async {
+    testWidgets('is wrapped in a Material card (AccentCard)', (tester) async {
       final group = GroupModel(
         id: 'group-1',
         name: 'Beach Volleyball Crew',
@@ -259,7 +259,9 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest(group: group));
       await tester.pumpAndSettle();
 
-      expect(find.byType(Card), findsOneWidget);
+      // AccentCard uses Material + InkWell (not Card widget)
+      expect(find.byType(Material), findsWidgets);
+      expect(find.byType(InkWell), findsWidgets);
     });
 
     testWidgets('truncates long group names with ellipsis', (tester) async {

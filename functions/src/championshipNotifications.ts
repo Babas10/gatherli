@@ -214,7 +214,7 @@ export async function onChampionshipMatchResultSubmittedHandler(
     title: `Result to verify — ${teamAName} vs ${teamBName}`,
     body: `${submittedByTeamId === after.teamAId ? teamAName : teamBName} submitted the result. Tap to verify.`,
     data: {
-      type: "championship_result_submitted",
+      type: "championship_match",
       championshipId,
       matchId,
     },
@@ -253,7 +253,7 @@ export async function onChampionshipMatchDisputedHandler(
     title: "Match disputed 🚨",
     body: `${teamBName} disputed the result of ${teamAName} vs ${teamBName}. Admin action required.`,
     data: {
-      type: "championship_match_disputed",
+      type: "championship_match",
       championshipId,
       matchId,
     },
@@ -290,7 +290,7 @@ export async function onChampionshipAdminDecisionHandler(
     title: "Match decided by admin",
     body: `Admin set the result for ${teamAName} vs ${teamBName}.`,
     data: {
-      type: "championship_admin_decision",
+      type: "championship_match",
       championshipId,
       matchId,
     },

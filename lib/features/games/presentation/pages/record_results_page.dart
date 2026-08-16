@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +65,7 @@ class _RecordResultsView extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
               ),
             );
           }
@@ -83,9 +85,9 @@ class _RecordResultsView extends StatelessWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 64,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Text(
                       state.message,
                       style: Theme.of(context).textTheme.titleMedium,
@@ -110,12 +112,12 @@ class _RecordResultsView extends StatelessWidget {
                           AppLocalizations.of(context)!.assignPlayersToTeams,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         Text(
                           AppLocalizations.of(context)!.dragPlayersToAssign,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.xl),
                         if (state is RecordResultsLoaded) ...[
                           _TeamSection(
                             key: const Key('team_a_section'),
@@ -129,7 +131,7 @@ class _RecordResultsView extends StatelessWidget {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           _TeamSection(
                             key: const Key('team_b_section'),
                             title: AppLocalizations.of(context)!.teamB,
@@ -142,7 +144,7 @@ class _RecordResultsView extends StatelessWidget {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           _UnassignedPlayersSection(
                             key: const Key('unassigned_section'),
                             unassignedPlayerIds: state.unassignedPlayerIds,
@@ -222,7 +224,7 @@ class _TeamSection extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -241,7 +243,7 @@ class _TeamSection extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (playerIds.isEmpty)
               Container(
                 padding: const EdgeInsets.all(16.0),
@@ -301,7 +303,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
                 color: AppColors.secondary,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             if (unassignedPlayerIds.isEmpty)
               Container(
                 padding: const EdgeInsets.all(16.0),
@@ -312,17 +314,17 @@ class _UnassignedPlayersSection extends StatelessWidget {
                     Container(
                       width: 24,
                       height: 24,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.check,
                         color: AppColors.secondary,
                         size: 16,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Text(
                       AppLocalizations.of(context)!.allPlayersAssigned,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -384,18 +386,8 @@ class _PlayerChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-            child: Text(
-              playerName.substring(0, 1).toUpperCase(),
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
+          UserAvatar(name: playerName, radius: 16),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               playerName,
@@ -445,18 +437,8 @@ class _UnassignedPlayerItem extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-            child: Text(
-              playerName.substring(0, 1).toUpperCase(),
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
+          UserAvatar(name: playerName, radius: 16),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               playerName,
@@ -470,13 +452,11 @@ class _UnassignedPlayerItem extends StatelessWidget {
                 key: Key('assign_team_A_button_$playerId'),
                 onPressed: onAssignToTeamA,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.secondary,
                   minimumSize: const Size(60, 36),
                 ),
                 child: Text(AppLocalizations.of(context)!.teamA),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               ElevatedButton(
                 key: Key('assign_team_B_button_$playerId'),
                 onPressed: onAssignToTeamB,
@@ -505,26 +485,24 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 8,
-            offset: const Offset(0, -2),
+            offset: Offset(0, -2),
           ),
         ],
       ),
       child: SafeArea(
         child: SizedBox(
           width: double.infinity,
-          child: ElevatedButton(
+          child: FilledButton(
             onPressed: canSave ? onSave : null,
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: Colors.grey.shade300,
+              disabledBackgroundColor: AppColors.divider,
             ),
             child: Text(
               canSave

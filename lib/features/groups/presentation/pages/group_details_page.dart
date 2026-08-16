@@ -3,6 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -41,6 +44,10 @@ import 'package:play_with_me/features/training/presentation/pages/training_sessi
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_event.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
+import 'package:play_with_me/features/notifications/domain/repositories/notification_repository.dart';
+import 'package:play_with_me/features/notifications/presentation/bloc/notification_bloc.dart';
+import 'package:play_with_me/features/notifications/presentation/bloc/notification_event.dart';
+import 'package:play_with_me/features/notifications/presentation/bloc/notification_state.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class GroupDetailsPage extends StatelessWidget {
@@ -62,6 +69,11 @@ class GroupDetailsPage extends StatelessWidget {
         BlocProvider(create: (context) => sl<GroupMemberBloc>()),
         BlocProvider(create: (context) => sl<GroupInviteLinkBloc>()),
         BlocProvider(create: (context) => sl<GamesListBloc>()),
+        BlocProvider(
+          create: (context) => NotificationBloc(
+            repository: sl<NotificationRepository>(),
+          )..add(const NotificationEvent.loadPreferences()),
+        ),
       ],
       child: _GroupDetailsPageContent(
         groupId: groupId,
@@ -273,7 +285,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Friend request sent successfully'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.success,
           duration: Duration(seconds: 2),
         ),
       );
@@ -287,7 +299,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to send friend request: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.danger,
           duration: const Duration(seconds: 3),
         ),
       );
@@ -336,7 +348,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -347,7 +359,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppColors.danger,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -373,6 +385,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         }
       },
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
         builder: (context, authState) {
           if (authState is! AuthenticationAuthenticated) {
             return Scaffold(
@@ -398,27 +411,74 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                     onSelected: (value) {
                       if (value == 'leave') {
                         _handleLeaveGroup(context, authState.user.uid);
+                      } else if (value == 'mute' || value == 'unmute') {
+                        final notifState =
+                            context.read<NotificationBloc>().state;
+                        final isMuted = notifState.maybeWhen(
+                          loaded: (prefs) =>
+                              prefs.groupSpecific[widget.groupId] == false,
+                          orElse: () => false,
+                        );
+                        context.read<NotificationBloc>().add(
+                              NotificationEvent.toggleGroupSpecific(
+                                groupId: widget.groupId,
+                                // If currently muted (enabled=false), unmute (enabled=true)
+                                enabled: isMuted,
+                              ),
+                            );
                       }
                     },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'leave',
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.exit_to_app,
-                              size: 20,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              l10n.leaveGroup,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          ],
+                    itemBuilder: (context) {
+                      final notifState =
+                          context.read<NotificationBloc>().state;
+                      final isMuted = notifState.maybeWhen(
+                        loaded: (prefs) =>
+                            prefs.groupSpecific[widget.groupId] == false,
+                        orElse: () => false,
+                      );
+                      return [
+                        PopupMenuItem(
+                          value: isMuted ? 'unmute' : 'mute',
+                          child: Row(
+                            children: [
+                              Icon(
+                                isMuted
+                                    ? Icons.notifications_active_outlined
+                                    : Icons.notifications_off_outlined,
+                                size: 20,
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Flexible(
+                                child: Text(
+                                  isMuted
+                                      ? l10n.groupUnmuteNotifications
+                                      : l10n.groupMuteNotifications,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        PopupMenuItem(
+                          value: 'leave',
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.exit_to_app,
+                                size: 20,
+                                color: AppColors.danger,
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Flexible(
+                                child: Text(
+                                  l10n.leaveGroup,
+                                  style: const TextStyle(color: AppColors.danger),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
                   ),
               ],
             ),
@@ -451,9 +511,9 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
               size: 64,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text('Error', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
@@ -462,7 +522,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
             FilledButton.icon(
               onPressed: _subscribeToGroup,
               icon: const Icon(Icons.refresh),
@@ -487,14 +547,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         const Divider(height: 1),
 
         // Tab bar
-        TabBar(
+        SectionTabBar(
           controller: _tabController,
-          labelColor: AppColors.textMuted,
-          unselectedLabelColor: AppColors.textMuted,
-          indicatorColor: AppColors.primary,
           tabs: [
-            Tab(text: l10n.members),
-            Tab(text: l10n.activities),
+            AppTabItem(icon: Icons.people, label: l10n.members),
+            AppTabItem(icon: Icons.calendar_today, label: l10n.activities),
           ],
         ),
 
@@ -532,6 +589,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         },
         builder: (context, inviteLinkState) {
           return BlocBuilder<GroupMemberBloc, GroupMemberState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
             builder: (context, memberState) {
               return ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -554,57 +612,40 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                   if (canInvite) {
                     if (index == 1) {
                       final l10n = AppLocalizations.of(context)!;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.secondary.withValues(
-                            alpha: 0.1,
-                          ),
-                          child: Icon(
-                            Icons.person_add,
-                            color: AppColors.secondary,
-                          ),
-                        ),
-                        title: Text(
-                          l10n.inviteMember,
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                      return AccentCard(
                         onTap: () => _navigateToInvitePage(context),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+                              child: const Icon(Icons.person_add, color: AppColors.secondary),
+                            ),
+                            const SizedBox(width: AppSpacing.md),
+                            Text(l10n.inviteMember,
+                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                          ],
+                        ),
                       );
                     }
                     if (index == 2) {
                       final l10n = AppLocalizations.of(context)!;
                       final isGenerating =
                           inviteLinkState is GroupInviteLinkLoading;
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppColors.secondary.withValues(
-                            alpha: 0.1,
-                          ),
-                          child: isGenerating
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Icon(Icons.link, color: AppColors.secondary),
+                      return AccentCard(
+                        onTap: isGenerating ? null : () => context.read<GroupInviteLinkBloc>().add(GenerateInvite(groupId: widget.groupId)),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+                              child: isGenerating
+                                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                                  : const Icon(Icons.link, color: AppColors.secondary),
+                            ),
+                            const SizedBox(width: AppSpacing.md),
+                            Text(l10n.inviteWithLink,
+                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                          ],
                         ),
-                        title: Text(
-                          l10n.inviteWithLink,
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        onTap: isGenerating
-                            ? null
-                            : () => context.read<GroupInviteLinkBloc>().add(
-                                GenerateInvite(groupId: widget.groupId),
-                              ),
                       );
                     }
                   }
@@ -633,7 +674,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                 _getInitials(member.fullDisplayName),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF004E64),
+                                  color: AppColors.secondary,
                                 ),
                               )
                             : null,
@@ -697,37 +738,30 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Create action buttons at the top
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _navigateToGameCreation(context),
-                          icon: const Icon(Icons.sports_volleyball),
-                          label: Text(l10n.createGame),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.secondary,
-                            side: BorderSide(color: AppColors.secondary),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                // Create action buttons — wrapped in Card for contrast
+                Card(
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToGameCreation(context),
+                            icon: const Icon(Icons.sports_volleyball),
+                            label: Text(l10n.createGame),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _navigateToTrainingCreation(context),
-                          icon: const Icon(Icons.fitness_center),
-                          label: Text(l10n.createTraining),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.secondary,
-                            side: BorderSide(color: AppColors.secondary),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                      const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToTrainingCreation(context),
+                            icon: const Icon(Icons.fitness_center),
+                            label: Text(l10n.createTraining),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(height: 1),
@@ -762,12 +796,12 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               context,
                             ).colorScheme.onSurfaceVariant,
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: AppSpacing.md),
                           Text(
                             l10n.noActivitiesYet,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(
                             l10n.createFirstActivity,
                             style: Theme.of(context).textTheme.bodyMedium
@@ -833,13 +867,13 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                   .add(const LoadOlderActivities()),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.secondary,
-                                side: BorderSide(color: AppColors.secondary),
+                                side: const BorderSide(color: AppColors.secondary),
                                 minimumSize: const Size(double.infinity, 44),
                               ),
                               child: Text(l10n.loadOlderActivities),
                             ),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                 ],
               ],
             ),
@@ -913,7 +947,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
               color: AppColors.secondary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           if (_group!.description != null && _group!.description!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -929,7 +963,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                 size: 16,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 '${_group!.memberCount} members',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -950,7 +984,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.linkCopied),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
           label: l10n.shareLink,
@@ -965,7 +999,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
       case 0: // Home
       case 1: // Stats
       case 3: // Community
-        // Switch the home page tab then pop back to the root route.
+      case 4: // Championships
         HomePage.onNavigateToTab?.call(index);
         Navigator.of(context).popUntil((route) => route.isFirst);
         break;

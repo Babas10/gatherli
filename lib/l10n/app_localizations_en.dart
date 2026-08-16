@@ -2258,6 +2258,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get championshipStatusBadgeCompleted => 'Completed';
 
   @override
+  String get championshipMyMatchesTab => 'My Matches';
+
+  @override
+  String get championshipMyMatchesEmpty =>
+      'Your matches will appear here once the championship starts.';
+
+  @override
+  String championshipMyMatchesVs(String opponent) {
+    return 'vs $opponent';
+  }
+
+  @override
+  String get championshipTabActive => 'Active';
+
+  @override
+  String get championshipTabCompleted => 'Completed';
+
+  @override
+  String get championshipNoCompletedYet => 'No completed championships yet.';
+
+  @override
   String get championshipNoResults => 'No championships at the moment.';
 
   @override
@@ -2275,6 +2296,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String championshipTeamCountOf(int count, int max) {
     return '$count / $max teams';
   }
+
+  @override
+  String get championshipGenderMale => 'Men';
+
+  @override
+  String get championshipGenderFemale => 'Women';
+
+  @override
+  String get championshipGenderBlockNoGender =>
+      'You must set your gender in your profile to register.';
+
+  @override
+  String get championshipGenderBlockMaleOnly =>
+      'This championship is for men only.';
+
+  @override
+  String get championshipGenderBlockFemaleOnly =>
+      'This championship is for women only.';
+
+  @override
+  String get championshipCreateGenderLabel => 'Gender category (optional)';
 
   @override
   String get championshipDetailStandingsTab => 'Standings';
@@ -2310,6 +2352,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get championshipDetailNoStandings => 'No standings yet.';
+
+  @override
+  String get championshipDetailTeamsTab => 'Teams';
+
+  @override
+  String get championshipDetailNoTeamsYet =>
+      'No teams registered yet.\nBe the first to sign up!';
 
   @override
   String get championshipDetailNoMatchesForRound =>
@@ -2405,4 +2454,230 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adminPanelDecisionErrorWinnerRequired =>
       'Select a winner for walkover';
+
+  @override
+  String get championshipCreate => 'Create Championship';
+
+  @override
+  String get championshipCreateTitleLabel => 'Title';
+
+  @override
+  String get championshipCreateTitleHint => 'e.g. Summer Open 2026';
+
+  @override
+  String get championshipCreateTitleRequired => 'Title is required';
+
+  @override
+  String get championshipCreateTitleTooShort =>
+      'Title must be at least 3 characters';
+
+  @override
+  String get championshipCreateDeadlineLabel => 'Registration Deadline';
+
+  @override
+  String get championshipCreateDeadlinePlaceholder => 'Select a date';
+
+  @override
+  String get championshipCreateCountryLabel => 'Country (optional)';
+
+  @override
+  String get championshipCreateCountryHint => 'e.g. FR';
+
+  @override
+  String get championshipCreateRegionLabel => 'Region (optional)';
+
+  @override
+  String get championshipCreateRegionHint => 'e.g. Alsace';
+
+  @override
+  String get championshipCreateMaxTeamsLabel => 'Max teams';
+
+  @override
+  String get championshipCreateTeamSizeLabel => 'Players per team';
+
+  @override
+  String championshipCreateTeamSizeOption(int count) {
+    return '$count players';
+  }
+
+  @override
+  String get championshipCreateSubmit => 'Create Championship';
+
+  @override
+  String get championshipCreateSuccess => 'Championship created';
+
+  @override
+  String get championshipCreateStartDateLabel => 'Start Date (optional)';
+
+  @override
+  String get championshipCreateEndDateLabel => 'End Date (optional)';
+
+  @override
+  String get championshipCreateDatePlaceholder => 'Select a date';
+
+  @override
+  String get myTeamSectionTitle => 'My Team';
+
+  @override
+  String myTeamPartnerLabel(String name) {
+    return 'Partner: $name';
+  }
+
+  @override
+  String get leaveTeamSuccess => 'You have left the championship.';
+
+  @override
+  String get startChampionshipButton => 'Start Championship';
+
+  @override
+  String get startChampionshipConfirmTitle => 'Start championship?';
+
+  @override
+  String get startChampionshipConfirmBody =>
+      'This will generate all round-robin fixtures and cannot be undone. Make sure all teams are registered.';
+
+  @override
+  String startChampionshipSuccess(int count) {
+    return 'Championship started — $count matches generated.';
+  }
+
+  @override
+  String get startChampionshipStartDateLabel => 'First match window starts';
+
+  @override
+  String get completeChampionshipButton => 'Mark as Complete';
+
+  @override
+  String get teamRenameTitle => 'Rename Team';
+
+  @override
+  String get teamRenameLabel => 'Team name';
+
+  @override
+  String get teamRenameSuccess => 'Team renamed successfully.';
+
+  @override
+  String get teamRenameError => 'Failed to rename team';
+
+  @override
+  String get standingsTiebreakerTitle => 'How standings work';
+
+  @override
+  String get standingsTiebreakerBody =>
+      'Points: Win 2-0 = 3pts · Win 2-1 = 2pts · Loss 1-2 = 1pt · Loss 0-2 = 0pts\n\nTiebreaker 1: Head-to-head result\nTiebreaker 2: Set ratio (sets won − sets lost)';
+
+  @override
+  String get editChampionshipButton => 'Edit Details';
+
+  @override
+  String get editChampionshipTitle => 'Edit Championship';
+
+  @override
+  String get editChampionshipChangeDeadline => 'Change deadline';
+
+  @override
+  String get completeChampionshipConfirmTitle => 'Mark championship complete?';
+
+  @override
+  String get completeChampionshipConfirmBody =>
+      'Use this only when all matches have been resolved. This cannot be undone.';
+
+  @override
+  String get completeChampionshipSuccess => 'Championship marked as complete.';
+
+  @override
+  String get championshipChampionLabel => 'Champion';
+
+  @override
+  String get championshipMyMatch => 'My match';
+
+  @override
+  String get matchScheduleWaitingTitle => 'Waiting for Confirmation';
+
+  @override
+  String matchScheduleWaitingBody(String datetime) {
+    return 'Your proposal ($datetime) is awaiting the other team\'s response.';
+  }
+
+  @override
+  String get matchScheduleConfirmTitle => 'Schedule Proposed';
+
+  @override
+  String matchScheduleConfirmBody(String teamName, String datetime) {
+    return '$teamName proposed: $datetime';
+  }
+
+  @override
+  String get matchScheduleAcceptButton => 'Accept';
+
+  @override
+  String get matchScheduleRejectButton => 'Reject';
+
+  @override
+  String get matchDisputedTitle => 'Match Disputed';
+
+  @override
+  String get matchDisputedExplanation =>
+      'This result was disputed. An admin will review the scores and make a final decision. Standings will update once resolved.';
+
+  @override
+  String get notificationSettingsTitle => 'Notifications';
+
+  @override
+  String get notificationSettingsCategories => 'Notification Categories';
+
+  @override
+  String get notifCategorySocial => 'Social';
+
+  @override
+  String get notifCategorySocialSubtitle =>
+      'Friend requests, group invitations';
+
+  @override
+  String get notifCategoryGames => 'Games';
+
+  @override
+  String get notifCategoryGamesSubtitle =>
+      'New games, results, cancellations, chat';
+
+  @override
+  String get notifCategoryTraining => 'Training';
+
+  @override
+  String get notifCategoryTrainingSubtitle =>
+      'Sessions created, cancelled, feedback';
+
+  @override
+  String get notifCategoryChampionships => 'Championships';
+
+  @override
+  String get notifCategoryChampionshipsSubtitle =>
+      'Results, deadlines, disputes, schedule';
+
+  @override
+  String get notifQuietHoursTitle => 'Quiet Hours';
+
+  @override
+  String get notifQuietHoursEnable => 'Enable Quiet Hours';
+
+  @override
+  String get notifQuietHoursSubtitle =>
+      'Pause notifications during specific times';
+
+  @override
+  String notifQuietHoursRange(String start, String end) {
+    return 'No notifications from $start to $end';
+  }
+
+  @override
+  String get notifQuietHoursAdjust => 'Adjust Quiet Hours';
+
+  @override
+  String get retryButton => 'Retry';
+
+  @override
+  String get groupMuteNotifications => 'Mute notifications';
+
+  @override
+  String get groupUnmuteNotifications => 'Unmute notifications';
 }

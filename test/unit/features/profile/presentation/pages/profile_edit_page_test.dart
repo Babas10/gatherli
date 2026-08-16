@@ -21,29 +21,13 @@ import 'package:play_with_me/features/profile/presentation/bloc/locale_preferenc
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_state.dart';
 import 'package:play_with_me/features/profile/presentation/pages/profile_edit_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocktail mocks
-class MockAuthRepository extends Mock implements AuthRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
-
-class MockImageStorageRepository extends Mock
-    implements ImageStorageRepository {}
-
-class MockImagePickerService extends Mock implements ImagePickerService {}
-
-class MockLocalePreferencesRepository extends Mock
-    implements LocalePreferencesRepository {}
 
 class MockLocalePreferencesBloc extends Mock implements LocalePreferencesBloc {}
 
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
 // Fakes for fallback values
-class FakeLocalePreferencesEntity extends Fake
-    implements LocalePreferencesEntity {}
 
 class FakeLocalePreferencesEvent extends Fake
     implements LocalePreferencesEvent {}
@@ -483,7 +467,7 @@ void main() {
         tester,
       ) async {
         // Simulate the bug scenario: stored country preference is 'ES' (ISO code)
-        final isoPreferences = const LocalePreferencesEntity(
+        const isoPreferences = LocalePreferencesEntity(
           locale: Locale('es'),
           country: 'ES',
           timeZone: 'Europe/Madrid',
@@ -491,14 +475,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: isoPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: isoPreferences,
               hasUnsavedChanges: false,
             ),
@@ -516,7 +500,7 @@ void main() {
       testWidgets('falls back to default country when value is unrecognized', (
         tester,
       ) async {
-        final unknownPreferences = const LocalePreferencesEntity(
+        const unknownPreferences = LocalePreferencesEntity(
           locale: Locale('en'),
           country: 'UNKNOWN',
           timeZone: 'UTC',
@@ -524,14 +508,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: unknownPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: unknownPreferences,
               hasUnsavedChanges: false,
             ),
@@ -548,7 +532,7 @@ void main() {
       testWidgets('displays correct country when value is a valid name', (
         tester,
       ) async {
-        final validPreferences = const LocalePreferencesEntity(
+        const validPreferences = LocalePreferencesEntity(
           locale: Locale('es'),
           country: 'Spain',
           timeZone: 'Europe/Madrid',
@@ -556,14 +540,14 @@ void main() {
         );
 
         when(() => mockLocalePrefsBloc.state).thenReturn(
-          LocalePreferencesState.loaded(
+          const LocalePreferencesState.loaded(
             preferences: validPreferences,
             hasUnsavedChanges: false,
           ),
         );
         when(() => mockLocalePrefsBloc.stream).thenAnswer(
           (_) => Stream<LocalePreferencesState>.value(
-            LocalePreferencesState.loaded(
+            const LocalePreferencesState.loaded(
               preferences: validPreferences,
               hasUnsavedChanges: false,
             ),

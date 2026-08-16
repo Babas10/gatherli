@@ -3,18 +3,14 @@ import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_event.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_registration/invite_registration_state.dart';
 import 'package:play_with_me/features/invitations/presentation/pages/invite_registration_page.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 
-class MockInviteRegistrationBloc
-    extends MockBloc<InviteRegistrationEvent, InviteRegistrationState>
-    implements InviteRegistrationBloc {}
+import '../../../../../helpers/mocks.dart';
+import '../../../../../helpers/test_app.dart';
 
 void main() {
   late MockInviteRegistrationBloc mockBloc;
@@ -38,16 +34,12 @@ void main() {
     String groupName = 'Beach Volleyball Crew',
     String inviterName = 'Etienne',
   }) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      routes: {'/login': (_) => const Scaffold(body: Text('Login Page'))},
-      home: InviteRegistrationPage(
+    return testApp(
+      onGenerateRoute: (settings) => settings.name == '/login'
+          ? MaterialPageRoute(
+              builder: (_) => const Scaffold(body: Text('Login Page')))
+          : null,
+      child: InviteRegistrationPage(
         token: token,
         groupName: groupName,
         inviterName: inviterName,

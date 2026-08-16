@@ -114,6 +114,9 @@ abstract class ChampionshipMatchModel with _$ChampionshipMatchModel {
     @Default(ChampionshipMatchStatus.pending) ChampionshipMatchStatus status,
     @NullableTimestampConverter() DateTime? scheduledAt,
     String? location,
+    /// The team ID that proposed the current schedule. Null once the opposing
+    /// team accepts (confirmed). Reset to null when the schedule is rejected.
+    String? scheduledByTeamId,
     @MatchResultConverter() MatchResult? result,
     String? submittedByTeamId,
     String? submittedByUserId,

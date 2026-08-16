@@ -1,17 +1,16 @@
 // Widget tests for GameDetailsPage verifying UI behavior with mocked dependencies.
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
-import 'package:play_with_me/core/domain/repositories/game_repository.dart';
 import 'package:play_with_me/core/data/models/chat_message_model.dart';
-import 'package:play_with_me/core/domain/repositories/invitation_repository.dart';
 import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -19,19 +18,12 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_details/game_details_bloc.dart';
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 
 import '../../../../../unit/core/data/repositories/mock_game_repository.dart';
 import '../../../../../unit/core/data/repositories/mock_user_repository.dart';
-
-// Mock classes
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
-
-class MockInvitationBloc extends Mock implements InvitationBloc {}
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
-
-class MockInvitationRepository extends Mock implements InvitationRepository {}
+import '../../../../../helpers/test_app.dart';
+import '../../../../../helpers/mocks.dart'
+    hide MockGameRepository, MockUserRepository;
 
 class _FakeMessageRepository implements MessageRepository {
   @override
@@ -126,15 +118,7 @@ void main() {
   });
 
   Widget createApp({required String gameId}) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
@@ -144,8 +128,7 @@ void main() {
           gameRepository: mockGameRepository,
           userRepository: mockUserRepository,
         ),
-      ),
-    );
+      ));
   }
 
   group('GameDetailsPage Widget Tests', () {

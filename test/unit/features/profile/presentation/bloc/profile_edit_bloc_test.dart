@@ -3,17 +3,13 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/profile_edit/profile_edit_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/profile_edit/profile_edit_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/profile_edit/profile_edit_state.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocktail mocks
-class MockAuthRepository extends Mock implements AuthRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
 
 // Fake for testing
 class FakeUserEntity extends Fake implements UserEntity {

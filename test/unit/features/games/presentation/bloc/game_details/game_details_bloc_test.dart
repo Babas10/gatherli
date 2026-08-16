@@ -1,7 +1,6 @@
 // Validates GameDetailsBloc emits correct states during game details operations.
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
@@ -11,8 +10,8 @@ import 'package:play_with_me/features/games/presentation/bloc/game_details/game_
 
 import '../../../../../../unit/core/data/repositories/mock_game_repository.dart';
 import '../../../../../../unit/core/data/repositories/mock_user_repository.dart';
-
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
+import '../../../../../../helpers/mocks.dart'
+    hide MockGameRepository, MockUserRepository;
 
 void main() {
   late MockGameRepository mockGameRepository;

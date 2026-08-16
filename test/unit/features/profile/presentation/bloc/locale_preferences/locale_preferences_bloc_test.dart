@@ -6,16 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/utils/countries.dart';
 import 'package:play_with_me/features/profile/domain/entities/locale_preferences_entity.dart';
-import 'package:play_with_me/features/profile/domain/repositories/locale_preferences_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_state.dart';
-
-class MockLocalePreferencesRepository extends Mock
-    implements LocalePreferencesRepository {}
-
-class FakeLocalePreferencesEntity extends Fake
-    implements LocalePreferencesEntity {}
+import '../../../../../../helpers/mocks.dart';
 
 void main() {
   late MockLocalePreferencesRepository mockRepository;
@@ -24,6 +18,7 @@ void main() {
   final testPreferences = LocalePreferencesEntity.defaultPreferences();
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeLocalePreferencesEntity());
   });
 
@@ -445,7 +440,7 @@ void main() {
       blocTest<LocalePreferencesBloc, LocalePreferencesState>(
         'emits ISO code country as-is from repository, requiring UI normalization',
         build: () {
-          final isoPreferences = const LocalePreferencesEntity(
+          const isoPreferences = LocalePreferencesEntity(
             locale: Locale('es'),
             country: 'ES',
             timeZone: null,
@@ -474,7 +469,7 @@ void main() {
       blocTest<LocalePreferencesBloc, LocalePreferencesState>(
         'emits ISO code country from Firestore, requiring UI normalization',
         build: () {
-          final isoPreferences = const LocalePreferencesEntity(
+          const isoPreferences = LocalePreferencesEntity(
             locale: Locale('fr'),
             country: 'FR',
             timeZone: null,

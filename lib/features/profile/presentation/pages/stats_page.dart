@@ -1,5 +1,6 @@
 // Dedicated stats page displaying detailed player performance analytics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_state.dart';
@@ -21,6 +22,7 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerStatsBloc, PlayerStatsState>(
+      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, statsState) {
         if (statsState is PlayerStatsLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -36,7 +38,7 @@ class StatsPage extends StatelessWidget {
                   size: 48,
                   color: Theme.of(context).colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   'Error loading stats: ${statsState.message}',
                   style: TextStyle(color: Theme.of(context).colorScheme.error),

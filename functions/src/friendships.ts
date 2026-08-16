@@ -3,6 +3,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { writeAnalyticsEvent } from "./helpers/analytics";
 import { writePerformanceEvent } from "./helpers/analytics";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -621,7 +622,7 @@ export async function removeFriendHandler(
 /**
  * Cloud Function to remove a friend
  */
-export const removeFriend = functions.region('europe-west6').https.onCall(removeFriendHandler);
+export const removeFriend = functions.region('europe-west6').https.onCall(withLogging('removeFriend', removeFriendHandler));
 
 // ============================================================================
 // Function 5: Get Friends
@@ -1374,7 +1375,7 @@ export async function getFriendshipsHandler(
  * Cloud Function to get friendships by status with denormalized user info
  * Story 11.13: Unified function to replace getFriends and getFriendshipRequests
  */
-export const getFriendships = functions.region('europe-west6').https.onCall(getFriendshipsHandler);
+export const getFriendships = functions.region('europe-west6').https.onCall(withLogging('getFriendships', getFriendshipsHandler));
 
 // ============================================================================
 // Helper Functions (Story 11.4)

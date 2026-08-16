@@ -4142,6 +4142,42 @@ abstract class AppLocalizations {
   /// **'Completed'**
   String get championshipStatusBadgeCompleted;
 
+  /// Tab label showing the current user's team matches
+  ///
+  /// In en, this message translates to:
+  /// **'My Matches'**
+  String get championshipMyMatchesTab;
+
+  /// Empty state in the My Matches tab
+  ///
+  /// In en, this message translates to:
+  /// **'Your matches will appear here once the championship starts.'**
+  String get championshipMyMatchesEmpty;
+
+  /// Match row label: vs opponent
+  ///
+  /// In en, this message translates to:
+  /// **'vs {opponent}'**
+  String championshipMyMatchesVs(String opponent);
+
+  /// Tab label for active championships (registration / in-progress)
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get championshipTabActive;
+
+  /// Tab label for completed championships
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get championshipTabCompleted;
+
+  /// Empty state shown in the Completed tab
+  ///
+  /// In en, this message translates to:
+  /// **'No completed championships yet.'**
+  String get championshipNoCompletedYet;
+
   /// Empty state message on the championship list screen
   ///
   /// In en, this message translates to:
@@ -4159,6 +4195,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} / {max} teams'**
   String championshipTeamCountOf(int count, int max);
+
+  /// Label for male-only championship gender category
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get championshipGenderMale;
+
+  /// Label for female-only championship gender category
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get championshipGenderFemale;
+
+  /// Message shown when user has no gender set and tries to register
+  ///
+  /// In en, this message translates to:
+  /// **'You must set your gender in your profile to register.'**
+  String get championshipGenderBlockNoGender;
+
+  /// Message shown when female/no-gender user tries to register in a male championship
+  ///
+  /// In en, this message translates to:
+  /// **'This championship is for men only.'**
+  String get championshipGenderBlockMaleOnly;
+
+  /// Message shown when male/no-gender user tries to register in a female championship
+  ///
+  /// In en, this message translates to:
+  /// **'This championship is for women only.'**
+  String get championshipGenderBlockFemaleOnly;
+
+  /// Label for the gender category picker in championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Gender category (optional)'**
+  String get championshipCreateGenderLabel;
 
   /// Label for the standings tab on the championship detail screen
   ///
@@ -4225,6 +4297,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No standings yet.'**
   String get championshipDetailNoStandings;
+
+  /// Tab label shown instead of Standings when championship is in registration phase
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get championshipDetailTeamsTab;
+
+  /// Empty state shown in the teams list before registration phase has any teams
+  ///
+  /// In en, this message translates to:
+  /// **'No teams registered yet.\nBe the first to sign up!'**
+  String get championshipDetailNoTeamsYet;
 
   /// Empty state when a round has no matches
   ///
@@ -4405,6 +4489,414 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a winner for walkover'**
   String get adminPanelDecisionErrorWinnerRequired;
+
+  /// Page title and FAB tooltip for championship creation
+  ///
+  /// In en, this message translates to:
+  /// **'Create Championship'**
+  String get championshipCreate;
+
+  /// Form field label for championship title
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get championshipCreateTitleLabel;
+
+  /// Hint text for championship title field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer Open 2026'**
+  String get championshipCreateTitleHint;
+
+  /// Validation error when championship title is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get championshipCreateTitleRequired;
+
+  /// Validation error when championship title is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Title must be at least 3 characters'**
+  String get championshipCreateTitleTooShort;
+
+  /// Form field label for registration deadline date picker
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Deadline'**
+  String get championshipCreateDeadlineLabel;
+
+  /// Placeholder shown in deadline picker before a date is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date'**
+  String get championshipCreateDeadlinePlaceholder;
+
+  /// Form field label for optional country code
+  ///
+  /// In en, this message translates to:
+  /// **'Country (optional)'**
+  String get championshipCreateCountryLabel;
+
+  /// Hint text for country code field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. FR'**
+  String get championshipCreateCountryHint;
+
+  /// Form field label for optional region
+  ///
+  /// In en, this message translates to:
+  /// **'Region (optional)'**
+  String get championshipCreateRegionLabel;
+
+  /// Hint text for region field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Alsace'**
+  String get championshipCreateRegionHint;
+
+  /// Label for the max teams segmented selector on the championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Max teams'**
+  String get championshipCreateMaxTeamsLabel;
+
+  /// Label for the team size segmented selector on the championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Players per team'**
+  String get championshipCreateTeamSizeLabel;
+
+  /// Label for a team size option
+  ///
+  /// In en, this message translates to:
+  /// **'{count} players'**
+  String championshipCreateTeamSizeOption(int count);
+
+  /// Submit button label on championship creation form
+  ///
+  /// In en, this message translates to:
+  /// **'Create Championship'**
+  String get championshipCreateSubmit;
+
+  /// Snackbar message after a championship is created successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Championship created'**
+  String get championshipCreateSuccess;
+
+  /// Form field label for optional championship start date
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date (optional)'**
+  String get championshipCreateStartDateLabel;
+
+  /// Form field label for optional championship end date
+  ///
+  /// In en, this message translates to:
+  /// **'End Date (optional)'**
+  String get championshipCreateEndDateLabel;
+
+  /// Placeholder shown in date pickers before a date is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date'**
+  String get championshipCreateDatePlaceholder;
+
+  /// Section header for the user's registered championship team
+  ///
+  /// In en, this message translates to:
+  /// **'My Team'**
+  String get myTeamSectionTitle;
+
+  /// Shows the user's partner name in the my team section
+  ///
+  /// In en, this message translates to:
+  /// **'Partner: {name}'**
+  String myTeamPartnerLabel(String name);
+
+  /// Snackbar message after successfully leaving a championship team
+  ///
+  /// In en, this message translates to:
+  /// **'You have left the championship.'**
+  String get leaveTeamSuccess;
+
+  /// Admin button to launch the active phase of a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Start Championship'**
+  String get startChampionshipButton;
+
+  /// Confirmation dialog title when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Start championship?'**
+  String get startChampionshipConfirmTitle;
+
+  /// Confirmation dialog body when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'This will generate all round-robin fixtures and cannot be undone. Make sure all teams are registered.'**
+  String get startChampionshipConfirmBody;
+
+  /// Snackbar after a championship is successfully started
+  ///
+  /// In en, this message translates to:
+  /// **'Championship started — {count} matches generated.'**
+  String startChampionshipSuccess(int count);
+
+  /// Label for the start date picker when starting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'First match window starts'**
+  String get startChampionshipStartDateLabel;
+
+  /// Admin button to mark a championship as complete
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Complete'**
+  String get completeChampionshipButton;
+
+  /// Dialog title for renaming a team
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Team'**
+  String get teamRenameTitle;
+
+  /// Text field label in the rename dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Team name'**
+  String get teamRenameLabel;
+
+  /// Snackbar shown after successful rename
+  ///
+  /// In en, this message translates to:
+  /// **'Team renamed successfully.'**
+  String get teamRenameSuccess;
+
+  /// Snackbar prefix shown when rename fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to rename team'**
+  String get teamRenameError;
+
+  /// Title of the tiebreaker info dialog
+  ///
+  /// In en, this message translates to:
+  /// **'How standings work'**
+  String get standingsTiebreakerTitle;
+
+  /// Explanation of the championship scoring and tiebreaker rules
+  ///
+  /// In en, this message translates to:
+  /// **'Points: Win 2-0 = 3pts · Win 2-1 = 2pts · Loss 1-2 = 1pt · Loss 0-2 = 0pts\n\nTiebreaker 1: Head-to-head result\nTiebreaker 2: Set ratio (sets won − sets lost)'**
+  String get standingsTiebreakerBody;
+
+  /// Admin panel button to open the edit championship dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Details'**
+  String get editChampionshipButton;
+
+  /// Title of the edit championship dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Championship'**
+  String get editChampionshipTitle;
+
+  /// Placeholder shown on the deadline button in the edit dialog when no new deadline is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Change deadline'**
+  String get editChampionshipChangeDeadline;
+
+  /// Confirmation dialog title when completing a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Mark championship complete?'**
+  String get completeChampionshipConfirmTitle;
+
+  /// Confirmation dialog body when completing a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Use this only when all matches have been resolved. This cannot be undone.'**
+  String get completeChampionshipConfirmBody;
+
+  /// Snackbar after a championship is successfully marked complete
+  ///
+  /// In en, this message translates to:
+  /// **'Championship marked as complete.'**
+  String get completeChampionshipSuccess;
+
+  /// Label shown above the winning team name on a completed championship
+  ///
+  /// In en, this message translates to:
+  /// **'Champion'**
+  String get championshipChampionLabel;
+
+  /// Badge shown on the current user's match in the matches list
+  ///
+  /// In en, this message translates to:
+  /// **'My match'**
+  String get championshipMyMatch;
+
+  /// Banner title shown to the proposer while awaiting the opponent's response
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Confirmation'**
+  String get matchScheduleWaitingTitle;
+
+  /// Banner body shown to the proposer
+  ///
+  /// In en, this message translates to:
+  /// **'Your proposal ({datetime}) is awaiting the other team\'s response.'**
+  String matchScheduleWaitingBody(String datetime);
+
+  /// Card title shown to the opposing team when a schedule proposal is pending
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule Proposed'**
+  String get matchScheduleConfirmTitle;
+
+  /// Card body showing who proposed and the date/time
+  ///
+  /// In en, this message translates to:
+  /// **'{teamName} proposed: {datetime}'**
+  String matchScheduleConfirmBody(String teamName, String datetime);
+
+  /// Button to accept the proposed schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get matchScheduleAcceptButton;
+
+  /// Button to reject the proposed schedule
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get matchScheduleRejectButton;
+
+  /// Section title shown in match detail when match is disputed
+  ///
+  /// In en, this message translates to:
+  /// **'Match Disputed'**
+  String get matchDisputedTitle;
+
+  /// Explanation text shown in match detail when match is in disputed state
+  ///
+  /// In en, this message translates to:
+  /// **'This result was disputed. An admin will review the scores and make a final decision. Standings will update once resolved.'**
+  String get matchDisputedExplanation;
+
+  /// AppBar title for the notification settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationSettingsTitle;
+
+  /// Section header above the 4 category toggles
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Categories'**
+  String get notificationSettingsCategories;
+
+  /// Category toggle label — social notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get notifCategorySocial;
+
+  /// Subtitle for the social category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Friend requests, group invitations'**
+  String get notifCategorySocialSubtitle;
+
+  /// Category toggle label — game notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get notifCategoryGames;
+
+  /// Subtitle for the games category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'New games, results, cancellations, chat'**
+  String get notifCategoryGamesSubtitle;
+
+  /// Category toggle label — training notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get notifCategoryTraining;
+
+  /// Subtitle for the training category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions created, cancelled, feedback'**
+  String get notifCategoryTrainingSubtitle;
+
+  /// Category toggle label — championship notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Championships'**
+  String get notifCategoryChampionships;
+
+  /// Subtitle for the championships category toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Results, deadlines, disputes, schedule'**
+  String get notifCategoryChampionshipsSubtitle;
+
+  /// Section header for quiet hours
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet Hours'**
+  String get notifQuietHoursTitle;
+
+  /// Toggle label to enable quiet hours
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Quiet Hours'**
+  String get notifQuietHoursEnable;
+
+  /// Subtitle shown when quiet hours are disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Pause notifications during specific times'**
+  String get notifQuietHoursSubtitle;
+
+  /// Subtitle shown when quiet hours are enabled
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications from {start} to {end}'**
+  String notifQuietHoursRange(String start, String end);
+
+  /// List tile label to open the quiet hours time picker
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Quiet Hours'**
+  String get notifQuietHoursAdjust;
+
+  /// Generic retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryButton;
+
+  /// Popup menu item to mute notifications for a group
+  ///
+  /// In en, this message translates to:
+  /// **'Mute notifications'**
+  String get groupMuteNotifications;
+
+  /// Popup menu item to unmute notifications for a group
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute notifications'**
+  String get groupUnmuteNotifications;
 }
 
 class _AppLocalizationsDelegate

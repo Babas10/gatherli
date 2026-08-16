@@ -4,13 +4,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_event.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
-
-class MockGroupInviteLinkRepository extends Mock
-    implements GroupInviteLinkRepository {}
+import '../../../../../../helpers/mocks.dart';
 
 void main() {
   group('GroupInviteLinkBloc', () {

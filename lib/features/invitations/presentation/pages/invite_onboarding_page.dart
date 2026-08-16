@@ -1,5 +1,6 @@
 // Landing page for unauthenticated users who opened an invite link.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
@@ -60,9 +61,9 @@ class InviteOnboardingPage extends StatelessWidget {
             size: 64,
             color: AppColors.primary,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           const CircularProgressIndicator(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(l10n.validatingInvite),
         ],
       ),
@@ -80,7 +81,7 @@ class InviteOnboardingPage extends StatelessWidget {
       children: [
         const Spacer(),
         const Icon(Icons.sports_volleyball, size: 64, color: AppColors.primary),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
         Text(
           l10n.inviteOnboardingTitle,
           style: Theme.of(
@@ -88,13 +89,13 @@ class InviteOnboardingPage extends StatelessWidget {
           ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           l10n.inviteOnboardingSubtitle,
           style: Theme.of(context).textTheme.bodyLarge,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
         _buildGroupCard(context, l10n, state),
         const Spacer(),
         FilledButton(
@@ -112,7 +113,7 @@ class InviteOnboardingPage extends StatelessWidget {
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
           child: Text(l10n.createAccount),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         OutlinedButton(
           onPressed: () {
             // Pop back to root — MaterialApp.home already shows LoginPage
@@ -123,7 +124,7 @@ class InviteOnboardingPage extends StatelessWidget {
           ),
           child: Text(l10n.iHaveAnAccount),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.xl),
       ],
     );
   }
@@ -146,14 +147,14 @@ class InviteOnboardingPage extends StatelessWidget {
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               l10n.invitedBy(state.inviterName),
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xs),
             Text(
               l10n.membersCount(state.memberCount),
               style: Theme.of(
@@ -176,13 +177,13 @@ class InviteOnboardingPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           Text(
             message,
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
           OutlinedButton(
             onPressed: () {
               // Clear the deep link state so invalid tokens don't persist

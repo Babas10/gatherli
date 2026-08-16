@@ -4,6 +4,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { SetInput, validateMatchResult, computeChampionshipPoints } from "./scoreValidation";
+import { withLogging } from './utils/logger';
 
 // ============================================================================
 // Type Definitions
@@ -238,4 +239,4 @@ export async function adminDecideChampionshipMatchHandler(
 export const adminDecideChampionshipMatch = functions
   .region("europe-west6")
   .runWith({ timeoutSeconds: 30, memory: "256MB" })
-  .https.onCall(adminDecideChampionshipMatchHandler);
+  .https.onCall(withLogging('adminDecideChampionshipMatch', adminDecideChampionshipMatchHandler));

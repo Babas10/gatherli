@@ -23,6 +23,16 @@ class ChampionshipsUpdated extends ChampionshipListEvent {
   List<Object?> get props => [championships];
 }
 
+/// Internal event emitted when the repository stream emits an error.
+class ChampionshipsLoadFailed extends ChampionshipListEvent {
+  final String message;
+
+  const ChampionshipsLoadFailed(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
 /// Filters the loaded championships by status.
 /// [status] is null to show all, or 'registration' / 'active' / 'completed'.
 class FilterChampionships extends ChampionshipListEvent {

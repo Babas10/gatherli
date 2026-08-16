@@ -79,7 +79,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
           quietHours: {enabled: false},
         },
       }),
@@ -91,7 +91,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 2",
         fcmTokens: ["token2"],
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
           quietHours: {enabled: false},
         },
       }),
@@ -103,7 +103,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 3",
         fcmTokens: ["token3"],
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
           quietHours: {enabled: false},
         },
       }),
@@ -477,7 +477,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameResultSubmitted: false, // Disabled globally
+          games: false, // Disabled globally
         },
       });
 
@@ -518,11 +518,9 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
           groupSpecific: {
-            group123: {
-              gameResultSubmitted: false, // Disabled for this specific group
-            },
+            group123: false,
           },
         },
       });
@@ -566,7 +564,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 1",
         fcmTokens: ["token1"],
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
           quietHours: {
             enabled: true,
             start: "00:00",
@@ -650,7 +648,7 @@ describe("onGameResultSubmitted Cloud Function", () => {
         displayName: "Player 1",
         fcmTokens: [], // No tokens
         notificationPreferences: {
-          gameResultSubmitted: true,
+          games: true,
         },
       });
 

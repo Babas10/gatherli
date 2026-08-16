@@ -1,23 +1,17 @@
 // Unit tests for NotificationService - validates FCM initialization, token management, and message handling
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/features/notifications/data/services/notification_service.dart';
+import '../../../../../helpers/mocks.dart';
 
 // Mocks
 class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}
-
-class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
-
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockUser extends Mock implements User {}
 
 // ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock
@@ -49,6 +43,7 @@ void main() {
   late NotificationService notificationService;
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeInitializationSettings());
     registerFallbackValue(FakeRemoteMessage());
     registerFallbackValue(

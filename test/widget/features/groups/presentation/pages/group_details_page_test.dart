@@ -3,67 +3,33 @@ import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/group_model.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
-import 'package:play_with_me/core/domain/repositories/group_repository.dart';
-import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/group_member/group_member_bloc.dart';
-import 'package:play_with_me/core/presentation/bloc/group_member/group_member_event.dart';
 import 'package:play_with_me/core/presentation/bloc/group_member/group_member_state.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
-import 'package:play_with_me/core/presentation/bloc/invitation/invitation_event.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
-import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_event.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
-import 'package:play_with_me/features/groups/presentation/pages/group_details_page.dart';
-import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
-import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_event.dart';
-import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
-import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_bloc.dart';
-import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_event.dart';
 import 'package:play_with_me/features/games/presentation/bloc/games_list/games_list_state.dart';
+import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
+import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_state.dart';
+import 'package:play_with_me/features/groups/presentation/pages/group_details_page.dart';
+import 'package:play_with_me/features/notifications/domain/entities/notification_preferences_entity.dart';
+import 'package:play_with_me/features/notifications/domain/repositories/notification_repository.dart';
 
-class MockGroupMemberBloc extends MockBloc<GroupMemberEvent, GroupMemberState>
-    implements GroupMemberBloc {}
+import '../../../../../helpers/mocks.dart';
+import '../../../../../helpers/test_app.dart';
 
-class MockAuthenticationBloc
-    extends MockBloc<AuthenticationEvent, AuthenticationState>
-    implements AuthenticationBloc {}
-
-class MockInvitationBloc extends MockBloc<InvitationEvent, InvitationState>
-    implements InvitationBloc {}
-
-class MockGroupRepository extends Mock implements GroupRepository {}
-
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockFriendRepository extends Mock implements FriendRepository {}
-
-class MockGroupInviteLinkBloc
-    extends MockBloc<GroupInviteLinkEvent, GroupInviteLinkState>
-    implements GroupInviteLinkBloc {}
-
-class MockGroupInviteLinkRepository extends Mock
-    implements GroupInviteLinkRepository {}
-
-class MockGamesListBloc extends MockBloc<GamesListEvent, GamesListState>
-    implements GamesListBloc {}
-
-class FakeGamesListEvent extends Fake implements GamesListEvent {}
-
-class FakeGroupMemberEvent extends Fake implements GroupMemberEvent {}
-
-class FakeGroupMemberState extends Fake implements GroupMemberState {}
+class _MockNotificationRepository extends Mock
+    implements NotificationRepository {}
 
 void main() {
   late MockGroupMemberBloc mockGroupMemberBloc;
@@ -74,6 +40,7 @@ void main() {
   late MockFriendRepository mockFriendRepository;
   late MockGroupInviteLinkBloc mockGroupInviteLinkBloc;
   late MockGamesListBloc mockGamesListBloc;
+  late _MockNotificationRepository mockNotificationRepository;
 
   const testUserId = 'test-user-123';
   const testGroupId = 'test-group-123';
@@ -114,9 +81,11 @@ void main() {
   ];
 
   setUpAll(() {
+    registerFallbackValues();
     registerFallbackValue(FakeGroupMemberEvent());
     registerFallbackValue(FakeGroupMemberState());
     registerFallbackValue(FakeGamesListEvent());
+    registerFallbackValue(const NotificationPreferencesEntity());
   });
 
   setUp(() {
@@ -171,7 +140,18 @@ void main() {
       () => mockFriendRepository.batchCheckFriendRequestStatus(any()),
     ).thenAnswer((_) async => {'member-3': FriendRequestStatus.none});
 
+    mockNotificationRepository = _MockNotificationRepository();
+    when(() => mockNotificationRepository.getPreferences())
+        .thenAnswer((_) async => const NotificationPreferencesEntity());
+    when(() => mockNotificationRepository.updatePreferences(any()))
+        .thenAnswer((_) async {});
+
     // Register service locator mocks
+    if (sl.isRegistered<NotificationRepository>()) {
+      sl.unregister<NotificationRepository>();
+    }
+    sl.registerSingleton<NotificationRepository>(mockNotificationRepository);
+
     if (sl.isRegistered<GroupMemberBloc>()) {
       sl.unregister<GroupMemberBloc>();
     }
@@ -209,18 +189,13 @@ void main() {
     if (sl.isRegistered<FriendRepository>()) {
       sl.unregister<FriendRepository>();
     }
+    if (sl.isRegistered<NotificationRepository>()) {
+      sl.unregister<NotificationRepository>();
+    }
   });
 
   Widget createTestWidget() {
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: MultiBlocProvider(
+    return testApp(child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>.value(value: mockAuthBloc),
           BlocProvider<InvitationBloc>.value(value: mockInvitationBloc),
@@ -230,8 +205,7 @@ void main() {
           groupRepositoryOverride: mockGroupRepository,
           userRepositoryOverride: mockUserRepository,
         ),
-      ),
-    );
+      ));
   }
 
   group('GroupDetailsPage Widget Tests', () {

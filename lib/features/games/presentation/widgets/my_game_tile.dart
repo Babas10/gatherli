@@ -1,13 +1,15 @@
 // Compact game list tile used in MyGamesPage (Story 28.11).
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/data/models/my_game_item.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
-const _kTextMain = Color(0xFF1A2C32);
-const _kTextMuted = Color(0xFF64748B);
-const _kPrimary = Color(0xFFEACE6A);
+const _kPrimary = AppColors.primary;
 
 class MyGameTile extends StatelessWidget {
   final MyGameItem item;
@@ -19,19 +21,11 @@ class MyGameTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
+      contentPadding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      child: Row(
             children: [
               Container(
                 width: 8,
@@ -43,7 +37,7 @@ class MyGameTile extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +47,7 @@ class MyGameTile extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: _kTextMain,
+                        color: AppColors.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -61,7 +55,7 @@ class MyGameTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       '${_formatDate(context, item.scheduledAt)}  ·  ${item.locationName}',
-                      style: const TextStyle(fontSize: 13, color: _kTextMuted),
+                      style: AppTextStyles.cardSubtitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -71,7 +65,7 @@ class MyGameTile extends StatelessWidget {
                         item.groupName,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: _kTextMuted,
+                          color: AppColors.textMuted,
                           fontStyle: FontStyle.italic,
                         ),
                         maxLines: 1,
@@ -81,17 +75,15 @@ class MyGameTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               item.isGroupGame
                   ? _OpenBadge(l10n: l10n)
                   : _StatusBadge(
                       status: _effectiveStatus(item.status, item.scheduledAt),
                       l10n: l10n,
                     ),
-              const Icon(Icons.chevron_right, size: 18, color: _kTextMuted),
+              const Icon(Icons.chevron_right, size: 18, color: AppColors.textMuted),
             ],
-          ),
-        ),
       ),
     );
   }
@@ -110,13 +102,13 @@ class MyGameTile extends StatelessWidget {
       case GameStatus.scheduled:
         return _kPrimary;
       case GameStatus.inProgress:
-        return Colors.green;
+        return AppColors.success;
       case GameStatus.verification:
-        return Colors.orange;
+        return AppColors.warning;
       case GameStatus.completed:
         return Colors.grey;
       case GameStatus.cancelled:
-        return Colors.red;
+        return AppColors.danger;
     }
   }
 
@@ -150,18 +142,18 @@ class _StatusBadge extends StatelessWidget {
     final (label, bg, fg) = switch (status) {
       GameStatus.scheduled => (
         l10n.scheduled,
-        Colors.blue.withValues(alpha: 0.1),
-        Colors.blue.shade700,
+        AppColors.info.withValues(alpha: 0.1),
+        AppColors.info,
       ),
       GameStatus.inProgress => (
         'Live',
-        Colors.green.withValues(alpha: 0.1),
-        Colors.green.shade700,
+        AppColors.success.withValues(alpha: 0.1),
+        AppColors.success,
       ),
       GameStatus.verification => (
         l10n.verification,
-        Colors.orange.withValues(alpha: 0.1),
-        Colors.orange.shade700,
+        AppColors.warning.withValues(alpha: 0.1),
+        AppColors.warning,
       ),
       GameStatus.completed => (
         l10n.completed,
@@ -170,8 +162,8 @@ class _StatusBadge extends StatelessWidget {
       ),
       GameStatus.cancelled => (
         l10n.cancelled,
-        Colors.red.withValues(alpha: 0.1),
-        Colors.red.shade700,
+        AppColors.danger.withValues(alpha: 0.1),
+        AppColors.danger,
       ),
     };
 
@@ -201,15 +193,15 @@ class _OpenBadge extends StatelessWidget {
       margin: const EdgeInsets.only(right: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.green.withValues(alpha: 0.12),
+        color: AppColors.success.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         l10n.open,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,
-          color: Colors.green.shade700,
+          color: AppColors.success,
         ),
       ),
     );

@@ -2,13 +2,13 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
+import 'package:play_with_me/core/domain/repositories/friend_repository.dart' show FriendshipException;
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_state.dart';
 
-class MockFriendRepository extends Mock implements FriendRepository {}
+import '../../../../../helpers/mocks.dart';
 
 UserEntity _user(String uid, String name) => UserEntity(
       uid: uid,

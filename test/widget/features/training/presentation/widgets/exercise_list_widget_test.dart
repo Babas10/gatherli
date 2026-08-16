@@ -3,7 +3,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/exercise_model.dart';
@@ -11,7 +10,7 @@ import 'package:play_with_me/features/training/presentation/bloc/exercise/exerci
 import 'package:play_with_me/features/training/presentation/bloc/exercise/exercise_event.dart';
 import 'package:play_with_me/features/training/presentation/bloc/exercise/exercise_state.dart';
 import 'package:play_with_me/features/training/presentation/widgets/exercise_list_widget.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../../../helpers/test_app.dart';
 
 class MockExerciseBloc extends MockBloc<ExerciseEvent, ExerciseState>
     implements ExerciseBloc {}
@@ -40,15 +39,7 @@ void main() {
     if (state != null) {
       when(() => mockBloc.state).thenReturn(state);
     }
-    return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: Scaffold(
+    return testApp(child: Scaffold(
         body: BlocProvider<ExerciseBloc>.value(
           value: mockBloc,
           child: ExerciseListWidget(
@@ -56,8 +47,7 @@ void main() {
             isOrganiser: isOrganiser,
           ),
         ),
-      ),
-    );
+      ));
   }
 
   group('ExerciseListWidget', () {

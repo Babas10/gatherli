@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/domain/repositories/training_feedback_repository.dart';
@@ -27,14 +29,9 @@ class FeedbackSummaryCard extends StatelessWidget {
           // Section label — uppercase, muted, letter-spaced
           const Text(
             'FEEDBACK SUMMARY',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textMuted,
-              letterSpacing: 0.8,
-            ),
+            style: AppTextStyles.sectionLabel,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
 
           // Overall rating card
           Card(
@@ -52,7 +49,7 @@ class FeedbackSummaryCard extends StatelessWidget {
                       ),
                     ),
                     _buildStarRating(overallAverage),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Text(
                       'Based on ${aggregation.totalCount} ${aggregation.totalCount == 1 ? 'rating' : 'ratings'}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -64,7 +61,7 @@ class FeedbackSummaryCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
 
           // Category ratings card
           Card(
@@ -79,14 +76,14 @@ class FeedbackSummaryCard extends StatelessWidget {
                     Icons.fitness_center,
                     aggregation.averageExercisesQuality,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   _buildCategoryRating(
                     context,
                     'Training Intensity',
                     Icons.local_fire_department,
                     aggregation.averageTrainingIntensity,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   _buildCategoryRating(
                     context,
                     'Coaching Clarity',
@@ -97,7 +94,7 @@ class FeedbackSummaryCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -132,7 +129,7 @@ class FeedbackSummaryCard extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 20, color: AppColors.secondary),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +140,7 @@ class FeedbackSummaryCard extends StatelessWidget {
                   context,
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 children: [
                   Expanded(
@@ -156,7 +153,7 @@ class FeedbackSummaryCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   SizedBox(
                     width: 40,
                     child: Text(

@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
@@ -11,26 +10,26 @@ import 'package:play_with_me/core/domain/repositories/invitation_repository.dart
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_bloc.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_guest_invitation/game_guest_invitation_event.dart';
 import 'package:play_with_me/features/games/presentation/widgets/invite_guest_players_sheet.dart';
-import 'package:play_with_me/l10n/app_localizations.dart';
+import '../../../helpers/test_app.dart';
 
 class MockGameGuestInvitationRepository extends Mock
     implements InvitationRepository {}
 
-final _alice = InvitablePlayerModel(
+const _alice = InvitablePlayerModel(
   uid: 'alice',
   displayName: 'Alice',
   sourceGroupId: 'group-x',
   sourceGroupName: 'Beach Crew',
 );
 
-final _bob = InvitablePlayerModel(
+const _bob = InvitablePlayerModel(
   uid: 'bob',
   displayName: 'Bob',
   sourceGroupId: 'group-y',
   sourceGroupName: 'Downtown Ballers',
 );
 
-final _carol = InvitablePlayerModel(
+const _carol = InvitablePlayerModel(
   uid: 'carol',
   displayName: 'Carol',
   sourceGroupId: 'group-x',
@@ -43,15 +42,7 @@ Future<void> pumpSheet(
   String gameId,
 ) async {
   await tester.pumpWidget(
-    MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en')],
-      home: BlocProvider.value(
+    testApp(child: BlocProvider.value(
         value: bloc,
         child: Builder(
           builder: (ctx) => Scaffold(
@@ -61,8 +52,7 @@ Future<void> pumpSheet(
             ),
           ),
         ),
-      ),
-    ),
+      )),
   );
 
   await tester.tap(find.text('Open'));
@@ -93,15 +83,7 @@ void main() {
       final bloc = GameGuestInvitationBloc(repository: mockRepo);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en')],
-          home: BlocProvider.value(
+        testApp(child: BlocProvider.value(
             value: bloc,
             child: Builder(
               builder: (ctx) => Scaffold(
@@ -111,8 +93,7 @@ void main() {
                 ),
               ),
             ),
-          ),
-        ),
+          )),
       );
 
       await tester.tap(find.text('Open'));

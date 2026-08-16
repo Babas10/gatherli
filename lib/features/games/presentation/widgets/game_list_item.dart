@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -31,8 +32,8 @@ class GameListItem extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      elevation: isPast ? 0 : 1,
-      color: _getCardBackgroundColor(context),
+      elevation: 1,
+      color: AppColors.cardBackground,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -50,7 +51,7 @@ class GameListItem extends StatelessWidget {
                     size: 20,
                     color: isCancelled ? Colors.grey : AppColors.secondary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       game.title,
@@ -79,24 +80,24 @@ class GameListItem extends StatelessWidget {
                     _buildTypeBadge(context),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               _buildInfoRow(
                 context,
                 Icons.calendar_today,
                 _formatDateTime(context, game.scheduledAt),
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               _buildInfoRow(
                 context,
                 Icons.location_on,
                 game.location.name,
                 isCancelled ? Colors.grey : AppColors.secondary,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               if (isCompletedWithResult) ...[
                 const Divider(),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 SetScoresDisplay(result: game.result!),
               ] else if (!isCancelled) ...[
                 _buildPlayerCountBarWithBadge(context),
@@ -108,24 +109,6 @@ class GameListItem extends StatelessWidget {
     );
   }
 
-  Color? _getCardBackgroundColor(BuildContext context) {
-    if (game.status == GameStatus.cancelled) {
-      return Theme.of(
-        context,
-      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5);
-    }
-
-    switch (game.status) {
-      case GameStatus.verification:
-        return AppColors.primary.withValues(alpha: 0.1);
-      case GameStatus.completed:
-        return Colors.green.withValues(alpha: 0.05);
-      case GameStatus.inProgress:
-        return Colors.orange.withValues(alpha: 0.05);
-      default:
-        return null;
-    }
-  }
 
   Widget _buildInfoRow(
     BuildContext context,
@@ -136,14 +119,12 @@ class GameListItem extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16, color: iconColor),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: AppColors.onSurface,
             ),
           ),
         ),
@@ -163,11 +144,11 @@ class GameListItem extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
-          const SizedBox(width: 4),
+          const Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
+          const SizedBox(width: AppSpacing.xs),
           Text(
             l10n.pendingVerification,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.secondary,
               fontWeight: FontWeight.bold,
               fontSize: 12,
@@ -230,14 +211,14 @@ class GameListItem extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.orange.withValues(alpha: 0.2),
+          color: AppColors.warning.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.orange),
+          border: Border.all(color: AppColors.warning),
         ),
         child: Text(
           l10n.onWaitlist,
-          style: TextStyle(
-            color: Colors.orange.shade700,
+          style: const TextStyle(
+            color: AppColors.warning,
             fontWeight: FontWeight.bold,
             fontSize: 10,
           ),
@@ -249,14 +230,14 @@ class GameListItem extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.2),
+          color: AppColors.danger.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red),
+          border: Border.all(color: AppColors.danger),
         ),
         child: Text(
           l10n.full,
-          style: TextStyle(
-            color: Colors.red.shade700,
+          style: const TextStyle(
+            color: AppColors.danger,
             fontWeight: FontWeight.bold,
             fontSize: 10,
           ),
@@ -284,9 +265,7 @@ class GameListItem extends StatelessWidget {
                   Text(
                     '${game.currentPlayerCount}/${game.maxPlayers} players',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isPast
-                          ? Theme.of(context).colorScheme.onSurfaceVariant
-                          : Theme.of(context).colorScheme.onSurface,
+                      color: AppColors.onSurface,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -299,26 +278,20 @@ class GameListItem extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 6,
-                  backgroundColor: isPast
-                      ? Theme.of(context).colorScheme.surfaceContainerHighest
-                      : Theme.of(context).colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isPast
-                        ? Theme.of(context).colorScheme.onSurfaceVariant
-                        : AppColors.primary,
-                  ),
+                  backgroundColor: AppColors.divider,
+                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
               ),
             ],
           ),
         ),
-        if (statusBadge != null) ...[const SizedBox(width: 12), statusBadge],
+        if (statusBadge != null) ...[const SizedBox(width: AppSpacing.md), statusBadge],
       ],
     );
   }

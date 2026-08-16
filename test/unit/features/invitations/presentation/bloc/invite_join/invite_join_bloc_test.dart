@@ -3,16 +3,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
-import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
-import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_event.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_state.dart';
-
-class MockGroupInviteLinkRepository extends Mock
-    implements GroupInviteLinkRepository {}
-
-class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
+import '../../../../../../helpers/mocks.dart';
 
 void main() {
   late MockGroupInviteLinkRepository mockRepo;

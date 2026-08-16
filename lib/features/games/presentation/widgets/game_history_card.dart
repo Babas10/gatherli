@@ -1,6 +1,7 @@
 // Widget displaying a game in history list (Story 14.7)
 
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/data/models/game_model.dart';
@@ -47,7 +48,7 @@ class GameHistoryCard extends StatelessWidget {
                 ],
               ),
               if (game.location.name.isNotEmpty) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   game.location.name,
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -55,7 +56,7 @@ class GameHistoryCard extends StatelessWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
 
               // Teams and scores
               if (game.teams != null && game.result != null)
@@ -71,9 +72,9 @@ class GameHistoryCard extends StatelessWidget {
 
               // ELO changes indicator
               if (game.eloCalculated) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 const Divider(),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Row(
                   children: [
                     Icon(
@@ -81,7 +82,7 @@ class GameHistoryCard extends StatelessWidget {
                       size: 16,
                       color: theme.colorScheme.primary,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       'ELO Updated',
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -120,7 +121,7 @@ class GameHistoryCard extends StatelessWidget {
             winnerTeam == 'teamA',
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.lg),
         // VS indicator
         Text(
           'VS',
@@ -129,7 +130,7 @@ class GameHistoryCard extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.lg),
         // Team B
         Expanded(
           child: _buildTeamSection(
@@ -176,7 +177,7 @@ class GameHistoryCard extends StatelessWidget {
                 ),
               ),
               if (isWinner) ...[
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xs),
                 Icon(
                   Icons.emoji_events,
                   size: 16,
@@ -185,14 +186,14 @@ class GameHistoryCard extends StatelessWidget {
               ],
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             '$playerCount ${playerCount == 1 ? 'player' : 'players'}',
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             gamesWon.toString(),
             style: theme.textTheme.headlineMedium?.copyWith(

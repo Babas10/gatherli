@@ -146,12 +146,13 @@ async function collectEligibleTokens(
       continue;
     }
 
-    const prefs = userData.notificationPreferences;
+    const prefs = userData.notificationPreferences ?? {};
 
-    // Check group-specific and global preferences
-    const groupPrefs = prefs.groupSpecific?.[groupId];
-    const shouldNotify =
-      groupPrefs?.[preferenceKey] !== false && prefs[preferenceKey] !== false;
+    // Per-group mute: groupSpecific[groupId] === false means this group is muted.
+    const groupMuted = prefs.groupSpecific?.[groupId] === false;
+    // Check the unified 'training' category preference (Story N.3).
+    // Missing key defaults to true (enabled).
+    const shouldNotify = !groupMuted && prefs.training !== false;
 
     if (!shouldNotify) {
       functions.logger.debug("User has disabled this notification type", {
@@ -371,15 +372,8 @@ export const onTrainingSessionUpdated = functions.region('europe-west6').firesto
 
     const db = admin.firestore();
 
-    // Check for minimum participants reached
-    const beforeCount = (beforeData.participantIds || []).length;
-    const afterCount = (afterData.participantIds || []).length;
-    const minParticipants = afterData.minParticipants || 1;
-
-    // Trigger when we cross the threshold from below to at/above
-    if (beforeCount < minParticipants && afterCount >= minParticipants) {
-      await handleMinParticipantsReached(db, sessionId, afterData);
-    }
+    // training_min_participants_reached removed (reduced noise) — low-value
+    // informational push, visible in the training list without needing a ping.
 
     // Check for session cancelled
     if (beforeData.status !== "cancelled" && afterData.status === "cancelled") {
@@ -389,98 +383,6 @@ export const onTrainingSessionUpdated = functions.region('europe-west6').firesto
     return null;
   });
 
-/**
- * Handle minimum participants reached notification
- */
-async function handleMinParticipantsReached(
-  db: admin.firestore.Firestore,
-  sessionId: string,
-  sessionData: any
-): Promise<void> {
-  const groupId = sessionData.groupId;
-  const participantIds = sessionData.participantIds || [];
-  const minParticipants = sessionData.minParticipants || 1;
-
-  functions.logger.info("Minimum participants reached, processing notifications", {
-    sessionId,
-    groupId,
-    participantCount: participantIds.length,
-    minParticipants,
-  });
-
-  try {
-    // Notify all participants (including organizer)
-    const recipientIds = [...participantIds];
-
-    // Also include organizer if not already a participant
-    if (!recipientIds.includes(sessionData.createdBy)) {
-      recipientIds.push(sessionData.createdBy);
-    }
-
-    if (recipientIds.length === 0) {
-      functions.logger.info("No recipients for min participants notification", {
-        sessionId,
-        groupId,
-      });
-      return;
-    }
-
-    // Collect eligible tokens
-    const eventContext = { sessionId, eventType: "training_min_participants_reached" };
-    const { allTokens, userTokenMap } = await collectEligibleTokens(
-      db,
-      recipientIds,
-      groupId,
-      "trainingMinParticipantsReached",
-      eventContext
-    );
-
-    if (allTokens.length === 0) {
-      functions.logger.info("No eligible recipients for notification", eventContext);
-      return;
-    }
-
-    // Send notification
-    const message: admin.messaging.MulticastMessage = {
-      tokens: allTokens,
-      notification: {
-        title: "Training Session Ready!",
-        body: `Great news! "${sessionData.title}" now has enough participants (${participantIds.length}/${minParticipants})`,
-      },
-      data: {
-        type: "training_min_participants_reached",
-        sessionId,
-        groupId,
-        participantCount: String(participantIds.length),
-        minParticipants: String(minParticipants),
-      },
-      android: {
-        priority: "high",
-        notification: {
-          channelId: "high_importance_channel",
-          clickAction: "FLUTTER_NOTIFICATION_CLICK",
-        },
-      },
-      apns: {
-        payload: {
-          aps: {
-            badge: 1,
-            sound: "default",
-          },
-        },
-      },
-    };
-
-    await sendMulticastNotification(db, message, userTokenMap, allTokens, eventContext);
-  } catch (error) {
-    functions.logger.error("Error sending min participants notification", {
-      sessionId,
-      groupId,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-    });
-  }
-}
 
 /**
  * Handle session cancelled notification
@@ -684,294 +586,14 @@ export const onTrainingFeedbackCreated = functions.region('europe-west6').firest
 
 export const onParticipantJoined = functions.region('europe-west6').firestore
   .document("trainingSessions/{sessionId}/participants/{userId}")
-  .onCreate(async (snapshot, context) => {
-    const sessionId = context.params.sessionId;
-    const userId = context.params.userId;
-    const participantData = snapshot.data();
-
-    // Only proceed if status is 'joined'
-    if (participantData.status !== "joined") {
-      functions.logger.debug("Skipping notification - participant status is not 'joined'", {
-        sessionId,
-        userId,
-        status: participantData.status,
-      });
-      return null;
-    }
-
-    functions.logger.info("Participant joined training session, processing notifications", {
-      sessionId,
-      userId,
-    });
-
-    const db = admin.firestore();
-
-    try {
-      // Get training session data
-      const sessionData = await getTrainingSessionData(db, sessionId);
-      if (!sessionData) {
-        functions.logger.error("Training session not found", { sessionId, userId });
-        return null;
-      }
-
-      const groupId = sessionData.groupId;
-
-      // Get participant user data
-      const participantUser = await getUserData(db, userId);
-      if (!participantUser) {
-        functions.logger.error("User not found", { sessionId, userId });
-        return null;
-      }
-
-      // Get all group members
-      const groupMemberIds = await getGroupMemberIds(db, groupId);
-
-      // Filter out the participant who just joined
-      const recipientIds = groupMemberIds.filter((id) => id !== userId);
-
-      if (recipientIds.length === 0) {
-        functions.logger.info("No recipients for participant joined notification", {
-          sessionId,
-          groupId,
-        });
-        return null;
-      }
-
-      // Collect eligible tokens - using memberJoined preference for now
-      // (could be a separate trainingParticipantJoined preference)
-      const eventContext = { sessionId, eventType: "training_participant_joined" };
-      const { allTokens, userTokenMap } = await collectEligibleTokens(
-        db,
-        recipientIds,
-        groupId,
-        "trainingSessionCreated", // Use the training session preference
-        eventContext
-      );
-
-      if (allTokens.length === 0) {
-        functions.logger.info("No eligible recipients for notification", eventContext);
-        return null;
-      }
-
-      // Format date for notification
-      const dateStr = formatDateTime(sessionData.startTime);
-
-      // Send notification
-      const message: admin.messaging.MulticastMessage = {
-        tokens: allTokens,
-        notification: {
-          title: `${participantUser.displayName} joined training`,
-          body: `${participantUser.displayName} joined "${sessionData.title}" on ${dateStr}`,
-        },
-        data: {
-          type: "training_participant_joined",
-          sessionId,
-          groupId,
-          participantId: userId,
-          participantName: participantUser.displayName,
-        },
-        android: {
-          priority: "high",
-          notification: {
-            channelId: "high_importance_channel",
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-        },
-        apns: {
-          payload: {
-            aps: {
-              badge: 1,
-              sound: "default",
-            },
-          },
-        },
-      };
-
-      await sendMulticastNotification(db, message, userTokenMap, allTokens, eventContext);
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending participant joined notification", {
-        sessionId,
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onCreate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });
-
-// ============================================================================
-// Firestore Trigger: onParticipantLeft (Refactored)
-// Notifies group members and organizer when someone leaves a training session
-// ============================================================================
 
 export const onParticipantLeft = functions.region('europe-west6').firestore
   .document("trainingSessions/{sessionId}/participants/{userId}")
-  .onUpdate(async (change, context) => {
-    const sessionId = context.params.sessionId;
-    const userId = context.params.userId;
-
-    const beforeData = change.before.data();
-    const afterData = change.after.data();
-
-    // Only proceed if status changed from 'joined' to 'left'
-    if (beforeData.status !== "joined" || afterData.status !== "left") {
-      return null;
-    }
-
-    functions.logger.info("Participant left training session, processing notifications", {
-      sessionId,
-      userId,
-    });
-
-    const db = admin.firestore();
-
-    try {
-      // Get training session data
-      const sessionData = await getTrainingSessionData(db, sessionId);
-      if (!sessionData) {
-        functions.logger.error("Training session not found", { sessionId, userId });
-        return null;
-      }
-
-      const groupId = sessionData.groupId;
-
-      // Get participant user data
-      const participantUser = await getUserData(db, userId);
-      if (!participantUser) {
-        functions.logger.error("User not found", { sessionId, userId });
-        return null;
-      }
-
-      // Get all group members
-      const groupMemberIds = await getGroupMemberIds(db, groupId);
-
-      // Filter out the participant who just left and the organizer (handled separately)
-      const recipientIds = groupMemberIds.filter(
-        (id) => id !== userId && id !== sessionData.createdBy
-      );
-
-      const eventContext = { sessionId, eventType: "training_participant_left" };
-
-      // Notify organizer separately with different message
-      if (
-        groupMemberIds.includes(sessionData.createdBy) &&
-        sessionData.createdBy !== userId
-      ) {
-        const organizerTokens = await collectEligibleTokens(
-          db,
-          [sessionData.createdBy],
-          groupId,
-          "trainingSessionCreated",
-          eventContext
-        );
-
-        if (organizerTokens.allTokens.length > 0) {
-          const organizerMessage: admin.messaging.MulticastMessage = {
-            tokens: organizerTokens.allTokens,
-            notification: {
-              title: `${participantUser.displayName} left training`,
-              body: `${participantUser.displayName} left "${sessionData.title}". You may need to find a replacement.`,
-            },
-            data: {
-              type: "training_participant_left",
-              sessionId,
-              groupId,
-              participantId: userId,
-              participantName: participantUser.displayName,
-              isOrganizer: "true",
-            },
-            android: {
-              priority: "high",
-              notification: {
-                channelId: "high_importance_channel",
-                clickAction: "FLUTTER_NOTIFICATION_CLICK",
-              },
-            },
-            apns: {
-              payload: {
-                aps: {
-                  badge: 1,
-                  sound: "default",
-                },
-              },
-            },
-          };
-
-          await sendMulticastNotification(
-            db,
-            organizerMessage,
-            organizerTokens.userTokenMap,
-            organizerTokens.allTokens,
-            { ...eventContext, eventType: "training_participant_left_organizer" }
-          );
-        }
-      }
-
-      // Notify other group members
-      if (recipientIds.length === 0) {
-        functions.logger.info("No other recipients for participant left notification", {
-          sessionId,
-          groupId,
-        });
-        return null;
-      }
-
-      const { allTokens, userTokenMap } = await collectEligibleTokens(
-        db,
-        recipientIds,
-        groupId,
-        "trainingSessionCreated",
-        eventContext
-      );
-
-      if (allTokens.length === 0) {
-        functions.logger.info("No eligible recipients for notification", eventContext);
-        return null;
-      }
-
-      // Send notification to other members
-      const message: admin.messaging.MulticastMessage = {
-        tokens: allTokens,
-        notification: {
-          title: `${participantUser.displayName} left training`,
-          body: `${participantUser.displayName} left "${sessionData.title}"`,
-        },
-        data: {
-          type: "training_participant_left",
-          sessionId,
-          groupId,
-          participantId: userId,
-          participantName: participantUser.displayName,
-        },
-        android: {
-          priority: "high",
-          notification: {
-            channelId: "high_importance_channel",
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-        },
-        apns: {
-          payload: {
-            aps: {
-              badge: 1,
-              sound: "default",
-            },
-          },
-        },
-      };
-
-      await sendMulticastNotification(db, message, userTokenMap, allTokens, eventContext);
-
-      return null;
-    } catch (error) {
-      functions.logger.error("Error sending participant left notification", {
-        sessionId,
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      return null;
-    }
+  .onUpdate(async () => {
+    // Notification removed (Story N.2 — low-signal noise reduction).
+    return null;
   });

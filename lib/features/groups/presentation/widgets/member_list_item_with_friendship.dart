@@ -1,5 +1,8 @@
 // Widget for displaying group member with friendship status and add friend button
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -38,23 +41,16 @@ class MemberListItemWithFriendship extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
-        backgroundImage: user.photoUrl != null
-            ? NetworkImage(user.photoUrl!)
-            : null,
-        child: user.photoUrl == null
-            ? Text(
-                _getInitials(user.fullDisplayName),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF004E64),
-                ),
-              )
-            : null,
-      ),
-      title: Row(
+    return AccentCard(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          UserAvatar(name: user.fullDisplayName, photoUrl: user.photoUrl),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Row(
         children: [
           Flexible(
             child: Text(
@@ -67,7 +63,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
             ),
           ),
           if (isCurrentUser) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               '(You)',
               style: TextStyle(
@@ -77,80 +73,79 @@ class MemberListItemWithFriendship extends StatelessWidget {
             ),
           ],
           if (isAdmin) ...[
-            const SizedBox(width: 8),
-            Chip(
-              label: const Text('Admin', style: TextStyle(fontSize: 12)),
-              backgroundColor: const Color(0xFFEACE6A).withValues(alpha: 0.25),
+            const SizedBox(width: AppSpacing.sm),
+            const Chip(
+              label: Text('Admin', style: TextStyle(fontSize: 12)),
+              backgroundColor: AppColors.avatarBackground,
               labelStyle: TextStyle(
-                color: Color(0xFF004E64),
+                color: AppColors.secondary,
                 fontWeight: FontWeight.bold,
               ),
               padding: EdgeInsets.zero,
             ),
           ],
           if (isCreator) ...[
-            const SizedBox(width: 8),
-            Icon(Icons.star, size: 16, color: Colors.amber[700]),
+            const SizedBox(width: AppSpacing.sm),
+            const Icon(Icons.star, size: 16, color: AppColors.warning),
           ],
+          ],
+            ),
+          ),
+          if (!isCurrentUser)
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildFriendshipStatus(context),
+                ],
+              ),
+            ),
+          if (!isCurrentUser && _buildTrailingWidget(context) != null)
+            _buildTrailingWidget(context)!,
         ],
       ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!isCurrentUser) _buildFriendshipStatus(context),
-        ],
-      ),
-      trailing: !isCurrentUser ? _buildTrailingWidget(context) : null,
     );
-  }
-
-  String _getInitials(String name) {
-    final parts = name.trim().split(' ');
-    if (parts.isEmpty) return '?';
-    if (parts.length == 1) {
-      return parts[0].substring(0, 1).toUpperCase();
-    }
-    return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
   }
 
   Widget _buildFriendshipStatus(BuildContext context) {
     if (isFriend) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check_circle, size: 16, color: Colors.green[700]),
-          const SizedBox(width: 4),
+          Icon(Icons.check_circle, size: 16, color: AppColors.success),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Friend',
-            style: TextStyle(color: Colors.green[700], fontSize: 12),
+            style: TextStyle(color: AppColors.success, fontSize: 12),
           ),
         ],
       );
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.schedule, size: 16, color: Colors.orange[700]),
-          const SizedBox(width: 4),
+          Icon(Icons.schedule, size: 16, color: AppColors.warning),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Request Sent',
-            style: TextStyle(color: Colors.orange[700], fontSize: 12),
+            style: TextStyle(color: AppColors.warning, fontSize: 12),
           ),
         ],
       );
     }
 
     if (requestStatus == FriendRequestStatus.receivedFromThem) {
-      return Row(
+      return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.person_add, size: 16, color: Colors.blue[700]),
-          const SizedBox(width: 4),
+          Icon(Icons.person_add, size: 16, color: AppColors.info),
+          SizedBox(width: AppSpacing.xs),
           Text(
             'Wants to be friends',
-            style: TextStyle(color: Colors.blue[700], fontSize: 12),
+            style: TextStyle(color: AppColors.info, fontSize: 12),
           ),
         ],
       );
@@ -207,10 +202,10 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return Chip(
-        label: const Text('Pending'),
-        backgroundColor: Colors.orange.shade100,
-        labelStyle: TextStyle(color: Colors.orange[900], fontSize: 11),
+      return const Chip(
+        label: Text('Pending'),
+        backgroundColor: AppColors.warning,
+        labelStyle: TextStyle(color: AppColors.warning, fontSize: 11),
       );
     }
 

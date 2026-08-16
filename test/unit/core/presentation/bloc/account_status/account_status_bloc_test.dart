@@ -7,9 +7,7 @@ import 'package:play_with_me/core/presentation/bloc/account_status/account_statu
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_event.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
-import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
-
-class MockAuthRepository extends Mock implements AuthRepository {}
+import '../../../../../helpers/mocks.dart';
 
 void main() {
   late MockAuthRepository mockAuthRepository;

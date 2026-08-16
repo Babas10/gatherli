@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,7 +98,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Failed to create group: ${state.message}'),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 duration: const Duration(seconds: 3),
               ),
             );
@@ -107,6 +108,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
           final isLoading = groupState is GroupLoading;
 
           return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
             builder: (context, authState) {
               if (authState is! AuthenticationAuthenticated) {
                 return const Center(
@@ -127,20 +129,20 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
 
                       // Group name field
                       TextFormField(
                         controller: _nameController,
                         enabled: !isLoading,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Group Name *',
                           hintText: 'e.g., Beach Volleyball Crew',
                           prefixIcon: Icon(
                             Icons.group,
                             color: AppColors.secondary,
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           floatingLabelStyle: TextStyle(
                             color: AppColors.secondary,
                           ),
@@ -158,13 +160,13 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         maxLength: 50,
                         autofocus: true,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Description field (optional)
                       TextFormField(
                         controller: _descriptionController,
                         enabled: !isLoading,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Description (Optional)',
                           hintText:
                               'e.g., Weekly beach volleyball games at Santa Monica',
@@ -172,7 +174,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             Icons.description,
                             color: AppColors.secondary,
                           ),
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           floatingLabelStyle: TextStyle(
                             color: AppColors.secondary,
                           ),
@@ -190,7 +192,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                         maxLength: 200,
                         textCapitalization: TextCapitalization.sentences,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.xl),
 
                       // Friend selector (only if repository is provided)
                       // Wrapped in SizedBox because this Column is inside
@@ -210,21 +212,21 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             initialSelection: _selectedFriendIds,
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.xl),
                       ],
 
                       // Info card
                       Card(
                         color: AppColors.primary.withValues(alpha: 0.2),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(12.0),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.info_outline,
                                 color: AppColors.secondary,
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: AppSpacing.md),
                               Expanded(
                                 child: Text(
                                   'You will automatically become the group admin and first member',
@@ -238,7 +240,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppSpacing.xxl),
 
                       // Create button
                       FilledButton.icon(
@@ -263,7 +265,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Cancel button
                       OutlinedButton(

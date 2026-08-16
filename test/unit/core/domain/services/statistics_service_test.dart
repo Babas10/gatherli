@@ -12,10 +12,10 @@ void main() {
   group('StatisticsService - ELO Calculation', () {
     test('calculateElo returns correct delta for equal teams', () {
       // Setup equal teams
-      final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1600);
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1600);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1600);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1600);
+      const teamAP1 = PlayerRating(playerId: 'a1', rating: 1600);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 1600);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1600);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1600);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -45,13 +45,13 @@ void main() {
       // Team B: 1600 & 1600. Min=1600, Max=1600.
       // Weighted Rating = 1600
 
-      final teamAP1 = const PlayerRating(
+      const teamAP1 = PlayerRating(
         playerId: 'a1',
         rating: 1400,
       ); // Weak link
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1800);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1600);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1600);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 1800);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1600);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1600);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -72,10 +72,10 @@ void main() {
     });
 
     test('calculateElo handles upset correctly (Strong loses to Weak)', () {
-      final teamAP1 = const PlayerRating(playerId: 'a1', rating: 2000);
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 2000);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+      const teamAP1 = PlayerRating(playerId: 'a1', rating: 2000);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 2000);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -104,10 +104,10 @@ void main() {
     });
 
     test('calculateElo handles expected win (Strong beats Weak)', () {
-      final teamAP1 = const PlayerRating(playerId: 'a1', rating: 2000);
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 2000);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+      const teamAP1 = PlayerRating(playerId: 'a1', rating: 2000);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 2000);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -122,10 +122,10 @@ void main() {
     });
 
     test('calculateElo handles Team B winning correctly', () {
-      final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1600);
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1600);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1600);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1600);
+      const teamAP1 = PlayerRating(playerId: 'a1', rating: 1600);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 1600);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1600);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1600);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -141,10 +141,10 @@ void main() {
     });
 
     test('calculateElo respects custom K-factor', () {
-      final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1600);
-      final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1600);
-      final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1600);
-      final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1600);
+      const teamAP1 = PlayerRating(playerId: 'a1', rating: 1600);
+      const teamAP2 = PlayerRating(playerId: 'a2', rating: 1600);
+      const teamBP1 = PlayerRating(playerId: 'b1', rating: 1600);
+      const teamBP2 = PlayerRating(playerId: 'b2', rating: 1600);
 
       final result = service.calculateElo(
         teamAPlayer1: teamAP1,
@@ -223,7 +223,7 @@ void main() {
 
   group('TeammateStats - Getters', () {
     test('hasWinningRecord returns true for win rate > 50%', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Alice',
         gamesPlayed: 10,
@@ -237,7 +237,7 @@ void main() {
     });
 
     test('hasWinningRecord returns false for win rate = 50%', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Bob',
         gamesPlayed: 10,
@@ -251,7 +251,7 @@ void main() {
     });
 
     test('hasWinningRecord returns false for win rate < 50%', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Charlie',
         gamesPlayed: 10,
@@ -265,7 +265,7 @@ void main() {
     });
 
     test('isFrequentTeammate returns true for 5+ games', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Alice',
         gamesPlayed: 5,
@@ -279,7 +279,7 @@ void main() {
     });
 
     test('isFrequentTeammate returns true for more than 5 games', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Bob',
         gamesPlayed: 10,
@@ -293,7 +293,7 @@ void main() {
     });
 
     test('isFrequentTeammate returns false for < 5 games', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Charlie',
         gamesPlayed: 4,
@@ -307,7 +307,7 @@ void main() {
     });
 
     test('formattedWinRate returns percentage string with 1 decimal', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Alice',
         gamesPlayed: 10,
@@ -321,7 +321,7 @@ void main() {
     });
 
     test('formattedWinRate handles 100% correctly', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Bob',
         gamesPlayed: 5,
@@ -335,7 +335,7 @@ void main() {
     });
 
     test('formattedWinRate handles 0% correctly', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Charlie',
         gamesPlayed: 5,
@@ -349,7 +349,7 @@ void main() {
     });
 
     test('formattedWinRate handles decimal win rates correctly', () {
-      final stats = const TeammateStats(
+      const stats = TeammateStats(
         playerId: '1',
         displayName: 'Dave',
         gamesPlayed: 9,
@@ -404,7 +404,7 @@ void main() {
   });
 
   group('StatisticsService - Best Teammates', () {
-    final t1 = const TeammateStats(
+    const t1 = TeammateStats(
       playerId: '1',
       displayName: 'A',
       gamesPlayed: 10,
@@ -413,7 +413,7 @@ void main() {
       winRate: 0.8,
       averageRatingChange: 5,
     );
-    final t2 = const TeammateStats(
+    const t2 = TeammateStats(
       playerId: '2',
       displayName: 'B',
       gamesPlayed: 5,
@@ -422,7 +422,7 @@ void main() {
       winRate: 0.6,
       averageRatingChange: 2,
     );
-    final t3 = const TeammateStats(
+    const t3 = TeammateStats(
       playerId: '3',
       displayName: 'C',
       gamesPlayed: 2,
@@ -431,7 +431,7 @@ void main() {
       winRate: 1.0,
       averageRatingChange: 10,
     );
-    final t4 = const TeammateStats(
+    const t4 = TeammateStats(
       playerId: '4',
       displayName: 'D',
       gamesPlayed: 10,
@@ -470,7 +470,7 @@ void main() {
     });
 
     test('getBestTeammates breaks ties with games played', () {
-      final tTie1 = const TeammateStats(
+      const tTie1 = TeammateStats(
         playerId: 't1',
         displayName: 'T1',
         gamesPlayed: 10,
@@ -479,7 +479,7 @@ void main() {
         winRate: 0.5,
         averageRatingChange: 0,
       );
-      final tTie2 = const TeammateStats(
+      const tTie2 = TeammateStats(
         playerId: 't2',
         displayName: 'T2',
         gamesPlayed: 20,
@@ -659,10 +659,10 @@ void main() {
       test(
         'equal teams at 1200 rating result in ±16 rating change with K=32',
         () {
-          final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-          final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-          final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-          final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+          const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+          const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+          const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+          const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
           final result = service.calculateElo(
             teamAPlayer1: teamAP1,
@@ -685,10 +685,10 @@ void main() {
       );
 
       test('equal teams - Team B wins results in opposite delta', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -708,10 +708,10 @@ void main() {
 
     group('Strong Team Wins (Expected) - 1400 vs 1000', () {
       test('strong team (1400) beats weak team (1000) with minimal gain', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1400);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1400);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1000);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1000);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1400);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 1400);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1000);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1000);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -736,10 +736,10 @@ void main() {
       test(
         'weak team (1000) beats strong team (1400) with huge gain (upset)',
         () {
-          final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1000);
-          final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1000);
-          final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1400);
-          final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1400);
+          const teamAP1 = PlayerRating(playerId: 'a1', rating: 1000);
+          const teamAP2 = PlayerRating(playerId: 'a2', rating: 1000);
+          const teamBP1 = PlayerRating(playerId: 'b1', rating: 1400);
+          const teamBP2 = PlayerRating(playerId: 'b2', rating: 1400);
 
           final result = service.calculateElo(
             teamAPlayer1: teamAP1,
@@ -758,13 +758,13 @@ void main() {
 
     group('Weak-Link Effect - Exact Scenario from Issue', () {
       test('weak link drags down team rating: [1500, 1100] vs [1300, 1300]', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1500);
-        final teamAP2 = const PlayerRating(
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1500);
+        const teamAP2 = PlayerRating(
           playerId: 'a2',
           rating: 1100,
         ); // Weak link
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1300);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1300);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1300);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1300);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -785,10 +785,10 @@ void main() {
 
     group('Variable K-Factors', () {
       test('K=16 (established players) results in slower rating changes', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -805,10 +805,10 @@ void main() {
       });
 
       test('K=32 (default) results in moderate rating changes', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -825,10 +825,10 @@ void main() {
       });
 
       test('K=64 (provisional ratings) results in rapid adjustments', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
@@ -847,10 +847,10 @@ void main() {
       test(
         'K-factors scale proportionally (K=16 is half of K=32, K=64 is double)',
         () {
-          final teamAP1 = const PlayerRating(playerId: 'a1', rating: 1200);
-          final teamAP2 = const PlayerRating(playerId: 'a2', rating: 1200);
-          final teamBP1 = const PlayerRating(playerId: 'b1', rating: 1200);
-          final teamBP2 = const PlayerRating(playerId: 'b2', rating: 1200);
+          const teamAP1 = PlayerRating(playerId: 'a1', rating: 1200);
+          const teamAP2 = PlayerRating(playerId: 'a2', rating: 1200);
+          const teamBP1 = PlayerRating(playerId: 'b1', rating: 1200);
+          const teamBP2 = PlayerRating(playerId: 'b2', rating: 1200);
 
           final resultK16 = service.calculateElo(
             teamAPlayer1: teamAP1,
@@ -900,10 +900,10 @@ void main() {
       test(
         'very large rating gap (1200 points) results in minimal change for favorite',
         () {
-          final teamAP1 = const PlayerRating(playerId: 'a1', rating: 2000);
-          final teamAP2 = const PlayerRating(playerId: 'a2', rating: 2000);
-          final teamBP1 = const PlayerRating(playerId: 'b1', rating: 800);
-          final teamBP2 = const PlayerRating(playerId: 'b2', rating: 800);
+          const teamAP1 = PlayerRating(playerId: 'a1', rating: 2000);
+          const teamAP2 = PlayerRating(playerId: 'a2', rating: 2000);
+          const teamBP1 = PlayerRating(playerId: 'b1', rating: 800);
+          const teamBP2 = PlayerRating(playerId: 'b2', rating: 800);
 
           final result = service.calculateElo(
             teamAPlayer1: teamAP1,
@@ -925,10 +925,10 @@ void main() {
       );
 
       test('huge upset (800 beats 2000) results in maximum rating swing', () {
-        final teamAP1 = const PlayerRating(playerId: 'a1', rating: 800);
-        final teamAP2 = const PlayerRating(playerId: 'a2', rating: 800);
-        final teamBP1 = const PlayerRating(playerId: 'b1', rating: 2000);
-        final teamBP2 = const PlayerRating(playerId: 'b2', rating: 2000);
+        const teamAP1 = PlayerRating(playerId: 'a1', rating: 800);
+        const teamAP2 = PlayerRating(playerId: 'a2', rating: 800);
+        const teamBP1 = PlayerRating(playerId: 'b1', rating: 2000);
+        const teamBP2 = PlayerRating(playerId: 'b2', rating: 2000);
 
         final result = service.calculateElo(
           teamAPlayer1: teamAP1,
