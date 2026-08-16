@@ -191,15 +191,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: 💾 Cache Gradle
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf  # v4.2.2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          # cache: gradle enables built-in Gradle dependency caching via setup-java
+          # This pre-populates ~/.gradle before any build runs, preventing 429s from Maven Central
+          cache: gradle
 
       - name: 📦 Get Dependencies
         run: flutter pub get
@@ -208,7 +202,13 @@ jobs:
         run: dart run tools/generate_mock_firebase_configs.dart
 
       - name: 🏗️ Build Android APK (dev debug — no signing)
-        run: flutter build apk --flavor dev -t lib/main_dev.dart --debug
+        # --android-skip-build-dependency-validation suppresses the Kotlin version warning
+        # Retry once on failure (Maven Central occasionally rate-limits GitHub Actions IPs)
+        run: |
+          flutter build apk --flavor dev -t lib/main_dev.dart --debug \
+            --android-skip-build-dependency-validation \
+            || flutter build apk --flavor dev -t lib/main_dev.dart --debug \
+               --android-skip-build-dependency-validation
 
   # Job 5: Final Status Check
   ci_success:
