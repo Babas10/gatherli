@@ -82,6 +82,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p3", "p4"],
       },
       result: {
+        winner: "teamA",
         overallWinner: "teamA",
         games: [
           {
@@ -160,6 +161,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -235,6 +237,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -308,6 +311,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -380,6 +384,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p3", "p4"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -457,6 +462,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamB",
         games: [{ winner: "teamB" }], // p1 loses
       },
     };
@@ -546,7 +552,7 @@ describe("processGameEloUpdates", () => {
     };
 
     await expect(processGameEloUpdates(gameId, trainingData))
-      .rejects.toThrow("Invalid game data: Missing result or games array");
+      .rejects.toThrow("Invalid game data: Missing result winner");
   });
 
   test("rejects documents from non-games collection (Story 15.5)", async () => {
@@ -557,6 +563,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -581,7 +588,7 @@ describe("processGameEloUpdates", () => {
     db.collection.mockReturnValue(collectionMock);
 
     await expect(processGameEloUpdates(gameId, gameData))
-      .rejects.toThrow("ELO can only be processed for competitive games, not training sessions");
+      .rejects.toThrow("ELO can only be processed for competitive games");
   });
 
   test("processes documents from games collection successfully (Story 15.5)", async () => {
@@ -592,6 +599,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -665,6 +673,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p3", "p4"],
       },
       result: {
+        winner: "teamA",
         overallWinner: "teamA",
         games: [
           {
@@ -725,6 +734,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p3", "p4"],
       },
       result: {
+        winner: "teamA",
         overallWinner: "teamA",
         games: [
           {
@@ -781,6 +791,7 @@ describe("processGameEloUpdates", () => {
         teamBPlayerIds: ["p2"],
       },
       result: {
+        winner: "teamA",
         games: [{ winner: "teamA" }],
       },
     };
@@ -798,6 +809,6 @@ describe("processGameEloUpdates", () => {
     db.collection.mockReturnValue(collectionMock);
 
     await expect(processGameEloUpdates(gameId, gameData))
-      .rejects.toThrow("Game not found");
+      .rejects.toThrow("ELO can only be processed for competitive games");
   });
 });

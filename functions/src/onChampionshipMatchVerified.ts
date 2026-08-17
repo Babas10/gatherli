@@ -15,6 +15,7 @@ import {
   getTeamName,
   sendChampionshipNotificationToUsers,
 } from "./championshipNotifications";
+import { processChampionshipMatchEloUpdates } from "./championshipElo";
 
 // ============================================================================
 // Inner Handler (exported for unit tests)
@@ -190,6 +191,27 @@ export async function onChampionshipMatchVerifiedHandler(
       "[onChampionshipMatchVerified] Standings updated successfully",
       { championshipId, matchId, teamsUpdated: updatedStandings.length }
     );
+
+    // ── ELO update (ELO-4) ──────────────────────────────────────────────────
+    // Non-fatal: ELO failure must not roll back the standings update.
+    // Idempotency: eloCalculated flag prevents double-processing.
+    if (!afterData.eloCalculated) {
+      try {
+        await processChampionshipMatchEloUpdates({
+          championshipId,
+          matchId,
+          teamAId: afterData.teamAId,
+          teamBId: afterData.teamBId,
+          winner: result.winner as "teamA" | "teamB",
+        });
+        functions.logger.info("[onChampionshipMatchVerified] ELO updated", { matchId });
+      } catch (eloErr) {
+        functions.logger.error(
+          "[onChampionshipMatchVerified] ELO update failed (non-fatal)",
+          { eloErr, matchId }
+        );
+      }
+    }
   } catch (err) {
     functions.logger.error(
       "[onChampionshipMatchVerified] Batch write failed",

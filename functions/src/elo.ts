@@ -1,311 +1,188 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { processStatsTracking } from "./statsTracking";
+import {
+  DEFAULT_ELO,
+  GameSource,
+  calculateTeamRating,
+  calculateNewStreak,
+  getExpectedScore,
+  calculateRatingChange,
+  getKFactor,
+} from "./eloMath";
 
-// Constants
-const K_FACTOR = 32;
-const DEFAULT_ELO = 1200;
-
-/**
- * Calculate team rating using Weak-Link formula.
- * Team Rating = 0.7 * min + 0.3 * max
- */
-export function calculateTeamRating(ratings: number[]): number {
-  if (ratings.length !== 2) {
-     // Fallback for non-2-player teams
-     if (ratings.length === 0) return DEFAULT_ELO;
-     const sum = ratings.reduce((a, b) => a + b, 0);
-     return sum / ratings.length;
-  }
-  const min = Math.min(...ratings);
-  const max = Math.max(...ratings);
-  return 0.7 * min + 0.3 * max;
-}
+// Re-export for backward compatibility with any callers
+export { calculateTeamRating, getExpectedScore, calculateRatingChange };
 
 /**
- * Calculate expected win probability based on team ratings
- */
-export function getExpectedScore(teamRating: number, opponentRating: number): number {
-  return 1 / (1 + Math.pow(10, (opponentRating - teamRating) / 400));
-}
-
-/**
- * Calculate rating change
- */
-export function calculateRatingChange(actualScore: number, expectedScore: number, kFactor: number = K_FACTOR): number {
-  return Math.round(kFactor * (actualScore - expectedScore));
-}
-
-/**
- * Calculate new streak
- */
-function calculateNewStreak(currentStreak: number, won: boolean): number {
-  if (won) {
-    return currentStreak >= 0 ? currentStreak + 1 : 1;
-  } else {
-    return currentStreak <= 0 ? currentStreak - 1 : -1;
-  }
-}
-
-/**
- * Process game completion and update ELO ratings
+ * Process a regular game's ELO update.
  *
- * CRITICAL ARCHITECTURE RULE (Story 15.5):
- * - This function processes ONLY competitive games
- * - Training sessions are NON-COMPETITIVE and stored in "trainingSessions" collection
- * - This function is NEVER called for training sessions
+ * Key fix (ELO-1): ELO is calculated ONCE per match using the overall
+ * win/loss result — not sequentially per set. This ensures a 2-0 and 2-1
+ * win against the same opponent produce the same ELO swing.
+ *
+ * ARCHITECTURE RULE: Only called for competitive games in the games/ collection.
+ * Training sessions are never processed here.
  */
-export async function processGameEloUpdates(gameId: string, gameData: any): Promise<void> {
+export async function processGameEloUpdates(
+  gameId: string,
+  gameData: any,
+  source: GameSource = "group_game"
+): Promise<void> {
   const db = admin.firestore();
 
-  // DEFENSIVE CHECK (Story 15.5): Verify game data structure
-  // Training sessions don't have teams/results, so this check implicitly rejects them
-  if (!gameData.teams || !gameData.teams.teamAPlayerIds || !gameData.teams.teamBPlayerIds) {
+  if (!gameData.teams?.teamAPlayerIds || !gameData.teams?.teamBPlayerIds) {
     throw new Error("Invalid game data: Missing teams information");
   }
-
-  if (!gameData.result || !gameData.result.games || !Array.isArray(gameData.result.games)) {
-    throw new Error("Invalid game data: Missing result or games array");
+  if (!gameData.result?.winner) {
+    throw new Error("Invalid game data: Missing result winner");
   }
 
-  // DEFENSIVE CHECK (Story 15.5): Explicitly reject if somehow a training session got here
-  // This should never happen, but defensive programming
+  // Defensive: verify document lives in the games collection
   const gameRef = db.collection("games").doc(gameId);
   const gameDoc = await gameRef.get();
-  if (!gameDoc.exists) {
-    functions.logger.error(`Game ${gameId} not found in games collection`);
-    throw new Error("Game not found");
+  if (!gameDoc.exists || gameDoc.ref.parent.id !== "games") {
+    throw new Error("ELO can only be processed for competitive games");
   }
 
-  // Double-check we're in the games collection
-  if (gameDoc.ref.parent.id !== "games") {
-    functions.logger.error(
-      `CRITICAL: Attempted ELO processing for non-game document: ${gameDoc.ref.path}`,
-      {gameId, collection: gameDoc.ref.parent.id}
-    );
-    throw new Error("ELO can only be processed for competitive games, not training sessions");
-  }
-
-  const teamAPlayerIds = gameData.teams.teamAPlayerIds;
-  const teamBPlayerIds = gameData.teams.teamBPlayerIds;
-  const individualGames = gameData.result.games; // Array of individual games
+  const teamAPlayerIds: string[] = gameData.teams.teamAPlayerIds;
+  const teamBPlayerIds: string[] = gameData.teams.teamBPlayerIds;
+  const overallWinner: string = gameData.result.winner ?? gameData.result.overallWinner; // support both field names
+  const setsPlayed = gameData.result?.games ?? [];
 
   try {
     await db.runTransaction(async (transaction) => {
-      // 1. Fetch all players
+      // 1. Fetch all player documents
       const playerIds = [...teamAPlayerIds, ...teamBPlayerIds];
-      const playerRefs = playerIds.map((id: string) => db.collection("users").doc(id));
-      const playerDocs = await Promise.all(playerRefs.map((ref: any) => transaction.get(ref)));
+      const playerDocs = await Promise.all(
+        playerIds.map((id) => transaction.get(db.collection("users").doc(id)))
+      );
 
       const playerMap = new Map<string, any>();
       const displayNames = new Map<string, string>();
-
-      playerDocs.forEach((doc: any) => {
+      playerDocs.forEach((doc) => {
         if (doc.exists) {
-          const data = doc.data();
-          playerMap.set(doc.id, data);
-          displayNames.set(doc.id, data.displayName || data.email || "Unknown");
+          playerMap.set(doc.id, doc.data());
+          displayNames.set(doc.id, doc.data()?.displayName ?? doc.data()?.email ?? "Unknown");
         }
       });
 
-      // Track current ratings as we process each game (starts with stored ratings)
-      const currentRatings = new Map<string, number>();
-      playerIds.forEach(id => {
-        const data = playerMap.get(id);
-        currentRatings.set(id, data?.eloRating || DEFAULT_ELO);
-      });
+      // 2. Calculate team ratings from stored ELO values
+      const getRating = (id: string) => playerMap.get(id)?.eloRating ?? DEFAULT_ELO;
+      const teamARating = calculateTeamRating(teamAPlayerIds.map(getRating));
+      const teamBRating = calculateTeamRating(teamBPlayerIds.map(getRating));
 
-      // Track cumulative changes for each player
-      const cumulativeChanges = new Map<string, number>();
-      playerIds.forEach(id => cumulativeChanges.set(id, 0));
+      // 3. Single match-level ELO change (ELO-1 fix)
+      const teamAWon = overallWinner === "teamA";
+      const teamAExpected = getExpectedScore(teamARating, teamBRating);
+      const teamBExpected = getExpectedScore(teamBRating, teamARating);
 
+      const now = admin.firestore.FieldValue.serverTimestamp();
+      const timestampNow = admin.firestore.Timestamp.now();
       const updates: any = {};
-      const now = admin.firestore.FieldValue.serverTimestamp(); // For top-level document fields
-      const timestampNow = admin.firestore.Timestamp.now(); // For nested objects like bestWin
 
-      // 2. Process each individual game sequentially
-      for (let i = 0; i < individualGames.length; i++) {
-        const individualGame = individualGames[i];
-        const gameWinner = individualGame.winner; // 'teamA' or 'teamB'
-
-        if (!gameWinner) {
-          functions.logger.warn(`Game ${i + 1} has no winner, skipping ELO calculation`);
-          continue;
-        }
-
-        // Per-game teams with session-level fallback (Story 14.12)
-        // New games carry per-game teams; old games fall back to session-level assignment.
-        // Explicit existence check (not just ??) to guard against partial/null team objects.
-        const hasPerGameTeams = !!(individualGame.teams &&
-          individualGame.teams.teamAPlayerIds &&
-          individualGame.teams.teamBPlayerIds);
-        const gameTeams = hasPerGameTeams ? individualGame.teams : gameData.teams;
-        const gameTeamAIds: string[] = gameTeams.teamAPlayerIds;
-        const gameTeamBIds: string[] = gameTeams.teamBPlayerIds;
-
-        // Get current ratings for this iteration
-        const getRatings = (ids: string[]) => ids.map(id => currentRatings.get(id) || DEFAULT_ELO);
-
-        const teamARatings = getRatings(gameTeamAIds);
-        const teamBRatings = getRatings(gameTeamBIds);
-
-        // Calculate Team Ratings (Weak-Link formula: 0.7 * min + 0.3 * max)
-        const teamARating = calculateTeamRating(teamARatings);
-        const teamBRating = calculateTeamRating(teamBRatings);
-
-        // Calculate Expected Scores
-        const teamAExpected = getExpectedScore(teamARating, teamBRating);
-        const teamBExpected = getExpectedScore(teamBRating, teamARating);
-
-        // Determine actual scores based on who won this specific game
-        const teamAActualScore = gameWinner === "teamA" ? 1 : 0;
-        const teamBActualScore = gameWinner === "teamB" ? 1 : 0;
-
-        // Calculate Rating Changes for this game
-        const teamAChange = calculateRatingChange(teamAActualScore, teamAExpected);
-        const teamBChange = calculateRatingChange(teamBActualScore, teamBExpected);
-
-        // Update current ratings and track cumulative changes
-        gameTeamAIds.forEach((id: string) => {
-          const newRating = (currentRatings.get(id) || DEFAULT_ELO) + teamAChange;
-          currentRatings.set(id, newRating);
-          cumulativeChanges.set(id, (cumulativeChanges.get(id) || 0) + teamAChange);
-        });
-
-        gameTeamBIds.forEach((id: string) => {
-          const newRating = (currentRatings.get(id) || DEFAULT_ELO) + teamBChange;
-          currentRatings.set(id, newRating);
-          cumulativeChanges.set(id, (cumulativeChanges.get(id) || 0) + teamBChange);
-        });
-
-        functions.logger.info(
-          `Game ${i + 1}/${individualGames.length}: Winner=${gameWinner}, ` +
-          `Team A change=${teamAChange}, Team B change=${teamBChange}`
-        );
-      }
-
-      // 3. Now apply all updates to Firestore
-      // Determine overall winner based on cumulative changes (for win/loss stats)
-      const teamAFinalChange = teamAPlayerIds.reduce((sum: number, id: string) => sum + (cumulativeChanges.get(id) || 0), 0) / teamAPlayerIds.length;
-      const teamBFinalChange = teamBPlayerIds.reduce((sum: number, id: string) => sum + (cumulativeChanges.get(id) || 0), 0) / teamBPlayerIds.length;
-      const overallTeamAWon = teamAFinalChange > 0;
-      const overallTeamBWon = teamBFinalChange > 0;
-
-      // Helper to update each player with their cumulative changes
-      const updatePlayer = (playerId: string, isTeamA: boolean) => {
+      const updatePlayer = (playerId: string, won: boolean) => {
         const data = playerMap.get(playerId);
         if (!data) return;
 
-        const originalRating = data.eloRating || DEFAULT_ELO;
-        const cumulativeChange = cumulativeChanges.get(playerId) || 0;
-        const finalRating = currentRatings.get(playerId) || DEFAULT_ELO;
-        const won = isTeamA ? overallTeamAWon : overallTeamBWon;
-        const opponentIds = isTeamA ? teamBPlayerIds : teamAPlayerIds;
+        const originalRating = data.eloRating ?? DEFAULT_ELO;
+        const gamesPlayed = data.gamesPlayed ?? 0;
+        const opponentIds = won ? teamBPlayerIds : teamAPlayerIds;
 
-        const currentPeak = data.eloPeak || originalRating;
-        const currentStreak = data.currentStreak || 0;
+        // Variable K-factor (ELO-2 fix)
+        const k = getKFactor(gamesPlayed);
+        const expected = won ? teamAExpected : teamBExpected;
+        const change = calculateRatingChange(won ? 1 : 0, expected, k);
+        const finalRating = originalRating + change;
 
+        // Streak
+        const newStreak = calculateNewStreak(data.currentStreak ?? 0, won);
+
+        // Peak ELO
+        const currentPeak = data.eloPeak ?? originalRating;
         const newPeak = Math.max(currentPeak, finalRating);
-        const shouldUpdatePeak = finalRating > currentPeak;
-        const newPeakDate = shouldUpdatePeak ? now : (data.eloPeakDate || null);
 
-        const newStreak = calculateNewStreak(currentStreak, won);
-
-        // Calculate best win tracking (Story 301.6)
+        // Best win tracking
         let bestWinUpdate: any = undefined;
-        if (won && cumulativeChange > 0) {
-          // Get opponent team ratings at the time of the game
-          const opponentRatings = opponentIds.map((oid: string) => {
-            const oppData = playerMap.get(oid);
-            return oppData?.eloRating || DEFAULT_ELO;
-          });
-
-          // Calculate opponent team ELO (using same formula as team rating)
+        if (won && change > 0) {
+          const opponentRatings = opponentIds.map(getRating);
           const opponentTeamElo = calculateTeamRating(opponentRatings);
-          const opponentTeamAvgElo = opponentRatings.reduce((sum: number, r: number) => sum + r, 0) / opponentRatings.length;
-
-          // Check if this is a better win than current best
           const currentBestWin = data.bestWin;
-          const shouldUpdateBestWin = !currentBestWin || opponentTeamElo > (currentBestWin.opponentTeamElo || 0);
-
-          if (shouldUpdateBestWin) {
-            const opponentNames = opponentIds.map((oid: string) => displayNames.get(oid) || "Unknown").join(" & ");
+          if (!currentBestWin || opponentTeamElo > (currentBestWin.opponentTeamElo ?? 0)) {
+            const opponentNames = opponentIds
+              .map((id) => displayNames.get(id) ?? "Unknown")
+              .join(" & ");
             bestWinUpdate = {
-              gameId: gameId,
-              opponentTeamElo: opponentTeamElo,
-              opponentTeamAvgElo: opponentTeamAvgElo,
-              eloGained: cumulativeChange,
-              date: timestampNow, // Use actual Timestamp for nested object
+              gameId,
+              opponentTeamElo,
+              opponentTeamAvgElo: opponentRatings.reduce((a, b) => a + b, 0) / opponentRatings.length,
+              eloGained: change,
+              date: timestampNow,
               gameTitle: `vs ${opponentNames}`,
-              opponentNames: opponentNames, // Store opponent names for UI display
+              opponentNames,
             };
           }
         }
 
-        // Update User Doc
+        // User document update — 1 win OR 1 loss per match (ELO-1 fix)
         const userRef = db.collection("users").doc(playerId);
         const updateData: any = {
           eloRating: finalRating,
           eloLastUpdated: now,
           eloPeak: newPeak,
-          eloPeakDate: newPeakDate,
-          gamesPlayed: admin.firestore.FieldValue.increment(individualGames.length), // Count all games
-          eloGamesPlayed: admin.firestore.FieldValue.increment(individualGames.length),
-          wins: won ? admin.firestore.FieldValue.increment(individualGames.length) : admin.firestore.FieldValue.increment(0),
-          losses: won ? admin.firestore.FieldValue.increment(0) : admin.firestore.FieldValue.increment(individualGames.length),
-          gamesWon: won ? admin.firestore.FieldValue.increment(individualGames.length) : admin.firestore.FieldValue.increment(0),
-          gamesLost: won ? admin.firestore.FieldValue.increment(0) : admin.firestore.FieldValue.increment(individualGames.length),
+          eloPeakDate: finalRating > currentPeak ? now : (data.eloPeakDate ?? null),
+          gamesPlayed: admin.firestore.FieldValue.increment(1),
+          eloGamesPlayed: admin.firestore.FieldValue.increment(1),
+          gamesWon: admin.firestore.FieldValue.increment(won ? 1 : 0),
+          gamesLost: admin.firestore.FieldValue.increment(won ? 0 : 1),
+          wins: admin.firestore.FieldValue.increment(won ? 1 : 0),
+          losses: admin.firestore.FieldValue.increment(won ? 0 : 1),
           currentStreak: newStreak,
           lastGameDate: now,
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         };
-
-        // Add bestWin update if this is a new best win
-        if (bestWinUpdate) {
-          updateData.bestWin = bestWinUpdate;
-        }
-
+        if (bestWinUpdate) updateData.bestWin = bestWinUpdate;
         transaction.update(userRef, updateData);
 
-        updates[playerId] = {
-          previousRating: originalRating,
-          newRating: finalRating,
-          change: cumulativeChange
-        };
+        updates[playerId] = { previousRating: originalRating, newRating: finalRating, change };
 
-        // Add to History (one entry per play session with cumulative change)
-        const opponentNames = opponentIds.map((oid: string) => displayNames.get(oid) || "Unknown").join(" & ");
-        const historyRef = userRef.collection("ratingHistory").doc();
-        transaction.set(historyRef, {
-            gameId: gameId,
-            oldRating: originalRating,
-            newRating: finalRating,
-            ratingChange: cumulativeChange,
-            opponentTeam: opponentNames,
-            won: won,
-            timestamp: now,
+        // Rating history — with source field (ELO-3)
+        const opponentNames = opponentIds
+          .map((id) => displayNames.get(id) ?? "Unknown")
+          .join(" & ");
+        transaction.set(userRef.collection("ratingHistory").doc(), {
+          gameId,
+          source,                   // ELO-3: group_game | championship | pickup
+          oldRating: originalRating,
+          newRating: finalRating,
+          ratingChange: change,
+          opponentTeam: opponentNames,
+          won,
+          kFactor: k,
+          timestamp: now,
         });
       };
 
-      // Update all players
-      teamAPlayerIds.forEach((id: string) => updatePlayer(id, true));
-      teamBPlayerIds.forEach((id: string) => updatePlayer(id, false));
+      teamAPlayerIds.forEach((id) => updatePlayer(id, teamAWon));
+      teamBPlayerIds.forEach((id) => updatePlayer(id, !teamAWon));
 
-      // 5. Process teammate stats tracking
-      // NOTE: Head-to-head stats are processed by onEloCalculationComplete (separate Cloud Function)
+      // Stats tracking (cumulative changes map for backward compat)
+      const cumulativeChanges = new Map<string, number>();
+      playerIds.forEach((id) => {
+        cumulativeChanges.set(id, updates[id]?.change ?? 0);
+      });
+
       await processStatsTracking(
         transaction,
         gameId,
         teamAPlayerIds,
         teamBPlayerIds,
-        overallTeamAWon,
-        individualGames,
+        teamAWon,
+        setsPlayed,
         cumulativeChanges,
-        playerMap // Pass the player data map
+        playerMap
       );
 
-      // 6. Record ELO changes in the game document
-      // Setting eloCalculated to true triggers onEloCalculationComplete
       transaction.update(db.collection("games").doc(gameId), {
         eloUpdates: updates,
         eloCalculated: true,
@@ -313,15 +190,9 @@ export async function processGameEloUpdates(gameId: string, gameData: any): Prom
       });
     });
 
-    // NOTE: Fully decoupled architecture (Story 301.8):
-    // 1. This function: ELO + teammate stats (fast, <5 seconds)
-    // 2. onEloCalculationComplete: H2H stats updates (triggered by eloCalculated=true)
-    // 3. onHeadToHeadStatsUpdated: Nemesis calculation (triggered by h2h doc changes)
-
-    functions.logger.info(`Successfully updated ELO ratings and teammate stats for game ${gameId}`);
-
+    functions.logger.info(`[processGameEloUpdates] Updated ELO for game ${gameId}`, { source });
   } catch (error) {
-    functions.logger.error(`Error updating ELO ratings for game ${gameId}`, error);
+    functions.logger.error(`[processGameEloUpdates] Failed for game ${gameId}`, error);
     throw error;
   }
 }
