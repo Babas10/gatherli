@@ -45,7 +45,7 @@ jobs:
     needs: guard
     uses: ./.github/workflows/reusable-test.yml
     with:
-      flutter-version: '3.32.6'
+      flutter-version: '3.44.0'
     secrets: inherit
 
   # ─── Job 3: Find Beta Run ─────────────────────────────────────────────────────
