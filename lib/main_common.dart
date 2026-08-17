@@ -12,47 +12,61 @@ import 'package:play_with_me/core/services/connectivity_service.dart';
 import 'package:play_with_me/core/services/feature_flags.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 
+// Helper: run an async step with a timeout and step logging.
+// If the step exceeds [timeout], it logs a warning and continues
+// so the app always reaches runApp() within a bounded time.
+Future<void> _step(
+  String name,
+  Future<void> Function() fn, {
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  final sw = Stopwatch()..start();
+  debugPrint('[startup] ⏳ $name...');
+  try {
+    await fn().timeout(timeout, onTimeout: () {
+      debugPrint('[startup] ⚠️  $name TIMED OUT after ${timeout.inSeconds}s — continuing');
+    });
+    debugPrint('[startup] ✅ $name done in ${sw.elapsedMilliseconds}ms');
+  } catch (e) {
+    debugPrint('[startup] ❌ $name failed in ${sw.elapsedMilliseconds}ms: $e');
+    rethrow;
+  }
+}
+
 Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
+  debugPrint('[startup] 🚀 App starting...');
 
   try {
-    // Initialize Firebase before anything else
-    await FirebaseService.initialize();
+    await _step('Firebase.initialize', FirebaseService.initialize);
 
-    // Route Flutter framework errors (widget build failures, layout errors, etc.)
-    // to Crashlytics. Disabled in debug mode so the development console stays clean.
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      !kDebugMode,
-    );
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    await _step('Crashlytics.setEnabled', () async {
+      await FirebaseCrashlytics.instance
+          .setCrashlyticsCollectionEnabled(!kDebugMode);
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    });
 
-    // Route uncaught async/platform errors (Dart isolate errors, plugin errors)
-    // to Crashlytics.
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
+    await _step('initializeDependencies', initializeDependencies);
 
-    // Initialize dependency injection
-    await initializeDependencies();
+    await _step('DeferredDeepLink.checkOnce',
+        () => sl<DeferredDeepLinkOrchestrator>().checkOnce());
 
-    // Run the deferred deep link check once on first launch.
-    // Stores any recovered token in PendingInviteStorage before runApp() so
-    // that DeepLinkBloc.InitializeDeepLinks picks it up automatically.
-    await sl<DeferredDeepLinkOrchestrator>().checkOnce();
-
-    // Start monitoring network connectivity — updates OfflineBanner on all pages
     ConnectivityService.instance.initialize();
+    debugPrint('[startup] ✅ ConnectivityService initialized');
 
-    // Load feature flags in background — never blocks startup.
-    // isEnabled() defaults to true if flags haven't loaded yet.
     unawaited(FeatureFlags.refresh());
+    debugPrint('[startup] ✅ FeatureFlags refresh queued (background)');
 
+    debugPrint('[startup] 🎉 Calling runApp()');
     runApp(const PlayWithMeApp());
   } catch (e) {
-    debugPrint('❌ App initialization failed: $e');
+    debugPrint('[startup] 💥 FATAL: $e');
 
-    // Run app with error state
     runApp(
       MaterialApp(
         home: Scaffold(
