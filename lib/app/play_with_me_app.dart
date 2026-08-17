@@ -928,15 +928,19 @@ class _SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use null-safe localization — on the first frame localizations may not
+    // be ready yet. In release mode a ! crash shows nothing (empty white screen).
+    final loadingText = AppLocalizations.of(context)?.loading ?? 'Loading...';
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackground,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.sports_volleyball,
               size: 64,
-              color: Theme.of(context).primaryColor,
+              color: AppColors.secondary,
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(
@@ -944,9 +948,9 @@ class _SplashScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: AppSpacing.xxl),
-            const CircularProgressIndicator(),
+            const CircularProgressIndicator(color: AppColors.secondary),
             const SizedBox(height: AppSpacing.lg),
-            Text(AppLocalizations.of(context)!.loading),
+            Text(loadingText),
           ],
         ),
       ),
