@@ -1,3 +1,4 @@
+import 'dart:async';
 // Feature flag service — gate features behind Firestore-controlled flags.
 // Disabling a flag hides the feature without an app release.
 //
@@ -39,13 +40,15 @@ class FeatureFlags {
 
   static Future<Map<String, bool>> _fetch() async {
     try {
-      final doc = await _collection.doc(_doc).get();
+      // 3-second timeout — feature flags must never block app startup.
+      final doc = await _collection.doc(_doc).get()
+          .timeout(const Duration(seconds: 3));
       if (!doc.exists) return {};
       return (doc.data() ?? {}).map(
         (key, value) => MapEntry(key, value == true),
       );
     } catch (_) {
-      // If Firestore is unreachable, default all flags to enabled.
+      // Timeout, permission denied, or Firestore unreachable — default all enabled.
       return {};
     }
   }

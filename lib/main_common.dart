@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -43,8 +44,9 @@ Future<void> mainCommon() async {
     // Start monitoring network connectivity — updates OfflineBanner on all pages
     ConnectivityService.instance.initialize();
 
-    // Load feature flags from Firestore before runApp — gates features without a release
-    await FeatureFlags.refresh();
+    // Load feature flags in background — never blocks startup.
+    // isEnabled() defaults to true if flags haven't loaded yet.
+    unawaited(FeatureFlags.refresh());
 
     runApp(const PlayWithMeApp());
   } catch (e) {
