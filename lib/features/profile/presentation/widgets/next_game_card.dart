@@ -130,11 +130,7 @@ class NextGameCard extends StatelessWidget {
             Expanded(
               child: Text(
                 game!.title,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
-                ),
+                style: AppTextStyles.cardTitle.copyWith(fontSize: 17),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

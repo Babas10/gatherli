@@ -108,11 +108,7 @@ class _RoleCard extends StatelessWidget {
               children: [
                 Text(
                   role,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: AppColors.onSurface,
-                  ),
+                  style: AppTextStyles.cardTitle.copyWith(fontSize: 14),
                 ),
                 const SizedBox(height: 2),
                 Text(

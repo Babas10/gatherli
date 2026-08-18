@@ -44,11 +44,7 @@ class MyGameTile extends StatelessWidget {
                   children: [
                     Text(
                       item.title,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.onSurface,
-                      ),
+                      style: AppTextStyles.cardTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
