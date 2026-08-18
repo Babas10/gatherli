@@ -327,12 +327,19 @@ class AppTheme {
       ),
 
       // ── List tiles ────────────────────────────────────────────────────────────
+      // titleTextStyle controls the title: Text(...) of every ListTile in the app.
+      // subtitleTextStyle stays muted — only the primary name/title gets teal.
       listTileTheme: const ListTileThemeData(
         tileColor: Colors.transparent,
         selectedTileColor: Colors.transparent,
         iconColor: AppColors.secondary,
         textColor: AppColors.onSurface,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        titleTextStyle: TextStyle(
+          color: AppColors.secondary,
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
+        ),
       ),
 
       // ── Divider ───────────────────────────────────────────────────────────────
