@@ -36,7 +36,7 @@ class AppTextStyles {
   static const cardTitle = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w600,
-    color: AppColors.onSurface,
+    color: AppColors.secondary,
   );
 
   // Secondary / subtitle text on a card

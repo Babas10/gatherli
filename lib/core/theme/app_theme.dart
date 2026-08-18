@@ -57,10 +57,10 @@ class AppTheme {
         displaySmall: TextStyle(fontSize: 34, fontWeight: FontWeight.w700, color: AppColors.onSurface),
         // Page / section heading
         headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.onSurface),
-        // Card / dialog title
-        titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.onSurface),
-        titleMedium: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.onSurface),
-        titleSmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.onSurface),
+        // Card / dialog title — teal so names and headings stand out from body text
+        titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.secondary),
+        titleMedium: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.secondary),
+        titleSmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.secondary),
         // Body content
         bodyLarge: TextStyle(fontSize: 16, color: AppColors.onSurface),
         bodyMedium: TextStyle(fontSize: 14, color: AppColors.onSurface),
