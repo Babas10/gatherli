@@ -226,7 +226,10 @@ class PlayWithMeAppBar {
               );
               Navigator.of(dialogContext).pop();
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.secondary),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.secondary,
+              foregroundColor: Colors.white,
+            ),
             child: Text(l10n.signOut),
           ),
         ],
