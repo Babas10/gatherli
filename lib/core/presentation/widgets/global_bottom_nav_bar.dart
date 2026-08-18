@@ -27,10 +27,8 @@ class GlobalBottomNavBar extends StatelessWidget {
       backgroundColor: AppColors.bottomNavBackground,
       selectedItemColor: AppColors.navLabelColor,
       unselectedItemColor: AppColors.navLabelColor,
-      selectedIconTheme: const IconThemeData(color: AppColors.primary, size: 22),
-      unselectedIconTheme: const IconThemeData(color: AppColors.navLabelColor, size: 22),
-      selectedFontSize: 10,
-      unselectedFontSize: 10,
+      selectedIconTheme: const IconThemeData(color: AppColors.primary),
+      unselectedIconTheme: const IconThemeData(color: AppColors.navLabelColor),
       currentIndex: selectedIndex,
       onTap: onTabSelected,
       items: [
