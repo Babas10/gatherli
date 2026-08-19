@@ -301,6 +301,8 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
   Widget _buildAddFriendButton(BuildContext context, AppLocalizations l10n) {
     return FloatingActionButton.extended(
       heroTag: 'add_friend_fab', // Unique tag to avoid Hero conflicts
+      backgroundColor: AppColors.primary.withValues(alpha: 0.25),
+      foregroundColor: AppColors.secondary,
       elevation: 0,
       highlightElevation: 0,
       onPressed: () {

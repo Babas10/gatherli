@@ -613,6 +613,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                     if (index == 1) {
                       final l10n = AppLocalizations.of(context)!;
                       return AccentCard(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
                         onTap: () => _navigateToInvitePage(context),
                         child: Row(
                           children: [
@@ -632,6 +633,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                       final isGenerating =
                           inviteLinkState is GroupInviteLinkLoading;
                       return AccentCard(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
                         onTap: isGenerating ? null : () => context.read<GroupInviteLinkBloc>().add(GenerateInvite(groupId: widget.groupId)),
                         child: Row(
                           children: [
