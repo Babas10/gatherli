@@ -56,7 +56,6 @@ class GameInvitationCard extends StatelessWidget {
                 invitation.gameTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.onSurface,
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),

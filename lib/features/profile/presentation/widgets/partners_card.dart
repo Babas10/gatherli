@@ -83,11 +83,7 @@ class PartnersCard extends StatelessWidget {
             children: [
               Text(
                 partner.displayName,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
-                ),
+                style: AppTextStyles.cardTitle,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: AppSpacing.xs),

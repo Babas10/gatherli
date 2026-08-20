@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -129,11 +130,7 @@ class NextTrainingSessionCard extends StatelessWidget {
             Expanded(
               child: Text(
                 session!.title,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
-                ),
+                style: AppTextStyles.cardTitle.copyWith(fontSize: 17),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

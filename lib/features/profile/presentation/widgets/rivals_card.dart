@@ -74,11 +74,7 @@ class RivalsCard extends StatelessWidget {
           children: [
             Text(
               nemesis.opponentName,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: AppColors.onSurface,
-              ),
+              style: AppTextStyles.cardTitle,
             ),
             Icon(
               Icons.arrow_forward_ios,
