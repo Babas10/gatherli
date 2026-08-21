@@ -8,166 +8,186 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f0f4f8;
-      color: #4a5568;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      background: #f0f4f8; color: #4a5568; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 24px;
     }
     .card {
-      background: white;
-      border-radius: 20px;
-      padding: 48px 40px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
+      background: white; border-radius: 20px; padding: 48px 40px;
+      max-width: 420px; width: 100%; text-align: center;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
-    .icon {
-      font-size: 64px;
-      margin-bottom: 24px;
-      display: block;
-    }
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1a202c;
-      margin-bottom: 12px;
-    }
-    p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #718096;
-      margin-bottom: 32px;
-    }
+    .icon { font-size: 64px; margin-bottom: 24px; display: block; }
+    h1 { font-size: 22px; font-weight: 700; color: #1a202c; margin-bottom: 12px; }
+    p { font-size: 15px; line-height: 1.6; color: #718096; margin-bottom: 32px; }
     .btn {
-      display: inline-block;
-      background: #004E64;
-      color: white;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      margin: 6px;
-      transition: opacity 0.2s;
+      display: inline-block; background: #004E64; color: white; text-decoration: none;
+      padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      margin: 6px; transition: opacity 0.2s; border: none; cursor: pointer; width: 100%;
     }
     .btn:hover { opacity: 0.88; }
-    .btn.secondary {
-      background: transparent;
-      color: #004E64;
-      border: 2px solid #004E64;
-    }
-    .store-badges {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .store-badges img {
-      height: 40px;
-      width: auto;
-    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn.secondary { background: transparent; color: #004E64; border: 2px solid #004E64; }
+    .store-badges { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .store-badges img { height: 40px; width: auto; }
     .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid #e2e8f0;
-      border-top-color: #004E64;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 24px;
+      width: 40px; height: 40px; border: 3px solid #e2e8f0; border-top-color: #004E64;
+      border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .hidden { display: none; }
+    .field { margin-bottom: 16px; text-align: left; }
+    .field label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+    .field input {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #e2e8f0;
+      border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus { border-color: #004E64; }
+    .field-error { font-size: 12px; color: #e53e3e; margin-top: 4px; display: none; }
   </style>
 </head>
 <body>
-  <!-- Loading state -->
+
   <div class="card" id="loading">
     <div class="spinner"></div>
     <h1>Just a moment…</h1>
-    <p>We're verifying your email address.</p>
+    <p id="loading-msg">We're verifying your link.</p>
   </div>
 
-  <!-- Success state -->
-  <div class="card hidden" id="success">
+  <div class="card hidden" id="reset-form">
+    <span class="icon">🔒</span>
+    <h1>Reset your password</h1>
+    <p id="reset-email-label" style="margin-bottom:24px;"></p>
+    <div class="field">
+      <label for="new-password">New password</label>
+      <input type="password" id="new-password" placeholder="At least 6 characters" autocomplete="new-password">
+      <div class="field-error" id="pw-error"></div>
+    </div>
+    <div class="field">
+      <label for="confirm-password">Confirm password</label>
+      <input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password">
+      <div class="field-error" id="confirm-error"></div>
+    </div>
+    <button class="btn" id="submit-btn" onclick="submitReset()">Set new password</button>
+  </div>
+
+  <div class="card hidden" id="verify-success">
     <span class="icon">✅</span>
     <h1>Email verified!</h1>
     <p>Thank you for verifying your email address.<br>You're all set — welcome to Gatherli! 🎉</p>
     <div class="store-badges">
-      <a href="https://apps.apple.com/us/app/gatherli/id6760428234">
-        <img src="/badge-app-store.svg" alt="Download on the App Store">
-      </a>
-      <a href="https://play.google.com/store/apps/details?id=org.gatherli.app">
-        <img src="/badge-google-play.png" alt="Get it on Google Play">
-      </a>
+      <a href="https://apps.apple.com/us/app/gatherli/id6760428234"><img src="/badge-app-store.svg" alt="Download on the App Store"></a>
+      <a href="https://play.google.com/store/apps/details?id=org.gatherli.app"><img src="/badge-google-play.png" alt="Get it on Google Play"></a>
     </div>
   </div>
 
-  <!-- Error state -->
+  <div class="card hidden" id="reset-success">
+    <span class="icon">✅</span>
+    <h1>Password updated!</h1>
+    <p>Your password has been changed successfully.<br>You can now log in to Gatherli with your new password.</p>
+    <div class="store-badges" style="margin-top:24px;">
+      <a href="https://apps.apple.com/us/app/gatherli/id6760428234"><img src="/badge-app-store.svg" alt="Download on the App Store"></a>
+      <a href="https://play.google.com/store/apps/details?id=org.gatherli.app"><img src="/badge-google-play.png" alt="Get it on Google Play"></a>
+    </div>
+  </div>
+
   <div class="card hidden" id="error">
     <span class="icon">❌</span>
     <h1 id="error-title">Something went wrong</h1>
-    <p id="error-message">This link may have expired or already been used. Please request a new verification email from the app.</p>
-    <a href="https://gatherli.org" class="btn secondary">Back to Gatherli</a>
+    <p id="error-message">This link may have expired or already been used. Please request a new one from the app.</p>
+    <a href="https://gatherli.org" class="btn secondary" style="margin-top:8px;">Back to Gatherli</a>
   </div>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
-    import { getAuth, applyActionCode, verifyPasswordResetCode, confirmPasswordReset, checkActionCode } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import { getAuth, applyActionCode, verifyPasswordResetCode, confirmPasswordReset } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+
+    let _auth, _oobCode;
 
     function show(id) {
-      ['loading', 'success', 'error'].forEach(s => {
+      ['loading','reset-form','verify-success','reset-success','error'].forEach(s => {
         document.getElementById(s).classList.toggle('hidden', s !== id);
       });
     }
 
-    function setError(title, message) {
+    function setError(title, msg) {
       document.getElementById('error-title').textContent = title;
-      document.getElementById('error-message').textContent = message;
+      document.getElementById('error-message').textContent = msg;
       show('error');
     }
 
+    window.submitReset = async function () {
+      const pw = document.getElementById('new-password').value;
+      const confirm = document.getElementById('confirm-password').value;
+      const pwErr = document.getElementById('pw-error');
+      const confirmErr = document.getElementById('confirm-error');
+      pwErr.style.display = 'none';
+      confirmErr.style.display = 'none';
+
+      if (pw.length < 6) {
+        pwErr.textContent = 'Password must be at least 6 characters.';
+        pwErr.style.display = 'block';
+        return;
+      }
+      if (pw !== confirm) {
+        confirmErr.textContent = 'Passwords do not match.';
+        confirmErr.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      try {
+        await confirmPasswordReset(_auth, _oobCode, pw);
+        show('reset-success');
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Set new password';
+        const msg = {
+          'auth/expired-action-code': 'This link has expired. Please request a new password reset from the app.',
+          'auth/invalid-action-code': 'This link has already been used or is invalid. Please request a new one.',
+          'auth/weak-password': 'Password must be at least 6 characters.',
+        }[e.code] || 'Failed to update password. Please try again.';
+        setError('Could not reset password', msg);
+      }
+    };
+
     async function main() {
-      // Load Firebase config automatically from Firebase Hosting
       const config = await fetch('/__/firebase/init.json').then(r => r.json());
       const app = initializeApp(config);
-      const auth = getAuth(app);
+      _auth = getAuth(app);
 
       const params = new URLSearchParams(window.location.search);
       const mode = params.get('mode');
-      const oobCode = params.get('oobCode');
+      _oobCode = params.get('oobCode');
 
-      if (!mode || !oobCode) {
+      if (!mode || !_oobCode) {
         setError('Invalid link', 'This link is missing required parameters. Please request a new one from the app.');
         return;
       }
 
       try {
         if (mode === 'verifyEmail') {
-          await applyActionCode(auth, oobCode);
-          show('success');
-
+          document.getElementById('loading-msg').textContent = "We're verifying your email address.";
+          await applyActionCode(_auth, _oobCode);
+          show('verify-success');
         } else if (mode === 'resetPassword') {
-          // For password reset, redirect to a dedicated page or show inline form
-          // For now, show a generic message
-          setError('Password Reset', 'Password reset links must be opened directly from the Gatherli app.');
-
+          document.getElementById('loading-msg').textContent = "We're validating your reset link.";
+          const email = await verifyPasswordResetCode(_auth, _oobCode);
+          document.getElementById('reset-email-label').textContent = 'Resetting password for ' + email;
+          show('reset-form');
         } else {
           setError('Unknown action', 'This link type is not supported. Please return to the app.');
         }
       } catch (e) {
         const msg = {
-          'auth/expired-action-code': 'This link has expired. Please request a new verification email from the app.',
+          'auth/expired-action-code': 'This reset link has expired. Please request a new password reset from the app.',
           'auth/invalid-action-code': 'This link has already been used or is invalid. Please request a new one.',
           'auth/user-disabled': 'This account has been disabled. Please contact support.',
           'auth/user-not-found': 'No account was found for this link.',
         }[e.code] || 'Something went wrong. Please try again or contact support.';
-        setError('Verification failed', msg);
+        setError('Link invalid', msg);
       }
     }
 
