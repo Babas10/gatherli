@@ -576,7 +576,6 @@
   "@loadOlderActivities": {
     "description": "Button label to load activities older than 90 days in the group details activity feed"
   },
-
   "genderSelectionTitle": "Genere",
   "@genderSelectionTitle": {
     "description": "Title of the gender selection onboarding screen"
@@ -605,7 +604,6 @@
   "@genderSelectionError": {
     "description": "Error message shown when saving gender fails"
   },
-
   "deleteAccount": "Elimina account",
   "deleteAccountConfirmTitle": "Eliminare il tuo account?",
   "deleteAccountConfirmMessage": "Il tuo account e tutti i tuoi dati verranno eliminati definitivamente. Questa azione è irreversibile.",
@@ -620,7 +618,6 @@
   "@registrationGenderTooltip": {
     "description": "Tooltip explaining why gender is asked during registration"
   },
-
   "inviteGuestPlayers": "Invita persone da altri gruppi",
   "@inviteGuestPlayers": {
     "description": "Title of the invite guest players bottom sheet (Story 28.6)"
@@ -643,7 +640,13 @@
   },
   "inviteGroupSuccess": "Gruppo invitato con successo",
   "groupMembersCount": "{count, plural, =1{1 persona} other{{count} persone}}",
-  "@groupMembersCount": {"placeholders": {"count": {"type": "int"}}},
+  "@groupMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "invitedLabel": "Invitato",
   "invitePlayerError": "Invio dell'invito non riuscito",
   "@invitePlayerError": {
@@ -665,7 +668,9 @@
   "@fromGroup": {
     "description": "Label on a game invitation card showing the source group",
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "gameInvitationAccepted": "Invito accettato",
@@ -680,12 +685,10 @@
   "@gameInvitationActionError": {
     "description": "Snackbar shown when accepting or declining a game invitation fails"
   },
-
   "upcoming": "In arrivo",
   "@upcoming": {
     "description": "Section header for upcoming games in MyGamesPage"
   },
-
   "pastGames": "Partite passate",
   "open": "Aperto",
   "@open": {
@@ -694,7 +697,6 @@
   "@pastGames": {
     "description": "Section header for past games in MyGamesPage"
   },
-
   "teamsForThisGame": "Squadre",
   "@teamsForThisGame": {
     "description": "Section label for per-game team picker"
@@ -707,7 +709,6 @@
   "@vsLabel": {
     "description": "Label between two teams in a matchup, e.g. Alice & Bob vs Carol & Dave"
   },
-
   "chatSectionTitle": "Chat",
   "@chatSectionTitle": {},
   "chatInputHint": "Scrivi un messaggio...",
@@ -718,7 +719,6 @@
   "@chatPlayersOnly": {},
   "chatJoinToView": "Devi unirti alla partita per vedere la chat",
   "@chatJoinToView": {},
-
   "createPickupGame": "Crea partita al volo",
   "@createPickupGame": {},
   "pickupGame": "Partita al volo",
@@ -757,7 +757,7 @@
   },
   "next": "Avanti",
   "@next": {},
-  "championshipsTitle": "Campionati",
+  "championshipsTitle": "Leghe",
   "championshipOpenRegistration": "Iscrizioni aperte",
   "championshipTeamsCount": "{count, plural, =1{1 squadra iscritta} other{{count} squadre iscritte}}",
   "championshipSlotsLeft": "{count, plural, =1{1 posto rimasto} other{{count} posti rimasti}}",
@@ -765,7 +765,7 @@
   "registerTeam": "Iscriviti con la squadra",
   "leaveTeam": "Lascia la squadra",
   "leaveTeamConfirmTitle": "Lasciare la squadra?",
-  "leaveTeamConfirmBody": "La tua squadra verr\u00e0 eliminata e il posto liberato.",
+  "leaveTeamConfirmBody": "La tua squadra verrà eliminata e il posto liberato.",
   "createTeamTitle": "Crea la tua squadra",
   "teamNameLabel": "Nome della squadra",
   "teamNameHint": "es. Beach Wolves",
@@ -804,19 +804,19 @@
   "championshipStatusBadgeActive": "Turno {current}/{total}",
   "championshipStatusBadgeCompleted": "Completato",
   "championshipMyMatchesTab": "I miei match",
-  "championshipMyMatchesEmpty": "I tuoi match appariranno qui quando il campionato inizierà.",
+  "championshipMyMatchesEmpty": "I tuoi match appariranno qui quando il lega inizierà.",
   "championshipMyMatchesVs": "vs {opponent}",
   "championshipTabActive": "Attivi",
   "championshipTabCompleted": "Completati",
-  "championshipNoCompletedYet": "Nessun campionato completato ancora.",
-  "championshipNoResults": "Nessun campionato al momento.",
+  "championshipNoCompletedYet": "Nessun lega completato ancora.",
+  "championshipNoResults": "Nessun lega al momento.",
   "championshipDeadlineCountdown": "{days, plural, =1{1 giorno rimasto} other{{days} giorni rimasti}}",
   "championshipTeamCountOf": "{count} / {max} squadre",
   "championshipGenderMale": "Uomini",
   "championshipGenderFemale": "Donne",
   "championshipGenderBlockNoGender": "Devi impostare il tuo genere nel profilo per registrarti.",
-  "championshipGenderBlockMaleOnly": "Questo campionato è solo per uomini.",
-  "championshipGenderBlockFemaleOnly": "Questo campionato è solo per donne.",
+  "championshipGenderBlockMaleOnly": "Questo lega è solo per uomini.",
+  "championshipGenderBlockFemaleOnly": "Questo lega è solo per donne.",
   "championshipCreateGenderLabel": "Categoria di genere (opzionale)",
   "championshipDetailStandingsTab": "Classifica",
   "championshipDetailMatchesTab": "Partite",
@@ -846,7 +846,6 @@
   "matchDetailProposeTimeLabel": "Ora",
   "matchDetailProposeLocationLabel": "Luogo (opzionale)",
   "matchDetailProposeConfirm": "Proponi",
-
   "adminPanelTabLabel": "Admin",
   "adminPanelNoMatchesNeedingAttention": "Nessuna partita richiede attenzione",
   "adminPanelMatchOverdue": "Scaduto",
@@ -862,8 +861,7 @@
   "adminPanelDecisionSuccess": "Decisione applicata con successo",
   "adminPanelDecisionErrorNotesRequired": "Le note sono obbligatorie",
   "adminPanelDecisionErrorWinnerRequired": "Seleziona un vincitore per il walkover",
-
-  "championshipCreate": "Crea campionato",
+  "championshipCreate": "Crea lega",
   "championshipCreateTitleLabel": "Titolo",
   "championshipCreateTitleHint": "es. Open Estivo 2026",
   "championshipCreateTitleRequired": "Il titolo è obbligatorio",
@@ -877,33 +875,32 @@
   "championshipCreateMaxTeamsLabel": "Max squadre",
   "championshipCreateTeamSizeLabel": "Giocatori per squadra",
   "championshipCreateTeamSizeOption": "{count} giocatori",
-  "championshipCreateSubmit":"Crea campionato",
-  "championshipCreateSuccess": "Campionato creato",
+  "championshipCreateSubmit": "Crea lega",
+  "championshipCreateSuccess": "Lega creato",
   "championshipCreateStartDateLabel": "Data di inizio (opzionale)",
   "championshipCreateEndDateLabel": "Data di fine (opzionale)",
-  "championshipCreateDatePlaceholder": "Seleziona una data"
-,
+  "championshipCreateDatePlaceholder": "Seleziona una data",
   "myTeamSectionTitle": "Il mio team",
   "myTeamPartnerLabel": "Partner: {name}",
-  "leaveTeamSuccess": "Hai abbandonato il campionato.",
-  "startChampionshipButton": "Avvia campionato",
-  "startChampionshipConfirmTitle": "Avviare il campionato?",
+  "leaveTeamSuccess": "Hai abbandonato il lega.",
+  "startChampionshipButton": "Avvia lega",
+  "startChampionshipConfirmTitle": "Avviare il lega?",
   "startChampionshipConfirmBody": "Verranno generati tutti i match e l'operazione non potrà essere annullata. Assicurati che tutti i team siano iscritti.",
-  "startChampionshipSuccess": "Campionato avviato — {count} match generati.",
+  "startChampionshipSuccess": "Lega avviato — {count} match generati.",
   "startChampionshipStartDateLabel": "Inizio dei match",
-    "teamRenameTitle": "Rinomina squadra",
-    "teamRenameLabel": "Nome della squadra",
-    "teamRenameSuccess": "Squadra rinominata con successo.",
-    "teamRenameError": "Impossibile rinominare la squadra",
-    "standingsTiebreakerTitle": "Come funziona la classifica",
-    "standingsTiebreakerBody": "Punti: Vittoria 2-0 = 3pts · Vittoria 2-1 = 2pts · Sconfitta 1-2 = 1pt · Sconfitta 0-2 = 0pts\n\nSpareggio 1: Risultato testa a testa\nSpareggio 2: Rapporto set (set vinti − set persi)",
+  "teamRenameTitle": "Rinomina squadra",
+  "teamRenameLabel": "Nome della squadra",
+  "teamRenameSuccess": "Squadra rinominata con successo.",
+  "teamRenameError": "Impossibile rinominare la squadra",
+  "standingsTiebreakerTitle": "Come funziona la classifica",
+  "standingsTiebreakerBody": "Punti: Vittoria 2-0 = 3pts · Vittoria 2-1 = 2pts · Sconfitta 1-2 = 1pt · Sconfitta 0-2 = 0pts\n\nSpareggio 1: Risultato testa a testa\nSpareggio 2: Rapporto set (set vinti − set persi)",
   "editChampionshipButton": "Modifica dettagli",
-  "editChampionshipTitle": "Modifica campionato",
+  "editChampionshipTitle": "Modifica lega",
   "editChampionshipChangeDeadline": "Cambia scadenza",
   "completeChampionshipButton": "Segna come completato",
-  "completeChampionshipConfirmTitle": "Completare il campionato?",
+  "completeChampionshipConfirmTitle": "Completare il lega?",
   "completeChampionshipConfirmBody": "Usa questa opzione solo quando tutti i match sono stati risolti. L'operazione è irreversibile.",
-  "completeChampionshipSuccess": "Campionato segnato come completato.",
+  "completeChampionshipSuccess": "Lega segnato come completato.",
   "championshipChampionLabel": "Campione",
   "championshipMyMatch": "Il mio match",
   "matchScheduleWaitingTitle": "In attesa di conferma",
@@ -912,10 +909,8 @@
   "matchScheduleConfirmBody": "{teamName} ha proposto: {datetime}",
   "matchScheduleAcceptButton": "Accetta",
   "matchScheduleRejectButton": "Rifiuta",
-
   "matchDisputedTitle": "Match contestato",
   "matchDisputedExplanation": "Questo risultato è stato contestato. Un amministratore esaminerà i punteggi e prenderà una decisione finale. La classifica verrà aggiornata dopo la risoluzione.",
-
   "notificationSettingsTitle": "Notifiche",
   "notificationSettingsCategories": "Categorie di notifiche",
   "notifCategorySocial": "Social",
@@ -924,7 +919,7 @@
   "notifCategoryGamesSubtitle": "Nuove partite, risultati, cancellazioni, chat",
   "notifCategoryTraining": "Allenamento",
   "notifCategoryTrainingSubtitle": "Sessioni create, cancellate, feedback",
-  "notifCategoryChampionships": "Campionati",
+  "notifCategoryChampionships": "Leghe",
   "notifCategoryChampionshipsSubtitle": "Risultati, scadenze, contestazioni, orari",
   "notifQuietHoursTitle": "Ore silenziose",
   "notifQuietHoursEnable": "Attiva ore silenziose",
@@ -933,4 +928,5 @@
   "notifQuietHoursAdjust": "Modifica ore silenziose",
   "retryButton": "Riprova",
   "groupMuteNotifications": "Silenzia le notifiche",
-  "groupUnmuteNotifications": "Attiva le notifiche"}
+  "groupUnmuteNotifications": "Attiva le notifiche"
+}

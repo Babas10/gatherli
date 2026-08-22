@@ -91,7 +91,7 @@ void main() {
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pumpAndSettle();
 
-      expect(find.text('No championships at the moment.'), findsOneWidget);
+      expect(find.text('No leagues at the moment.'), findsOneWidget);
       bloc.close();
     });
 

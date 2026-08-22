@@ -2114,7 +2114,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get next => 'Siguiente';
 
   @override
-  String get championshipsTitle => 'Campeonatos';
+  String get championshipsTitle => 'Ligas';
 
   @override
   String get championshipOpenRegistration => 'Inscripción abierta';
@@ -2290,7 +2290,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get championshipMyMatchesEmpty =>
-      'Tus partidos aparecerán aquí cuando comience el campeonato.';
+      'Tus partidos aparecerán aquí cuando comience el liga.';
 
   @override
   String championshipMyMatchesVs(String opponent) {
@@ -2304,11 +2304,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get championshipTabCompleted => 'Completados';
 
   @override
-  String get championshipNoCompletedYet =>
-      'Aún no hay campeonatos completados.';
+  String get championshipNoCompletedYet => 'Aún no hay ligas completados.';
 
   @override
-  String get championshipNoResults => 'No hay campeonatos en este momento.';
+  String get championshipNoResults => 'No hay ligas en este momento.';
 
   @override
   String championshipDeadlineCountdown(int days) {
@@ -2338,11 +2337,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get championshipGenderBlockMaleOnly =>
-      'Este campeonato es solo para hombres.';
+      'Este liga es solo para hombres.';
 
   @override
   String get championshipGenderBlockFemaleOnly =>
-      'Este campeonato es solo para mujeres.';
+      'Este liga es solo para mujeres.';
 
   @override
   String get championshipCreateGenderLabel => 'Categoría de género (opcional)';
@@ -2486,7 +2485,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Selecciona un ganador para el walkover';
 
   @override
-  String get championshipCreate => 'Crear campeonato';
+  String get championshipCreate => 'Crear liga';
 
   @override
   String get championshipCreateTitleLabel => 'Título';
@@ -2531,10 +2530,10 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get championshipCreateSubmit => 'Crear campeonato';
+  String get championshipCreateSubmit => 'Crear liga';
 
   @override
-  String get championshipCreateSuccess => 'Campeonato creado';
+  String get championshipCreateSuccess => 'Liga creado';
 
   @override
   String get championshipCreateStartDateLabel => 'Fecha de inicio (opcional)';
@@ -2554,13 +2553,13 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get leaveTeamSuccess => 'Has abandonado el campeonato.';
+  String get leaveTeamSuccess => 'Has abandonado el liga.';
 
   @override
-  String get startChampionshipButton => 'Iniciar campeonato';
+  String get startChampionshipButton => 'Iniciar liga';
 
   @override
-  String get startChampionshipConfirmTitle => '¿Iniciar el campeonato?';
+  String get startChampionshipConfirmTitle => '¿Iniciar el liga?';
 
   @override
   String get startChampionshipConfirmBody =>
@@ -2568,7 +2567,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String startChampionshipSuccess(int count) {
-    return 'Campeonato iniciado — $count partidos generados.';
+    return 'Liga iniciado — $count partidos generados.';
   }
 
   @override
@@ -2600,21 +2599,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get editChampionshipButton => 'Editar detalles';
 
   @override
-  String get editChampionshipTitle => 'Editar campeonato';
+  String get editChampionshipTitle => 'Editar liga';
 
   @override
   String get editChampionshipChangeDeadline => 'Cambiar fecha límite';
 
   @override
-  String get completeChampionshipConfirmTitle => '¿Completar el campeonato?';
+  String get completeChampionshipConfirmTitle => '¿Completar el liga?';
 
   @override
   String get completeChampionshipConfirmBody =>
       'Úsalo solo cuando todos los partidos estén resueltos. Esta acción es irreversible.';
 
   @override
-  String get completeChampionshipSuccess =>
-      'Campeonato marcado como completado.';
+  String get completeChampionshipSuccess => 'Liga marcado como completado.';
 
   @override
   String get championshipChampionLabel => 'Campeón';
@@ -2679,7 +2677,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Sesiones creadas, canceladas, comentarios';
 
   @override
-  String get notifCategoryChampionships => 'Campeonatos';
+  String get notifCategoryChampionships => 'Ligas';
 
   @override
   String get notifCategoryChampionshipsSubtitle =>
