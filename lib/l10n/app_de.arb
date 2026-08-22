@@ -576,7 +576,6 @@
   "@loadOlderActivities": {
     "description": "Button label to load activities older than 90 days in the group details activity feed"
   },
-
   "genderSelectionTitle": "Geschlecht",
   "@genderSelectionTitle": {
     "description": "Title of the gender selection onboarding screen"
@@ -605,7 +604,6 @@
   "@genderSelectionError": {
     "description": "Error message shown when saving gender fails"
   },
-
   "deleteAccount": "Konto löschen",
   "deleteAccountConfirmTitle": "Konto löschen?",
   "deleteAccountConfirmMessage": "Ihr Konto und alle zugehörigen Daten werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -620,7 +618,6 @@
   "@registrationGenderTooltip": {
     "description": "Tooltip explaining why gender is asked during registration"
   },
-
   "inviteGuestPlayers": "Personen aus anderen Gruppen einladen",
   "@inviteGuestPlayers": {
     "description": "Title of the invite guest players bottom sheet (Story 28.6)"
@@ -643,7 +640,13 @@
   },
   "inviteGroupSuccess": "Gruppe erfolgreich eingeladen",
   "groupMembersCount": "{count, plural, =1{1 Person} other{{count} Personen}}",
-  "@groupMembersCount": {"placeholders": {"count": {"type": "int"}}},
+  "@groupMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "invitedLabel": "Eingeladen",
   "invitePlayerError": "Einladung konnte nicht gesendet werden",
   "@invitePlayerError": {
@@ -665,7 +668,9 @@
   "@fromGroup": {
     "description": "Label on a game invitation card showing the source group",
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "gameInvitationAccepted": "Einladung angenommen",
@@ -680,12 +685,10 @@
   "@gameInvitationActionError": {
     "description": "Snackbar shown when accepting or declining a game invitation fails"
   },
-
   "upcoming": "Bevorstehend",
   "@upcoming": {
     "description": "Section header for upcoming games in MyGamesPage"
   },
-
   "pastGames": "Vergangene Spiele",
   "open": "Offen",
   "@open": {
@@ -694,7 +697,6 @@
   "@pastGames": {
     "description": "Section header for past games in MyGamesPage"
   },
-
   "teamsForThisGame": "Teams",
   "@teamsForThisGame": {
     "description": "Section label for per-game team picker"
@@ -707,7 +709,6 @@
   "@vsLabel": {
     "description": "Label between two teams in a matchup, e.g. Alice & Bob vs Carol & Dave"
   },
-
   "chatSectionTitle": "Chat",
   "@chatSectionTitle": {},
   "chatInputHint": "Nachricht eingeben...",
@@ -718,7 +719,6 @@
   "@chatPlayersOnly": {},
   "chatJoinToView": "Du musst dem Spiel beitreten, um den Chat zu sehen",
   "@chatJoinToView": {},
-
   "createPickupGame": "Spontanspiel erstellen",
   "@createPickupGame": {},
   "pickupGame": "Spontanspiel",
@@ -757,20 +757,20 @@
   },
   "next": "Weiter",
   "@next": {},
-  "championshipsTitle": "Meisterschaften",
+  "championshipsTitle": "Ligen",
   "championshipOpenRegistration": "Anmeldung offen",
   "championshipTeamsCount": "{count, plural, =1{1 Team angemeldet} other{{count} Teams angemeldet}}",
-  "championshipSlotsLeft": "{count, plural, =1{1 Platz frei} other{{count} Pl\u00e4tze frei}}",
+  "championshipSlotsLeft": "{count, plural, =1{1 Platz frei} other{{count} Plätze frei}}",
   "championshipDeadlineLabel": "Frist: {date}",
   "registerTeam": "Team anmelden",
   "leaveTeam": "Team verlassen",
   "leaveTeamConfirmTitle": "Team verlassen?",
-  "leaveTeamConfirmBody": "Ihr Team wird gel\u00f6scht und Ihr Platz freigegeben.",
+  "leaveTeamConfirmBody": "Ihr Team wird gelöscht und Ihr Platz freigegeben.",
   "createTeamTitle": "Team erstellen",
   "teamNameLabel": "Teamname",
-  "teamNameHint": "z.\u00a0B. Beach Wolves",
-  "selectPartnerLabel": "Partner ausw\u00e4hlen",
-  "noFriendsForPartner": "Sie haben noch keine Freunde einzuladen. F\u00fcgen Sie zuerst Freunde aus Meine Community hinzu.",
+  "teamNameHint": "z. B. Beach Wolves",
+  "selectPartnerLabel": "Partner auswählen",
+  "noFriendsForPartner": "Sie haben noch keine Freunde einzuladen. Fügen Sie zuerst Freunde aus Meine Community hinzu.",
   "teamRegisteredSuccess": "Team angemeldet!",
   "teamLeftSuccess": "Sie haben das Team verlassen.",
   "yourTeam": "Ihr Team",
@@ -804,19 +804,19 @@
   "championshipStatusBadgeActive": "Runde {current}/{total}",
   "championshipStatusBadgeCompleted": "Abgeschlossen",
   "championshipMyMatchesTab": "Meine Spiele",
-  "championshipMyMatchesEmpty": "Deine Spiele erscheinen hier, sobald die Meisterschaft beginnt.",
+  "championshipMyMatchesEmpty": "Deine Spiele erscheinen hier, sobald die Liga beginnt.",
   "championshipMyMatchesVs": "vs {opponent}",
   "championshipTabActive": "Aktiv",
   "championshipTabCompleted": "Abgeschlossen",
-  "championshipNoCompletedYet": "Noch keine abgeschlossenen Meisterschaften.",
-  "championshipNoResults": "Derzeit keine Meisterschaften.",
+  "championshipNoCompletedYet": "Noch keine abgeschlossenen Ligen.",
+  "championshipNoResults": "Derzeit keine Ligen.",
   "championshipDeadlineCountdown": "{days, plural, =1{Noch 1 Tag} other{Noch {days} Tage}}",
   "championshipTeamCountOf": "{count} / {max} Teams",
   "championshipGenderMale": "Männer",
   "championshipGenderFemale": "Frauen",
   "championshipGenderBlockNoGender": "Sie müssen Ihr Geschlecht in Ihrem Profil festlegen, um sich anzumelden.",
-  "championshipGenderBlockMaleOnly": "Diese Meisterschaft ist nur für Männer.",
-  "championshipGenderBlockFemaleOnly": "Diese Meisterschaft ist nur für Frauen.",
+  "championshipGenderBlockMaleOnly": "Diese Liga ist nur für Männer.",
+  "championshipGenderBlockFemaleOnly": "Diese Liga ist nur für Frauen.",
   "championshipCreateGenderLabel": "Geschlechtskategorie (optional)",
   "championshipDetailStandingsTab": "Tabelle",
   "championshipDetailMatchesTab": "Spiele",
@@ -846,7 +846,6 @@
   "matchDetailProposeTimeLabel": "Uhrzeit",
   "matchDetailProposeLocationLabel": "Ort (optional)",
   "matchDetailProposeConfirm": "Vorschlagen",
-
   "adminPanelTabLabel": "Admin",
   "adminPanelNoMatchesNeedingAttention": "Keine Spiele erfordern eine Admin-Entscheidung",
   "adminPanelMatchOverdue": "Überfällig",
@@ -862,8 +861,7 @@
   "adminPanelDecisionSuccess": "Entscheidung erfolgreich angewendet",
   "adminPanelDecisionErrorNotesRequired": "Notizen sind erforderlich",
   "adminPanelDecisionErrorWinnerRequired": "Wählen Sie einen Gewinner für den Walkover",
-
-  "championshipCreate": "Meisterschaft erstellen",
+  "championshipCreate": "Liga erstellen",
   "championshipCreateTitleLabel": "Titel",
   "championshipCreateTitleHint": "z.B. Sommer Open 2026",
   "championshipCreateTitleRequired": "Titel ist erforderlich",
@@ -877,33 +875,32 @@
   "championshipCreateMaxTeamsLabel": "Max. Mannschaften",
   "championshipCreateTeamSizeLabel": "Spieler pro Team",
   "championshipCreateTeamSizeOption": "{count} Spieler",
-  "championshipCreateSubmit":"Meisterschaft erstellen",
-  "championshipCreateSuccess": "Meisterschaft erstellt",
+  "championshipCreateSubmit": "Liga erstellen",
+  "championshipCreateSuccess": "Liga erstellt",
   "championshipCreateStartDateLabel": "Startdatum (optional)",
   "championshipCreateEndDateLabel": "Enddatum (optional)",
-  "championshipCreateDatePlaceholder": "Datum auswählen"
-,
+  "championshipCreateDatePlaceholder": "Datum auswählen",
   "myTeamSectionTitle": "Mein Team",
   "myTeamPartnerLabel": "Partner: {name}",
-  "leaveTeamSuccess": "Du hast die Meisterschaft verlassen.",
-  "startChampionshipButton": "Meisterschaft starten",
-  "startChampionshipConfirmTitle": "Meisterschaft starten?",
+  "leaveTeamSuccess": "Du hast die Liga verlassen.",
+  "startChampionshipButton": "Liga starten",
+  "startChampionshipConfirmTitle": "Liga starten?",
   "startChampionshipConfirmBody": "Dies generiert alle Spiele und kann nicht rückgängig gemacht werden. Stelle sicher, dass alle Teams registriert sind.",
-  "startChampionshipSuccess": "Meisterschaft gestartet — {count} Spiele erstellt.",
+  "startChampionshipSuccess": "Liga gestartet — {count} Spiele erstellt.",
   "startChampionshipStartDateLabel": "Spielfenster beginnt",
-    "teamRenameTitle": "Team umbenennen",
-    "teamRenameLabel": "Teamname",
-    "teamRenameSuccess": "Team erfolgreich umbenannt.",
-    "teamRenameError": "Team konnte nicht umbenannt werden",
-    "standingsTiebreakerTitle": "So funktioniert das Ranking",
-    "standingsTiebreakerBody": "Punkte: Sieg 2-0 = 3Pkt · Sieg 2-1 = 2Pkt · Niederlage 1-2 = 1Pkt · Niederlage 0-2 = 0Pkt\n\nKriterium 1: Direktes Duell\nKriterium 2: Satzverhältnis (Sätze gewonnen − verloren)",
+  "teamRenameTitle": "Team umbenennen",
+  "teamRenameLabel": "Teamname",
+  "teamRenameSuccess": "Team erfolgreich umbenannt.",
+  "teamRenameError": "Team konnte nicht umbenannt werden",
+  "standingsTiebreakerTitle": "So funktioniert das Ranking",
+  "standingsTiebreakerBody": "Punkte: Sieg 2-0 = 3Pkt · Sieg 2-1 = 2Pkt · Niederlage 1-2 = 1Pkt · Niederlage 0-2 = 0Pkt\n\nKriterium 1: Direktes Duell\nKriterium 2: Satzverhältnis (Sätze gewonnen − verloren)",
   "editChampionshipButton": "Details bearbeiten",
-  "editChampionshipTitle": "Meisterschaft bearbeiten",
+  "editChampionshipTitle": "Liga bearbeiten",
   "editChampionshipChangeDeadline": "Frist ändern",
   "completeChampionshipButton": "Als abgeschlossen markieren",
-  "completeChampionshipConfirmTitle": "Meisterschaft abschließen?",
+  "completeChampionshipConfirmTitle": "Liga abschließen?",
   "completeChampionshipConfirmBody": "Nur verwenden, wenn alle Spiele abgeschlossen sind. Kann nicht rückgängig gemacht werden.",
-  "completeChampionshipSuccess": "Meisterschaft als abgeschlossen markiert.",
+  "completeChampionshipSuccess": "Liga als abgeschlossen markiert.",
   "championshipChampionLabel": "Champion",
   "championshipMyMatch": "Mein Spiel",
   "matchScheduleWaitingTitle": "Warte auf Bestätigung",
@@ -912,10 +909,8 @@
   "matchScheduleConfirmBody": "{teamName} hat vorgeschlagen: {datetime}",
   "matchScheduleAcceptButton": "Annehmen",
   "matchScheduleRejectButton": "Ablehnen",
-
   "matchDisputedTitle": "Strittiges Spiel",
   "matchDisputedExplanation": "Dieses Ergebnis wurde angefochten. Ein Administrator wird die Punkte prüfen und eine endgültige Entscheidung treffen. Das Ranking wird nach der Entscheidung aktualisiert.",
-
   "notificationSettingsTitle": "Benachrichtigungen",
   "notificationSettingsCategories": "Benachrichtigungskategorien",
   "notifCategorySocial": "Soziales",
@@ -924,7 +919,7 @@
   "notifCategoryGamesSubtitle": "Neue Spiele, Ergebnisse, Absagen, Chat",
   "notifCategoryTraining": "Training",
   "notifCategoryTrainingSubtitle": "Sitzungen erstellt, abgesagt, Feedback",
-  "notifCategoryChampionships": "Meisterschaften",
+  "notifCategoryChampionships": "Ligen",
   "notifCategoryChampionshipsSubtitle": "Ergebnisse, Fristen, Streitigkeiten, Terminplanung",
   "notifQuietHoursTitle": "Ruhezeiten",
   "notifQuietHoursEnable": "Ruhezeiten aktivieren",
@@ -933,4 +928,5 @@
   "notifQuietHoursAdjust": "Ruhezeiten anpassen",
   "retryButton": "Erneut versuchen",
   "groupMuteNotifications": "Benachrichtigungen stummschalten",
-  "groupUnmuteNotifications": "Benachrichtigungen aktivieren"}
+  "groupUnmuteNotifications": "Benachrichtigungen aktivieren"
+}

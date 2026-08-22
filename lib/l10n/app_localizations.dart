@@ -3869,7 +3869,7 @@ abstract class AppLocalizations {
   /// Title for the championships list screen
   ///
   /// In en, this message translates to:
-  /// **'Championships'**
+  /// **'Leagues'**
   String get championshipsTitle;
 
   /// Status label when a championship is accepting team registrations
@@ -4151,7 +4151,7 @@ abstract class AppLocalizations {
   /// Empty state in the My Matches tab
   ///
   /// In en, this message translates to:
-  /// **'Your matches will appear here once the championship starts.'**
+  /// **'Your matches will appear here once the league starts.'**
   String get championshipMyMatchesEmpty;
 
   /// Match row label: vs opponent
@@ -4175,13 +4175,13 @@ abstract class AppLocalizations {
   /// Empty state shown in the Completed tab
   ///
   /// In en, this message translates to:
-  /// **'No completed championships yet.'**
+  /// **'No completed leagues yet.'**
   String get championshipNoCompletedYet;
 
   /// Empty state message on the championship list screen
   ///
   /// In en, this message translates to:
-  /// **'No championships at the moment.'**
+  /// **'No leagues at the moment.'**
   String get championshipNoResults;
 
   /// Countdown until registration deadline
@@ -4217,13 +4217,13 @@ abstract class AppLocalizations {
   /// Message shown when female/no-gender user tries to register in a male championship
   ///
   /// In en, this message translates to:
-  /// **'This championship is for men only.'**
+  /// **'This league is for men only.'**
   String get championshipGenderBlockMaleOnly;
 
   /// Message shown when male/no-gender user tries to register in a female championship
   ///
   /// In en, this message translates to:
-  /// **'This championship is for women only.'**
+  /// **'This league is for women only.'**
   String get championshipGenderBlockFemaleOnly;
 
   /// Label for the gender category picker in championship creation form
@@ -4493,7 +4493,7 @@ abstract class AppLocalizations {
   /// Page title and FAB tooltip for championship creation
   ///
   /// In en, this message translates to:
-  /// **'Create Championship'**
+  /// **'Create League'**
   String get championshipCreate;
 
   /// Form field label for championship title
@@ -4577,13 +4577,13 @@ abstract class AppLocalizations {
   /// Submit button label on championship creation form
   ///
   /// In en, this message translates to:
-  /// **'Create Championship'**
+  /// **'Create League'**
   String get championshipCreateSubmit;
 
   /// Snackbar message after a championship is created successfully
   ///
   /// In en, this message translates to:
-  /// **'Championship created'**
+  /// **'League created'**
   String get championshipCreateSuccess;
 
   /// Form field label for optional championship start date
@@ -4619,19 +4619,19 @@ abstract class AppLocalizations {
   /// Snackbar message after successfully leaving a championship team
   ///
   /// In en, this message translates to:
-  /// **'You have left the championship.'**
+  /// **'You have left the league.'**
   String get leaveTeamSuccess;
 
   /// Admin button to launch the active phase of a championship
   ///
   /// In en, this message translates to:
-  /// **'Start Championship'**
+  /// **'Start League'**
   String get startChampionshipButton;
 
   /// Confirmation dialog title when starting a championship
   ///
   /// In en, this message translates to:
-  /// **'Start championship?'**
+  /// **'Start league?'**
   String get startChampionshipConfirmTitle;
 
   /// Confirmation dialog body when starting a championship
@@ -4643,7 +4643,7 @@ abstract class AppLocalizations {
   /// Snackbar after a championship is successfully started
   ///
   /// In en, this message translates to:
-  /// **'Championship started — {count} matches generated.'**
+  /// **'League started — {count} matches generated.'**
   String startChampionshipSuccess(int count);
 
   /// Label for the start date picker when starting a championship
@@ -4703,7 +4703,7 @@ abstract class AppLocalizations {
   /// Title of the edit championship dialog
   ///
   /// In en, this message translates to:
-  /// **'Edit Championship'**
+  /// **'Edit League'**
   String get editChampionshipTitle;
 
   /// Placeholder shown on the deadline button in the edit dialog when no new deadline is selected
@@ -4715,7 +4715,7 @@ abstract class AppLocalizations {
   /// Confirmation dialog title when completing a championship
   ///
   /// In en, this message translates to:
-  /// **'Mark championship complete?'**
+  /// **'Mark league complete?'**
   String get completeChampionshipConfirmTitle;
 
   /// Confirmation dialog body when completing a championship
@@ -4727,7 +4727,7 @@ abstract class AppLocalizations {
   /// Snackbar after a championship is successfully marked complete
   ///
   /// In en, this message translates to:
-  /// **'Championship marked as complete.'**
+  /// **'League marked as complete.'**
   String get completeChampionshipSuccess;
 
   /// Label shown above the winning team name on a completed championship
@@ -4841,7 +4841,7 @@ abstract class AppLocalizations {
   /// Category toggle label — championship notifications
   ///
   /// In en, this message translates to:
-  /// **'Championships'**
+  /// **'Leagues'**
   String get notifCategoryChampionships;
 
   /// Subtitle for the championships category toggle
