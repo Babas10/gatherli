@@ -154,8 +154,6 @@ export {getGameInvitationsForUser} from "./getGameInvitationsForUser"; // Story 
 // Story 14.16: Delete chat messages when game is completed
 export {onGameCompletedDeleteChatMessages} from "./deleteChatMessages";
 
-// Story 31.2: One-time migration — remove deprecated gameIds array from group documents
-export {migrateRemoveGroupGameIds} from "./migrateRemoveGroupGameIds";
 
 // Story 31.3: One-time migration — remove deprecated unbounded arrays from user documents
 export {migrateRemoveUserArrays} from "./migrateRemoveUserArrays";
