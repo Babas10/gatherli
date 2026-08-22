@@ -128,7 +128,7 @@ void main() {
     testWidgets('shows page title and submit button', (tester) async {
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pumpAndSettle();
-      expect(find.text('Create Championship'), findsWidgets);
+      expect(find.text('Create League'), findsWidgets);
     });
 
     testWidgets('shows title field', (tester) async {
@@ -202,7 +202,7 @@ void main() {
       await tester.pumpWidget(_buildTestWidget(bloc));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
-      expect(find.text('Championship created'), findsOneWidget);
+      expect(find.text('League created'), findsOneWidget);
     });
 
     testWidgets('shows error snackbar on error state', (tester) async {

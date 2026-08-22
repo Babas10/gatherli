@@ -101,7 +101,7 @@ void main() {
       expect(find.text('Social'), findsOneWidget);
       expect(find.text('Games'), findsOneWidget);
       expect(find.text('Training'), findsOneWidget);
-      expect(find.text('Championships'), findsOneWidget);
+      expect(find.text('Leagues'), findsOneWidget);
     });
   });
 
@@ -116,7 +116,7 @@ void main() {
       expect(find.text('Social'), findsOneWidget);
       expect(find.text('Games'), findsOneWidget);
       expect(find.text('Training'), findsOneWidget);
-      expect(find.text('Championships'), findsOneWidget);
+      expect(find.text('Leagues'), findsOneWidget);
     });
 
     testWidgets('displays category subtitles', (tester) async {
