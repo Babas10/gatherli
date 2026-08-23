@@ -699,19 +699,38 @@ void main() {
 
   group('checkFriendshipStatus', () {
     test('should return FriendshipStatusResult on successful call', () async {
-      // Arrange - Story 11.6: Check cached friendIds first
+      // Arrange - Story 34.2: query friendships collection directly (no user doc read)
       final mockCollection = MockCollectionReference();
-      final mockUserDoc = MockDocumentReference();
-      final mockUserSnapshot = MockQueryDocumentSnapshot();
+      final mockQuery1 = MockQuery();
+      final mockQuery2 = MockQuery();
+      final mockSnapshot1 = MockQuerySnapshot();
+      final mockSnapshot2 = MockQuerySnapshot();
+      final mockFriendshipDoc = MockQueryDocumentSnapshot();
 
-      when(() => mockFirestore.collection('users')).thenReturn(mockCollection);
-      when(() => mockCollection.doc('test-user-id')).thenReturn(mockUserDoc);
-      when(() => mockUserDoc.get()).thenAnswer((_) async => mockUserSnapshot);
-      when(() => mockUserSnapshot.exists).thenReturn(true);
-      when(() => mockUserSnapshot.data()).thenReturn({
-        'friendIds': ['friend-user-id'], // Friend is in cache
-        'friendCount': 1,
+      when(() => mockFirestore.collection('friendships')).thenReturn(mockCollection);
+
+      // Direction 1: currentUser is initiator
+      when(() => mockCollection.where('initiatorId', isEqualTo: 'test-user-id'))
+          .thenReturn(mockQuery1);
+      when(() => mockQuery1.where('recipientId', isEqualTo: 'friend-user-id'))
+          .thenReturn(mockQuery1);
+      when(() => mockQuery1.limit(1)).thenReturn(mockQuery1);
+      when(() => mockQuery1.get()).thenAnswer((_) async => mockSnapshot1);
+      when(() => mockSnapshot1.docs).thenReturn([mockFriendshipDoc]);
+      when(() => mockFriendshipDoc.data()).thenReturn({
+        'initiatorId': 'test-user-id',
+        'recipientId': 'friend-user-id',
+        'status': 'accepted',
       });
+
+      // Direction 2: currentUser is recipient (not needed but must be stubbed)
+      when(() => mockCollection.where('initiatorId', isEqualTo: 'friend-user-id'))
+          .thenReturn(mockQuery2);
+      when(() => mockQuery2.where('recipientId', isEqualTo: 'test-user-id'))
+          .thenReturn(mockQuery2);
+      when(() => mockQuery2.limit(1)).thenReturn(mockQuery2);
+      when(() => mockQuery2.get()).thenAnswer((_) async => mockSnapshot2);
+      when(() => mockSnapshot2.docs).thenReturn([]);
 
       // Act
       final status = await repository.checkFriendshipStatus('friend-user-id');
@@ -719,45 +738,41 @@ void main() {
       // Assert
       expect(status.isFriend, true);
       expect(status.hasPendingRequest, false);
-      verify(() => mockUserDoc.get()).called(1);
     });
 
     test('should return pending request status', () async {
-      // Arrange - Story 11.6: Not in cache, check pending requests
+      // Arrange - Story 34.2: query friendships collection directly
       final mockCollection = MockCollectionReference();
-      final mockUserDoc = MockDocumentReference();
-      final mockUserSnapshot = MockQueryDocumentSnapshot();
-      final mockFriendshipsQuery = MockQuery();
-      final mockFriendshipsSnapshot = MockQuerySnapshot();
+      final mockQuery1 = MockQuery();
+      final mockQuery2 = MockQuery();
+      final mockSnapshot1 = MockQuerySnapshot();
+      final mockSnapshot2 = MockQuerySnapshot();
       final mockFriendshipDoc = MockQueryDocumentSnapshot();
 
-      // Mock user doc read (friend not in cache)
-      when(() => mockFirestore.collection('users')).thenReturn(mockCollection);
-      when(() => mockCollection.doc('test-user-id')).thenReturn(mockUserDoc);
-      when(() => mockUserDoc.get()).thenAnswer((_) async => mockUserSnapshot);
-      when(() => mockUserSnapshot.exists).thenReturn(true);
-      when(() => mockUserSnapshot.data()).thenReturn({
-        'friendIds': [], // Not in cache
-        'friendCount': 0,
-      });
+      when(() => mockFirestore.collection('friendships')).thenReturn(mockCollection);
 
-      // Mock pending requests query
-      when(
-        () => mockFirestore.collection('friendships'),
-      ).thenReturn(mockCollection);
-      when(
-        () => mockCollection.where('status', isEqualTo: 'pending'),
-      ).thenReturn(mockFriendshipsQuery);
-      when(
-        () => mockFriendshipsQuery.get(),
-      ).thenAnswer((_) async => mockFriendshipsSnapshot);
-      when(() => mockFriendshipsSnapshot.docs).thenReturn([mockFriendshipDoc]);
-
+      // Direction 1: currentUser initiated the request
+      when(() => mockCollection.where('initiatorId', isEqualTo: 'test-user-id'))
+          .thenReturn(mockQuery1);
+      when(() => mockQuery1.where('recipientId', isEqualTo: 'other-user-id'))
+          .thenReturn(mockQuery1);
+      when(() => mockQuery1.limit(1)).thenReturn(mockQuery1);
+      when(() => mockQuery1.get()).thenAnswer((_) async => mockSnapshot1);
+      when(() => mockSnapshot1.docs).thenReturn([mockFriendshipDoc]);
       when(() => mockFriendshipDoc.data()).thenReturn({
         'initiatorId': 'test-user-id',
         'recipientId': 'other-user-id',
         'status': 'pending',
       });
+
+      // Direction 2: other user initiated (not found)
+      when(() => mockCollection.where('initiatorId', isEqualTo: 'other-user-id'))
+          .thenReturn(mockQuery2);
+      when(() => mockQuery2.where('recipientId', isEqualTo: 'test-user-id'))
+          .thenReturn(mockQuery2);
+      when(() => mockQuery2.limit(1)).thenReturn(mockQuery2);
+      when(() => mockQuery2.get()).thenAnswer((_) async => mockSnapshot2);
+      when(() => mockSnapshot2.docs).thenReturn([]);
 
       // Act
       final status = await repository.checkFriendshipStatus('other-user-id');
@@ -771,9 +786,9 @@ void main() {
     test('should throw FriendshipException on error', () async {
       // Arrange
       final mockCollection = MockCollectionReference();
-      when(() => mockFirestore.collection('users')).thenReturn(mockCollection);
+      when(() => mockFirestore.collection('friendships')).thenReturn(mockCollection);
       when(
-        () => mockCollection.doc(any()),
+        () => mockCollection.where(any(), isEqualTo: any(named: 'isEqualTo')),
       ).thenThrow(Exception('Firestore error'));
 
       // Act & Assert
