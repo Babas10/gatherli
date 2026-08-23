@@ -15,6 +15,11 @@ class ChampionshipDetailBloc
   final UserRepository _userRepository;
   String? _championshipId;
 
+  // Caches the latest gender from the user stream so it is available when
+  // ChampionshipDetailLoaded is first emitted (race condition: user stream
+  // fires during Loading state before championship data arrives).
+  String? _pendingUserGender;
+
   StreamSubscription? _champSub;
   StreamSubscription? _standingsSub;
   StreamSubscription? _teamsSub;
@@ -45,6 +50,7 @@ class ChampionshipDetailBloc
   ) async {
     emit(const ChampionshipDetailLoading());
     _championshipId = event.championshipId;
+    _pendingUserGender = null; // reset for new load
 
     await _champSub?.cancel();
     await _standingsSub?.cancel();
@@ -103,6 +109,8 @@ class ChampionshipDetailBloc
 
     if (currentState is ChampionshipDetailLoading) {
       // First event — subscribe to matches and transition to loaded.
+      // Include any gender already received from the user stream (_pendingUserGender)
+      // to avoid the race condition where the user update fires during Loading.
       _subscribeToMatches(_championshipId!, round);
       emit(ChampionshipDetailLoaded(
         championship: champ,
@@ -110,6 +118,7 @@ class ChampionshipDetailBloc
         teams: const [],
         currentRoundMatches: const [],
         selectedRound: round,
+        currentUserGender: _pendingUserGender,
       ));
     } else if (currentState is ChampionshipDetailLoaded) {
       emit(currentState.copyWith(championship: champ));
@@ -143,11 +152,12 @@ class ChampionshipDetailBloc
     ChampionshipDetailUserUpdated event,
     Emitter<ChampionshipDetailState> emit,
   ) {
+    // Always cache the latest gender — used when ChampionshipDetailLoaded is
+    // first emitted if this event arrived during ChampionshipDetailLoading.
+    _pendingUserGender = event.gender;
+
     if (state is ChampionshipDetailLoaded) {
       final current = state as ChampionshipDetailLoaded;
-      // Use copyWith so new fields (allMatches etc.) are preserved.
-      // currentUserGender may be null — pass it explicitly via a wrapper
-      // because copyWith uses a sentinel to distinguish "not provided" from null.
       emit(ChampionshipDetailLoaded(
         championship: current.championship,
         standings: current.standings,
