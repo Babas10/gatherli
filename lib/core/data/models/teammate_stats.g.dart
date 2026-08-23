@@ -9,6 +9,7 @@ part of 'teammate_stats.dart';
 _TeammateStats _$TeammateStatsFromJson(Map<String, dynamic> json) =>
     _TeammateStats(
       userId: json['userId'] as String,
+      teammateName: json['teammateName'] as String?,
       gamesPlayed: (json['gamesPlayed'] as num).toInt(),
       gamesWon: (json['gamesWon'] as num).toInt(),
       gamesLost: (json['gamesLost'] as num).toInt(),
@@ -28,6 +29,7 @@ _TeammateStats _$TeammateStatsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$TeammateStatsToJson(_TeammateStats instance) =>
     <String, dynamic>{
       'userId': instance.userId,
+      'teammateName': instance.teammateName,
       'gamesPlayed': instance.gamesPlayed,
       'gamesWon': instance.gamesWon,
       'gamesLost': instance.gamesLost,

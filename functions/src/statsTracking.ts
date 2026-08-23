@@ -129,57 +129,44 @@ export async function updateTeammateStats(
   pointsAllowed: number,
   eloChange: number,
   gameId: string,
-  currentTeammateStats: any // ← Pass in the current stats
+  _currentTeammateStats?: any // Kept for API compatibility — no longer read
 ): Promise<void> {
   const db = admin.firestore();
-  const userRef = db.collection("users").doc(playerId);
 
-  // Use the passed-in teammate stats (already read)
-  const teammateStats = currentTeammateStats || {};
-  const currentStats = teammateStats[teammateId] || {
-    gamesPlayed: 0,
-    gamesWon: 0,
-    gamesLost: 0,
-    pointsScored: 0,
-    pointsAllowed: 0,
-    eloChange: 0.0,
-    recentGames: [],
-    lastUpdated: null,
-  };
+  // Story 34.3: write to users/{uid}/stats/{partnerUid} subcollection.
+  // Using atomic FieldValue operations (increment / arrayUnion) means no
+  // pre-read is required, keeping the transaction read-before-write rule intact.
+  const statsRef = db
+    .collection("users")
+    .doc(playerId)
+    .collection("stats")
+    .doc(teammateId);
 
-  // Update stats (include teammate name)
-  const updatedStats = {
-    teammateName: teammateName, // Cache teammate's display name for UI
-    gamesPlayed: currentStats.gamesPlayed + 1,
-    gamesWon: won ? currentStats.gamesWon + 1 : currentStats.gamesWon,
-    gamesLost: won ? currentStats.gamesLost : currentStats.gamesLost + 1,
-    pointsScored: currentStats.pointsScored + pointsScored,
-    pointsAllowed: currentStats.pointsAllowed + pointsAllowed,
-    eloChange: currentStats.eloChange + eloChange,
-    recentGames: [
-      {
+  transaction.set(
+    statsRef,
+    {
+      teammateName,
+      gamesPlayed: admin.firestore.FieldValue.increment(1),
+      gamesWon: admin.firestore.FieldValue.increment(won ? 1 : 0),
+      gamesLost: admin.firestore.FieldValue.increment(won ? 0 : 1),
+      pointsScored: admin.firestore.FieldValue.increment(pointsScored),
+      pointsAllowed: admin.firestore.FieldValue.increment(pointsAllowed),
+      eloChange: admin.firestore.FieldValue.increment(eloChange),
+      recentGames: admin.firestore.FieldValue.arrayUnion({
         gameId,
         won,
         pointsScored,
         pointsAllowed,
         eloChange,
-        timestamp: new Date(), // Cannot use serverTimestamp() inside arrays
-      },
-      ...(currentStats.recentGames || []).slice(0, 9), // Keep last 10 games
-    ],
-    lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
-  };
-
-  // Update in transaction
-  transaction.update(userRef, {
-    [`teammateStats.${teammateId}`]: updatedStats,
-    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-  });
+        timestamp: new Date().toISOString(),
+      }),
+      lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+    },
+    {merge: true},
+  );
 
   functions.logger.info(
-    `Updated teammate stats for ${playerId} with partner ${teammateId} (${teammateName}): ` +
-    `${updatedStats.gamesWon}W-${updatedStats.gamesLost}L, ` +
-    `Win Rate: ${((updatedStats.gamesWon / updatedStats.gamesPlayed) * 100).toFixed(1)}%`
+    `Updated teammate stats (subcollection) for ${playerId} with partner ${teammateId} (${teammateName})`
   );
 }
 

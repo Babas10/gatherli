@@ -13,6 +13,8 @@ import 'player_stats_state.dart';
 class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
   final UserRepository _userRepository;
   StreamSubscription? _userSubscription;
+  // Story 34.3: subscribe to teammate stats subcollection stream
+  StreamSubscription? _teammateStatsSubscription;
 
   PlayerStatsBloc({required UserRepository userRepository})
     : _userRepository = userRepository,
@@ -63,6 +65,21 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
                 // Log error but don't crash
                 debugPrint('PlayerStatsBloc: Error in user stream: $error');
               },
+            );
+
+        // Story 34.3: subscribe to teammate stats subcollection
+        await _teammateStatsSubscription?.cancel();
+        _teammateStatsSubscription = _userRepository
+            .getAllTeammateStats(event.userId)
+            .listen(
+              (stats) {
+                if (state is PlayerStatsLoaded) {
+                  emit((state as PlayerStatsLoaded)
+                      .copyWith(teammateStats: stats));
+                }
+              },
+              onError: (e) =>
+                  debugPrint('PlayerStatsBloc: teammate stats error: $e'),
             );
       } else {
         // Story 302.7: Handle new users gracefully - they have no stats yet
@@ -147,13 +164,12 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
         }
       }
 
-      // Story 302.5, 302.7: Preserve ranking and error state from previous state
-      final ranking = state is PlayerStatsLoaded
-          ? (state as PlayerStatsLoaded).ranking
-          : null;
-      final rankingLoadFailed = state is PlayerStatsLoaded
-          ? (state as PlayerStatsLoaded).rankingLoadFailed
-          : false;
+      // Preserve existing ranking, error flag, and teammate stats from previous state
+      final prevLoaded =
+          state is PlayerStatsLoaded ? state as PlayerStatsLoaded : null;
+      final ranking = prevLoaded?.ranking;
+      final rankingLoadFailed = prevLoaded?.rankingLoadFailed ?? false;
+      final teammateStats = prevLoaded?.teammateStats ?? const [];
 
       emit(
         PlayerStatsLoaded(
@@ -161,6 +177,7 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
           history: history,
           ranking: ranking,
           rankingLoadFailed: rankingLoadFailed,
+          teammateStats: teammateStats,
         ),
       );
     } catch (e) {
@@ -195,6 +212,7 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
   @override
   Future<void> close() {
     _userSubscription?.cancel();
+    _teammateStatsSubscription?.cancel();
     return super.close();
   }
 }

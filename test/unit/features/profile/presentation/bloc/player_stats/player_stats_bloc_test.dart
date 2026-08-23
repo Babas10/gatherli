@@ -61,6 +61,9 @@ void main() {
         when(
           () => mockUserRepository.getRatingHistory(userId),
         ).thenAnswer((_) => Stream.value(testHistory));
+        when(
+          () => mockUserRepository.getAllTeammateStats(userId),
+        ).thenAnswer((_) => const Stream.empty());
       },
       build: () => playerStatsBloc,
       act: (bloc) => bloc.add(const LoadPlayerStats(userId)),
@@ -82,6 +85,9 @@ void main() {
         when(
           () => mockUserRepository.getRatingHistory(userId),
         ).thenAnswer((_) => Stream.value(testHistory));
+        when(
+          () => mockUserRepository.getAllTeammateStats(userId),
+        ).thenAnswer((_) => const Stream.empty());
       },
       build: () => playerStatsBloc,
       act: (bloc) => bloc.add(const LoadPlayerStats(userId)),

@@ -12,6 +12,9 @@ abstract class TeammateStats with _$TeammateStats {
     /// The teammate's user ID
     required String userId,
 
+    /// Cached display name of the teammate (written by Cloud Function)
+    String? teammateName,
+
     /// Total games played together
     required int gamesPlayed,
 
