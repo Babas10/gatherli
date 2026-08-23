@@ -298,50 +298,47 @@ class FirestoreFriendRepository implements FriendRepository {
         );
       }
 
-      // Read current user's document to check cached friendIds
-      final userDoc = await _firestore
-          .collection('users')
-          .doc(currentUserId)
-          .get();
+      // Story 34.2: friendIds array removed from user documents.
+      // Query the friendships collection directly — two parallel queries
+      // cover both directions of the relationship.
+      final results = await Future.wait([
+        _firestore
+            .collection('friendships')
+            .where('initiatorId', isEqualTo: currentUserId)
+            .where('recipientId', isEqualTo: userId)
+            .limit(1)
+            .get(),
+        _firestore
+            .collection('friendships')
+            .where('initiatorId', isEqualTo: userId)
+            .where('recipientId', isEqualTo: currentUserId)
+            .limit(1)
+            .get(),
+      ]);
 
-      if (!userDoc.exists) {
-        throw FriendshipException('User not found', code: 'not-found');
-      }
-
-      final userData = userDoc.data()!;
-      final friendIds = List<String>.from(userData['friendIds'] ?? []);
-
-      // Check if already friends using cache
-      if (friendIds.contains(userId)) {
-        return const FriendshipStatusResult(isFriend: true, hasPendingRequest: false);
-      }
-
-      // Not in cache, check for pending requests
-      // Query friendships collection for pending status
-      final pendingQuery = await _firestore
-          .collection('friendships')
-          .where('status', isEqualTo: 'pending')
-          .get();
-
-      for (final doc in pendingQuery.docs) {
-        final data = doc.data();
+      for (final snapshot in results) {
+        if (snapshot.docs.isEmpty) continue;
+        final data = snapshot.docs.first.data();
+        final status = data['status'] as String? ?? '';
         final initiatorId = data['initiatorId'] as String;
-        final recipientId = data['recipientId'] as String;
 
-        // Check if there's a pending request between these users
-        if ((initiatorId == currentUserId && recipientId == userId) ||
-            (initiatorId == userId && recipientId == currentUserId)) {
+        if (status == 'accepted') {
+          return const FriendshipStatusResult(
+            isFriend: true,
+            hasPendingRequest: false,
+          );
+        }
+        if (status == 'pending') {
           return FriendshipStatusResult(
             isFriend: false,
             hasPendingRequest: true,
-            requestDirection: initiatorId == currentUserId
-                ? 'sent'
-                : 'received',
+            requestDirection:
+                initiatorId == currentUserId ? 'sent' : 'received',
           );
         }
       }
 
-      // No friendship or pending request
+      // No friendship or pending request found
       return const FriendshipStatusResult(isFriend: false, hasPendingRequest: false);
     } on FriendshipException {
       rethrow;
