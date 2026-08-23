@@ -1,8 +1,9 @@
 // Partners card showing best partner statistics.
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
-import 'package:play_with_me/core/data/models/user_model.dart';
+import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -12,9 +13,9 @@ import 'package:play_with_me/l10n/app_localizations.dart';
 /// Shows the partner with the highest win rate (minimum 5 games threshold).
 /// Tap opens PartnerDetailPage for full breakdown.
 class PartnersCard extends StatelessWidget {
-  final UserModel user;
+  final List<TeammateStats> teammateStats;
 
-  const PartnersCard({super.key, required this.user});
+  const PartnersCard({super.key, required this.teammateStats});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class PartnersCard extends StatelessWidget {
                   ? () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => PartnerDetailPage(
-                          userId: user.uid,
+                          userId: FirebaseAuth.instance.currentUser?.uid ?? '',
                           partnerId: bestPartner.userId,
                         ),
                       ),
@@ -187,37 +188,24 @@ class PartnersCard extends StatelessWidget {
   }
 
   _PartnerData? _findBestPartner() {
-    if (user.teammateStats.isEmpty) return null;
-
+    if (teammateStats.isEmpty) return null;
     const minGames = 5;
     _PartnerData? best;
     double bestWinRate = -1;
-
-    for (final entry in user.teammateStats.entries) {
-      final userId = entry.key;
-      final stats = entry.value as Map<String, dynamic>;
-      final gamesWon = stats['gamesWon'] as int? ?? 0;
-      final gamesPlayed = stats['gamesPlayed'] as int? ?? 0;
-      final displayName = stats['teammateName'] as String? ?? 'Unknown Player';
-
-      if (gamesPlayed < minGames) continue;
-
-      final winRate = gamesWon / gamesPlayed;
-
+    for (final ts in teammateStats) {
+      if (ts.gamesPlayed < minGames) continue;
+      final winRate = ts.gamesWon / ts.gamesPlayed;
       if (winRate > bestWinRate ||
-          (winRate == bestWinRate &&
-              best != null &&
-              gamesPlayed > best.gamesPlayed)) {
+          (winRate == bestWinRate && best != null && ts.gamesPlayed > best.gamesPlayed)) {
         bestWinRate = winRate;
         best = _PartnerData(
-          userId: userId,
-          displayName: displayName,
-          gamesWon: gamesWon,
-          gamesPlayed: gamesPlayed,
+          userId: ts.userId,
+          displayName: ts.teammateName ?? ts.userId.substring(0, 5),
+          gamesWon: ts.gamesWon,
+          gamesPlayed: ts.gamesPlayed,
         );
       }
     }
-
     return best;
   }
 }

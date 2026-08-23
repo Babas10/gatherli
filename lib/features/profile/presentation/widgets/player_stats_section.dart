@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -27,6 +28,7 @@ class PlayerStatsSection extends StatelessWidget {
         if (state is PlayerStatsLoaded) {
           final user = state.user;
           final history = state.history;
+          final teammateStats = state.teammateStats;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +103,8 @@ class PlayerStatsSection extends StatelessWidget {
               ),
 
               // Best Teammate (Optional, if data exists)
-              if (user.teammateStats.isNotEmpty)
-                _BestTeammateCard(teammateStats: user.teammateStats),
+              if (teammateStats.isNotEmpty)
+                _BestTeammateCard(teammateStats: teammateStats),
             ],
           );
         }
@@ -114,54 +116,30 @@ class PlayerStatsSection extends StatelessWidget {
 }
 
 class _BestTeammateCard extends StatelessWidget {
-  final Map<String, dynamic> teammateStats;
+  final List<TeammateStats> teammateStats;
 
   const _BestTeammateCard({required this.teammateStats});
 
-  String? _getBestTeammateId() {
-    if (teammateStats.isEmpty) return null;
-
-    String? bestId;
-    int maxWins = -1;
-
-    teammateStats.forEach((key, value) {
-      final wins = value['gamesWon'] as int? ?? 0;
-      if (wins > maxWins) {
-        maxWins = wins;
-        bestId = key;
-      }
-    });
-
-    return bestId;
-  }
-
-  Map<String, dynamic>? _getStatsForId(String id) {
-    return teammateStats[id] as Map<String, dynamic>?;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final bestId = _getBestTeammateId();
-    if (bestId == null) return const SizedBox.shrink();
-
-    final stats = _getStatsForId(bestId);
-    final wins = stats?['gamesWon'] ?? 0;
-    final played = stats?['gamesPlayed'] ?? 0;
-    final winRate = played > 0
-        ? (wins / played * 100).toStringAsFixed(1)
+    if (teammateStats.isEmpty) return const SizedBox.shrink();
+    final best = teammateStats.reduce(
+      (a, b) => a.gamesWon >= b.gamesWon ? a : b,
+    );
+    final winRate = best.gamesPlayed > 0
+        ? (best.gamesWon / best.gamesPlayed * 100).toStringAsFixed(1)
         : '0.0';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Card(
         child: ListTile(
-          leading: const CircleAvatar(
-            child: Icon(Icons.person),
-          ), // Placeholder for avatar
+          leading: const CircleAvatar(child: Icon(Icons.person)),
           title: Text(AppLocalizations.of(context)!.bestTeammate),
           subtitle: Text(
-            'ID: ${bestId.substring(0, 5)}... • $wins wins ($winRate%)',
-          ), // ID is temporary until we resolve name
+            '${best.teammateName ?? best.userId.substring(0, 5)} • '
+            '${best.gamesWon} wins ($winRate%)',
+          ),
           trailing: const Icon(Icons.star, color: AppColors.warning),
         ),
       ),

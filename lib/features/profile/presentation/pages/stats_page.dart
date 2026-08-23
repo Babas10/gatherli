@@ -55,6 +55,7 @@ class StatsPage extends StatelessWidget {
             child: ExpandedStatsSection(
               user: statsState.user,
               ratingHistory: statsState.history,
+              teammateStats: statsState.teammateStats,
             ),
           );
         }

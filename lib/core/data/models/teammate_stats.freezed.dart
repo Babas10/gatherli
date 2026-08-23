@@ -16,7 +16,8 @@ T _$identity<T>(T value) => value;
 mixin _$TeammateStats {
 
 /// The teammate's user ID
- String get userId;/// Total games played together
+ String get userId;/// Cached display name of the teammate (written by Cloud Function)
+ String? get teammateName;/// Total games played together
  int get gamesPlayed;/// Games won together
  int get gamesWon;/// Games lost together
  int get gamesLost;/// Total points scored when playing together
@@ -37,16 +38,16 @@ $TeammateStatsCopyWith<TeammateStats> get copyWith => _$TeammateStatsCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeammateStats&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.gamesPlayed, gamesPlayed) || other.gamesPlayed == gamesPlayed)&&(identical(other.gamesWon, gamesWon) || other.gamesWon == gamesWon)&&(identical(other.gamesLost, gamesLost) || other.gamesLost == gamesLost)&&(identical(other.pointsScored, pointsScored) || other.pointsScored == pointsScored)&&(identical(other.pointsAllowed, pointsAllowed) || other.pointsAllowed == pointsAllowed)&&(identical(other.eloChange, eloChange) || other.eloChange == eloChange)&&const DeepCollectionEquality().equals(other.recentGames, recentGames)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeammateStats&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teammateName, teammateName) || other.teammateName == teammateName)&&(identical(other.gamesPlayed, gamesPlayed) || other.gamesPlayed == gamesPlayed)&&(identical(other.gamesWon, gamesWon) || other.gamesWon == gamesWon)&&(identical(other.gamesLost, gamesLost) || other.gamesLost == gamesLost)&&(identical(other.pointsScored, pointsScored) || other.pointsScored == pointsScored)&&(identical(other.pointsAllowed, pointsAllowed) || other.pointsAllowed == pointsAllowed)&&(identical(other.eloChange, eloChange) || other.eloChange == eloChange)&&const DeepCollectionEquality().equals(other.recentGames, recentGames)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,gamesPlayed,gamesWon,gamesLost,pointsScored,pointsAllowed,eloChange,const DeepCollectionEquality().hash(recentGames),lastUpdated);
+int get hashCode => Object.hash(runtimeType,userId,teammateName,gamesPlayed,gamesWon,gamesLost,pointsScored,pointsAllowed,eloChange,const DeepCollectionEquality().hash(recentGames),lastUpdated);
 
 @override
 String toString() {
-  return 'TeammateStats(userId: $userId, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, pointsScored: $pointsScored, pointsAllowed: $pointsAllowed, eloChange: $eloChange, recentGames: $recentGames, lastUpdated: $lastUpdated)';
+  return 'TeammateStats(userId: $userId, teammateName: $teammateName, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, pointsScored: $pointsScored, pointsAllowed: $pointsAllowed, eloChange: $eloChange, recentGames: $recentGames, lastUpdated: $lastUpdated)';
 }
 
 
@@ -57,7 +58,7 @@ abstract mixin class $TeammateStatsCopyWith<$Res>  {
   factory $TeammateStatsCopyWith(TeammateStats value, $Res Function(TeammateStats) _then) = _$TeammateStatsCopyWithImpl;
 @useResult
 $Res call({
- String userId, int gamesPlayed, int gamesWon, int gamesLost, int pointsScored, int pointsAllowed, double eloChange, List<RecentGameResult> recentGames,@NullableTimestampConverter() DateTime? lastUpdated
+ String userId, String? teammateName, int gamesPlayed, int gamesWon, int gamesLost, int pointsScored, int pointsAllowed, double eloChange, List<RecentGameResult> recentGames,@NullableTimestampConverter() DateTime? lastUpdated
 });
 
 
@@ -74,10 +75,11 @@ class _$TeammateStatsCopyWithImpl<$Res>
 
 /// Create a copy of TeammateStats
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? gamesPlayed = null,Object? gamesWon = null,Object? gamesLost = null,Object? pointsScored = null,Object? pointsAllowed = null,Object? eloChange = null,Object? recentGames = null,Object? lastUpdated = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? teammateName = freezed,Object? gamesPlayed = null,Object? gamesWon = null,Object? gamesLost = null,Object? pointsScored = null,Object? pointsAllowed = null,Object? eloChange = null,Object? recentGames = null,Object? lastUpdated = freezed,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,gamesPlayed: null == gamesPlayed ? _self.gamesPlayed : gamesPlayed // ignore: cast_nullable_to_non_nullable
+as String,teammateName: freezed == teammateName ? _self.teammateName : teammateName // ignore: cast_nullable_to_non_nullable
+as String?,gamesPlayed: null == gamesPlayed ? _self.gamesPlayed : gamesPlayed // ignore: cast_nullable_to_non_nullable
 as int,gamesWon: null == gamesWon ? _self.gamesWon : gamesWon // ignore: cast_nullable_to_non_nullable
 as int,gamesLost: null == gamesLost ? _self.gamesLost : gamesLost // ignore: cast_nullable_to_non_nullable
 as int,pointsScored: null == pointsScored ? _self.pointsScored : pointsScored // ignore: cast_nullable_to_non_nullable
@@ -170,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String? teammateName,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeammateStats() when $default != null:
-return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
+return $default(_that.userId,_that.teammateName,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
   return orElse();
 
 }
@@ -191,10 +193,10 @@ return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String? teammateName,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)  $default,) {final _that = this;
 switch (_that) {
 case _TeammateStats():
-return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
+return $default(_that.userId,_that.teammateName,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +213,10 @@ return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String? teammateName,  int gamesPlayed,  int gamesWon,  int gamesLost,  int pointsScored,  int pointsAllowed,  double eloChange,  List<RecentGameResult> recentGames, @NullableTimestampConverter()  DateTime? lastUpdated)?  $default,) {final _that = this;
 switch (_that) {
 case _TeammateStats() when $default != null:
-return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
+return $default(_that.userId,_that.teammateName,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_that.pointsScored,_that.pointsAllowed,_that.eloChange,_that.recentGames,_that.lastUpdated);case _:
   return null;
 
 }
@@ -226,11 +228,13 @@ return $default(_that.userId,_that.gamesPlayed,_that.gamesWon,_that.gamesLost,_t
 @JsonSerializable()
 
 class _TeammateStats extends TeammateStats {
-  const _TeammateStats({required this.userId, required this.gamesPlayed, required this.gamesWon, required this.gamesLost, this.pointsScored = 0, this.pointsAllowed = 0, this.eloChange = 0.0, final  List<RecentGameResult> recentGames = const [], @NullableTimestampConverter() this.lastUpdated}): _recentGames = recentGames,super._();
+  const _TeammateStats({required this.userId, this.teammateName, required this.gamesPlayed, required this.gamesWon, required this.gamesLost, this.pointsScored = 0, this.pointsAllowed = 0, this.eloChange = 0.0, final  List<RecentGameResult> recentGames = const [], @NullableTimestampConverter() this.lastUpdated}): _recentGames = recentGames,super._();
   factory _TeammateStats.fromJson(Map<String, dynamic> json) => _$TeammateStatsFromJson(json);
 
 /// The teammate's user ID
 @override final  String userId;
+/// Cached display name of the teammate (written by Cloud Function)
+@override final  String? teammateName;
 /// Total games played together
 @override final  int gamesPlayed;
 /// Games won together
@@ -268,16 +272,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeammateStats&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.gamesPlayed, gamesPlayed) || other.gamesPlayed == gamesPlayed)&&(identical(other.gamesWon, gamesWon) || other.gamesWon == gamesWon)&&(identical(other.gamesLost, gamesLost) || other.gamesLost == gamesLost)&&(identical(other.pointsScored, pointsScored) || other.pointsScored == pointsScored)&&(identical(other.pointsAllowed, pointsAllowed) || other.pointsAllowed == pointsAllowed)&&(identical(other.eloChange, eloChange) || other.eloChange == eloChange)&&const DeepCollectionEquality().equals(other._recentGames, _recentGames)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeammateStats&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teammateName, teammateName) || other.teammateName == teammateName)&&(identical(other.gamesPlayed, gamesPlayed) || other.gamesPlayed == gamesPlayed)&&(identical(other.gamesWon, gamesWon) || other.gamesWon == gamesWon)&&(identical(other.gamesLost, gamesLost) || other.gamesLost == gamesLost)&&(identical(other.pointsScored, pointsScored) || other.pointsScored == pointsScored)&&(identical(other.pointsAllowed, pointsAllowed) || other.pointsAllowed == pointsAllowed)&&(identical(other.eloChange, eloChange) || other.eloChange == eloChange)&&const DeepCollectionEquality().equals(other._recentGames, _recentGames)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,gamesPlayed,gamesWon,gamesLost,pointsScored,pointsAllowed,eloChange,const DeepCollectionEquality().hash(_recentGames),lastUpdated);
+int get hashCode => Object.hash(runtimeType,userId,teammateName,gamesPlayed,gamesWon,gamesLost,pointsScored,pointsAllowed,eloChange,const DeepCollectionEquality().hash(_recentGames),lastUpdated);
 
 @override
 String toString() {
-  return 'TeammateStats(userId: $userId, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, pointsScored: $pointsScored, pointsAllowed: $pointsAllowed, eloChange: $eloChange, recentGames: $recentGames, lastUpdated: $lastUpdated)';
+  return 'TeammateStats(userId: $userId, teammateName: $teammateName, gamesPlayed: $gamesPlayed, gamesWon: $gamesWon, gamesLost: $gamesLost, pointsScored: $pointsScored, pointsAllowed: $pointsAllowed, eloChange: $eloChange, recentGames: $recentGames, lastUpdated: $lastUpdated)';
 }
 
 
@@ -288,7 +292,7 @@ abstract mixin class _$TeammateStatsCopyWith<$Res> implements $TeammateStatsCopy
   factory _$TeammateStatsCopyWith(_TeammateStats value, $Res Function(_TeammateStats) _then) = __$TeammateStatsCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, int gamesPlayed, int gamesWon, int gamesLost, int pointsScored, int pointsAllowed, double eloChange, List<RecentGameResult> recentGames,@NullableTimestampConverter() DateTime? lastUpdated
+ String userId, String? teammateName, int gamesPlayed, int gamesWon, int gamesLost, int pointsScored, int pointsAllowed, double eloChange, List<RecentGameResult> recentGames,@NullableTimestampConverter() DateTime? lastUpdated
 });
 
 
@@ -305,10 +309,11 @@ class __$TeammateStatsCopyWithImpl<$Res>
 
 /// Create a copy of TeammateStats
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? gamesPlayed = null,Object? gamesWon = null,Object? gamesLost = null,Object? pointsScored = null,Object? pointsAllowed = null,Object? eloChange = null,Object? recentGames = null,Object? lastUpdated = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? teammateName = freezed,Object? gamesPlayed = null,Object? gamesWon = null,Object? gamesLost = null,Object? pointsScored = null,Object? pointsAllowed = null,Object? eloChange = null,Object? recentGames = null,Object? lastUpdated = freezed,}) {
   return _then(_TeammateStats(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,gamesPlayed: null == gamesPlayed ? _self.gamesPlayed : gamesPlayed // ignore: cast_nullable_to_non_nullable
+as String,teammateName: freezed == teammateName ? _self.teammateName : teammateName // ignore: cast_nullable_to_non_nullable
+as String?,gamesPlayed: null == gamesPlayed ? _self.gamesPlayed : gamesPlayed // ignore: cast_nullable_to_non_nullable
 as int,gamesWon: null == gamesWon ? _self.gamesWon : gamesWon // ignore: cast_nullable_to_non_nullable
 as int,gamesLost: null == gamesLost ? _self.gamesLost : gamesLost // ignore: cast_nullable_to_non_nullable
 as int,pointsScored: null == pointsScored ? _self.pointsScored : pointsScored // ignore: cast_nullable_to_non_nullable

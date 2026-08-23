@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
+import 'package:play_with_me/core/data/models/teammate_stats.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/momentum_consistency_card.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/performance_overview_card.dart';
@@ -20,11 +21,13 @@ import 'package:play_with_me/features/profile/presentation/widgets/role_based_pe
 /// Stats are grouped into themed cards for easy understanding.
 class ExpandedStatsSection extends StatelessWidget {
   final UserModel user;
+  final List<TeammateStats> teammateStats;
   final List<RatingHistoryEntry> ratingHistory;
 
   const ExpandedStatsSection({
     super.key,
     required this.user,
+    this.teammateStats = const [],
     required this.ratingHistory,
   });
 
@@ -40,7 +43,7 @@ class ExpandedStatsSection extends StatelessWidget {
         MomentumConsistencyCard(user: user, ratingHistory: ratingHistory),
 
         // Partners Card
-        PartnersCard(user: user),
+        PartnersCard(teammateStats: teammateStats),
 
         // Rivals Card
         RivalsCard(user: user),

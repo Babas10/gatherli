@@ -498,24 +498,17 @@ class FirestoreUserRepository implements UserRepository {
     String teammateId,
   ) async {
     try {
-      final userDoc = await _firestore
+      // Story 34.3: read from users/{uid}/stats/{partnerUid} subcollection
+      final doc = await _firestore
           .collection(_collection)
           .doc(userId)
+          .collection('stats')
+          .doc(teammateId)
           .get();
-      if (!userDoc.exists) return null;
-
-      final userData = userDoc.data();
-      if (userData == null) return null;
-
-      final teammateStatsMap =
-          userData['teammateStats'] as Map<String, dynamic>?;
-      if (teammateStatsMap == null ||
-          !teammateStatsMap.containsKey(teammateId)) {
-        return null;
-      }
-
-      final statsData = teammateStatsMap[teammateId] as Map<String, dynamic>;
-      return TeammateStats.fromFirestore(teammateId, statsData);
+      if (!doc.exists) return null;
+      final data = doc.data();
+      if (data == null) return null;
+      return TeammateStats.fromFirestore(teammateId, data);
     } catch (e) {
       throw UserException('Failed to get teammate stats: $e');
     }
@@ -523,36 +516,23 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Stream<List<TeammateStats>> getAllTeammateStats(String userId) {
-    return _firestore.collection(_collection).doc(userId).snapshots().map((
-      doc,
-    ) {
-      if (!doc.exists) return <TeammateStats>[];
-
-      final userData = doc.data();
-      if (userData == null) return <TeammateStats>[];
-
-      final teammateStatsMap =
-          userData['teammateStats'] as Map<String, dynamic>?;
-      if (teammateStatsMap == null || teammateStatsMap.isEmpty) {
-        return <TeammateStats>[];
-      }
-
-      final statsList = teammateStatsMap.entries
-          .map((entry) {
+    // Story 34.3: stream from users/{uid}/stats subcollection
+    return _firestore
+        .collection(_collection)
+        .doc(userId)
+        .collection('stats')
+        .snapshots()
+        .map((snapshot) {
+      final statsList = snapshot.docs
+          .map((doc) {
             try {
-              return TeammateStats.fromFirestore(
-                entry.key,
-                entry.value as Map<String, dynamic>,
-              );
-            } catch (e) {
-              // Skip invalid entries
+              return TeammateStats.fromFirestore(doc.id, doc.data());
+            } catch (_) {
               return null;
             }
           })
           .whereType<TeammateStats>()
           .toList();
-
-      // Sort by games played descending
       statsList.sort((a, b) => b.gamesPlayed.compareTo(a.gamesPlayed));
       return statsList;
     });

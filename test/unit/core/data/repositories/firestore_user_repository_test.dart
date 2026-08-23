@@ -1205,60 +1205,44 @@ void main() {
     });
 
     group('getTeammateStats', () {
-      test('returns null when user does not exist', () async {
+      // Story 34.3: reads from users/{uid}/stats/{partnerUid} subcollection
+      test('returns null when subcollection doc does not exist', () async {
         final result = await repository.getTeammateStats(
           'non-existent-user',
           'teammate-123',
         );
-
         expect(result, isNull);
       });
 
-      test('returns null when no teammate stats exist', () async {
-        await fakeFirestore.collection('users').doc(testUserId).set({
-          'email': testEmail,
-          'isEmailVerified': true,
-        });
+      test('returns null when specific teammate not in subcollection', () async {
+        // Set up a different partner in the subcollection
+        await fakeFirestore
+            .collection('users')
+            .doc(testUserId)
+            .collection('stats')
+            .doc('other-teammate')
+            .set({'gamesPlayed': 5, 'gamesWon': 3, 'userId': 'other-teammate'});
 
         final result = await repository.getTeammateStats(
           testUserId,
           'teammate-123',
         );
-
         expect(result, isNull);
       });
 
-      test('returns null when specific teammate not found in stats', () async {
-        await fakeFirestore.collection('users').doc(testUserId).set({
-          'email': testEmail,
-          'isEmailVerified': true,
-          'teammateStats': {
-            'other-teammate': {'gamesPlayed': 5, 'gamesWon': 3},
-          },
-        });
-
-        final result = await repository.getTeammateStats(
-          testUserId,
-          'teammate-123',
-        );
-
-        expect(result, isNull);
-      });
-
-      test('returns TeammateStats when found', () async {
-        await fakeFirestore.collection('users').doc(testUserId).set({
-          'email': testEmail,
-          'isEmailVerified': true,
-          'teammateStats': {
-            'teammate-123': {
-              'gamesPlayed': 10,
-              'gamesWon': 7,
-              'gamesLost': 3,
-              'pointsScored': 210,
-              'pointsAllowed': 180,
-              'eloChange': 25.5,
-            },
-          },
+      test('returns TeammateStats when found in subcollection', () async {
+        await fakeFirestore
+            .collection('users')
+            .doc(testUserId)
+            .collection('stats')
+            .doc('teammate-123')
+            .set({
+          'gamesPlayed': 10,
+          'gamesWon': 7,
+          'gamesLost': 3,
+          'pointsScored': 210,
+          'pointsAllowed': 180,
+          'eloChange': 25.5,
         });
 
         final result = await repository.getTeammateStats(
