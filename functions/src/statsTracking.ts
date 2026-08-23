@@ -134,8 +134,9 @@ export async function updateTeammateStats(
   const db = admin.firestore();
 
   // Story 34.3: write to users/{uid}/stats/{partnerUid} subcollection.
-  // Using atomic FieldValue operations (increment / arrayUnion) means no
-  // pre-read is required, keeping the transaction read-before-write rule intact.
+  // Using atomic FieldValue.increment() operations means no pre-read is
+  // required, keeping the transaction read-before-write rule intact.
+  // Note: recentGames is not tracked here (not read by the Flutter app).
   const statsRef = db
     .collection("users")
     .doc(playerId)
@@ -152,14 +153,6 @@ export async function updateTeammateStats(
       pointsScored: admin.firestore.FieldValue.increment(pointsScored),
       pointsAllowed: admin.firestore.FieldValue.increment(pointsAllowed),
       eloChange: admin.firestore.FieldValue.increment(eloChange),
-      recentGames: admin.firestore.FieldValue.arrayUnion({
-        gameId,
-        won,
-        pointsScored,
-        pointsAllowed,
-        eloChange,
-        timestamp: new Date().toISOString(),
-      }),
       lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
     },
     {merge: true},
