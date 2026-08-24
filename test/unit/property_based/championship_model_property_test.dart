@@ -124,16 +124,17 @@ void main() {
       }
     });
 
-    test('correct gender always allowed, wrong gender always blocked', () async {
+    test('gender check disabled — all users allowed regardless of category', () async {
+      // Gender check temporarily disabled — admin manages team eligibility.
       final testCases = [
-        (ChampionshipGenderCategory.male, 'male', true),
-        (ChampionshipGenderCategory.male, 'female', false),
-        (ChampionshipGenderCategory.female, 'female', true),
-        (ChampionshipGenderCategory.female, 'male', false),
-        (ChampionshipGenderCategory.male, 'none', false),
-        (ChampionshipGenderCategory.female, 'none', false),
+        (ChampionshipGenderCategory.male, 'male'),
+        (ChampionshipGenderCategory.male, 'female'),
+        (ChampionshipGenderCategory.female, 'female'),
+        (ChampionshipGenderCategory.female, 'male'),
+        (ChampionshipGenderCategory.male, 'none'),
+        (ChampionshipGenderCategory.female, 'none'),
       ];
-      for (final (cat, gender, expected) in testCases) {
+      for (final (cat, gender) in testCases) {
         final result = await useCase(ChampionshipEligibilityInput(
           championship: generateChampionship(gender: cat),
           teams: [],
@@ -142,8 +143,8 @@ void main() {
         ));
         expect(
           result.isGenderAllowed,
-          equals(expected),
-          reason: 'category=$cat userGender=$gender expected=$expected',
+          isTrue,
+          reason: 'category=$cat userGender=$gender should be allowed (gender check disabled)',
         );
       }
     });

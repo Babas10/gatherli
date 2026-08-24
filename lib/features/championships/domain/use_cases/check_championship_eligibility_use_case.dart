@@ -35,8 +35,8 @@ class ChampionshipEligibilityResult {
 }
 
 class CheckChampionshipEligibilityUseCase
-    extends UseCase<ChampionshipEligibilityInput, ChampionshipEligibilityResult> {
-
+    extends
+        UseCase<ChampionshipEligibilityInput, ChampionshipEligibilityResult> {
   const CheckChampionshipEligibilityUseCase();
 
   @override
@@ -47,15 +47,16 @@ class CheckChampionshipEligibilityUseCase
     final championship = input.championship;
     final teams = input.teams;
 
-    final isAlreadyRegistered = userId != null &&
-        teams.any((t) => t.memberIds.contains(userId));
+    final isAlreadyRegistered =
+        userId != null && teams.any((t) => t.memberIds.contains(userId));
 
     final isGenderAllowed = _isGenderAllowed(
       championship.genderCategory,
       input.userGender,
     );
 
-    final canRegister = userId != null &&
+    final canRegister =
+        userId != null &&
         !isAlreadyRegistered &&
         isGenderAllowed &&
         championship.status == ChampionshipStatus.registration &&
@@ -63,9 +64,9 @@ class CheckChampionshipEligibilityUseCase
 
     final myTeamId = userId != null
         ? teams
-            .where((t) => t.memberIds.contains(userId))
-            .map((t) => t.id)
-            .firstOrNull
+              .where((t) => t.memberIds.contains(userId))
+              .map((t) => t.id)
+              .firstOrNull
         : null;
 
     return ChampionshipEligibilityResult(
@@ -83,22 +84,39 @@ class CheckChampionshipEligibilityUseCase
 
   /// Synchronous version — safe because this use case has no I/O.
   /// Use from widget build() methods instead of execute().
-  ChampionshipEligibilityResult executeSync(ChampionshipEligibilityInput input) {
+  ChampionshipEligibilityResult executeSync(
+    ChampionshipEligibilityInput input,
+  ) {
     final userId = input.userId;
     final championship = input.championship;
     final teams = input.teams;
-    final isAlreadyRegistered = userId != null && teams.any((t) => t.memberIds.contains(userId));
-    final isGenderAllowed = _isGenderAllowed(championship.genderCategory, input.userGender);
-    final canRegister = userId != null && !isAlreadyRegistered && isGenderAllowed &&
-        championship.status == ChampionshipStatus.registration && championship.isOpen;
+    final isAlreadyRegistered =
+        userId != null && teams.any((t) => t.memberIds.contains(userId));
+    final isGenderAllowed = _isGenderAllowed(
+      championship.genderCategory,
+      input.userGender,
+    );
+    final canRegister =
+        userId != null &&
+        !isAlreadyRegistered &&
+        isGenderAllowed &&
+        championship.status == ChampionshipStatus.registration &&
+        championship.isOpen;
     final myTeamId = userId != null
-        ? teams.where((t) => t.memberIds.contains(userId)).map((t) => t.id).firstOrNull
+        ? teams
+              .where((t) => t.memberIds.contains(userId))
+              .map((t) => t.id)
+              .firstOrNull
         : null;
     return ChampionshipEligibilityResult(
       isAlreadyRegistered: isAlreadyRegistered,
       isGenderAllowed: isGenderAllowed,
       canRegister: canRegister,
-      genderBlockReason: _genderBlockReasonText(championship.genderCategory, input.userGender, isAlreadyRegistered),
+      genderBlockReason: _genderBlockReasonText(
+        championship.genderCategory,
+        input.userGender,
+        isAlreadyRegistered,
+      ),
       myTeamId: myTeamId,
     );
   }
