@@ -107,9 +107,9 @@ class CheckChampionshipEligibilityUseCase
     ChampionshipGenderCategory? category,
     String? userGender,
   ) {
-    if (category == null) return true;
-    if (userGender == null || userGender == 'none') return false;
-    return userGender == category.name;
+    // Gender check temporarily disabled — admins manually remove
+    // teams that don't match the league's gender category.
+    return true;
   }
 
   String? _genderBlockReasonText(
@@ -117,15 +117,7 @@ class CheckChampionshipEligibilityUseCase
     String? userGender,
     bool alreadyRegistered,
   ) {
-    if (category == null || alreadyRegistered) return null;
-    if (userGender == null || userGender == 'none') {
-      return 'Set your gender in profile settings to register for gendered championships.';
-    }
-    if (userGender != category.name) {
-      return category == ChampionshipGenderCategory.male
-          ? 'This is a men\'s championship.'
-          : 'This is a women\'s championship.';
-    }
+    // Gender block disabled — see _isGenderAllowed.
     return null;
   }
 }
