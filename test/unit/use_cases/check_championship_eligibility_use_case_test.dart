@@ -84,25 +84,27 @@ void main() {
       expect(result.isGenderAllowed, isTrue);
     });
 
-    test('blocks male user from female championship', () async {
+    test('gender check disabled — male user allowed into female league', () async {
       final result = await useCase(ChampionshipEligibilityInput(
         championship: makeChampionship(gender: ChampionshipGenderCategory.female),
         teams: [],
         userId: 'user1',
         userGender: 'male',
       ));
-      expect(result.isGenderAllowed, isFalse);
-      expect(result.genderBlockReason, isNotNull);
+      // Gender check temporarily disabled — admin manages team eligibility
+      expect(result.isGenderAllowed, isTrue);
+      expect(result.genderBlockReason, isNull);
     });
 
-    test('blocks user with no gender set', () async {
+    test('gender check disabled — user with no gender allowed', () async {
       final result = await useCase(ChampionshipEligibilityInput(
         championship: makeChampionship(gender: ChampionshipGenderCategory.male),
         teams: [],
         userId: 'user1',
         userGender: 'none',
       ));
-      expect(result.isGenderAllowed, isFalse);
+      // Gender check temporarily disabled — admin manages team eligibility
+      expect(result.isGenderAllowed, isTrue);
     });
 
     test('allows female user into female championship', () async {
