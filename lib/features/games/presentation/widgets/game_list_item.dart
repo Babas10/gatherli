@@ -6,7 +6,6 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
-import 'game_result_badge.dart';
 import 'set_scores_display.dart';
 
 class GameListItem extends StatelessWidget {
@@ -70,9 +69,7 @@ class GameListItem extends StatelessWidget {
                     const MixGameBadge(),
                     const SizedBox(width: 6),
                   ],
-                  if (isCompletedWithResult)
-                    GameResultBadge(result: game.result!, teams: game.teams)
-                  else if (isVerification)
+                  if (isVerification)
                     _buildVerificationBadge(context)
                   else if (isCancelled)
                     _buildCancelledBadge(context)

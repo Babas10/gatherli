@@ -24,51 +24,58 @@ class ScoreEntryLoading extends ScoreEntryState {
 class SetScoreData {
   final int? teamAPoints;
   final int? teamBPoints;
+  // True for the deciding 3rd set in best-of-3 — plays to 15 points instead of 21
+  final bool isDeciderSet;
 
-  const SetScoreData({this.teamAPoints, this.teamBPoints});
+  const SetScoreData({this.teamAPoints, this.teamBPoints, this.isDeciderSet = false});
 
   SetScoreData copyWith({
     int? teamAPoints,
     int? teamBPoints,
+    bool? isDeciderSet,
     bool clearTeamA = false,
     bool clearTeamB = false,
   }) {
     return SetScoreData(
       teamAPoints: clearTeamA ? null : (teamAPoints ?? this.teamAPoints),
       teamBPoints: clearTeamB ? null : (teamBPoints ?? this.teamBPoints),
+      isDeciderSet: isDeciderSet ?? this.isDeciderSet,
     );
   }
 
   bool get isComplete => teamAPoints != null && teamBPoints != null;
 
+  int get _targetPoints => isDeciderSet ? 15 : 21;
+
   bool get isValid {
     if (!isComplete) return false;
+    final target = _targetPoints;
     final maxPoints = teamAPoints! > teamBPoints! ? teamAPoints! : teamBPoints!;
     final minPoints = teamAPoints! < teamBPoints! ? teamAPoints! : teamBPoints!;
 
-    if (maxPoints < 21) return false;
-    if (maxPoints == 21) return minPoints <= 19;
+    if (maxPoints < target) return false;
+    if (maxPoints == target) return minPoints <= target - 2;
     return (maxPoints - minPoints) == 2;
   }
 
   /// Get a user-friendly error message if the score is invalid
   String? get validationError {
     if (!isComplete) return null;
-
+    final target = _targetPoints;
     final maxPoints = teamAPoints! > teamBPoints! ? teamAPoints! : teamBPoints!;
     final minPoints = teamAPoints! < teamBPoints! ? teamAPoints! : teamBPoints!;
 
-    if (maxPoints < 21) {
-      return 'Winning team must reach at least 21 points';
+    if (maxPoints < target) {
+      return 'Winning team must reach at least $target points';
     }
 
-    if (maxPoints == 21) {
-      if (minPoints > 19) {
-        return 'Must win by at least 2 points (e.g., 21-19)';
+    if (maxPoints == target) {
+      if (minPoints > target - 2) {
+        return 'Must win by at least 2 points (e.g., $target-${target - 2})';
       }
     }
 
-    if (maxPoints > 21) {
+    if (maxPoints > target) {
       if ((maxPoints - minPoints) != 2) {
         return 'In extra points, must win by exactly 2 points';
       }
@@ -88,10 +95,11 @@ class SetScoreData {
       other is SetScoreData &&
           runtimeType == other.runtimeType &&
           teamAPoints == other.teamAPoints &&
-          teamBPoints == other.teamBPoints;
+          teamBPoints == other.teamBPoints &&
+          isDeciderSet == other.isDeciderSet;
 
   @override
-  int get hashCode => teamAPoints.hashCode ^ teamBPoints.hashCode;
+  int get hashCode => teamAPoints.hashCode ^ teamBPoints.hashCode ^ isDeciderSet.hashCode;
 }
 
 /// Helper class to store data for a single game
