@@ -4,7 +4,6 @@ import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_list_item.dart';
-import 'package:play_with_me/features/games/presentation/widgets/game_result_badge.dart';
 import 'package:play_with_me/features/games/presentation/widgets/set_scores_display.dart';
 import '../../../../../helpers/test_app.dart';
 
@@ -96,7 +95,7 @@ void main() {
       expect(title.style?.decoration, TextDecoration.lineThrough);
     });
 
-    testWidgets('displays result badge and scores when completed with result', (
+    testWidgets('displays scores (no badge) when completed with result', (
       tester,
     ) async {
       const result = GameResult(
@@ -117,7 +116,6 @@ void main() {
           )),
       );
 
-      expect(find.byType(GameResultBadge), findsOneWidget);
       expect(find.byType(SetScoresDisplay), findsOneWidget);
       expect(find.text('21-19'), findsOneWidget);
     });

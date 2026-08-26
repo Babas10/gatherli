@@ -5,13 +5,15 @@ import 'package:play_with_me/core/domain/use_cases/base_use_case.dart';
 class GameScoreInput {
   final List<SetScore> sets;
   final int requiredSetsToWin;    // e.g. 2 for best-of-3
-  final int pointsToWinSet;       // e.g. 21
+  final int pointsToWinSet;       // e.g. 21 for regular sets
+  final int deciderSetPoints;     // e.g. 15 for the deciding 3rd set
   final int minimumPointDiff;     // e.g. 2
 
   const GameScoreInput({
     required this.sets,
     required this.requiredSetsToWin,
     this.pointsToWinSet = 21,
+    this.deciderSetPoints = 15,
     this.minimumPointDiff = 2,
   });
 }
@@ -73,18 +75,21 @@ class ValidateGameScoresUseCase
       return 'Set ${setIndex + 1}: scores cannot be negative.';
     }
 
+    // The deciding set (e.g. 3rd in best-of-3) plays to deciderSetPoints (15),
+    // all other sets play to pointsToWinSet (21).
+    final totalSets = input.requiredSetsToWin * 2 - 1; // 3 for best-of-3
+    final isDeciderSet = setIndex == totalSets - 1;
+    final target = isDeciderSet ? input.deciderSetPoints : input.pointsToWinSet;
+
     final maxPoints = a > b ? a : b;
     final diff = (a - b).abs();
 
-    // Valid set: one team reaches pointsToWinSet with minimumPointDiff lead
-    // OR extended play (both above pointsToWinSet, difference == minimumPointDiff)
-    if (maxPoints >= input.pointsToWinSet) {
+    // Valid set: one team reaches target with minimumPointDiff lead
+    // OR extended play (both above target, difference == minimumPointDiff)
+    if (maxPoints >= target) {
       if (diff < input.minimumPointDiff) {
         return 'Set ${setIndex + 1}: need a ${input.minimumPointDiff}-point lead to win.';
       }
-    } else if (a != b) {
-      // One team has more points but neither reached the winning threshold
-      // This is only valid if it's the last set being played
     }
 
     return null;

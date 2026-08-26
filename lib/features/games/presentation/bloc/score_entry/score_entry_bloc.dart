@@ -65,10 +65,14 @@ class ScoreEntryBloc extends Bloc<ScoreEntryEvent, ScoreEntryState> {
         final loadedGames = <GameData>[];
 
         for (final individualGame in result.games) {
-          final sets = individualGame.sets.map((set) {
+          final totalSets = individualGame.sets.length;
+          final sets = individualGame.sets.asMap().entries.map((entry) {
+            final i = entry.key;
+            final set = entry.value;
             return SetScoreData(
               teamAPoints: set.teamAPoints,
               teamBPoints: set.teamBPoints,
+              isDeciderSet: totalSets > 1 && i == totalSets - 1,
             );
           }).toList();
 
@@ -138,12 +142,15 @@ class ScoreEntryBloc extends Bloc<ScoreEntryEvent, ScoreEntryState> {
     final currentGame = updatedGames[event.gameIndex];
 
     // Update the game with new number of sets
+    // The last set of a best-of-N format (index == numberOfSets - 1 && numberOfSets > 1)
+    // is the deciding set and plays to 15 points instead of 21.
     final newSets = List.generate(event.numberOfSets, (index) {
-      // Keep existing set data if it exists
+      final isDecider = event.numberOfSets > 1 && index == event.numberOfSets - 1;
       if (index < currentGame.sets.length) {
-        return currentGame.sets[index];
+        // Preserve existing score data but update isDeciderSet flag
+        return currentGame.sets[index].copyWith(isDeciderSet: isDecider);
       }
-      return const SetScoreData();
+      return SetScoreData(isDeciderSet: isDecider);
     });
 
     updatedGames[event.gameIndex] = currentGame.copyWith(
@@ -173,9 +180,9 @@ class ScoreEntryBloc extends Bloc<ScoreEntryEvent, ScoreEntryState> {
       return;
     }
 
-    // Update the specific set score with both values
+    // Update the specific set score with both values (preserve isDeciderSet flag)
     final updatedSets = List<SetScoreData>.from(currentGame.sets);
-    updatedSets[event.setIndex] = SetScoreData(
+    updatedSets[event.setIndex] = currentGame.sets[event.setIndex].copyWith(
       teamAPoints: event.teamAPoints,
       teamBPoints: event.teamBPoints,
     );
