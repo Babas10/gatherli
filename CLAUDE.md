@@ -799,6 +799,19 @@ Remove `mockito`, `build_runner`, `fake_cloud_firestore`, and any generated `.mo
   * `fix:` for bug fixes
   * `refactor:`, `test:`, etc. as appropriate
 * PR titles must reference the Story (e.g., `Story 1.1: Implement User Model`)
+* **All changes go through feature branches + PRs — never push directly to `main`.** The one sanctioned exception is documented below in "Release Process".
+
+---
+
+### **Release Process**
+
+Releases are tag-based (`v*` tags pushed to trigger CD), not merge-based. See:
+
+* [`docs/epic-20/RELEASE_WORKFLOW.md`](./docs/epic-20/RELEASE_WORKFLOW.md) — tag-based CD pipeline mechanics
+* [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) — manual gate checklist for each release
+* [`CHANGELOG.md`](./CHANGELOG.md) — auto-generated release notes per tag
+
+**Direct-to-main exception:** The one sanctioned exception to the "never push directly to `main`" rule above is the `generate_changelog` job in `.github/workflows/validate-version-tag.yml`, which pushes a generated `CHANGELOG.md` entry directly to `main` on every `v*` tag push (beta and production). This is safe because the content is fully generated from Conventional Commit history with no manual edits, it's append-only documentation with no code impact, and `main.yml` only triggers on `pull_request` (no CI-loop risk). Do not extend this exception to any other file or workflow.
 
 ---
 
@@ -889,6 +902,9 @@ All project documentation is organized by Epic and Story under [`docs/`](./docs/
 * **[Firebase Config Security](./docs/security/FIREBASE_CONFIG_SECURITY.md)** *(mandatory reading before Firebase work)*
 * **[Pre-Commit Security Checklist](./docs/security/PRE_COMMIT_SECURITY_CHECKLIST.md)** *(MUST review before every commit)*
 * **[Local Testing Guide](./docs/testing/LOCAL_TESTING_GUIDE.md)** *(testing workflows and best practices)*
+* **[Release Workflow](./docs/epic-20/RELEASE_WORKFLOW.md)** *(tag-based CD pipeline)*
+* **[Release Checklist](./RELEASE_CHECKLIST.md)** *(manual gate checklist per release)*
+* **[Changelog](./CHANGELOG.md)** *(auto-generated release notes)*
 
 ---
 
