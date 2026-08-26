@@ -66,6 +66,9 @@ See [`docs/`](./docs/) for full documentation organized by Epic and Story.
 - [Project Standards (CLAUDE.md)](./CLAUDE.md)
 - [Security Guidelines](./docs/security/FIREBASE_CONFIG_SECURITY.md)
 - [Testing Guide](./docs/testing/LOCAL_TESTING_GUIDE.md)
+- [Release Workflow](./docs/epic-20/RELEASE_WORKFLOW.md)
+- [Release Checklist](./RELEASE_CHECKLIST.md)
+- [Changelog](./CHANGELOG.md)
 
 ## 🔒 Security
 
