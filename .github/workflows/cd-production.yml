@@ -171,7 +171,9 @@ jobs:
   # ─── Job 5: Promote Android ──────────────────────────────────────────────────
   promote_android:
     name: 🤖 Promote Android AAB → Play Production
-    needs: [guard, test, find_beta]
+    # Waits on deploy_functions so a failed backend deploy blocks the client
+    # release instead of racing it — see Story 0.3.3.
+    needs: [guard, test, find_beta, deploy_functions]
     runs-on: ubuntu-latest
 
     steps:
@@ -215,7 +217,9 @@ jobs:
   # ─── Job 6: Submit iOS for App Store Review ──────────────────────────────────
   submit_ios:
     name: 🍎 Submit iOS build for App Store review
-    needs: [guard, test, find_beta]
+    # Waits on deploy_functions so a failed backend deploy blocks the client
+    # release instead of racing it — see Story 0.3.3.
+    needs: [guard, test, find_beta, deploy_functions]
     # No Xcode needed — we call the App Store Connect REST API directly.
     # ubuntu-latest is 10× cheaper than macos-latest.
     runs-on: ubuntu-latest
