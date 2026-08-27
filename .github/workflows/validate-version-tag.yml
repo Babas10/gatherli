@@ -66,3 +66,166 @@ jobs:
 
           echo ""
           echo "✅ Version validation passed: $NEW_TAG > $LATEST_TAG"
+
+  generate_changelog:
+    name: 📝 Generate Changelog & GitHub Release
+    needs: validate_version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout Repository (full history for tags)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: 📝 Generate changelog section for this tag
+        run: |
+          NEW_TAG="${GITHUB_REF#refs/tags/}"
+          git fetch --tags --force
+
+          ALL_TAGS=$(git tag --list 'v*' | grep -v "^${NEW_TAG}$" | sort -V)
+          PREVIOUS_TAG=$(echo "$ALL_TAGS" | tail -1)
+
+          echo "🏷️  New tag: $NEW_TAG"
+          echo "📦  Previous tag: ${PREVIOUS_TAG:-<none>}"
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            RANGE="$NEW_TAG"
+          else
+            RANGE="$PREVIOUS_TAG..$NEW_TAG"
+          fi
+
+          git log "$RANGE" --no-merges --pretty=format:"%s" > /tmp/commits.txt
+
+          python3 - "$NEW_TAG" << 'PYEOF'
+          import re, sys, datetime
+
+          new_tag = sys.argv[1]
+          with open('/tmp/commits.txt') as f:
+              subjects = [l.strip() for l in f if l.strip()]
+
+          sections = {
+              'feat': ('✨ Features', []),
+              'fix': ('🐛 Fixes', []),
+              'perf': ('⚡ Performance', []),
+              'refactor': ('♻️ Refactors', []),
+              'docs': ('📝 Docs', []),
+              'test': ('✅ Tests', []),
+              'build': ('📦 Build', []),
+              'ci': ('👷 CI', []),
+              'style': ('🎨 Style', []),
+              'revert': ('⏪ Reverts', []),
+              'chore': ('🔧 Chores', []),
+          }
+          other = []
+
+          pattern = re.compile(r'^(?P<type>feat|fix|perf|refactor|docs|test|build|ci|style|revert|chore)(\(.+?\))?!?:\s*(?P<desc>.+)$')
+
+          for subject in subjects:
+              m = pattern.match(subject)
+              if m:
+                  sections[m.group('type')][1].append(m.group('desc'))
+              else:
+                  other.append(subject)
+
+          date = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+          lines = [f"## [{new_tag}] - {date}", ""]
+
+          any_entries = False
+          for key, (title, items) in sections.items():
+              if items:
+                  any_entries = True
+                  lines.append(f"### {title}")
+                  for item in items:
+                      lines.append(f"- {item}")
+                  lines.append("")
+
+          if other:
+              any_entries = True
+              lines.append("### Other")
+              for item in other:
+                  lines.append(f"- {item}")
+              lines.append("")
+
+          if not any_entries:
+              lines.append("_No notable changes._")
+              lines.append("")
+
+          content = "\n".join(lines)
+
+          with open('/tmp/release_notes.md', 'w') as f:
+              f.write(content)
+          PYEOF
+
+          echo "----- Generated release notes -----"
+          cat /tmp/release_notes.md
+
+      - name: 🏷️ Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_TAG="${GITHUB_REF#refs/tags/}"
+          PRERELEASE_FLAG=""
+          case "$NEW_TAG" in
+            *-beta*) PRERELEASE_FLAG="--prerelease" ;;
+          esac
+          gh release create "$NEW_TAG" \
+            --title "$NEW_TAG" \
+            --notes-file /tmp/release_notes.md \
+            $PRERELEASE_FLAG
+
+      - name: 📄 Commit changelog entry to main
+        # CHANGELOG.md is the one file this repo pushes directly to main —
+        # everything else always goes through a PR. Safe here because it's
+        # generated, append-only documentation with no code impact, and no
+        # workflow in this repo triggers on `push` to `main` (main.yml only
+        # triggers on pull_request), so this cannot cause a CI loop.
+        run: |
+          NEW_TAG="${GITHUB_REF#refs/tags/}"
+          MARKER="<!-- release-notes:start -->"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B main origin/main
+
+            if ! grep -qF "$MARKER" CHANGELOG.md; then
+              echo "❌ ERROR: CHANGELOG.md is missing the '$MARKER' marker."
+              exit 1
+            fi
+
+            python3 - "$MARKER" << 'PYEOF'
+          import sys
+          marker = sys.argv[1]
+          with open('CHANGELOG.md') as f:
+              content = f.read()
+          with open('/tmp/release_notes.md') as f:
+              notes = f.read().rstrip('\n')
+          content = content.replace(marker, f"{marker}\n\n{notes}", 1)
+          with open('CHANGELOG.md', 'w') as f:
+              f.write(content)
+          PYEOF
+
+            git add CHANGELOG.md
+            if git diff --cached --quiet; then
+              echo "⚠️  No changelog changes to commit."
+              break
+            fi
+            git commit -m "docs(changelog): add entry for $NEW_TAG"
+
+            if git push origin HEAD:main; then
+              echo "✅ Changelog pushed to main."
+              break
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "❌ ERROR: Failed to push changelog after 3 attempts."
+              exit 1
+            fi
+
+            echo "⏳ Push rejected (attempt $attempt) — retrying..."
+            sleep 3
+          done
