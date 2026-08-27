@@ -118,7 +118,9 @@ jobs:
   # ─── Job 4: Deploy Android ───────────────────────────────────────────────────
   deploy_android:
     name: 🤖 Build & Upload Android (Play Internal)
-    needs: test
+    # Waits on deploy_functions so a failed backend deploy blocks the client
+    # release instead of racing it — see Story 0.3.3.
+    needs: [test, deploy_functions]
     runs-on: ubuntu-latest
 
     steps:
@@ -252,7 +254,9 @@ jobs:
   # ─── Job 5: Deploy iOS ───────────────────────────────────────────────────────
   deploy_ios:
     name: 🍎 Build & Upload iOS (TestFlight)
-    needs: test
+    # Waits on deploy_functions so a failed backend deploy blocks the client
+    # release instead of racing it — see Story 0.3.3.
+    needs: [test, deploy_functions]
     runs-on: macos-latest  # macos-latest must include Xcode 26+ (iOS 26 SDK required from April 28 2026 — ITMS-90725)
 
     steps:
