@@ -33,8 +33,9 @@ jobs:
         # Prevents accidental production releases from feature or hotfix branches.
         # Play Store production releases go live immediately; App Store submissions
         # enter Apple review — both are hard to reverse once triggered.
+        # No extra fetch needed — fetch-depth: 0 above already pulled full
+        # history for all branches, including origin/main.
         run: |
-          git fetch origin main --depth=50
           git merge-base --is-ancestor HEAD origin/main \
             || (echo "❌ ERROR: This tag does not point to a commit on main. Production deploy aborted." && exit 1)
           echo "✅ Tag is on main — proceeding with production deploy"

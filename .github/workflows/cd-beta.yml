@@ -29,8 +29,9 @@ jobs:
       - name: 🛡️ Verify tag is on main branch
         # Prevents accidental beta releases from feature branches reaching
         # TestFlight and the Play Store internal track.
+        # No extra fetch needed — fetch-depth: 0 above already pulled full
+        # history for all branches, including origin/main.
         run: |
-          git fetch origin main --depth=50
           git merge-base --is-ancestor HEAD origin/main \
             || (echo "❌ ERROR: This tag does not point to a commit on main. Beta deploy aborted." && exit 1)
           echo "✅ Tag is on main — proceeding with beta deploy"
@@ -269,6 +270,10 @@ jobs:
       - name: 🧹 Clean up Google Play service account key
         if: always()
         run: rm -f service-account.json
+
+      - name: 🧹 Clean up Android release keystore
+        if: always()
+        run: rm -f android/app/release.jks
 
   # ─── Job 5: Deploy iOS ───────────────────────────────────────────────────────
   deploy_ios:
