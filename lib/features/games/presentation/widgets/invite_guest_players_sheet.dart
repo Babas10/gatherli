@@ -154,13 +154,17 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
                           : null;
                       final isSendingAny = sendingGroupId != null;
 
-                      return ListView(
+                      final groupEntries = grouped.entries.toList();
+
+                      return ListView.builder(
                         controller: scrollController,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
-                        children: grouped.entries.map((entry) {
+                        itemCount: groupEntries.length,
+                        itemBuilder: (context, index) {
+                          final entry = groupEntries[index];
                           final groupId = entry.key;
                           final members = entry.value;
                           final groupName = members.first.sourceGroupName;
@@ -182,7 +186,7 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
                               );
                             },
                           );
-                        }).toList(),
+                        },
                       );
                     },
                   ),
