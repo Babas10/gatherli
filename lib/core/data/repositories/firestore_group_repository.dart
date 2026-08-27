@@ -72,23 +72,27 @@ class FirestoreGroupRepository implements GroupRepository {
     if (groupIds.isEmpty) return [];
 
     try {
-      final List<GroupModel> groups = [];
-
-      // Firestore 'in' queries are limited to 10 items
+      // Firestore 'in' queries are limited to 10 items, so chunk into
+      // batches. Batches are independent — run them in parallel instead of
+      // awaiting one at a time.
       const int batchSize = 10;
+      final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
       for (int i = 0; i < groupIds.length; i += batchSize) {
         final batch = groupIds.skip(i).take(batchSize).toList();
-        final query = await _firestore
-            .collection(_collection)
-            .where(FieldPath.documentId, whereIn: batch)
-            .get();
-
-        for (final doc in query.docs) {
-          if (doc.exists) {
-            groups.add(GroupModel.fromFirestore(doc));
-          }
-        }
+        futures.add(
+          _firestore
+              .collection(_collection)
+              .where(FieldPath.documentId, whereIn: batch)
+              .get(),
+        );
       }
+
+      final results = await Future.wait(futures);
+      final groups = <GroupModel>[
+        for (final query in results)
+          for (final doc in query.docs)
+            if (doc.exists) GroupModel.fromFirestore(doc),
+      ];
 
       return groups;
     } catch (e) {

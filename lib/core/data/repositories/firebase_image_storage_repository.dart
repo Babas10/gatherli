@@ -69,10 +69,9 @@ class FirebaseImageStorageRepository implements ImageStorageRepository {
       final ref = _storage.ref().child('avatars/$userId');
       final listResult = await ref.listAll();
 
-      // Delete all files in the folder
-      for (final item in listResult.items) {
-        await item.delete();
-      }
+      // Delete all files in the folder in parallel — deletions are
+      // independent of each other.
+      await Future.wait(listResult.items.map((item) => item.delete()));
     } on FirebaseException catch (e) {
       // Ignore if folder doesn't exist
       if (e.code != 'object-not-found') {
