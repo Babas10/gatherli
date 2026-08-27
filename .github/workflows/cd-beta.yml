@@ -4,6 +4,9 @@ name: CD — Beta (TestFlight + Play Internal Track)
 # Builds and uploads the prod flavor to:
 #   - Google Play Internal Testing track (Android)
 #   - TestFlight via App Store Connect (iOS)
+#
+# Required secret (Story 0.3.6): ASC_APPLE_APP_ID — numeric app ID from App
+# Store Connect, needed by `altool --upload-package` (also used by cd-production.yml).
 on:
   push:
     tags:
@@ -423,6 +426,7 @@ jobs:
         run: |
           # Strip beta suffix for iOS: 0.4.0-beta12 → 0.4.0 (CFBundleShortVersionString must be numeric X.Y.Z)
           IOS_VERSION=$(echo "${{ env.VERSION_NAME }}" | sed 's/-beta[0-9]*//')
+          echo "IOS_VERSION=$IOS_VERSION" >> $GITHUB_ENV
           flutter build ipa --release --flavor prod \
             -t lib/main_prod.dart \
             --build-name=$IOS_VERSION \
@@ -430,10 +434,19 @@ jobs:
             --export-options-plist=ios/ExportOptions.plist
 
       - name: 🚀 Upload IPA to TestFlight
+        # --upload-app is deprecated by Apple in favor of --upload-package (Story
+        # 0.3.6) — Apple's own altool man page marks --upload-app as
+        # "[DEPRECATED use --upload-package instead]", and Xcode 26 has had
+        # bugs mis-selecting the target app under --upload-app for accounts
+        # with multiple similar bundle IDs. --upload-package requires the
+        # app/build identifiers explicitly instead of inferring them.
         run: |
-          xcrun altool --upload-app \
+          xcrun altool --upload-package "$(find build/ios/ipa -name '*.ipa' | head -1)" \
             --type ios \
-            -f "$(find build/ios/ipa -name '*.ipa' | head -1)" \
+            --apple-id "${{ secrets.ASC_APPLE_APP_ID }}" \
+            --bundle-id org.gatherli.app \
+            --bundle-version "${{ env.BUILD_NUMBER }}" \
+            --bundle-short-version-string "${{ env.IOS_VERSION }}" \
             --apiKey "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" \
             --apiIssuer "${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}"
 
