@@ -143,10 +143,11 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
                 const SizedBox(height: AppSpacing.xxl),
 
                 // Submit button
-                BlocBuilder<PartnerPickerBloc, PartnerPickerState>(
-                  builder: (context, partnerState) {
-                    final hasPartner = partnerState is PartnerPickerLoaded &&
-                        partnerState.selectedPartnerId != null;
+                BlocSelector<PartnerPickerBloc, PartnerPickerState, bool>(
+                  selector: (partnerState) =>
+                      partnerState is PartnerPickerLoaded &&
+                      partnerState.selectedPartnerId != null,
+                  builder: (context, hasPartner) {
                     return FilledButton(
                       onPressed: hasPartner ? _submit : null,
                       child: Text(l10n.registerTeam),

@@ -264,9 +264,10 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
               const SizedBox(height: AppSpacing.xxl),
 
               // Submit
-              BlocBuilder<ChampionshipCreationBloc, ChampionshipCreationState>(
-                builder: (context, state) {
-                  final isSubmitting = state is ChampionshipCreationSubmitting;
+              BlocSelector<ChampionshipCreationBloc, ChampionshipCreationState,
+                  bool>(
+                selector: (state) => state is ChampionshipCreationSubmitting,
+                builder: (context, isSubmitting) {
                   return FilledButton(
                     onPressed: isSubmitting ? null : () => _submit(context),
                     child: isSubmitting
