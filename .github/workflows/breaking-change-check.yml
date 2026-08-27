@@ -1,0 +1,35 @@
+name: Breaking Change Check
+
+# Warns (does not block) when a PR is marked with the `breaking-change` label,
+# reminding reviewers to verify a versioned (V2) Cloud Function exists per
+# CLAUDE.md §11.11 before merging. See .github/pull_request_template.md for
+# the full breaking-change checklist authors fill out.
+on:
+  pull_request:
+    types: [opened, reopened, labeled]
+
+jobs:
+  warn_breaking_change:
+    name: ⚠️ Warn on Breaking Change Label
+    runs-on: ubuntu-latest
+    # Only run when the label is present, and — for the `labeled` event
+    # specifically — only when `breaking-change` is the label that was just
+    # added (avoids re-posting the comment every time an unrelated label is
+    # added to a PR that already has `breaking-change`).
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'breaking-change') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'breaking-change')
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: 💬 Post Breaking Change Warning
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: '⚠️ This PR is marked `breaking-change`. Verify a versioned (V2) Cloud Function exists and the old version is kept until the previous app release is retired before merging — see [CLAUDE.md §11.11](https://github.com/Babas10/gatherli/blob/main/CLAUDE.md#1111-cloud-function-versioning--production-safety).'
+            })
