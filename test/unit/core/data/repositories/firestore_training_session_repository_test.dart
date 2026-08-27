@@ -605,5 +605,56 @@ void main() {
         expect(sessionIds, contains('session-3'));
       });
     });
+
+    group('getOlderTrainingSessionsForGroup', () {
+      test(
+        'caps results to the most recent sessions before the cutoff, '
+        'ordered descending by startTime',
+        () async {
+          const groupId = 'group-older-sessions';
+          final cutoff = DateTime.now().subtract(const Duration(days: 90));
+
+          // Add 105 sessions older than the cutoff, each one day further in
+          // the past than the last, so startTime values are all distinct.
+          const totalOlderSessions = 105;
+          for (var i = 0; i < totalOlderSessions; i++) {
+            await addTestSessionToFirestore(
+              createTestSession(
+                groupId: groupId,
+                startTime: cutoff.subtract(Duration(days: i + 1)),
+                endTime: cutoff.subtract(Duration(days: i + 1, hours: -2)),
+              ),
+            );
+          }
+
+          final result = await repository.getOlderTrainingSessionsForGroup(
+            groupId,
+            pastDays: 90,
+          );
+
+          // Capped to the shared list limit instead of returning all 105.
+          expect(result, hasLength(100));
+
+          // Ordered descending — most recent (closest to cutoff) first.
+          for (var i = 0; i < result.length - 1; i++) {
+            expect(
+              result[i].startTime.isAfter(result[i + 1].startTime) ||
+                  result[i].startTime.isAtSameMomentAs(result[i + 1].startTime),
+              isTrue,
+            );
+          }
+
+          // The oldest 5 sessions (beyond the 100 cap) must be excluded.
+          final oldestIncludedStartTime = result.last.startTime;
+          final oldestOverallStartTime = cutoff.subtract(
+            const Duration(days: totalOlderSessions),
+          );
+          expect(
+            oldestIncludedStartTime.isAfter(oldestOverallStartTime),
+            isTrue,
+          );
+        },
+      );
+    });
   });
 }
