@@ -52,57 +52,60 @@ class FriendRequestsList extends StatelessWidget {
       );
     }
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: 80),
-      children: [
-        if (hasReceivedRequests) ...[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              l10n.receivedRequests,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
+    final items = <Widget>[
+      if (hasReceivedRequests) ...[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            l10n.receivedRequests,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          ...receivedRequests.map(
-            (request) => ReceivedRequestTile(
-              request: request,
-              onAccept: () => onAcceptRequest(request.id),
-              onDecline: () => onDeclineRequest(request.id),
-            ),
+        ),
+        ...receivedRequests.map(
+          (request) => ReceivedRequestTile(
+            request: request,
+            onAccept: () => onAcceptRequest(request.id),
+            onDecline: () => onDeclineRequest(request.id),
           ),
-        ],
-        if (hasReceivedRequests && hasSentRequests) const Divider(height: 32),
-        if (hasSentRequests) ...[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              l10n.sentRequests,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
-          ...sentRequests.map(
-            (request) => SentRequestTile(
-              request: request,
-              onCancel: () => onCancelRequest(request.id),
-            ),
-          ),
-        ],
-        if (!hasReceivedRequests && hasSentRequests)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'No pending requests to respond to',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+        ),
       ],
+      if (hasReceivedRequests && hasSentRequests) const Divider(height: 32),
+      if (hasSentRequests) ...[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            l10n.sentRequests,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        ...sentRequests.map(
+          (request) => SentRequestTile(
+            request: request,
+            onCancel: () => onCancelRequest(request.id),
+          ),
+        ),
+      ],
+      if (!hasReceivedRequests && hasSentRequests)
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'No pending requests to respond to',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+    ];
+
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 80),
+      itemCount: items.length,
+      itemBuilder: (context, index) => items[index],
     );
   }
 }

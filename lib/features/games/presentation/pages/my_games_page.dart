@@ -154,33 +154,36 @@ class _MyGamesViewState extends State<_MyGamesView> {
                 return _emptyState(context, l10n);
               }
 
+              final items = <Widget>[
+                if (upcoming.isNotEmpty) ...[
+                  _SectionHeader(title: l10n.upcoming),
+                  ...upcoming.map(
+                    (item) => MyGameTile(
+                      item: item,
+                      onTap: () => _navigateToGame(context, item),
+                    ),
+                  ),
+                ],
+                if (past.isNotEmpty) ...[
+                  if (upcoming.isNotEmpty) const SizedBox(height: AppSpacing.sm),
+                  _SectionHeader(title: l10n.pastGames),
+                  ...past.map(
+                    (item) => MyGameTile(
+                      item: item,
+                      onTap: () => _navigateToGame(context, item),
+                    ),
+                  ),
+                ],
+              ];
+
               return RefreshIndicator(
                 onRefresh: () async => context.read<GameInvitationsBloc>().add(
                   const LoadGameInvitations(),
                 ),
-                child: ListView(
+                child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  children: [
-                    if (upcoming.isNotEmpty) ...[
-                      _SectionHeader(title: l10n.upcoming),
-                      ...upcoming.map(
-                        (item) => MyGameTile(
-                          item: item,
-                          onTap: () => _navigateToGame(context, item),
-                        ),
-                      ),
-                    ],
-                    if (past.isNotEmpty) ...[
-                      if (upcoming.isNotEmpty) const SizedBox(height: AppSpacing.sm),
-                      _SectionHeader(title: l10n.pastGames),
-                      ...past.map(
-                        (item) => MyGameTile(
-                          item: item,
-                          onTap: () => _navigateToGame(context, item),
-                        ),
-                      ),
-                    ],
-                  ],
+                  itemCount: items.length,
+                  itemBuilder: (context, index) => items[index],
                 ),
               );
             },
