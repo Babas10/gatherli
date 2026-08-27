@@ -64,23 +64,27 @@ class FirestoreGameRepository implements GameRepository {
     if (gameIds.isEmpty) return [];
 
     try {
-      final List<GameModel> games = [];
-
-      // Firestore 'in' queries are limited to 10 items
+      // Firestore 'in' queries are limited to 10 items, so chunk into
+      // batches. Batches are independent — run them in parallel instead of
+      // awaiting one at a time.
       const int batchSize = 10;
+      final futures = <Future<QuerySnapshot<Map<String, dynamic>>>>[];
       for (int i = 0; i < gameIds.length; i += batchSize) {
         final batch = gameIds.skip(i).take(batchSize).toList();
-        final query = await _firestore
-            .collection(_collection)
-            .where(FieldPath.documentId, whereIn: batch)
-            .get();
-
-        for (final doc in query.docs) {
-          if (doc.exists) {
-            games.add(GameModel.fromFirestore(doc));
-          }
-        }
+        futures.add(
+          _firestore
+              .collection(_collection)
+              .where(FieldPath.documentId, whereIn: batch)
+              .get(),
+        );
       }
+
+      final results = await Future.wait(futures);
+      final games = <GameModel>[
+        for (final query in results)
+          for (final doc in query.docs)
+            if (doc.exists) GameModel.fromFirestore(doc),
+      ];
 
       return games;
     } on FirebaseException catch (e) {
