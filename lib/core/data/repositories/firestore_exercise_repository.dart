@@ -21,6 +21,10 @@ class FirestoreExerciseRepository implements ExerciseRepository {
   static const String _trainingSessions = 'trainingSessions';
   static const String _exercises = 'exercises';
 
+  // Caps the exercise list per training session so a single session can't
+  // grow unbounded (no natural limit otherwise exists on exercise count).
+  static const int _exercisesLimit = 200;
+
   FirestoreExerciseRepository({
     FirebaseFirestore? firestore,
     required TrainingSessionRepository trainingSessionRepository,
@@ -95,6 +99,7 @@ class FirestoreExerciseRepository implements ExerciseRepository {
     try {
       return _getExercisesCollection(trainingSessionId)
           .orderBy('createdAt', descending: false)
+          .limit(_exercisesLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs

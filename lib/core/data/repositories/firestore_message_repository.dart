@@ -6,6 +6,12 @@ import 'package:play_with_me/core/domain/repositories/message_repository.dart';
 class FirestoreMessageRepository implements MessageRepository {
   final FirebaseFirestore _firestore;
 
+  // Caps chat history to the most recent N messages per context. Without a
+  // limit, this streams the entire chat history (unbounded growth) on every
+  // load. Messages are fetched newest-first then reversed so callers keep
+  // seeing ascending (oldest → newest) order.
+  static const int _messagesLimit = 100;
+
   FirestoreMessageRepository({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
@@ -15,11 +21,14 @@ class FirestoreMessageRepository implements MessageRepository {
       return _firestore
           .doc(contextPath)
           .collection('messages')
-          .orderBy('sentAt', descending: false)
+          .orderBy('sentAt', descending: true)
+          .limit(_messagesLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
                 .map((doc) => ChatMessageModel.fromFirestore(doc))
+                .toList()
+                .reversed
                 .toList(),
           )
           .handleError((error) {

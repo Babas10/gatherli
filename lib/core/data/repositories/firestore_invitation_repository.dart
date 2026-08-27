@@ -16,6 +16,10 @@ class FirestoreInvitationRepository implements InvitationRepository {
 
   static const String _invitationsCollection = 'invitations';
 
+  // Caps invitation list queries so they don't grow unbounded as a user
+  // accumulates invitation history over time.
+  static const int _invitationsLimit = 50;
+
   FirestoreInvitationRepository({
     FirebaseFirestore? firestore,
     FirebaseFunctions? functions,
@@ -141,6 +145,7 @@ class FirestoreInvitationRepository implements InvitationRepository {
         .where('invitedUserId', isEqualTo: userId)
         .where('status', isEqualTo: 'pending')
         .orderBy('createdAt', descending: true)
+        .limit(_invitationsLimit)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
@@ -157,6 +162,7 @@ class FirestoreInvitationRepository implements InvitationRepository {
           .collection(_invitationsCollection)
           .where('invitedUserId', isEqualTo: userId)
           .orderBy('createdAt', descending: true)
+          .limit(_invitationsLimit)
           .get();
       return snapshot.docs
           .where((doc) => doc.exists)

@@ -24,6 +24,10 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
 
   static const String _collection = 'trainingSessions';
 
+  // Caps list/stream queries that have no other natural bound (e.g. no date
+  // filter) so they don't grow unbounded as session history accumulates.
+  static const int _sessionsListLimit = 100;
+
   FirestoreTrainingSessionRepository({
     FirebaseFirestore? firestore,
     FirebaseFunctions? functions,
@@ -92,6 +96,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .collection(_collection)
           .where('groupId', isEqualTo: groupId)
           .orderBy('startTime', descending: false)
+          .limit(_sessionsListLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
@@ -131,6 +136,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .where('startTime', isGreaterThan: now)
           .where('status', isEqualTo: 'scheduled')
           .orderBy('startTime', descending: false)
+          .limit(_sessionsListLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
@@ -204,6 +210,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .where('groupId', isEqualTo: groupId)
           .where('startTime', isGreaterThan: cutoff)
           .orderBy('startTime', descending: false)
+          .limit(_sessionsListLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
@@ -240,19 +247,20 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
       final cutoff = Timestamp.fromDate(
         DateTime.now().subtract(Duration(days: pastDays)),
       );
+      // Ordered descending + limited so the query returns the most recent
+      // older sessions first, capped instead of fetching the entire history.
       final query = await _firestore
           .collection(_collection)
           .where('groupId', isEqualTo: groupId)
           .where('startTime', isLessThanOrEqualTo: cutoff)
-          .orderBy('startTime', descending: false)
+          .orderBy('startTime', descending: true)
+          .limit(_sessionsListLimit)
           .get();
 
       final sessions = query.docs
           .where((doc) => doc.exists)
           .map((doc) => TrainingSessionModel.fromFirestore(doc))
           .toList();
-      // Sort descending (most recent first) in Dart to avoid a new index
-      sessions.sort((a, b) => b.startTime.compareTo(a.startTime));
       return sessions;
     } on FirebaseException catch (e) {
       throw TrainingSessionException(
@@ -274,6 +282,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .collection(_collection)
           .where('participantIds', arrayContains: userId)
           .orderBy('startTime', descending: false)
+          .limit(_sessionsListLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
@@ -327,6 +336,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
                 .where('status', isEqualTo: 'scheduled')
                 .where('startTime', isGreaterThan: Timestamp.now())
                 .orderBy('startTime')
+                .limit(1)
                 .snapshots()
                 .listen(
                   (sessionsSnapshot) {
@@ -1047,6 +1057,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .collection(_collection)
           .where('parentSessionId', isEqualTo: parentSessionId)
           .orderBy('startTime', descending: false)
+          .limit(_sessionsListLimit)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs
@@ -1086,6 +1097,7 @@ class FirestoreTrainingSessionRepository implements TrainingSessionRepository {
           .where('startTime', isGreaterThan: now)
           .where('status', isEqualTo: 'scheduled')
           .orderBy('startTime', descending: false)
+          .limit(50)
           .snapshots()
           .map(
             (snapshot) => snapshot.docs

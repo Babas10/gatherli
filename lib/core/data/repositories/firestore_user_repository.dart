@@ -22,6 +22,10 @@ class FirestoreUserRepository implements UserRepository {
 
   static const String _collection = 'users';
 
+  // Caps subcollection list/stream queries that have no other natural bound.
+  static const int _ratingHistoryByPeriodLimit = 500;
+  static const int _headToHeadStatsLimit = 50;
+
   /// In-memory cache: uid → (user, fetchedAt). TTL: 10 minutes.
   final Map<String, ({UserModel user, DateTime fetchedAt})> _userCache = {};
   static const Duration _userCacheTtl = Duration(minutes: 10);
@@ -450,6 +454,7 @@ class FirestoreUserRepository implements UserRepository {
           isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
         )
         .orderBy('timestamp', descending: true)
+        .limit(_ratingHistoryByPeriodLimit)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
@@ -597,6 +602,7 @@ class FirestoreUserRepository implements UserRepository {
         .doc(userId)
         .collection('headToHead')
         .orderBy('gamesPlayed', descending: true)
+        .limit(_headToHeadStatsLimit)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
