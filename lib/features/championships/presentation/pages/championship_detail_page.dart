@@ -134,7 +134,7 @@ class _ChampionshipDetailView extends StatelessWidget {
                       t.memberIds.contains(currentUserId)).firstOrNull
                   : null,
               onLeaveTeam: alreadyRegistered &&
-                  state.championship.status == ChampionshipStatus.registration
+                  _isRegistrationPhase(state.championship.status)
                   ? () {
                       final myT = state.teams
                           .where((t) => t.memberIds.contains(currentUserId))

@@ -180,6 +180,10 @@ class _ChampionshipCard extends StatelessWidget {
     required this.onLeave,
   });
 
+  bool get _isRegistrationPhase =>
+      championship.status == ChampionshipStatus.registration ||
+      championship.status == ChampionshipStatus.registrationClosed;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -208,11 +212,13 @@ class _ChampionshipCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               Text(myTeam!.name),
-              const SizedBox(height: AppSpacing.sm),
-              OutlinedButton(
-                onPressed: () => onLeave(myTeam!.id),
-                child: Text(l10n.leaveTeam),
-              ),
+              if (_isRegistrationPhase) ...[
+                const SizedBox(height: AppSpacing.sm),
+                OutlinedButton(
+                  onPressed: () => onLeave(myTeam!.id),
+                  child: Text(l10n.leaveTeam),
+                ),
+              ],
             ] else if (championship.isOpen) ...[
               FilledButton(
                 onPressed: onRegister,
