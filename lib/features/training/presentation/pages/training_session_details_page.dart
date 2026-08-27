@@ -139,6 +139,9 @@ class _TrainingSessionDetailsPageState
                         Navigator.of(context).pop();
                       }
                     },
+                    buildWhen: (previous, current) =>
+                        (previous is CancellingSession) !=
+                        (current is CancellingSession),
                     builder: (context, state) {
                       final isCancelling = state is CancellingSession;
                       return PopupMenuButton<String>(
@@ -686,6 +689,11 @@ class _TrainingSessionDetailsPageState
             SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
           );
         }
+      },
+      buildWhen: (previous, current) {
+        bool isLoadingOf(TrainingSessionParticipationState s) =>
+            s is JoiningSession || s is LeavingSession;
+        return isLoadingOf(previous) != isLoadingOf(current);
       },
       builder: (context, state) {
         final l10n = AppLocalizations.of(context)!;

@@ -456,14 +456,13 @@ class _TrainingSessionCreationPageState
                   return Center(child: Text(l10n.pleaseLogInToCreateTraining));
                 }
 
-                return BlocBuilder<
+                return BlocSelector<
                   TrainingSessionCreationBloc,
-                  TrainingSessionCreationState
+                  TrainingSessionCreationState,
+                  bool
                 >(
-                  builder: (context, state) {
-                    final isLoading =
-                        state is TrainingSessionCreationSubmitting;
-
+                  selector: (state) => state is TrainingSessionCreationSubmitting,
+                  builder: (context, isLoading) {
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
                       child: Form(
