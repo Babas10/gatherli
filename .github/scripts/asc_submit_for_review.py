@@ -6,6 +6,10 @@ The build is assumed to already be in App Store Connect (uploaded during the
 beta TestFlight pipeline). This script finds it by iOS version string and
 submits it for review — no re-upload required.
 
+The App Store version is set to release automatically the moment Apple
+approves it (releaseType AFTER_APPROVAL) — no manual "Release This Version"
+click needed in App Store Connect.
+
 Required environment variables:
   ASC_KEY_ID       — App Store Connect API key ID
   ASC_ISSUER_ID    — App Store Connect API issuer ID
@@ -87,6 +91,7 @@ def main():
     print(f"Found build: {build_id}")
 
     # 2. Find or create the App Store version entry
+    RELEASE_TYPE = "AFTER_APPROVAL"
     versions = api(
         "GET",
         f"/v1/apps/{app_id}/appStoreVersions"
@@ -106,7 +111,7 @@ def main():
                     "type": "appStoreVersions",
                     "attributes": {
                         "versionString": ios_version,
-                        "releaseType": "MANUAL",
+                        "releaseType": RELEASE_TYPE,
                         "platform": "IOS",
                     },
                     "relationships": {
@@ -117,6 +122,23 @@ def main():
         )
         version_id = new_ver["data"]["id"]
         print(f"Created App Store version: {version_id}")
+
+    # Ensure release type is AFTER_APPROVAL even on the existing-version path
+    # (e.g. a version pre-created manually in App Store Connect would default
+    # to MANUAL) — this is what makes the build go live the moment Apple
+    # approves it, with no manual step required.
+    print(f"Ensuring release type is {RELEASE_TYPE}...")
+    api(
+        "PATCH",
+        f"/v1/appStoreVersions/{version_id}",
+        {
+            "data": {
+                "type": "appStoreVersions",
+                "id": version_id,
+                "attributes": {"releaseType": RELEASE_TYPE},
+            }
+        },
+    )
 
     # 3. Attach the build to the App Store version
     print("Attaching build to App Store version...")
