@@ -81,6 +81,22 @@ jobs:
       - name: 📦 Install Functions Dependencies
         run: npm --prefix functions ci
 
+      - name: 🔍 Check for undocumented Cloud Function removals
+        # Fails the deploy if a currently-live function would be silently
+        # deleted by `firebase deploy --force` unless it's explicitly listed
+        # in functions/deprecated-functions.json — see CLAUDE.md §11.11 and
+        # Story 0.3.5. ubuntu-latest ships gcloud preinstalled.
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          trap 'rm -f /tmp/sa.json' EXIT
+          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/sa.json
+          gcloud auth activate-service-account --key-file=/tmp/sa.json --quiet
+          gcloud functions list --project="${{ secrets.FIREBASE_PROD_PROJECT_ID }}" --format="value(name)" > /tmp/deployed-functions.txt
+          npm --prefix functions run build
+          node .github/scripts/check_function_removals.js /tmp/deployed-functions.txt
+          rm -f /tmp/sa.json
+
       - name: 🚀 Deploy Functions + Firestore Rules & Indexes to gatherli-prod
         env:
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}

@@ -1657,6 +1657,21 @@ if (semver.lt(clientVersion, '0.6.0')) {
 
 > **Rule:** Never delete a function that a live production app version still calls. It will throw `not-found` errors for all users on the old build.
 
+#### **Automated Enforcement (Story 0.3.5)**
+
+The `deploy_functions` job in `cd-beta.yml` and `cd-production.yml` runs `.github/scripts/check_function_removals.js` before every deploy. It diffs the functions about to be deployed against what's currently live in `gatherli-prod` (via `gcloud functions list`) and **fails the deploy** if any currently-live function is missing from the new deploy, unless it's listed in `functions/deprecated-functions.json`.
+
+To intentionally remove a function (step 5 above, once the old app version is retired), add an entry before merging:
+
+```json
+{
+  "name": "generateInviteLink",
+  "removedInVersion": "0.9.0",
+  "date": "2026-08-27",
+  "reason": "Replaced by generateInviteLinkV2 (Story X.Y); old app version retired"
+}
+```
+
 ---
 
 ### **11.12 Cloud Function Pre-Commit Checklist**

@@ -12,6 +12,9 @@
 - [ ] No Firestore field names used by the current app were renamed/removed
 - [ ] If any box above is unchecked → a versioned function (V2) has been created
       and the old function is kept until the old app version is retired
+- [ ] If a function is being removed → its name has been added to
+      `functions/deprecated-functions.json` (the CD pipeline blocks the
+      deploy otherwise — see CLAUDE.md §11.11)
 
 If any box above is unchecked, apply the `breaking-change` label to this PR.
 
