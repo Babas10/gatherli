@@ -291,19 +291,20 @@ class _ChampionshipDetailView extends StatelessWidget {
               );
             }
           },
-          child: BlocBuilder<TeamRegistrationBloc, TeamRegistrationState>(
-            builder: (builderCtx, state) => AlertDialog(
+          child: BlocSelector<TeamRegistrationBloc, TeamRegistrationState, bool>(
+            selector: (state) => state is TeamRegistrationSubmitting,
+            builder: (builderCtx, isSubmitting) => AlertDialog(
               title: Text(l10n.leaveTeamConfirmTitle),
               content: Text(l10n.leaveTeamConfirmBody),
               actions: [
                 TextButton(
-                  onPressed: state is TeamRegistrationSubmitting
+                  onPressed: isSubmitting
                       ? null
                       : () => Navigator.of(dialogCtx).pop(),
                   child: Text(l10n.cancel),
                 ),
                 TextButton(
-                  onPressed: state is TeamRegistrationSubmitting
+                  onPressed: isSubmitting
                       ? null
                       : () => leaveBloc.add(
                             LeaveTeam(
@@ -313,7 +314,7 @@ class _ChampionshipDetailView extends StatelessWidget {
                           ),
                   style:
                       TextButton.styleFrom(foregroundColor: AppColors.danger),
-                  child: state is TeamRegistrationSubmitting
+                  child: isSubmitting
                       ? const SizedBox(
                           height: 16,
                           width: 16,
@@ -1797,6 +1798,12 @@ class _DecisionSheet extends StatefulWidget {
   State<_DecisionSheet> createState() => _DecisionSheetState();
 }
 
+bool _isDecidingOf(AdminPanelState state) =>
+    state is AdminPanelLoaded && state.isDeciding;
+
+String? _decisionErrorOf(AdminPanelState state) =>
+    state is AdminPanelLoaded ? state.decisionError : null;
+
 class _DecisionSheetState extends State<_DecisionSheet> {
   String _decision = 'cancel';
   String? _winnerId;
@@ -1942,11 +1949,12 @@ class _DecisionSheetState extends State<_DecisionSheet> {
           ],
           const SizedBox(height: AppSpacing.lg),
           BlocBuilder<AdminPanelBloc, AdminPanelState>(
+            buildWhen: (previous, current) =>
+                _isDecidingOf(previous) != _isDecidingOf(current) ||
+                _decisionErrorOf(previous) != _decisionErrorOf(current),
             builder: (context, state) {
-              final isDeciding =
-                  state is AdminPanelLoaded && state.isDeciding;
-              final serverError =
-                  state is AdminPanelLoaded ? state.decisionError : null;
+              final isDeciding = _isDecidingOf(state);
+              final serverError = _decisionErrorOf(state);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

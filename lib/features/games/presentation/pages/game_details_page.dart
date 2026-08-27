@@ -1,5 +1,6 @@
 // Game details page displaying game information and allowing RSVP actions.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
@@ -395,13 +396,20 @@ class _PlayersCard extends StatelessWidget {
         ? authState.user.uid
         : null;
 
+    Map<String, dynamic> playersOf(GameDetailsState state) =>
+        (state is GameDetailsLoaded)
+        ? state.players
+        : (state is GameDetailsOperationInProgress)
+        ? state.players
+        : <String, dynamic>{};
+
     return BlocBuilder<GameDetailsBloc, GameDetailsState>(
+      buildWhen: (previous, current) =>
+          !mapEquals(playersOf(previous), playersOf(current)) ||
+          (previous is GameDetailsOperationInProgress) !=
+              (current is GameDetailsOperationInProgress),
       builder: (context, state) {
-        final players = (state is GameDetailsLoaded)
-            ? state.players
-            : (state is GameDetailsOperationInProgress)
-            ? state.players
-            : <String, dynamic>{};
+        final players = playersOf(state);
         final isOperationInProgress = state is GameDetailsOperationInProgress;
 
         final isCreator =
