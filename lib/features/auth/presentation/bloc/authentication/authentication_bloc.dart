@@ -1,15 +1,13 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_event.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 
 class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
+    extends BaseBloc<AuthenticationEvent, AuthenticationState> {
   final AuthRepository _authRepository;
-  StreamSubscription<dynamic>? _userSubscription;
 
   AuthenticationBloc({required AuthRepository authRepository})
     : _authRepository = authRepository,
@@ -25,17 +23,21 @@ class AuthenticationBloc
   ) {
     debugPrint('🔐 AuthenticationBloc: Starting authentication monitoring');
 
-    _userSubscription = _authRepository.authStateChanges.listen(
-      (user) {
-        debugPrint(
-          '🔐 AuthenticationBloc: Auth state changed - user: ${user?.email ?? 'null'}',
-        );
-        add(AuthenticationUserChanged(user));
-      },
-      onError: (error) {
-        debugPrint('❌ AuthenticationBloc: Error in auth state stream: $error');
-        add(const AuthenticationUserChanged(null));
-      },
+    trackSubscription(
+      _authRepository.authStateChanges.listen(
+        (user) {
+          debugPrint(
+            '🔐 AuthenticationBloc: Auth state changed - user: ${user?.email ?? 'null'}',
+          );
+          add(AuthenticationUserChanged(user));
+        },
+        onError: (error) {
+          debugPrint(
+            '❌ AuthenticationBloc: Error in auth state stream: $error',
+          );
+          add(const AuthenticationUserChanged(null));
+        },
+      ),
     );
   }
 
@@ -67,12 +69,5 @@ class AuthenticationBloc
       // The auth state stream will handle the state change
       // We don't emit error states here as this is a global bloc
     }
-  }
-
-  @override
-  Future<void> close() {
-    _userSubscription?.cancel();
-    debugPrint('🔐 AuthenticationBloc: Closed and subscription cancelled');
-    return super.close();
   }
 }

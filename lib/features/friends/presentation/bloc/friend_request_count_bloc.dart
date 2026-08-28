@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'friend_request_count_event.dart';
 import 'friend_request_count_state.dart';
 
@@ -8,7 +9,7 @@ import 'friend_request_count_state.dart';
 /// This is a dedicated BLoC that only handles the real-time count of pending friend requests
 /// Separated from FriendBloc to avoid state conflicts and enable independent updates
 class FriendRequestCountBloc
-    extends Bloc<FriendRequestCountEvent, FriendRequestCountState> {
+    extends BaseBloc<FriendRequestCountEvent, FriendRequestCountState> {
   final FriendRepository _friendRepository;
   StreamSubscription<int>? _countSubscription;
 
@@ -56,11 +57,5 @@ class FriendRequestCountBloc
     await _countSubscription?.cancel();
     _countSubscription = null;
     emit(const FriendRequestCountState.initial());
-  }
-
-  @override
-  Future<void> close() {
-    _countSubscription?.cancel();
-    return super.close();
   }
 }

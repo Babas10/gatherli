@@ -5,13 +5,14 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 
 import '../../../../../core/domain/repositories/training_feedback_repository.dart';
 import 'training_feedback_event.dart';
 import 'training_feedback_state.dart';
 
 class TrainingFeedbackBloc
-    extends Bloc<TrainingFeedbackEvent, TrainingFeedbackState> {
+    extends BaseBloc<TrainingFeedbackEvent, TrainingFeedbackState> {
   final TrainingFeedbackRepository _feedbackRepository;
   StreamSubscription? _aggregatedFeedbackSubscription;
 
@@ -106,6 +107,7 @@ class TrainingFeedbackBloc
               }
             },
           );
+      trackSubscription(_aggregatedFeedbackSubscription!);
     } catch (e) {
       emit(
         FeedbackError(
@@ -221,11 +223,6 @@ class TrainingFeedbackBloc
     }
   }
 
-  @override
-  Future<void> close() {
-    _aggregatedFeedbackSubscription?.cancel();
-    return super.close();
-  }
 }
 
 /// Internal event for aggregated feedback updates from stream

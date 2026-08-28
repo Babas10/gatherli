@@ -4,13 +4,14 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 
 import 'championship_detail_event.dart';
 import 'championship_detail_state.dart';
 
 class ChampionshipDetailBloc
-    extends Bloc<ChampionshipDetailEvent, ChampionshipDetailState> {
+    extends BaseBloc<ChampionshipDetailEvent, ChampionshipDetailState> {
   final ChampionshipRepository _repository;
   final UserRepository _userRepository;
   String? _championshipId;
@@ -64,6 +65,7 @@ class ChampionshipDetailBloc
       (user) => add(ChampionshipDetailUserUpdated(user?.gender?.name)),
       onError: (_) {},
     );
+    trackSubscription(_userSub!);
 
     _champSub = _repository
         .getChampionshipById(event.championshipId)
@@ -76,6 +78,7 @@ class ChampionshipDetailBloc
             add(ChampionshipDetailLoadError(msg));
           },
         );
+    trackSubscription(_champSub!);
 
     _standingsSub = _repository
         .getStandings(event.championshipId)
@@ -83,6 +86,7 @@ class ChampionshipDetailBloc
           (standings) => add(ChampionshipDetailStandingsUpdated(standings)),
           onError: (_) {}, // standings may not exist yet
         );
+    trackSubscription(_standingsSub!);
 
     _teamsSub = _repository
         .getTeams(event.championshipId)
@@ -90,6 +94,7 @@ class ChampionshipDetailBloc
           (teams) => add(ChampionshipDetailTeamsUpdated(teams)),
           onError: (_) {}, // no teams yet is normal
         );
+    trackSubscription(_teamsSub!);
 
     _allMatchesSub = _repository
         .getAllMatches(event.championshipId)
@@ -97,6 +102,7 @@ class ChampionshipDetailBloc
           (matches) => add(ChampionshipDetailAllMatchesUpdated(matches)),
           onError: (_) {}, // no matches yet is normal before championship starts
         );
+    trackSubscription(_allMatchesSub!);
   }
 
   void _onChampionshipUpdated(
@@ -228,16 +234,6 @@ class ChampionshipDetailBloc
           (matches) => add(ChampionshipDetailMatchesUpdated(matches)),
           onError: (_) {}, // empty rounds are normal before championship starts
         );
-  }
-
-  @override
-  Future<void> close() async {
-    await _champSub?.cancel();
-    await _standingsSub?.cancel();
-    await _teamsSub?.cancel();
-    await _matchesSub?.cancel();
-    await _allMatchesSub?.cancel();
-    await _userSub?.cancel();
-    return super.close();
+    trackSubscription(_matchesSub!);
   }
 }

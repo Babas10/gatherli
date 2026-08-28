@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/data/models/user_model.dart'; // Story 302.7
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/utils/performance_tracer.dart';
 
 import 'player_stats_event.dart';
 import 'player_stats_state.dart';
 
-class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
+class PlayerStatsBloc extends BaseBloc<PlayerStatsEvent, PlayerStatsState> {
   final UserRepository _userRepository;
   StreamSubscription? _userSubscription;
   // Story 34.3: subscribe to teammate stats subcollection stream
@@ -66,6 +67,7 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
                 debugPrint('PlayerStatsBloc: Error in user stream: $error');
               },
             );
+        trackSubscription(_userSubscription!);
 
         // Story 34.3: subscribe to teammate stats subcollection
         await _teammateStatsSubscription?.cancel();
@@ -81,6 +83,7 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
               onError: (e) =>
                   debugPrint('PlayerStatsBloc: teammate stats error: $e'),
             );
+        trackSubscription(_teammateStatsSubscription!);
       } else {
         // Story 302.7: Handle new users gracefully - they have no stats yet
         // Get current auth user data to create a minimal UserModel
@@ -117,6 +120,7 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
                 debugPrint('PlayerStatsBloc: Error in user stream: $error');
               },
             );
+        trackSubscription(_userSubscription!);
       }
     } catch (e) {
       emit(PlayerStatsError('Failed to load player stats: ${e.toString()}'));
@@ -207,12 +211,5 @@ class PlayerStatsBloc extends Bloc<PlayerStatsEvent, PlayerStatsState> {
       debugPrint('PlayerStatsBloc: Failed to load ranking: $e');
       emit(currentState.copyWith(rankingLoadFailed: true));
     }
-  }
-
-  @override
-  Future<void> close() {
-    _userSubscription?.cancel();
-    _teammateStatsSubscription?.cancel();
-    return super.close();
   }
 }
