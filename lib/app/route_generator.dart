@@ -1,5 +1,10 @@
 // Generates routes for the app, including deep link handling for /invite/{token}.
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/password_reset/password_reset_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/pages/login_page.dart';
 import 'package:play_with_me/features/auth/presentation/pages/registration_page.dart';
 import 'package:play_with_me/features/auth/presentation/pages/password_reset_page.dart';
@@ -18,17 +23,29 @@ class RouteGenerator {
       // Deep link invite route — no dedicated page yet.
       // The DeepLinkBloc handles token extraction and storage.
       // For now, redirect to login page so auth flow can proceed.
-      return _buildRoute(const LoginPage(), settings);
+      return _buildRoute(_buildLoginPage(), settings);
     }
 
     // Standard named routes
     switch (routeName) {
       case '/login':
-        return _buildRoute(const LoginPage(), settings);
+        return _buildRoute(_buildLoginPage(), settings);
       case '/register':
-        return _buildRoute(const RegistrationPage(), settings);
+        return _buildRoute(
+          BlocProvider<RegistrationBloc>(
+            create: (_) => sl<RegistrationBloc>(),
+            child: const RegistrationPage(),
+          ),
+          settings,
+        );
       case '/forgot-password':
-        return _buildRoute(const PasswordResetPage(), settings);
+        return _buildRoute(
+          BlocProvider<PasswordResetBloc>(
+            create: (_) => sl<PasswordResetBloc>(),
+            child: const PasswordResetPage(),
+          ),
+          settings,
+        );
       case '/my-community':
         return _buildRoute(const MyCommunityPage(), settings);
       default:
@@ -41,6 +58,13 @@ class RouteGenerator {
     RouteSettings settings,
   ) {
     return MaterialPageRoute(builder: (_) => page, settings: settings);
+  }
+
+  static Widget _buildLoginPage() {
+    return BlocProvider<LoginBloc>(
+      create: (_) => sl<LoginBloc>(),
+      child: const LoginPage(),
+    );
   }
 }
 

@@ -26,8 +26,6 @@ import 'package:play_with_me/features/auth/presentation/bloc/authentication/auth
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/auth/presentation/pages/login_page.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
-import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_bloc.dart';
-import 'package:play_with_me/features/auth/presentation/bloc/password_reset/password_reset_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/pages/stats_page.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/locale_preferences/locale_preferences_event.dart';
@@ -87,22 +85,34 @@ class PlayWithMeApp extends StatelessWidget {
           create: (context) =>
               sl<AuthenticationBloc>()..add(const AuthenticationStarted()),
         ),
+        // InvitationBloc is at app root because the shared PlayWithMeAppBar
+        // (rendered on nearly every authenticated page) reads it directly
+        // for the invitation badge, and the auth listener below loads
+        // pending invitations immediately after login, before any page
+        // exists. Scoping it to a page would break the badge everywhere else.
         BlocProvider<InvitationBloc>(create: (context) => sl<InvitationBloc>()),
-        BlocProvider<LoginBloc>(create: (context) => sl<LoginBloc>()),
-        BlocProvider<RegistrationBloc>(
-          create: (context) => sl<RegistrationBloc>(),
-        ),
-        BlocProvider<PasswordResetBloc>(
-          create: (context) => sl<PasswordResetBloc>(),
-        ),
+        // DeepLinkBloc is at app root because it listens for deep links for
+        // the entire app lifetime (including cold start), and its state is
+        // read by the auth listener below before any page is pushed.
         BlocProvider<DeepLinkBloc>(
           create: (context) =>
               sl<DeepLinkBloc>()..add(const InitializeDeepLinks()),
         ),
+        // InviteJoinBloc is at app root because the auth/deep-link listeners
+        // below fire events into it (ValidateInviteToken/ProcessPendingInvite)
+        // before any page is pushed; pushed pages receive it afterward via
+        // BlocProvider.value.
         BlocProvider<InviteJoinBloc>(create: (context) => sl<InviteJoinBloc>()),
+        // GameInvitationsBloc is at app root because the shared
+        // PlayWithMeAppBar badge and multiple pages (HomePage, MyGamesPage)
+        // read it, and the auth listener below loads invitations
+        // immediately after login.
         BlocProvider<GameInvitationsBloc>(
           create: (context) => sl<GameInvitationsBloc>(),
         ),
+        // LocalePreferencesBloc is at app root because it drives
+        // MaterialApp.locale directly via the BlocSelector wrapping
+        // MaterialApp below.
         BlocProvider<LocalePreferencesBloc>(
           create: (context) => LocalePreferencesBloc(
             repository: sl<LocalePreferencesRepository>(),
@@ -270,7 +280,10 @@ class PlayWithMeApp extends StatelessWidget {
                       if (authState is AuthenticationAuthenticated) {
                         return const HomePage();
                       } else if (authState is AuthenticationUnauthenticated) {
-                        return const LoginPage();
+                        return BlocProvider<LoginBloc>(
+                          create: (_) => sl<LoginBloc>(),
+                          child: const LoginPage(),
+                        );
                       } else {
                         return const _SplashScreen();
                       }
