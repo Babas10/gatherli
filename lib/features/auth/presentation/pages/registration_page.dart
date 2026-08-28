@@ -318,11 +318,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   onFieldSubmitted: (_) => _submitRegistration(),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                BlocBuilder<RegistrationBloc, RegistrationState>(
-                  builder: (context, state) {
+                BlocSelector<RegistrationBloc, RegistrationState, bool>(
+                  selector: (state) => state is RegistrationLoading,
+                  builder: (context, isLoading) {
                     return AuthButton(
                       text: l10n.createAccount,
-                      isLoading: state is RegistrationLoading,
+                      isLoading: isLoading,
                       onPressed: _submitRegistration,
                     );
                   },

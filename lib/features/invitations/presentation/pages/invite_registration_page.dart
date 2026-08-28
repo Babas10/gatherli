@@ -361,15 +361,24 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
     );
   }
 
+  // Maps the submit-button-relevant states to a comparable key so buildWhen
+  // can ignore unrelated state changes that don't affect this button.
+  int _buttonStateKey(InviteRegistrationState state) {
+    if (state is InviteRegistrationJoiningGroup) return 2;
+    if (state is InviteRegistrationCreatingAccount) return 1;
+    return 0;
+  }
+
   Widget _buildSubmitButton(BuildContext blocContext, AppLocalizations l10n) {
     return BlocBuilder<InviteRegistrationBloc, InviteRegistrationState>(
+      buildWhen: (previous, current) =>
+          _buttonStateKey(previous) != _buttonStateKey(current),
       builder: (context, state) {
-        final isLoading =
-            state is InviteRegistrationCreatingAccount ||
-            state is InviteRegistrationJoiningGroup;
-        final buttonText = state is InviteRegistrationJoiningGroup
+        final buttonKey = _buttonStateKey(state);
+        final isLoading = buttonKey != 0;
+        final buttonText = buttonKey == 2
             ? l10n.accountCreatedJoiningGroup
-            : state is InviteRegistrationCreatingAccount
+            : buttonKey == 1
             ? l10n.creatingAccount
             : l10n.createAccountAndJoin;
 
@@ -411,17 +420,17 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
     }
   }
 
-  void _onStateChange(
-    BuildContext context,
-    InviteRegistrationState state,
-  ) {
+  void _onStateChange(BuildContext context, InviteRegistrationState state) {
     final l10n = AppLocalizations.of(context)!;
 
     if (state is InviteRegistrationFailure) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
+          SnackBar(
+            content: Text(state.message),
+            backgroundColor: AppColors.danger,
+          ),
         );
     } else if (state is InviteRegistrationSuccess) {
       ScaffoldMessenger.of(context).showSnackBar(

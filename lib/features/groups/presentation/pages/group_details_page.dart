@@ -70,9 +70,9 @@ class GroupDetailsPage extends StatelessWidget {
         BlocProvider(create: (context) => sl<GroupInviteLinkBloc>()),
         BlocProvider(create: (context) => sl<GamesListBloc>()),
         BlocProvider(
-          create: (context) => NotificationBloc(
-            repository: sl<NotificationRepository>(),
-          )..add(const NotificationEvent.loadPreferences()),
+          create: (context) =>
+              NotificationBloc(repository: sl<NotificationRepository>())
+                ..add(const NotificationEvent.loadPreferences()),
         ),
       ],
       child: _GroupDetailsPageContent(
@@ -412,25 +412,25 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                       if (value == 'leave') {
                         _handleLeaveGroup(context, authState.user.uid);
                       } else if (value == 'mute' || value == 'unmute') {
-                        final notifState =
-                            context.read<NotificationBloc>().state;
+                        final notifState = context
+                            .read<NotificationBloc>()
+                            .state;
                         final isMuted = notifState.maybeWhen(
                           loaded: (prefs) =>
                               prefs.groupSpecific[widget.groupId] == false,
                           orElse: () => false,
                         );
                         context.read<NotificationBloc>().add(
-                              NotificationEvent.toggleGroupSpecific(
-                                groupId: widget.groupId,
-                                // If currently muted (enabled=false), unmute (enabled=true)
-                                enabled: isMuted,
-                              ),
-                            );
+                          NotificationEvent.toggleGroupSpecific(
+                            groupId: widget.groupId,
+                            // If currently muted (enabled=false), unmute (enabled=true)
+                            enabled: isMuted,
+                          ),
+                        );
                       }
                     },
                     itemBuilder: (context) {
-                      final notifState =
-                          context.read<NotificationBloc>().state;
+                      final notifState = context.read<NotificationBloc>().state;
                       final isMuted = notifState.maybeWhen(
                         loaded: (prefs) =>
                             prefs.groupSpecific[widget.groupId] == false,
@@ -471,7 +471,9 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               Flexible(
                                 child: Text(
                                   l10n.leaveGroup,
-                                  style: const TextStyle(color: AppColors.danger),
+                                  style: const TextStyle(
+                                    color: AppColors.danger,
+                                  ),
                                 ),
                               ),
                             ],
@@ -587,6 +589,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             _showErrorMessage(state.message);
           }
         },
+        // Only the "isGenerating" flag is used below (deep in itemBuilder),
+        // so ignore unrelated field changes on Generated/Error variants.
+        buildWhen: (previous, current) =>
+            (previous is GroupInviteLinkLoading) !=
+            (current is GroupInviteLinkLoading),
         builder: (context, inviteLinkState) {
           return BlocBuilder<GroupMemberBloc, GroupMemberState>(
             buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
@@ -613,17 +620,30 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                     if (index == 1) {
                       final l10n = AppLocalizations.of(context)!;
                       return AccentCard(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 5,
+                        ),
                         onTap: () => _navigateToInvitePage(context),
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
-                              child: const Icon(Icons.person_add, color: AppColors.secondary),
+                              backgroundColor: AppColors.secondary.withValues(
+                                alpha: 0.1,
+                              ),
+                              child: const Icon(
+                                Icons.person_add,
+                                color: AppColors.secondary,
+                              ),
                             ),
                             const SizedBox(width: AppSpacing.md),
-                            Text(l10n.inviteMember,
-                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                            Text(
+                              l10n.inviteMember,
+                              style: const TextStyle(
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -633,19 +653,42 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                       final isGenerating =
                           inviteLinkState is GroupInviteLinkLoading;
                       return AccentCard(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                        onTap: isGenerating ? null : () => context.read<GroupInviteLinkBloc>().add(GenerateInvite(groupId: widget.groupId)),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 5,
+                        ),
+                        onTap: isGenerating
+                            ? null
+                            : () => context.read<GroupInviteLinkBloc>().add(
+                                GenerateInvite(groupId: widget.groupId),
+                              ),
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
+                              backgroundColor: AppColors.secondary.withValues(
+                                alpha: 0.1,
+                              ),
                               child: isGenerating
-                                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                                  : const Icon(Icons.link, color: AppColors.secondary),
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.link,
+                                      color: AppColors.secondary,
+                                    ),
                             ),
                             const SizedBox(width: AppSpacing.md),
-                            Text(l10n.inviteWithLink,
-                              style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.w500)),
+                            Text(
+                              l10n.inviteWithLink,
+                              style: const TextStyle(
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -754,10 +797,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                             label: Text(l10n.createGame),
                           ),
                         ),
-                      const SizedBox(width: AppSpacing.md),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: OutlinedButton.icon(
-                            onPressed: () => _navigateToTrainingCreation(context),
+                            onPressed: () =>
+                                _navigateToTrainingCreation(context),
                             icon: const Icon(Icons.fitness_center),
                             label: Text(l10n.createTraining),
                           ),
@@ -869,7 +913,9 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                   .add(const LoadOlderActivities()),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.secondary,
-                                side: const BorderSide(color: AppColors.secondary),
+                                side: const BorderSide(
+                                  color: AppColors.secondary,
+                                ),
                                 minimumSize: const Size(double.infinity, 44),
                               ),
                               child: Text(l10n.loadOlderActivities),

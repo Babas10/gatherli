@@ -55,10 +55,9 @@ class _FriendSearchBarState extends State<FriendSearchBar> {
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: BlocBuilder<FriendBloc, FriendState>(
-        builder: (context, state) {
-          final isSearching = state is FriendSearchLoading;
-
+      child: BlocSelector<FriendBloc, FriendState, bool>(
+        selector: (state) => state is FriendSearchLoading,
+        builder: (context, isSearching) {
           return Row(
             children: [
               Expanded(
