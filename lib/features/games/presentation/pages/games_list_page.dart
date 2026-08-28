@@ -84,33 +84,33 @@ class _GamesListPageContent extends StatelessWidget {
   }
 
   Widget _buildLoadedState(BuildContext context, GamesListLoaded state) {
+    final items = <Widget>[
+      if (state.upcomingActivities.isNotEmpty) ...[
+        _buildSectionHeader(context, 'Upcoming Activities'),
+        ...state.upcomingActivities.map(
+          (activity) =>
+              _buildActivityItem(context, activity, state.userId, false),
+        ),
+      ],
+      if (state.pastActivities.isNotEmpty) ...[
+        _buildSectionHeader(context, 'Past Activities'),
+        ...state.pastActivities.map(
+          (activity) =>
+              _buildActivityItem(context, activity, state.userId, true),
+        ),
+      ],
+    ];
+
     return RefreshIndicator(
       onRefresh: () async {
         context.read<GamesListBloc>().add(const RefreshGamesList());
         await Future.delayed(const Duration(milliseconds: 500));
       },
-      child: SingleChildScrollView(
+      child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (state.upcomingActivities.isNotEmpty) ...[
-              _buildSectionHeader(context, 'Upcoming Activities'),
-              ...state.upcomingActivities.map(
-                (activity) =>
-                    _buildActivityItem(context, activity, state.userId, false),
-              ),
-            ],
-            if (state.pastActivities.isNotEmpty) ...[
-              _buildSectionHeader(context, 'Past Activities'),
-              ...state.pastActivities.map(
-                (activity) =>
-                    _buildActivityItem(context, activity, state.userId, true),
-              ),
-            ],
-            const SizedBox(height: 80), // Space for FAB
-          ],
-        ),
+        padding: const EdgeInsets.only(bottom: 80), // Space for FAB
+        itemCount: items.length,
+        itemBuilder: (context, index) => items[index],
       ),
     );
   }
