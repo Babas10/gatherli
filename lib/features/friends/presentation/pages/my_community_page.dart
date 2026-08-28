@@ -92,11 +92,14 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                 unselectedLabelColor: AppColors.secondary,
                 tabs: [
                   Tab(height: 40, text: l10n.friends),
-                  BlocBuilder<FriendRequestCountBloc, FriendRequestCountState>(
-                    builder: (context, state) {
-                      final count = state is FriendRequestCountLoaded
-                          ? state.count
-                          : 0;
+                  BlocSelector<
+                    FriendRequestCountBloc,
+                    FriendRequestCountState,
+                    int
+                  >(
+                    selector: (state) =>
+                        state is FriendRequestCountLoaded ? state.count : 0,
+                    builder: (context, count) {
                       return Tab(
                         height: 40,
                         child: Row(

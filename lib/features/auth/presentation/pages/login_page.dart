@@ -130,11 +130,12 @@ class _LoginPageState extends State<LoginPage> {
                     onFieldSubmitted: (_) => _submitLogin(),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
+                  BlocSelector<LoginBloc, LoginState, bool>(
+                    selector: (state) => state is LoginLoading,
+                    builder: (context, isLoading) {
                       return AuthButton(
                         text: l10n.login,
-                        isLoading: state is LoginLoading,
+                        isLoading: isLoading,
                         onPressed: _submitLogin,
                       );
                     },

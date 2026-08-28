@@ -101,11 +101,12 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   onFieldSubmitted: (_) => _submitPasswordReset(),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                BlocBuilder<PasswordResetBloc, PasswordResetState>(
-                  builder: (context, state) {
+                BlocSelector<PasswordResetBloc, PasswordResetState, bool>(
+                  selector: (state) => state is PasswordResetLoading,
+                  builder: (context, isLoading) {
                     return AuthButton(
                       text: l10n.sendResetEmail,
-                      isLoading: state is PasswordResetLoading,
+                      isLoading: isLoading,
                       onPressed: _submitPasswordReset,
                     );
                   },
@@ -140,7 +141,11 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          icon: const Icon(Icons.check_circle, color: AppColors.success, size: 48),
+          icon: const Icon(
+            Icons.check_circle,
+            color: AppColors.success,
+            size: 48,
+          ),
           title: Text(l10n.emailSent),
           content: Column(
             mainAxisSize: MainAxisSize.min,

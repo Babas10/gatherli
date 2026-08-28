@@ -90,10 +90,9 @@ class _AddFriendPageState extends State<AddFriendPage> {
 
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: BlocBuilder<FriendBloc, FriendState>(
-        builder: (context, state) {
-          final isSearching = state is FriendSearchLoading;
-
+      child: BlocSelector<FriendBloc, FriendState, bool>(
+        selector: (state) => state is FriendSearchLoading,
+        builder: (context, isSearching) {
           return Row(
             children: [
               Expanded(
@@ -162,7 +161,10 @@ class _AddFriendPageState extends State<AddFriendPage> {
         state.whenOrNull(
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message), backgroundColor: AppColors.danger),
+              SnackBar(
+                content: Text(message),
+                backgroundColor: AppColors.danger,
+              ),
             );
           },
           actionSuccess: (_) {

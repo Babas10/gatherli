@@ -42,7 +42,11 @@ class PlayWithMeAppBar {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.sports_volleyball, color: AppColors.secondary, size: 22),
+          const Icon(
+            Icons.sports_volleyball,
+            color: AppColors.secondary,
+            size: 22,
+          ),
           const SizedBox(width: 6),
           Flexible(
             child: Text(
@@ -80,13 +84,10 @@ class PlayWithMeAppBar {
 
     return [
       // Invitation badge (group invitations)
-      BlocBuilder<InvitationBloc, InvitationState>(
-        builder: (context, state) {
-          int pendingCount = 0;
-          if (state is InvitationsLoaded) {
-            pendingCount = state.invitations.length;
-          }
-
+      BlocSelector<InvitationBloc, InvitationState, int>(
+        selector: (state) =>
+            state is InvitationsLoaded ? state.invitations.length : 0,
+        builder: (context, pendingCount) {
           return Badge(
             isLabelVisible: pendingCount > 0,
             label: Text(pendingCount > 9 ? '9+' : '$pendingCount'),
@@ -121,20 +122,21 @@ class PlayWithMeAppBar {
           } catch (_) {}
           if (gameInvBloc == null) return const SizedBox.shrink();
 
-          return BlocBuilder<GameInvitationsBloc, GameInvitationsState>(
+          return BlocSelector<GameInvitationsBloc, GameInvitationsState, int>(
             bloc: gameInvBloc,
-            builder: (context, state) {
-              int pendingCount = 0;
+            selector: (state) {
               if (state is GameInvitationsLoaded) {
-                pendingCount = state.invitations.length;
+                return state.invitations.length;
               } else if (state is GameInvitationActionInFlight) {
-                pendingCount = state.invitations.length;
+                return state.invitations.length;
               } else if (state is GameInvitationActionSuccess) {
-                pendingCount = state.invitations.length;
+                return state.invitations.length;
               } else if (state is GameInvitationActionError) {
-                pendingCount = state.invitations.length;
+                return state.invitations.length;
               }
-
+              return 0;
+            },
+            builder: (context, pendingCount) {
               return Badge(
                 isLabelVisible: pendingCount > 0,
                 label: Text(pendingCount > 9 ? '9+' : '$pendingCount'),
@@ -145,10 +147,7 @@ class PlayWithMeAppBar {
                   color: Colors.white,
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.sports_volleyball_outlined,
-                    size: 22,
-                  ),
+                  icon: const Icon(Icons.sports_volleyball_outlined, size: 22),
                   visualDensity: VisualDensity.compact,
                   tooltip: l10n.gameInvitations,
                   onPressed: () async {

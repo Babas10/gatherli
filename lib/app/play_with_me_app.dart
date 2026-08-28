@@ -244,43 +244,42 @@ class PlayWithMeApp extends StatelessWidget {
             },
           ),
         ],
-        child: BlocBuilder<LocalePreferencesBloc, LocalePreferencesState>(
-          builder: (context, localeState) {
-            // Get the current locale from preferences or use default
-            Locale currentLocale = const Locale('en');
-            if (localeState is LocalePreferencesLoaded) {
-              currentLocale = localeState.preferences.locale;
-            }
-
-            return MaterialApp(
-              navigatorKey: PlayWithMeApp.navigatorKey,
-              debugShowCheckedModeBanner: false,
-              title: 'Gatherli${EnvironmentConfig.appSuffix}',
-              theme: AppTheme.light,
-              locale: currentLocale,
-              supportedLocales: LocalePreferencesEntity.supportedLocales,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-                builder: (context, authState) {
-                  if (authState is AuthenticationAuthenticated) {
-                    return const HomePage();
-                  } else if (authState is AuthenticationUnauthenticated) {
-                    return const LoginPage();
-                  } else {
-                    return const _SplashScreen();
-                  }
-                },
-              ),
-              onGenerateRoute: RouteGenerator.generateRoute,
-            );
-          },
-        ),
+        child:
+            BlocSelector<LocalePreferencesBloc, LocalePreferencesState, Locale>(
+              selector: (localeState) => localeState is LocalePreferencesLoaded
+                  ? localeState.preferences.locale
+                  : const Locale('en'),
+              builder: (context, currentLocale) {
+                return MaterialApp(
+                  navigatorKey: PlayWithMeApp.navigatorKey,
+                  debugShowCheckedModeBanner: false,
+                  title: 'Gatherli${EnvironmentConfig.appSuffix}',
+                  theme: AppTheme.light,
+                  locale: currentLocale,
+                  supportedLocales: LocalePreferencesEntity.supportedLocales,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                    buildWhen: (prev, curr) =>
+                        prev.runtimeType != curr.runtimeType,
+                    builder: (context, authState) {
+                      if (authState is AuthenticationAuthenticated) {
+                        return const HomePage();
+                      } else if (authState is AuthenticationUnauthenticated) {
+                        return const LoginPage();
+                      } else {
+                        return const _SplashScreen();
+                      }
+                    },
+                  ),
+                  onGenerateRoute: RouteGenerator.generateRoute,
+                );
+              },
+            ),
       ),
     );
   }
@@ -633,11 +632,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ],
         ),
         bottomNavigationBar:
-            BlocBuilder<FriendRequestCountBloc, FriendRequestCountState>(
-              builder: (context, state) {
-                final count = state is FriendRequestCountLoaded
-                    ? state.count
-                    : 0;
+            BlocSelector<FriendRequestCountBloc, FriendRequestCountState, int>(
+              selector: (state) =>
+                  state is FriendRequestCountLoaded ? state.count : 0,
+              builder: (context, count) {
                 return GlobalBottomNavBar(
                   selectedIndex: _selectedIndex,
                   onTabSelected: _onItemTapped,
@@ -683,14 +681,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => const CreateChampionshipPage(),
-            ),
+            MaterialPageRoute(builder: (_) => const CreateChampionshipPage()),
           );
           if (context.mounted) {
-            context
-                .read<ChampionshipListBloc>()
-                .add(const LoadChampionships());
+            context.read<ChampionshipListBloc>().add(const LoadChampionships());
           }
         },
         backgroundColor: AppColors.primary,
@@ -782,128 +776,135 @@ class _HomeTabState extends State<_HomeTab> {
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(top: 30, bottom: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Stats section (ELO, Win Rate, Streak, Games Played)
-                    HomeStatsSection(
-                      user: statsState.user,
-                      ratingHistory: statsState.history,
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    // Next Game section title
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, bottom: 15.0),
-                      child: Text(
-                        AppLocalizations.of(context)!.nextGame.toUpperCase(),
-                        style: AppTextStyles.sectionLabel,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Stats section (ELO, Win Rate, Streak, Games Played)
+                      HomeStatsSection(
+                        user: statsState.user,
+                        ratingHistory: statsState.history,
                       ),
-                    ),
 
-                    // Next Game Card
-                    StreamBuilder(
-                      stream: sl<GameRepository>().getNextGameForUser(
-                        authState.user.uid,
+                      const SizedBox(height: 25),
+
+                      // Next Game section title
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                          bottom: 15.0,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.nextGame.toUpperCase(),
+                          style: AppTextStyles.sectionLabel,
+                        ),
                       ),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting &&
-                            !snapshot.hasData) {
-                          return const SizedBox.shrink();
-                        }
 
-                        if (snapshot.hasError) {
-                          debugPrint(
-                            'NextGame stream error: ${snapshot.error}',
-                          );
-                        }
+                      // Next Game Card
+                      StreamBuilder(
+                        stream: sl<GameRepository>().getNextGameForUser(
+                          authState.user.uid,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting &&
+                              !snapshot.hasData) {
+                            return const SizedBox.shrink();
+                          }
 
-                        final nextGame = snapshot.data;
+                          if (snapshot.hasError) {
+                            debugPrint(
+                              'NextGame stream error: ${snapshot.error}',
+                            );
+                          }
 
-                        return NextGameCard(
-                          game: nextGame,
-                          userId: authState.user.uid,
-                          onTap: nextGame != null
-                              ? () {
-                                  final gameRepository = sl<GameRepository>();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (newContext) =>
-                                          RepositoryProvider.value(
-                                            value: gameRepository,
-                                            child: GameDetailsPage(
-                                              gameId: nextGame.id,
+                          final nextGame = snapshot.data;
+
+                          return NextGameCard(
+                            game: nextGame,
+                            userId: authState.user.uid,
+                            onTap: nextGame != null
+                                ? () {
+                                    final gameRepository = sl<GameRepository>();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (newContext) =>
+                                            RepositoryProvider.value(
+                                              value: gameRepository,
+                                              child: GameDetailsPage(
+                                                gameId: nextGame.id,
+                                              ),
                                             ),
-                                          ),
-                                    ),
-                                  );
-                                }
-                              : null,
-                        );
-                      },
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    // Next Training Session section title
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, bottom: 15.0),
-                      child: Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.nextTrainingSession.toUpperCase(),
-                        style: AppTextStyles.sectionLabel,
-                      ),
-                    ),
-
-                    // Next Training Session Card
-                    StreamBuilder(
-                      stream: sl<TrainingSessionRepository>()
-                          .getNextTrainingSessionForUser(authState.user.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting &&
-                            !snapshot.hasData) {
-                          return const SizedBox.shrink();
-                        }
-
-                        if (snapshot.hasError) {
-                          debugPrint(
-                            'NextTrainingSession stream error: ${snapshot.error}',
+                                      ),
+                                    );
+                                  }
+                                : null,
                           );
-                        }
+                        },
+                      ),
 
-                        final nextSession = snapshot.data;
+                      const SizedBox(height: 25),
 
-                        return NextTrainingSessionCard(
-                          session: nextSession,
-                          userId: authState.user.uid,
-                          onTap: nextSession != null
-                              ? () {
-                                  final trainingSessionRepository =
-                                      sl<TrainingSessionRepository>();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (newContext) =>
-                                          RepositoryProvider.value(
-                                            value: trainingSessionRepository,
-                                            child: TrainingSessionDetailsPage(
-                                              trainingSessionId: nextSession.id,
+                      // Next Training Session section title
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                          bottom: 15.0,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.nextTrainingSession.toUpperCase(),
+                          style: AppTextStyles.sectionLabel,
+                        ),
+                      ),
+
+                      // Next Training Session Card
+                      StreamBuilder(
+                        stream: sl<TrainingSessionRepository>()
+                            .getNextTrainingSessionForUser(authState.user.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting &&
+                              !snapshot.hasData) {
+                            return const SizedBox.shrink();
+                          }
+
+                          if (snapshot.hasError) {
+                            debugPrint(
+                              'NextTrainingSession stream error: ${snapshot.error}',
+                            );
+                          }
+
+                          final nextSession = snapshot.data;
+
+                          return NextTrainingSessionCard(
+                            session: nextSession,
+                            userId: authState.user.uid,
+                            onTap: nextSession != null
+                                ? () {
+                                    final trainingSessionRepository =
+                                        sl<TrainingSessionRepository>();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (newContext) =>
+                                            RepositoryProvider.value(
+                                              value: trainingSessionRepository,
+                                              child: TrainingSessionDetailsPage(
+                                                trainingSessionId:
+                                                    nextSession.id,
+                                              ),
                                             ),
-                                          ),
-                                    ),
-                                  );
-                                }
-                              : null,
-                        );
-                      },
-                    ),
-                  ],
+                                      ),
+                                    );
+                                  }
+                                : null,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
             }
 
             // Initial state
