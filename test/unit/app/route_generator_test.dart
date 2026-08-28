@@ -1,10 +1,11 @@
 // Validates RouteGenerator generates correct routes for standard and deep link paths.
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/app/route_generator.dart';
-import 'package:play_with_me/features/auth/presentation/pages/login_page.dart';
-import 'package:play_with_me/features/auth/presentation/pages/registration_page.dart';
-import 'package:play_with_me/features/auth/presentation/pages/password_reset_page.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/password_reset/password_reset_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/pages/my_community_page.dart';
 
 void main() {
@@ -17,7 +18,12 @@ void main() {
 
         expect(route, isA<MaterialPageRoute>());
         final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<LoginPage>());
+        // LoginPage is now wrapped in its own page-scoped BlocProvider
+        // (Story 35.5) instead of relying on an app-root LoginBloc.
+        expect(
+          pageRoute.builder(MockBuildContext()),
+          isA<BlocProvider<LoginBloc>>(),
+        );
       });
 
       test('generates RegistrationPage for /register', () {
@@ -27,7 +33,10 @@ void main() {
 
         expect(route, isA<MaterialPageRoute>());
         final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<RegistrationPage>());
+        expect(
+          pageRoute.builder(MockBuildContext()),
+          isA<BlocProvider<RegistrationBloc>>(),
+        );
       });
 
       test('generates PasswordResetPage for /forgot-password', () {
@@ -37,7 +46,10 @@ void main() {
 
         expect(route, isA<MaterialPageRoute>());
         final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<PasswordResetPage>());
+        expect(
+          pageRoute.builder(MockBuildContext()),
+          isA<BlocProvider<PasswordResetBloc>>(),
+        );
       });
 
       test('generates MyCommunityPage for /my-community', () {
@@ -59,7 +71,10 @@ void main() {
 
         expect(route, isA<MaterialPageRoute>());
         final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<LoginPage>());
+        expect(
+          pageRoute.builder(MockBuildContext()),
+          isA<BlocProvider<LoginBloc>>(),
+        );
       });
 
       test('generates LoginPage for invite deep link with complex token', () {
@@ -69,7 +84,10 @@ void main() {
 
         expect(route, isA<MaterialPageRoute>());
         final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<LoginPage>());
+        expect(
+          pageRoute.builder(MockBuildContext()),
+          isA<BlocProvider<LoginBloc>>(),
+        );
       });
     });
 
