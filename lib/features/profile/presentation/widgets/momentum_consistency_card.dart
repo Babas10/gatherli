@@ -1,4 +1,5 @@
 // Momentum and consistency card showing streak and monthly improvement.
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
@@ -108,6 +109,18 @@ class MomentumConsistencyCard extends StatelessWidget {
             ),
             // Period selector + chart + best ELO — white card (Story 302.3/4/6)
             BlocBuilder<EloHistoryBloc, EloHistoryState>(
+              buildWhen: (previous, current) {
+                if (previous is! EloHistoryLoaded ||
+                    current is! EloHistoryLoaded) {
+                  return true;
+                }
+                return previous.selectedPeriod != current.selectedPeriod ||
+                    previous.bestEloInPeriod != current.bestEloInPeriod ||
+                    !listEquals(
+                      previous.filteredHistory,
+                      current.filteredHistory,
+                    );
+              },
               builder: (context, state) {
                 if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 

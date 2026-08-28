@@ -4,7 +4,9 @@ import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/data/models/best_elo_record.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
+import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_bloc.dart';
@@ -13,6 +15,15 @@ import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_
 import 'package:play_with_me/features/profile/presentation/widgets/best_elo_highlight_card.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/time_period_selector.dart';
 import 'package:intl/intl.dart';
+
+DateTime? _filterStartDateOf(EloHistoryState state) =>
+    state is EloHistoryLoaded ? state.filterStartDate : null;
+
+TimePeriod? _selectedPeriodOf(EloHistoryState state) =>
+    state is EloHistoryLoaded ? state.selectedPeriod : null;
+
+BestEloRecord? _bestEloInPeriodOf(EloHistoryState state) =>
+    state is EloHistoryLoaded ? state.bestEloInPeriod : null;
 
 class FullEloHistoryPage extends StatelessWidget {
   final String userId;
@@ -31,6 +42,9 @@ class FullEloHistoryPage extends StatelessWidget {
           title: 'ELO History',
           extraActions: [
             BlocBuilder<EloHistoryBloc, EloHistoryState>(
+              buildWhen: (previous, current) =>
+                  previous.runtimeType != current.runtimeType ||
+                  _filterStartDateOf(previous) != _filterStartDateOf(current),
               builder: (context, state) {
                 if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 
@@ -208,6 +222,8 @@ class FullEloHistoryPage extends StatelessWidget {
 
         // Time Period Selector (Story 302.3)
         BlocBuilder<EloHistoryBloc, EloHistoryState>(
+          buildWhen: (previous, current) =>
+              _selectedPeriodOf(previous) != _selectedPeriodOf(current),
           builder: (context, state) {
             if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 
@@ -227,6 +243,9 @@ class FullEloHistoryPage extends StatelessWidget {
 
         // Best ELO Highlight Card (Story 302.6)
         BlocBuilder<EloHistoryBloc, EloHistoryState>(
+          buildWhen: (previous, current) =>
+              _bestEloInPeriodOf(previous) != _bestEloInPeriodOf(current) ||
+              _selectedPeriodOf(previous) != _selectedPeriodOf(current),
           builder: (context, state) {
             if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 
