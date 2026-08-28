@@ -2,12 +2,13 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'championship_list_event.dart';
 import 'championship_list_state.dart';
 
 class ChampionshipListBloc
-    extends Bloc<ChampionshipListEvent, ChampionshipListState> {
+    extends BaseBloc<ChampionshipListEvent, ChampionshipListState> {
   final ChampionshipRepository _repository;
   StreamSubscription? _subscription;
 
@@ -37,6 +38,7 @@ class ChampionshipListBloc
         add(ChampionshipsLoadFailed(msg));
       },
     );
+    trackSubscription(_subscription!);
   }
 
   void _onUpdated(
@@ -68,11 +70,5 @@ class ChampionshipListBloc
       emit((state as ChampionshipListLoaded)
           .copyWith(activeFilter: event.status));
     }
-  }
-
-  @override
-  Future<void> close() async {
-    await _subscription?.cancel();
-    return super.close();
   }
 }

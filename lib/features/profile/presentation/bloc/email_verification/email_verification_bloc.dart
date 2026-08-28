@@ -1,14 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/email_verification/email_verification_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/email_verification/email_verification_state.dart';
 
 /// BLoC for managing email verification flow
 class EmailVerificationBloc
-    extends Bloc<EmailVerificationEvent, EmailVerificationState> {
+    extends BaseBloc<EmailVerificationEvent, EmailVerificationState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
@@ -17,9 +16,6 @@ class EmailVerificationBloc
 
   /// Track last sent time for cooldown
   DateTime? _lastSentAt;
-
-  /// Subscription to auth state changes
-  StreamSubscription<dynamic>? _authStateSubscription;
 
   EmailVerificationBloc({
     required AuthRepository authRepository,
@@ -34,16 +30,18 @@ class EmailVerificationBloc
     on<EmailVerificationAuthStateChanged>(_onAuthStateChanged);
 
     // Listen to auth state changes for real-time verification updates
-    _authStateSubscription = _authRepository.authStateChanges.listen((user) {
-      if (user != null && user.isEmailVerified) {
-        add(
-          EmailVerificationEvent.authStateChanged(
-            isVerified: true,
-            verifiedAt: user.lastSignInAt,
-          ),
-        );
-      }
-    });
+    trackSubscription(
+      _authRepository.authStateChanges.listen((user) {
+        if (user != null && user.isEmailVerified) {
+          add(
+            EmailVerificationEvent.authStateChanged(
+              isVerified: true,
+              verifiedAt: user.lastSignInAt,
+            ),
+          );
+        }
+      }),
+    );
   }
 
   Future<void> _onCheckStatus(
@@ -261,11 +259,5 @@ class EmailVerificationBloc
     final remaining = resendCooldownSeconds - elapsed;
 
     return remaining > 0 ? remaining : 0;
-  }
-
-  @override
-  Future<void> close() {
-    _authStateSubscription?.cancel();
-    return super.close();
   }
 }

@@ -3,16 +3,16 @@ import 'dart:async';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_state.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 
-class DeepLinkBloc extends Bloc<DeepLinkEvent, DeepLinkState> {
+class DeepLinkBloc extends BaseBloc<DeepLinkEvent, DeepLinkState> {
   final DeepLinkService _deepLinkService;
   final PendingInviteStorage _pendingInviteStorage;
   final FirebaseAnalytics _analytics;
-  StreamSubscription<String?>? _tokenSubscription;
 
   DeepLinkBloc({
     required DeepLinkService deepLinkService,
@@ -60,11 +60,13 @@ class DeepLinkBloc extends Bloc<DeepLinkEvent, DeepLinkState> {
 
   void _startLinkListener() {
     // Listen for foreground deep links
-    _tokenSubscription = _deepLinkService.inviteTokenStream.listen((token) {
-      if (token != null) {
-        add(InviteTokenReceived(token));
-      }
-    });
+    trackSubscription(
+      _deepLinkService.inviteTokenStream.listen((token) {
+        if (token != null) {
+          add(InviteTokenReceived(token));
+        }
+      }),
+    );
   }
 
   Future<void> _onInviteTokenReceived(
@@ -91,11 +93,5 @@ class DeepLinkBloc extends Bloc<DeepLinkEvent, DeepLinkState> {
     }
     await _pendingInviteStorage.clear();
     emit(const DeepLinkNoInvite());
-  }
-
-  @override
-  Future<void> close() {
-    _tokenSubscription?.cancel();
-    return super.close();
   }
 }

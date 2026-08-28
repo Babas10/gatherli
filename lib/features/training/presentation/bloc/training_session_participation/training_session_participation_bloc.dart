@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/utils/performance_tracer.dart';
 
 import '../../../../../core/data/models/training_session_participant_model.dart';
@@ -15,7 +16,7 @@ import 'training_session_participation_state.dart';
 
 class TrainingSessionParticipationBloc
     extends
-        Bloc<
+        BaseBloc<
           TrainingSessionParticipationEvent,
           TrainingSessionParticipationState
         > {
@@ -75,6 +76,7 @@ class TrainingSessionParticipationBloc
                   }
                 },
               );
+          trackSubscription(_participantsSubscription!);
         },
       );
     } catch (e) {
@@ -299,11 +301,6 @@ class TrainingSessionParticipationBloc
     return null;
   }
 
-  @override
-  Future<void> close() {
-    _participantsSubscription?.cancel();
-    return super.close();
-  }
 }
 
 // Internal events for stream handling
