@@ -157,6 +157,11 @@ export {onGameCompletedDeleteChatMessages} from "./deleteChatMessages";
 
 // Story 31.3: One-time migration — remove deprecated unbounded arrays from user documents
 
+// Story 35.7: One-time migration — backfill displayNameLower on existing user documents.
+// Remove this export (and add an entry to deprecated-functions.json) once confirmed
+// run in production. See migrateAddDisplayNameLower.ts for deployment order.
+export {migrateAddDisplayNameLower} from "./migrateAddDisplayNameLower";
+
 // Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
 export {sendInvitation} from "./sendInvitation";
 

@@ -19,13 +19,30 @@ interface SearchUsersResponse {
   users: UserResult[];
 }
 
+const RESULT_LIMIT = 20;
+// Fetched per-field before self/friend/pending filtering, so that a query
+// dominated by filtered-out candidates (e.g. many friends sharing an email
+// domain) still has a reasonable chance of filling RESULT_LIMIT.
+const QUERY_FETCH_LIMIT = 50;
+// Highest possible Unicode code point — appending it to a prefix bounds a
+// Firestore range query to "starts with that prefix" (standard pattern for
+// prefix search, since Firestore has no native startsWith operator).
+const UNICODE_MAX_SUFFIX = "";
+
 /**
  * Handler function for searching users (exported for testing)
  *
- * Searches users by email or displayName and filters out:
+ * Searches users by email or displayName **prefix** (case-insensitive) and
+ * filters out:
  * - The current user (self)
  * - Already connected friends
  * - Users with pending friend requests
+ *
+ * Note: this is a prefix match, not a substring match — Firestore range
+ * queries can only bound a field's prefix, not match anywhere within it.
+ * `displayNameLower` is a denormalized lowercase copy of `displayName`
+ * (Firestore range queries are case-sensitive); `email` is already
+ * lowercase via Firebase Auth.
  *
  * @param data - Object containing { query: string }
  * @param context - Authentication context
@@ -95,19 +112,31 @@ export async function searchUsersHandler(
       }
     }
 
-    // Search users collection
-    // Note: This is a basic implementation. For production, consider:
-    // - Using Algolia or Elasticsearch for better search performance
-    // - Implementing pagination for large result sets
-    // - Adding fuzzy search capabilities
-    const usersSnapshot = await db.collection("users").get();
+    // Indexed prefix-range queries on email and displayNameLower, run in
+    // parallel — bounded reads instead of a full-collection scan. Firestore
+    // covers each with its automatic single-field index (no composite index
+    // needed since there's no additional where()/orderBy() on another field).
+    const [emailSnapshot, nameSnapshot] = await Promise.all([
+      db.collection("users")
+        .where("email", ">=", query)
+        .where("email", "<=", query + UNICODE_MAX_SUFFIX)
+        .limit(QUERY_FETCH_LIMIT)
+        .get(),
+      db.collection("users")
+        .where("displayNameLower", ">=", query)
+        .where("displayNameLower", "<=", query + UNICODE_MAX_SUFFIX)
+        .limit(QUERY_FETCH_LIMIT)
+        .get(),
+    ]);
+
+    // Merge and dedupe candidates matched by either field.
+    const candidates = new Map<string, FirebaseFirestore.DocumentData>();
+    emailSnapshot.docs.forEach((doc) => candidates.set(doc.id, doc.data()));
+    nameSnapshot.docs.forEach((doc) => candidates.set(doc.id, doc.data()));
 
     const results: UserResult[] = [];
 
-    for (const doc of usersSnapshot.docs) {
-      const userData = doc.data();
-      const userId = doc.id;
-
+    for (const [userId, userData] of candidates) {
       // Skip if user is self
       if (userId === currentUserId) {
         continue;
@@ -123,21 +152,15 @@ export async function searchUsersHandler(
         continue;
       }
 
-      // Check if email or displayName matches query
-      const email = (userData.email || "").toLowerCase();
-      const displayName = (userData.displayName || "").toLowerCase();
-
-      if (email.includes(query) || displayName.includes(query)) {
-        results.push({
-          uid: userId,
-          displayName: userData.displayName || null,
-          email: userData.email,
-          photoUrl: userData.photoUrl || null,
-        });
-      }
+      results.push({
+        uid: userId,
+        displayName: userData.displayName || null,
+        email: userData.email,
+        photoUrl: userData.photoUrl || null,
+      });
 
       // Limit results to prevent huge response sizes
-      if (results.length >= 20) {
+      if (results.length >= RESULT_LIMIT) {
         break;
       }
     }

@@ -78,10 +78,15 @@ export const updateUserNames = functions.region('europe-west6').https.onCall(asy
     const db = admin.firestore();
     const userRef = db.collection("users").doc(uid);
 
+    const displayName = `${trimmedFirstName} ${trimmedLastName}`;
+
     const update: Record<string, unknown> = {
       firstName: trimmedFirstName,
       lastName: trimmedLastName,
-      displayName: `${trimmedFirstName} ${trimmedLastName}`,
+      displayName,
+      // Denormalized lowercase copy for case-insensitive prefix search
+      // (searchUsers.ts) — Firestore range queries are case-sensitive.
+      displayNameLower: displayName.toLowerCase(),
       // Include email so the doc is complete even if this callable wins the race
       // against the createUserDocument Auth onCreate trigger.
       email: context.auth.token.email || "",

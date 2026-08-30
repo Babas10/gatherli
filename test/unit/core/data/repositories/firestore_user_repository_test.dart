@@ -231,6 +231,7 @@ void main() {
             .doc(testUserId)
             .get();
         expect(doc.data()!['displayName'], 'New Name');
+        expect(doc.data()!['displayNameLower'], 'new name');
         expect(doc.data()!['bio'], 'New bio text');
         expect(doc.data()!['location'], 'New York');
       });
