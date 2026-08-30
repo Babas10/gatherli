@@ -11,6 +11,14 @@ entries by hand — fix the underlying commit message convention instead.
 
 <!-- release-notes:start -->
 
+## [v0.9.10-beta2] - 2026-08-30
+
+### 🐛 Fixes
+- ignore Firebase Extension functions in removal-safety check
+
+### 📝 Docs
+- add entry for v0.9.10-beta
+
 ## [v0.9.10-beta] - 2026-08-30
 
 ### ✨ Features
