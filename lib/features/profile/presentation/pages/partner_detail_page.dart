@@ -1,7 +1,9 @@
 // Partner detail screen showing comprehensive teammate statistics.
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
@@ -111,7 +113,11 @@ class PartnerDetailPage extends StatelessWidget {
               radius: 40,
               backgroundColor: theme.colorScheme.primaryContainer,
               backgroundImage: partner.photoUrl != null
-                  ? NetworkImage(partner.photoUrl!)
+                  ? CachedNetworkImageProvider(
+                      partner.photoUrl!,
+                      maxWidth: avatarCacheDimension(context, 80),
+                      maxHeight: avatarCacheDimension(context, 80),
+                    )
                   : null,
               child: partner.photoUrl == null
                   ? Icon(

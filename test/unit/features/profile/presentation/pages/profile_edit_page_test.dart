@@ -1,5 +1,6 @@
 // Verifies that ProfileEditPage displays form correctly and handles user interactions with validation
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -375,14 +376,15 @@ void main() {
         await tester.pumpWidget(createWidgetUnderTest(testUser));
         await tester.pumpAndSettle();
 
-        // Find CircleAvatar with NetworkImage
+        // Find CircleAvatar with a cached network image provider
         final circleAvatar = tester.widget<CircleAvatar>(
           find.byType(CircleAvatar).first,
         );
 
-        // Verify it has a NetworkImage
-        expect(circleAvatar.backgroundImage, isA<NetworkImage>());
-        final networkImage = circleAvatar.backgroundImage as NetworkImage;
+        // Verify it has a CachedNetworkImageProvider (Story 35.9)
+        expect(circleAvatar.backgroundImage, isA<CachedNetworkImageProvider>());
+        final networkImage =
+            circleAvatar.backgroundImage as CachedNetworkImageProvider;
         expect(networkImage.url, testUser.photoUrl);
       });
 

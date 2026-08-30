@@ -1,6 +1,8 @@
 // Group avatar circle — same gold/teal palette as UserAvatar.
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 
 class GroupAvatar extends StatelessWidget {
   final String name;
@@ -24,10 +26,17 @@ class GroupAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasPhoto = photoUrl != null && photoUrl!.isNotEmpty;
+    final cacheDimension = avatarCacheDimension(context, radius * 2);
     return CircleAvatar(
       radius: radius,
       backgroundColor: AppColors.avatarBackground,
-      backgroundImage: hasPhoto ? NetworkImage(photoUrl!) : null,
+      backgroundImage: hasPhoto
+          ? CachedNetworkImageProvider(
+              photoUrl!,
+              maxWidth: cacheDimension,
+              maxHeight: cacheDimension,
+            )
+          : null,
       child: hasPhoto
           ? null
           : Text(

@@ -60,6 +60,7 @@ dependencies:
   # Image Handling
   image_picker: ^1.1.2
   image_cropper: ^8.0.2
+  cached_network_image: ^3.4.1
 
   # Internationalization and Date Formatting
   intl: ^0.20.2
