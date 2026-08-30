@@ -14,17 +14,20 @@ void main() {
   late MockDeepLinkService mockDeepLinkService;
   late MockPendingInviteStorage mockStorage;
   late MockFirebaseAnalytics mockAnalytics;
+  late MockDeferredDeepLinkOrchestrator mockOrchestrator;
 
   setUp(() {
     mockDeepLinkService = MockDeepLinkService();
     mockStorage = MockPendingInviteStorage();
     mockAnalytics = MockFirebaseAnalytics();
+    mockOrchestrator = MockDeferredDeepLinkOrchestrator();
     when(
       () => mockAnalytics.logEvent(
         name: any(named: 'name'),
         parameters: any(named: 'parameters'),
       ),
     ).thenAnswer((_) async {});
+    when(() => mockOrchestrator.ensureChecked()).thenAnswer((_) async => null);
   });
 
   DeepLinkBloc buildBloc() {
@@ -32,6 +35,7 @@ void main() {
       deepLinkService: mockDeepLinkService,
       pendingInviteStorage: mockStorage,
       analytics: mockAnalytics,
+      deferredDeepLinkOrchestrator: mockOrchestrator,
     );
   }
 
@@ -61,12 +65,42 @@ void main() {
         act: (bloc) => bloc.add(const InitializeDeepLinks()),
         expect: () => [const DeepLinkPendingInvite(token: 'stored-token')],
         verify: (_) {
+          verify(() => mockOrchestrator.ensureChecked()).called(1);
           verify(() => mockStorage.retrieve()).called(1);
           verifyNever(() => mockDeepLinkService.getInitialInviteToken());
           verify(
             () => mockAnalytics.logEvent(name: 'invite_link_tapped'),
           ).called(1);
         },
+      );
+
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'awaits ensureChecked() before reading PendingInviteStorage, so a '
+        'deferred deep link token is not missed on cold start',
+        setUp: () {
+          final callOrder = <String>[];
+          when(() => mockOrchestrator.ensureChecked()).thenAnswer((_) async {
+            callOrder.add('ensureChecked');
+            // Simulate the platform check still being in flight.
+            await Future<void>.delayed(const Duration(milliseconds: 10));
+            return null;
+          });
+          when(() => mockStorage.retrieve()).thenAnswer((_) async {
+            callOrder.add('retrieve');
+            return 'stored-token';
+          });
+          when(() => mockStorage.clear()).thenAnswer((_) async {});
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+          addTearDown(() {
+            expect(callOrder, ['ensureChecked', 'retrieve']);
+          });
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const InitializeDeepLinks()),
+        wait: const Duration(milliseconds: 50),
+        expect: () => [const DeepLinkPendingInvite(token: 'stored-token')],
       );
 
       blocTest<DeepLinkBloc, DeepLinkState>(

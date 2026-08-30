@@ -61,6 +61,7 @@ import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/services/image_picker_service.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
+import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 
 // Core BLoCs
@@ -199,6 +200,8 @@ class MockGroupMemberBloc extends MockBloc<GroupMemberEvent, GroupMemberState>
 class MockAccountStatusBloc extends Mock implements AccountStatusBloc {}
 class MockDeepLinkBloc extends Mock implements DeepLinkBloc {}
 class MockDeepLinkService extends Mock implements DeepLinkService {}
+class MockDeferredDeepLinkOrchestrator extends Mock
+    implements DeferredDeepLinkOrchestrator {}
 class MockLocalePreferencesRepository extends Mock
     implements LocalePreferencesRepository {}
 

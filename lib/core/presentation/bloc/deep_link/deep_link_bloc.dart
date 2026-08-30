@@ -7,20 +7,24 @@ import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_state.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
+import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 
 class DeepLinkBloc extends BaseBloc<DeepLinkEvent, DeepLinkState> {
   final DeepLinkService _deepLinkService;
   final PendingInviteStorage _pendingInviteStorage;
   final FirebaseAnalytics _analytics;
+  final DeferredDeepLinkOrchestrator _deferredDeepLinkOrchestrator;
 
   DeepLinkBloc({
     required DeepLinkService deepLinkService,
     required PendingInviteStorage pendingInviteStorage,
     required FirebaseAnalytics analytics,
+    required DeferredDeepLinkOrchestrator deferredDeepLinkOrchestrator,
   }) : _deepLinkService = deepLinkService,
        _pendingInviteStorage = pendingInviteStorage,
        _analytics = analytics,
+       _deferredDeepLinkOrchestrator = deferredDeepLinkOrchestrator,
        super(const DeepLinkInitial()) {
     on<InitializeDeepLinks>(_onInitialize);
     on<InviteTokenReceived>(_onInviteTokenReceived);
@@ -31,6 +35,12 @@ class DeepLinkBloc extends BaseBloc<DeepLinkEvent, DeepLinkState> {
     InitializeDeepLinks event,
     Emitter<DeepLinkState> emit,
   ) async {
+    // Wait for the deferred deep link check (started, unawaited, before
+    // runApp() in main_common.dart) to finish storing any recovered token
+    // before reading storage below. ensureChecked() is single-flight, so
+    // this does not re-run the platform check.
+    await _deferredDeepLinkOrchestrator.ensureChecked();
+
     // Check for stored pending invite first (survives app restart during auth)
     final storedToken = await _pendingInviteStorage.retrieve();
     if (storedToken != null) {

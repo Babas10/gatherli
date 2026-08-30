@@ -5,6 +5,7 @@ import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
+import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
@@ -23,6 +24,9 @@ import '../unit/core/data/repositories/mock_user_repository.dart';
 class MockDeepLinkService extends Mock implements DeepLinkService {}
 
 class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
+
+class MockDeferredDeepLinkOrchestrator extends Mock
+    implements DeferredDeepLinkOrchestrator {}
 
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
@@ -120,16 +124,24 @@ Future<void> initializeTestDependencies({
     () => mockDeepLinkService.getInitialInviteToken(),
   ).thenAnswer((_) async => null);
   when(() => mockPendingInviteStorage.retrieve()).thenAnswer((_) async => null);
+  final mockDeferredDeepLinkOrchestrator = MockDeferredDeepLinkOrchestrator();
+  when(
+    () => mockDeferredDeepLinkOrchestrator.ensureChecked(),
+  ).thenAnswer((_) async => null);
 
   sl.registerLazySingleton<DeepLinkService>(() => mockDeepLinkService);
   sl.registerLazySingleton<PendingInviteStorage>(
     () => mockPendingInviteStorage,
+  );
+  sl.registerLazySingleton<DeferredDeepLinkOrchestrator>(
+    () => mockDeferredDeepLinkOrchestrator,
   );
   sl.registerFactory<DeepLinkBloc>(
     () => DeepLinkBloc(
       deepLinkService: sl<DeepLinkService>(),
       pendingInviteStorage: sl<PendingInviteStorage>(),
       analytics: sl<FirebaseAnalytics>(),
+      deferredDeepLinkOrchestrator: sl<DeferredDeepLinkOrchestrator>(),
     ),
   );
 

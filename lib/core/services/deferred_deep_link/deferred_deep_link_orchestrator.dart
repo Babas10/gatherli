@@ -26,6 +26,11 @@ class DeferredDeepLinkOrchestrator {
 
   final Duration _timeoutDuration;
 
+  /// Caches the in-flight (or completed) [checkOnce] future so callers never
+  /// trigger the platform check more than once per app session, regardless
+  /// of how many places call [ensureChecked].
+  Future<String?>? _pendingCheck;
+
   DeferredDeepLinkOrchestrator({
     required DeferredDeepLinkService? service,
     required PendingInviteStorage storage,
@@ -36,6 +41,17 @@ class DeferredDeepLinkOrchestrator {
        _prefs = prefs,
        _timeoutDuration = timeoutDuration ?? defaultTimeout;
 
+  /// Starts [checkOnce] if it hasn't been started yet this session, and
+  /// returns the in-flight (or already-completed) future.
+  ///
+  /// This lets `main_common.dart` kick off the check without blocking
+  /// `runApp()` (fire-and-forget) while `DeepLinkBloc` awaits the exact same
+  /// future before reading [PendingInviteStorage] — guaranteeing the token
+  /// is stored by the time it's read, without re-running the platform check.
+  Future<String?> ensureChecked() {
+    return _pendingCheck ??= checkOnce();
+  }
+
   /// Runs the deferred token check once on first launch.
   ///
   /// On all subsequent launches the SharedPreferences flag prevents the
@@ -43,6 +59,10 @@ class DeferredDeepLinkOrchestrator {
   /// if no token was found or the check was skipped.
   ///
   /// Times out after [_timeout] and degrades gracefully on all errors.
+  ///
+  /// Prefer [ensureChecked] over calling this directly outside of tests —
+  /// it coordinates the single in-flight call across main_common.dart and
+  /// DeepLinkBloc.
   Future<String?> checkOnce() async {
     // No-op on web or any platform without a registered service.
     final service = _service;

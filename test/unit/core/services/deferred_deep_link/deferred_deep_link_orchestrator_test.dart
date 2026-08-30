@@ -252,6 +252,52 @@ void main() {
       });
     });
 
+    group('ensureChecked (single-flight caching)', () {
+      test('returns the same result as checkOnce would', () async {
+        final orchestrator = _build(service: _TokenService('abc123'));
+        final result = await orchestrator.ensureChecked();
+        expect(result, 'abc123');
+      });
+
+      test('calling it twice only invokes the service once', () async {
+        final svc = _TokenService('abc123');
+        final orchestrator = _build(service: svc);
+        await orchestrator.ensureChecked();
+        await orchestrator.ensureChecked();
+        expect(svc.callCount, 1);
+      });
+
+      test(
+        'concurrent calls before the first completes share one in-flight check',
+        () async {
+          final svc = _DelayedService(const Duration(milliseconds: 20), 'abc123');
+          final orchestrator = _build(service: svc, timeout: const Duration(seconds: 1));
+
+          // Both calls start before either has resolved.
+          final future1 = orchestrator.ensureChecked();
+          final future2 = orchestrator.ensureChecked();
+
+          final results = await Future.wait([future1, future2]);
+          expect(results, ['abc123', 'abc123']);
+        },
+      );
+
+      test(
+        'a call to checkOnce() directly does not populate the ensureChecked cache',
+        () async {
+          // Documents that ensureChecked() and checkOnce() are independent —
+          // ensureChecked() only dedupes calls made through itself.
+          final svc = _TokenService('abc123');
+          final orchestrator = _build(service: svc);
+          await orchestrator.checkOnce();
+          // Flag is now set, so a subsequent ensureChecked() finds no token.
+          final result = await orchestrator.ensureChecked();
+          expect(result, isNull);
+          expect(svc.callCount, 1);
+        },
+      );
+    });
+
     group('no-op when service is null (web / unsupported platform)', () {
       test('returns null with no service', () async {
         final result = await _build(service: null).checkOnce();
