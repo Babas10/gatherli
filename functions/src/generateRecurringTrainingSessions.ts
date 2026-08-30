@@ -140,20 +140,19 @@ function calculateOccurrenceDates(
 }
 
 /**
- * Create a single training session instance
+ * Build a single training session instance's Firestore data (no write)
  */
-async function createSessionInstance(
+function buildSessionInstanceData(
   parentSession: admin.firestore.DocumentData,
   parentId: string,
-  occurrenceDate: Date,
-  db: admin.firestore.Firestore
-): Promise<string> {
+  occurrenceDate: Date
+): admin.firestore.DocumentData {
   const startTime = new Date(occurrenceDate);
   const duration = (parentSession.endTime as admin.firestore.Timestamp).toDate().getTime() -
                   (parentSession.startTime as admin.firestore.Timestamp).toDate().getTime();
   const endTime = new Date(startTime.getTime() + duration);
 
-  const instanceData = {
+  return {
     ...parentSession,
     parentSessionId: parentId,
     startTime: admin.firestore.Timestamp.fromDate(startTime),
@@ -164,9 +163,39 @@ async function createSessionInstance(
     // Remove recurrenceRule from instances (only parent has it)
     recurrenceRule: null,
   };
+}
 
-  const instanceRef = await db.collection("trainingSessions").add(instanceData);
-  return instanceRef.id;
+const FIRESTORE_BATCH_LIMIT = 500;
+
+/**
+ * Create training session instances using chunked batched writes.
+ * Firestore batches are capped at 500 operations, so occurrences are split
+ * into independent chunks and committed in parallel.
+ */
+async function createSessionInstances(
+  parentSession: admin.firestore.DocumentData,
+  parentId: string,
+  occurrenceDates: Date[],
+  db: admin.firestore.Firestore
+): Promise<string[]> {
+  const sessionIds: string[] = [];
+  const commits: Promise<unknown>[] = [];
+
+  for (let i = 0; i < occurrenceDates.length; i += FIRESTORE_BATCH_LIMIT) {
+    const chunk = occurrenceDates.slice(i, i + FIRESTORE_BATCH_LIMIT);
+    const batch = db.batch();
+
+    for (const occurrenceDate of chunk) {
+      const ref = db.collection("trainingSessions").doc();
+      batch.set(ref, buildSessionInstanceData(parentSession, parentId, occurrenceDate));
+      sessionIds.push(ref.id);
+    }
+
+    commits.push(batch.commit());
+  }
+
+  await Promise.all(commits);
+  return sessionIds;
 }
 
 // ============================================================================
@@ -299,18 +328,13 @@ export const generateRecurringTrainingSessions = functions
       // ========================================
 
       try {
-        const sessionIds: string[] = [];
-
-        // Create all session instances
-        for (const occurrenceDate of occurrenceDates) {
-          const sessionId = await createSessionInstance(
-            parentSession.data,
-            parentSession.id,
-            occurrenceDate,
-            db
-          );
-          sessionIds.push(sessionId);
-        }
+        // Create all session instances via chunked batched writes
+        const sessionIds = await createSessionInstances(
+          parentSession.data,
+          parentSession.id,
+          occurrenceDates,
+          db
+        );
 
         functions.logger.info("Recurring sessions generated successfully", {
           userId,

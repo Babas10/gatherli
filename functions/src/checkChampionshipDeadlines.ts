@@ -7,6 +7,7 @@ import { sendChampionshipNotificationToUsers } from "./championshipNotifications
 
 const HOURS_48_MS = 48 * 60 * 60 * 1000;
 const WARNING_FLAG = "deadlineWarning48hSent";
+const CHAMPIONSHIP_BATCH_SIZE = 500;
 
 // ============================================================================
 // Inner handler (exported for unit tests)
@@ -25,10 +26,12 @@ export async function checkChampionshipDeadlinesHandler(
     now: now.toISOString(),
   });
 
-  // Load all active championships
+  // Load active championships, bounded to avoid an unbounded full-collection
+  // scan as the championships collection grows.
   const champSnap = await db
     .collection("championships")
     .where("status", "==", "active")
+    .limit(CHAMPIONSHIP_BATCH_SIZE)
     .get();
 
   if (champSnap.empty) {

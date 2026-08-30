@@ -74,8 +74,13 @@ function buildDb(opts: {
   const queryStub = (result: () => Promise<unknown>) => {
     const q: Record<string, unknown> = {};
     q["where"] = () => q;
+    q["limit"] = () => q;
     q["get"] = result;
-    return q as { where: () => typeof q; get: () => Promise<unknown> };
+    return q as {
+      where: () => typeof q;
+      limit: () => typeof q;
+      get: () => Promise<unknown>;
+    };
   };
 
   const makeQuerySnap = (docs: DocSpec[], champId?: string) => ({
