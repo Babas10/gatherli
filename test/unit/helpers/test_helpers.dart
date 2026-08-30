@@ -20,6 +20,7 @@ import 'package:play_with_me/features/profile/domain/repositories/locale_prefere
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
+import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
 import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
@@ -195,16 +196,24 @@ Future<void> initializeTestDependencies({
   when(() => mockPendingInviteStorage.retrieve()).thenAnswer((_) async => null);
   when(() => mockPendingInviteStorage.store(any())).thenAnswer((_) async {});
   when(() => mockPendingInviteStorage.clear()).thenAnswer((_) async {});
+  final mockDeferredDeepLinkOrchestrator = MockDeferredDeepLinkOrchestrator();
+  when(
+    () => mockDeferredDeepLinkOrchestrator.ensureChecked(),
+  ).thenAnswer((_) async => null);
 
   sl.registerLazySingleton<DeepLinkService>(() => mockDeepLinkService);
   sl.registerLazySingleton<PendingInviteStorage>(
     () => mockPendingInviteStorage,
+  );
+  sl.registerLazySingleton<DeferredDeepLinkOrchestrator>(
+    () => mockDeferredDeepLinkOrchestrator,
   );
   sl.registerFactory<DeepLinkBloc>(
     () => DeepLinkBloc(
       deepLinkService: sl<DeepLinkService>(),
       pendingInviteStorage: sl<PendingInviteStorage>(),
       analytics: sl<FirebaseAnalytics>(),
+      deferredDeepLinkOrchestrator: sl<DeferredDeepLinkOrchestrator>(),
     ),
   );
 

@@ -53,8 +53,12 @@ Future<void> mainCommon() async {
 
     await _step('initializeDependencies', initializeDependencies);
 
-    await _step('DeferredDeepLink.checkOnce',
-        () => sl<DeferredDeepLinkOrchestrator>().checkOnce());
+    // Fire-and-forget: does not block first frame. DeepLinkBloc awaits this
+    // exact same future (via ensureChecked()'s single-flight caching) before
+    // reading PendingInviteStorage, so cold-start deep links still resolve
+    // correctly even though this no longer blocks runApp().
+    unawaited(sl<DeferredDeepLinkOrchestrator>().ensureChecked());
+    debugPrint('[startup] ✅ DeferredDeepLink.checkOnce queued (background)');
 
     ConnectivityService.instance.initialize();
     debugPrint('[startup] ✅ ConnectivityService initialized');

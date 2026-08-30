@@ -524,6 +524,7 @@ Future<void> initializeDependencies() async {
         deepLinkService: sl(),
         pendingInviteStorage: sl(),
         analytics: sl(),
+        deferredDeepLinkOrchestrator: sl(),
       ),
     );
   }
