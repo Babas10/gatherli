@@ -1,5 +1,6 @@
 // Events for the DeepLinkBloc.
 import 'package:equatable/equatable.dart';
+import 'package:play_with_me/core/domain/entities/activity_link_target.dart';
 
 sealed class DeepLinkEvent extends Equatable {
   const DeepLinkEvent();
@@ -23,4 +24,17 @@ class InviteTokenReceived extends DeepLinkEvent {
 
 class ClearPendingInvite extends DeepLinkEvent {
   const ClearPendingInvite();
+}
+
+class ActivityLinkReceived extends DeepLinkEvent {
+  final ActivityLinkTarget target;
+
+  const ActivityLinkReceived(this.target);
+
+  @override
+  List<Object?> get props => [target];
+}
+
+class ClearPendingActivityLink extends DeepLinkEvent {
+  const ClearPendingActivityLink();
 }

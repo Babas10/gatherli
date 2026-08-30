@@ -199,14 +199,12 @@ service cloud.firestore {
     // groupId is nullable since Story 31.4 (pickup games have no group).
     // isGameGroupMember() safely returns false when groupId is null.
     match /games/{gameId} {
-      // Individual game reads allowed for:
-      //  - players already in the game (playerIds)
-      //  - group members when game has a groupId
-      //  - pending invitees (pendingInviteeIds, managed by CFs — allows reading before accepting)
-      allow get: if isAuthenticated() &&
-                    (request.auth.uid in resource.data.playerIds ||
-                     isGameGroupMember(resource.data.groupId) ||
-                     ('pendingInviteeIds' in resource.data && request.auth.uid in resource.data.pendingInviteeIds));
+      // Individual game reads (by known ID — e.g. a shared activity link) are
+      // open to any authenticated user, read-only. This does not grant any
+      // write/join capability; see the create/update/delete rules below for
+      // those. Collection-wide listing/querying stays membership-scoped —
+      // see `list` below.
+      allow get: if isAuthenticated();
 
       // List/query operations allowed for group members OR players in the game.
       // Supports getMyGames() query (playerIds array-contains uid) for guest players.
@@ -250,12 +248,14 @@ service cloud.firestore {
       // In-Game Chat Messages (Story 14.14)
       // ============================================
       // Sub-collection: games/{gameId}/messages
-      // Only players listed in games/{gameId}.playerIds can read or create messages.
+      // Read access matches the parent game's `get` rule above (any
+      // authenticated user, e.g. via a shared activity link) — chat is part
+      // of the "full read-only detail page" a link recipient sees. Only
+      // players listed in games/{gameId}.playerIds can create messages.
       // No editing or deleting of individual messages by users.
       match /messages/{messageId} {
-        // Read access: players only
-        allow get, list: if isAuthenticated() &&
-                            request.auth.uid in get(/databases/$(database)/documents/games/$(gameId)).data.playerIds;
+        // Read access: any authenticated user
+        allow get, list: if isAuthenticated();
 
         // Create access: players only, and sender must be the authenticated user
         allow create: if isAuthenticated() &&
@@ -276,12 +276,11 @@ service cloud.firestore {
     // isGameGroupMember() safely returns false when groupId is null.
     // SECURITY: Creation goes through Cloud Function for server-side validation.
     match /trainingSessions/{sessionId} {
-      // Individual session reads allowed for:
-      //  - group members when session has a groupId
-      //  - existing participants (for standalone sessions)
-      allow get: if isAuthenticated() &&
-                    (isGameGroupMember(resource.data.groupId) ||
-                     request.auth.uid in resource.data.participantIds);
+      // Individual session reads (by known ID — e.g. a shared activity link)
+      // are open to any authenticated user, read-only — same model as
+      // games/{gameId} above. Collection-wide listing/querying stays
+      // membership-scoped — see `list` below.
+      allow get: if isAuthenticated();
 
       // List/query operations: group members OR participants.
       // Story 15.2: Also supports recurring session instance queries via parentSessionId.
@@ -306,10 +305,10 @@ service cloud.firestore {
       // Story 15.3: Participants subcollection rules.
       // Participants are managed via Cloud Functions (joinTrainingSession, leaveTrainingSession).
       match /participants/{userId} {
-        // Read participants: group members or existing participants.
-        allow get, list: if isAuthenticated() &&
-                            (isGameGroupMember(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId) ||
-                             request.auth.uid in get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.participantIds);
+        // Read participants: any authenticated user (part of the "full
+        // read-only detail page" a shared-link recipient sees, same as the
+        // parent session's `get` rule above).
+        allow get, list: if isAuthenticated();
 
         // CRITICAL: Join/leave via Cloud Functions ONLY.
         allow create, update, delete: if false;
@@ -317,10 +316,9 @@ service cloud.firestore {
 
       // Story 15.7: Exercises subcollection rules.
       match /exercises/{exerciseId} {
-        // Read exercises: group members or participants.
-        allow get, list: if isAuthenticated() &&
-                            (isGameGroupMember(get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.groupId) ||
-                             request.auth.uid in get(/databases/$(database)/documents/trainingSessions/$(sessionId)).data.participantIds);
+        // Read exercises: any authenticated user (same reasoning as
+        // participants above).
+        allow get, list: if isAuthenticated();
 
         // Create/update/delete exercises: only creator, only before session starts.
         allow create, update: if isAuthenticated() &&

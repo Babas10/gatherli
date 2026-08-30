@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_event.dart';
@@ -200,6 +200,6 @@ class InviteLinkSection extends StatelessWidget {
   }
 
   void _shareLink(BuildContext context, String url, AppLocalizations l10n) {
-    Share.share(l10n.inviteLinkShareMessage(url));
+    shareText(context, l10n.inviteLinkShareMessage(url));
   }
 }

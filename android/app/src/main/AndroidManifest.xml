@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <!-- App Links for deep linking (invite links) -->
+            <!-- App Links for deep linking (invite + shareable activity links) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -57,6 +57,18 @@
                     android:scheme="https"
                     android:host="gatherli.org"
                     android:pathPrefix="/invite"/>
+                <data
+                    android:scheme="https"
+                    android:host="gatherli.org"
+                    android:pathPrefix="/game"/>
+                <data
+                    android:scheme="https"
+                    android:host="gatherli.org"
+                    android:pathPrefix="/training"/>
+                <data
+                    android:scheme="https"
+                    android:host="gatherli.org"
+                    android:pathPrefix="/championship"/>
             </intent-filter>
 
             <!-- Custom URL scheme fallback -->
@@ -67,6 +79,15 @@
                 <data
                     android:scheme="gatherli"
                     android:host="invite"/>
+                <data
+                    android:scheme="gatherli"
+                    android:host="game"/>
+                <data
+                    android:scheme="gatherli"
+                    android:host="training"/>
+                <data
+                    android:scheme="gatherli"
+                    android:host="championship"/>
             </intent-filter>
         </activity>
         <!-- Required by image_cropper (UCrop) -->

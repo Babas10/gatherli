@@ -106,7 +106,11 @@ void main() {
       expect(data['senderId'], creator.uid);
     });
 
-    test('Non-player authenticated user CANNOT read messages', () async {
+    test('Non-player authenticated user CAN read messages (shareable activity links)', () async {
+      // Reads on games/{gameId} and its messages subcollection were
+      // deliberately opened to any authenticated user so a shared game
+      // link's recipient sees the same chat a player would (read-only —
+      // create/update/delete remain player-only, see the write tests below).
       // 1. Create users: creator, player, outsider
       final creator = await FirebaseEmulatorHelper.createCompleteTestUser(
         email: 'creator@test.com',
@@ -144,23 +148,17 @@ void main() {
         senderId: creator.uid,
       );
 
-      // 4. Sign in as outsider and try to read — should fail
+      // 4. Sign in as outsider and read — should now succeed
       await FirebaseEmulatorHelper.signOut();
       await FirebaseEmulatorHelper.signIn(
         email: 'outsider@test.com',
         password: 'password123',
       );
 
-      await expectLater(
-        () async => msgRef.get(),
-        throwsA(
-          isA<FirebaseException>().having(
-            (e) => e.code,
-            'code',
-            'permission-denied',
-          ),
-        ),
-      );
+      final doc = await msgRef.get();
+      expect(doc.exists, isTrue);
+      final data = doc.data() as Map<String, dynamic>;
+      expect(data['text'], 'Hello team!');
     });
 
     test('Unauthenticated user CANNOT read messages', () async {
