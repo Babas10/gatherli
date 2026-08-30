@@ -36,7 +36,16 @@ if (deployed.length === 0) {
 const intended = Object.keys(require(path.resolve("functions/lib/index.js")));
 const intendedSet = new Set(intended);
 
-const removed = deployed.filter((name) => !intendedSet.has(name));
+// Firebase Extension instances (e.g. "Export Collections to BigQuery") create
+// functions prefixed "ext-" that are installed and managed independently of
+// this repo (via the Firebase Console/CLI extension mechanism, not
+// functions/src). `firebase deploy --only functions` never touches them, so
+// they must never be treated as "removed" by this repo's deploy.
+const isExtensionFunction = (name) => name.startsWith("ext-");
+
+const removed = deployed.filter(
+  (name) => !intendedSet.has(name) && !isExtensionFunction(name)
+);
 
 if (removed.length === 0) {
   console.log("✅ No function removals detected.");
