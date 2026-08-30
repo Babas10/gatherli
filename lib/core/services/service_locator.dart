@@ -58,6 +58,7 @@ import 'package:play_with_me/features/training/presentation/bloc/exercise/exerci
 import 'package:play_with_me/features/training/presentation/bloc/feedback/training_feedback_bloc.dart';
 import 'package:play_with_me/features/groups/presentation/bloc/group_invite_link/group_invite_link_bloc.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
+import 'package:play_with_me/core/services/pending_activity_link_storage.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/app_links_deep_link_service.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_service.dart';
@@ -321,6 +322,12 @@ Future<void> initializeDependencies() async {
     );
   }
 
+  if (!sl.isRegistered<PendingActivityLinkStorage>()) {
+    sl.registerLazySingleton<PendingActivityLinkStorage>(
+      () => PendingActivityLinkStorage(prefs: sl()),
+    );
+  }
+
   if (!sl.isRegistered<DeepLinkService>()) {
     sl.registerLazySingleton<DeepLinkService>(() => AppLinksDeepLinkService());
   }
@@ -523,6 +530,7 @@ Future<void> initializeDependencies() async {
       () => DeepLinkBloc(
         deepLinkService: sl(),
         pendingInviteStorage: sl(),
+        pendingActivityLinkStorage: sl(),
         analytics: sl(),
         deferredDeepLinkOrchestrator: sl(),
       ),

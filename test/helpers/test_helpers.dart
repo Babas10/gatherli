@@ -7,6 +7,7 @@ import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dar
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
+import 'package:play_with_me/core/services/pending_activity_link_storage.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
@@ -24,6 +25,9 @@ import '../unit/core/data/repositories/mock_user_repository.dart';
 class MockDeepLinkService extends Mock implements DeepLinkService {}
 
 class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
+
+class MockPendingActivityLinkStorage extends Mock
+    implements PendingActivityLinkStorage {}
 
 class MockDeferredDeepLinkOrchestrator extends Mock
     implements DeferredDeepLinkOrchestrator {}
@@ -124,6 +128,16 @@ Future<void> initializeTestDependencies({
     () => mockDeepLinkService.getInitialInviteToken(),
   ).thenAnswer((_) async => null);
   when(() => mockPendingInviteStorage.retrieve()).thenAnswer((_) async => null);
+  final mockPendingActivityLinkStorage = MockPendingActivityLinkStorage();
+  when(
+    () => mockPendingActivityLinkStorage.retrieve(),
+  ).thenAnswer((_) async => null);
+  when(
+    () => mockDeepLinkService.activityLinkStream,
+  ).thenAnswer((_) => const Stream.empty());
+  when(
+    () => mockDeepLinkService.getInitialActivityLink(),
+  ).thenAnswer((_) async => null);
   final mockDeferredDeepLinkOrchestrator = MockDeferredDeepLinkOrchestrator();
   when(
     () => mockDeferredDeepLinkOrchestrator.ensureChecked(),
@@ -133,6 +147,9 @@ Future<void> initializeTestDependencies({
   sl.registerLazySingleton<PendingInviteStorage>(
     () => mockPendingInviteStorage,
   );
+  sl.registerLazySingleton<PendingActivityLinkStorage>(
+    () => mockPendingActivityLinkStorage,
+  );
   sl.registerLazySingleton<DeferredDeepLinkOrchestrator>(
     () => mockDeferredDeepLinkOrchestrator,
   );
@@ -140,6 +157,7 @@ Future<void> initializeTestDependencies({
     () => DeepLinkBloc(
       deepLinkService: sl<DeepLinkService>(),
       pendingInviteStorage: sl<PendingInviteStorage>(),
+      pendingActivityLinkStorage: sl<PendingActivityLinkStorage>(),
       analytics: sl<FirebaseAnalytics>(),
       deferredDeepLinkOrchestrator: sl<DeferredDeepLinkOrchestrator>(),
     ),

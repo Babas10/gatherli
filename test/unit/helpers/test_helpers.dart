@@ -22,6 +22,7 @@ import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dar
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
+import 'package:play_with_me/core/services/pending_activity_link_storage.dart';
 import 'package:play_with_me/core/domain/repositories/group_invite_link_repository.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_bloc.dart';
@@ -196,6 +197,16 @@ Future<void> initializeTestDependencies({
   when(() => mockPendingInviteStorage.retrieve()).thenAnswer((_) async => null);
   when(() => mockPendingInviteStorage.store(any())).thenAnswer((_) async {});
   when(() => mockPendingInviteStorage.clear()).thenAnswer((_) async {});
+  final mockPendingActivityLinkStorage = MockPendingActivityLinkStorage();
+  when(
+    () => mockPendingActivityLinkStorage.retrieve(),
+  ).thenAnswer((_) async => null);
+  when(
+    () => mockDeepLinkService.activityLinkStream,
+  ).thenAnswer((_) => const Stream.empty());
+  when(
+    () => mockDeepLinkService.getInitialActivityLink(),
+  ).thenAnswer((_) async => null);
   final mockDeferredDeepLinkOrchestrator = MockDeferredDeepLinkOrchestrator();
   when(
     () => mockDeferredDeepLinkOrchestrator.ensureChecked(),
@@ -205,6 +216,9 @@ Future<void> initializeTestDependencies({
   sl.registerLazySingleton<PendingInviteStorage>(
     () => mockPendingInviteStorage,
   );
+  sl.registerLazySingleton<PendingActivityLinkStorage>(
+    () => mockPendingActivityLinkStorage,
+  );
   sl.registerLazySingleton<DeferredDeepLinkOrchestrator>(
     () => mockDeferredDeepLinkOrchestrator,
   );
@@ -212,6 +226,7 @@ Future<void> initializeTestDependencies({
     () => DeepLinkBloc(
       deepLinkService: sl<DeepLinkService>(),
       pendingInviteStorage: sl<PendingInviteStorage>(),
+      pendingActivityLinkStorage: sl<PendingActivityLinkStorage>(),
       analytics: sl<FirebaseAnalytics>(),
       deferredDeepLinkOrchestrator: sl<DeferredDeepLinkOrchestrator>(),
     ),

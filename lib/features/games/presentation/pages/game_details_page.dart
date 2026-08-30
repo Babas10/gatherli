@@ -8,6 +8,8 @@ import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
+import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
+import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -70,15 +72,16 @@ class GameDetailsPage extends StatelessWidget {
           ),
         ),
       ],
-      child: _GameDetailsView(invitationId: invitationId),
+      child: _GameDetailsView(gameId: gameId, invitationId: invitationId),
     );
   }
 }
 
 class _GameDetailsView extends StatelessWidget {
+  final String gameId;
   final String? invitationId;
 
-  const _GameDetailsView({this.invitationId});
+  const _GameDetailsView({required this.gameId, this.invitationId});
 
   @override
   Widget build(BuildContext context) {
@@ -203,6 +206,23 @@ class _GameDetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _GameInfoCard(game: game),
+                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => copyLinkToClipboard(
+                        context,
+                        ActivityLinkUrlBuilder.forGame(gameId),
+                        l10n,
+                      ),
+                      icon: const Icon(Icons.copy, size: 18),
+                      label: Text(l10n.copyLink),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.secondary,
+                        side: const BorderSide(color: AppColors.secondary),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   // Verification Section
                   if (game.status == GameStatus.verification) ...[

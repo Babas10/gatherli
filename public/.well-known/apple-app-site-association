@@ -10,6 +10,18 @@
           {
             "/": "/invite/*",
             "comment": "Matches all Gatherli group invite deep links"
+          },
+          {
+            "/": "/game/*",
+            "comment": "Matches Gatherli shareable game deep links"
+          },
+          {
+            "/": "/training/*",
+            "comment": "Matches Gatherli shareable training session deep links"
+          },
+          {
+            "/": "/championship/*/match/*",
+            "comment": "Matches Gatherli shareable championship match deep links"
           }
         ]
       }

@@ -9,6 +9,7 @@ import 'package:play_with_me/core/config/environment_config.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_event.dart';
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
+import 'package:play_with_me/core/domain/entities/activity_link_target.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_state.dart';
@@ -70,6 +71,30 @@ import 'package:play_with_me/features/championships/presentation/pages/match_det
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+
+/// Builds the detail page for a shareable-activity-link target (game,
+/// training session, or championship match), reusing the exact
+/// page-construction pattern already established for FCM-notification-tap
+/// navigation in _HomePageState (_navigateToGame/_navigateToTrainingSession/
+/// _navigateToMatch below).
+Widget _buildActivityLinkTargetPage(
+  ActivityLinkTarget target,
+  AuthenticationAuthenticated authState,
+) {
+  return switch (target) {
+    GameLinkTarget(:final gameId) => GameDetailsPage(gameId: gameId),
+    TrainingSessionLinkTarget(:final trainingSessionId) =>
+      TrainingSessionDetailsPage(trainingSessionId: trainingSessionId),
+    ChampionshipMatchLinkTarget(:final championshipId, :final matchId) =>
+      MatchDetailPage(
+        championshipId: championshipId,
+        matchId: matchId,
+        currentUserId: authState.user.uid,
+        currentUserDisplayName:
+            authState.user.displayName ?? authState.user.email,
+      ),
+  };
+}
 
 class PlayWithMeApp extends StatelessWidget {
   const PlayWithMeApp({super.key});
@@ -166,6 +191,24 @@ class PlayWithMeApp extends StatelessWidget {
                       (route) => route.isFirst,
                     );
                   }
+                } else if (deepLinkState is DeepLinkPendingActivityLink) {
+                  // Pending shareable-activity link (game/training/match) —
+                  // no "join" confirmation step needed, navigate straight in.
+                  context.read<DeepLinkBloc>().add(
+                    const ClearPendingActivityLink(),
+                  );
+                  final navigator = PlayWithMeApp.navigatorKey.currentState;
+                  if (navigator != null) {
+                    navigator.pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => _buildActivityLinkTargetPage(
+                          deepLinkState.target,
+                          state,
+                        ),
+                      ),
+                      (route) => route.isFirst,
+                    );
+                  }
                 } else {
                   // No pending invite — normal login
                   context.read<InviteJoinBloc>().add(
@@ -179,6 +222,12 @@ class PlayWithMeApp extends StatelessWidget {
 
                 // Check if there's a pending invite from a deep link (cold start)
                 final deepLinkState = context.read<DeepLinkBloc>().state;
+                // Note: a pending activity link (game/training/match) needs
+                // no branch here intentionally — there's no preview page for
+                // unauthenticated users, so LoginPage (already showing as
+                // MaterialApp.home) is sufficient. The target stays pending
+                // in DeepLinkBloc/PendingActivityLinkStorage until auth
+                // succeeds, then the branch above navigates to it.
                 if (deepLinkState is DeepLinkPendingInvite) {
                   final navigator = PlayWithMeApp.navigatorKey.currentState;
                   if (navigator != null) {
@@ -250,6 +299,27 @@ class PlayWithMeApp extends StatelessWidget {
                     ),
                   );
                 }
+              } else if (deepLinkState is DeepLinkPendingActivityLink) {
+                final authState = context.read<AuthenticationBloc>().state;
+                final navigator = PlayWithMeApp.navigatorKey.currentState;
+                if (navigator == null) return;
+
+                if (authState is AuthenticationAuthenticated) {
+                  context.read<DeepLinkBloc>().add(
+                    const ClearPendingActivityLink(),
+                  );
+                  navigator.push(
+                    MaterialPageRoute(
+                      builder: (_) => _buildActivityLinkTargetPage(
+                        deepLinkState.target,
+                        authState,
+                      ),
+                    ),
+                  );
+                }
+                // AuthenticationUnauthenticated: intentional no-op — LoginPage
+                // is already showing as MaterialApp.home; the target stays
+                // pending until auth succeeds (see the auth listener above).
               }
             },
           ),

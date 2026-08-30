@@ -151,6 +151,20 @@ void main() {
       expect(find.text('123 Test Beach St'), findsOneWidget);
     });
 
+    testWidgets('shows a copy link button (shareable activity links)', (
+      tester,
+    ) async {
+      mockGameRepository.addGame(TestGameData.testGame);
+
+      await tester.pumpWidget(createApp(gameId: testGameId));
+      await tester.runAsync(() async {
+        await Future.delayed(const Duration(milliseconds: 100));
+      });
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.copy), findsOneWidget);
+    });
+
     testWidgets('displays player count correctly', (tester) async {
       mockGameRepository.addGame(TestGameData.testGame);
 
@@ -282,6 +296,7 @@ void main() {
       // Open the 3-dot popup menu
       final menuButton = find.byIcon(Icons.more_vert);
       expect(menuButton, findsOneWidget);
+      await tester.ensureVisible(menuButton);
 
       await tester.tap(menuButton);
       await tester.pumpAndSettle();

@@ -1,7 +1,8 @@
-// Validates DeepLinkBloc emits correct states during initialization, token reception, and clearing.
+// Validates DeepLinkBloc emits correct states during initialization, token/activity-link reception, and clearing.
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:play_with_me/core/domain/entities/activity_link_target.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_event.dart';
 import 'package:play_with_me/core/presentation/bloc/deep_link/deep_link_state.dart';
@@ -13,12 +14,14 @@ class MockDeepLinkService extends Mock implements DeepLinkService {}
 void main() {
   late MockDeepLinkService mockDeepLinkService;
   late MockPendingInviteStorage mockStorage;
+  late MockPendingActivityLinkStorage mockActivityStorage;
   late MockFirebaseAnalytics mockAnalytics;
   late MockDeferredDeepLinkOrchestrator mockOrchestrator;
 
   setUp(() {
     mockDeepLinkService = MockDeepLinkService();
     mockStorage = MockPendingInviteStorage();
+    mockActivityStorage = MockPendingActivityLinkStorage();
     mockAnalytics = MockFirebaseAnalytics();
     mockOrchestrator = MockDeferredDeepLinkOrchestrator();
     when(
@@ -28,12 +31,22 @@ void main() {
       ),
     ).thenAnswer((_) async {});
     when(() => mockOrchestrator.ensureChecked()).thenAnswer((_) async => null);
+    // Default baseline: no pending/initial activity link, empty foreground
+    // stream — overridden per-test where activity-link behavior is exercised.
+    when(() => mockActivityStorage.retrieve()).thenAnswer((_) async => null);
+    when(
+      () => mockDeepLinkService.getInitialActivityLink(),
+    ).thenAnswer((_) async => null);
+    when(
+      () => mockDeepLinkService.activityLinkStream,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   DeepLinkBloc buildBloc() {
     return DeepLinkBloc(
       deepLinkService: mockDeepLinkService,
       pendingInviteStorage: mockStorage,
+      pendingActivityLinkStorage: mockActivityStorage,
       analytics: mockAnalytics,
       deferredDeepLinkOrchestrator: mockOrchestrator,
     );
@@ -195,6 +208,162 @@ void main() {
         expect: () => [const DeepLinkNoInvite()],
         verify: (_) {
           verify(() => mockStorage.clear()).called(1);
+        },
+      );
+    });
+
+    group('InitializeDeepLinks — activity links', () {
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'emits [DeepLinkPendingActivityLink] when stored activity link exists',
+        setUp: () {
+          when(() => mockStorage.retrieve()).thenAnswer((_) async => null);
+          when(
+            () => mockActivityStorage.retrieve(),
+          ).thenAnswer((_) async => 'game:game-123');
+          when(() => mockActivityStorage.clear()).thenAnswer((_) async {});
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const InitializeDeepLinks()),
+        expect: () => [
+          const DeepLinkPendingActivityLink(target: GameLinkTarget('game-123')),
+        ],
+        verify: (_) {
+          verify(() => mockActivityStorage.retrieve()).called(1);
+          verifyNever(() => mockDeepLinkService.getInitialActivityLink());
+          verify(
+            () => mockAnalytics.logEvent(name: 'activity_link_tapped'),
+          ).called(1);
+        },
+      );
+
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'emits [DeepLinkPendingActivityLink] when initial activity link exists',
+        setUp: () {
+          when(() => mockStorage.retrieve()).thenAnswer((_) async => null);
+          when(
+            () => mockDeepLinkService.getInitialInviteToken(),
+          ).thenAnswer((_) async => null);
+          when(
+            () => mockDeepLinkService.getInitialActivityLink(),
+          ).thenAnswer((_) async => const TrainingSessionLinkTarget('t-1'));
+          when(
+            () => mockActivityStorage.isConsumed('training:t-1'),
+          ).thenReturn(false);
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const InitializeDeepLinks()),
+        expect: () => [
+          const DeepLinkPendingActivityLink(
+            target: TrainingSessionLinkTarget('t-1'),
+          ),
+        ],
+      );
+
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'invite token takes priority over a pending activity link at cold start',
+        setUp: () {
+          when(
+            () => mockStorage.retrieve(),
+          ).thenAnswer((_) async => 'stored-token');
+          when(() => mockStorage.clear()).thenAnswer((_) async {});
+          when(
+            () => mockActivityStorage.retrieve(),
+          ).thenAnswer((_) async => 'game:game-123');
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const InitializeDeepLinks()),
+        expect: () => [const DeepLinkPendingInvite(token: 'stored-token')],
+        verify: (_) {
+          verifyNever(() => mockActivityStorage.retrieve());
+        },
+      );
+
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'listens to foreground activity link stream after initialization',
+        setUp: () {
+          when(() => mockStorage.retrieve()).thenAnswer((_) async => null);
+          when(
+            () => mockDeepLinkService.getInitialInviteToken(),
+          ).thenAnswer((_) async => null);
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+          when(
+            () => mockDeepLinkService.activityLinkStream,
+          ).thenAnswer((_) => Stream.value(const GameLinkTarget('stream-game')));
+          when(
+            () => mockActivityStorage.store('game:stream-game'),
+          ).thenAnswer((_) async {});
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const InitializeDeepLinks()),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+          const DeepLinkNoInvite(),
+          const DeepLinkPendingActivityLink(target: GameLinkTarget('stream-game')),
+        ],
+      );
+    });
+
+    group('ActivityLinkReceived', () {
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'emits [DeepLinkPendingActivityLink] and stores encoded target',
+        setUp: () {
+          when(
+            () => mockActivityStorage.store('championshipMatch:c-1:m-1'),
+          ).thenAnswer((_) async {});
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(
+          const ActivityLinkReceived(
+            ChampionshipMatchLinkTarget(championshipId: 'c-1', matchId: 'm-1'),
+          ),
+        ),
+        expect: () => [
+          const DeepLinkPendingActivityLink(
+            target: ChampionshipMatchLinkTarget(
+              championshipId: 'c-1',
+              matchId: 'm-1',
+            ),
+          ),
+        ],
+        verify: (_) {
+          verify(
+            () => mockActivityStorage.store('championshipMatch:c-1:m-1'),
+          ).called(1);
+          verify(
+            () => mockAnalytics.logEvent(name: 'activity_link_tapped'),
+          ).called(1);
+        },
+      );
+    });
+
+    group('ClearPendingActivityLink', () {
+      blocTest<DeepLinkBloc, DeepLinkState>(
+        'emits [DeepLinkNoInvite] and clears storage',
+        setUp: () {
+          when(() => mockActivityStorage.clear()).thenAnswer((_) async {});
+          when(
+            () => mockDeepLinkService.inviteTokenStream,
+          ).thenAnswer((_) => const Stream.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(const ClearPendingActivityLink()),
+        expect: () => [const DeepLinkNoInvite()],
+        verify: (_) {
+          verify(() => mockActivityStorage.clear()).called(1);
         },
       );
     });

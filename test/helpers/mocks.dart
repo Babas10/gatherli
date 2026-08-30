@@ -63,6 +63,7 @@ import 'package:play_with_me/core/services/image_picker_service.dart';
 import 'package:play_with_me/core/services/deep_link_service.dart';
 import 'package:play_with_me/core/services/deferred_deep_link/deferred_deep_link_orchestrator.dart';
 import 'package:play_with_me/core/services/pending_invite_storage.dart';
+import 'package:play_with_me/core/services/pending_activity_link_storage.dart';
 
 // Core BLoCs
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_bloc.dart';
@@ -182,6 +183,8 @@ class MockFriendRepository extends Mock implements FriendRepository {}
 class MockGroupInviteLinkRepository extends Mock
     implements GroupInviteLinkRepository {}
 class MockPendingInviteStorage extends Mock implements PendingInviteStorage {}
+class MockPendingActivityLinkStorage extends Mock
+    implements PendingActivityLinkStorage {}
 class MockMessageRepository extends Mock implements MessageRepository {}
 class MockNotificationRepository extends Mock
     implements NotificationRepository {}

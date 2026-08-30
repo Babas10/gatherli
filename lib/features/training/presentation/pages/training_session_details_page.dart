@@ -6,6 +6,8 @@ import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
+import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
+import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -245,6 +247,7 @@ class _TrainingSessionDetailsPageState
     TrainingSessionModel session,
     bool isOrganizer,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.white,
@@ -377,6 +380,26 @@ class _TrainingSessionDetailsPageState
                 ],
               );
             },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => copyLinkToClipboard(
+                context,
+                ActivityLinkUrlBuilder.forTrainingSession(
+                  widget.trainingSessionId,
+                ),
+                l10n,
+              ),
+              icon: const Icon(Icons.copy, size: 18),
+              label: Text(l10n.copyLink),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.secondary,
+                side: const BorderSide(color: AppColors.secondary),
+              ),
+            ),
           ),
 
           // Notes (if available)

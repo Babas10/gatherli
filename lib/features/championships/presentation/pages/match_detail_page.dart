@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
+import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
@@ -129,6 +131,23 @@ class _MatchDetailBody extends StatelessWidget {
             teamA: state.teamA,
             teamB: state.teamB,
             l10n: l10n,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => copyLinkToClipboard(
+              context,
+              ActivityLinkUrlBuilder.forChampionshipMatch(
+                championshipId: state.championshipId,
+                matchId: match.id,
+              ),
+              l10n,
+            ),
+            icon: const Icon(Icons.copy, size: 18),
+            label: Text(l10n.copyLink),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.secondary,
+              side: const BorderSide(color: AppColors.secondary),
+            ),
           ),
           if (match.status == ChampionshipMatchStatus.disputed) ...[
             const SizedBox(height: AppSpacing.md),
