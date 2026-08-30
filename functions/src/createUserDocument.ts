@@ -46,7 +46,13 @@ export const createUserDocument = functions.region('europe-west6').auth.user().o
     const canonicalData: Record<string, unknown> = {
       // Core identity
       email: user.email || "",
-      ...(user.displayName ? { displayName: user.displayName } : {}),
+      // displayNameLower is a denormalized lowercase copy for case-insensitive
+      // prefix search (searchUsers.ts) — Firestore range queries are
+      // case-sensitive. Omitted alongside displayName for the same
+      // race-condition reason described above.
+      ...(user.displayName
+        ? { displayName: user.displayName, displayNameLower: user.displayName.toLowerCase() }
+        : {}),
       photoUrl: user.photoURL || null,
 
       // Auth metadata

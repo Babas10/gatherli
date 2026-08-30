@@ -129,6 +129,7 @@ describe("createUserDocument", () => {
       expect(mockSet).toHaveBeenCalledTimes(1);
       const writtenData = mockSet.mock.calls[0][0];
       expect(writtenData).not.toHaveProperty("displayName");
+      expect(writtenData).not.toHaveProperty("displayNameLower");
     });
 
     it("DOES write displayName when Auth provides one (OAuth provider)", async () => {
@@ -142,6 +143,18 @@ describe("createUserDocument", () => {
       expect(mockSet).toHaveBeenCalledTimes(1);
       const writtenData = mockSet.mock.calls[0][0];
       expect(writtenData.displayName).toBe("Jane Doe");
+    });
+
+    it("DOES write displayNameLower (lowercased) alongside displayName", async () => {
+      const user = makeUser({
+        displayName: "Jane Doe",
+        providerData: [{ providerId: "google.com" }],
+      });
+
+      await (createUserDocument as any)(user);
+
+      const writtenData = mockSet.mock.calls[0][0];
+      expect(writtenData.displayNameLower).toBe("jane doe");
     });
   });
 

@@ -201,7 +201,13 @@ class FirestoreUserRepository implements UserRepository {
       final updates = <String, dynamic>{
         'updatedAt': FieldValue.serverTimestamp(),
       };
-      if (displayName != null) updates['displayName'] = displayName;
+      if (displayName != null) {
+        updates['displayName'] = displayName;
+        // Denormalized lowercase copy for case-insensitive prefix search
+        // (searchUsers Cloud Function) — Firestore range queries are
+        // case-sensitive.
+        updates['displayNameLower'] = displayName.toLowerCase();
+      }
       if (photoUrl != null) updates['photoUrl'] = photoUrl;
       if (firstName != null) updates['firstName'] = firstName;
       if (lastName != null) updates['lastName'] = lastName;
