@@ -1,8 +1,10 @@
 // Shared user avatar — gold background, teal initials, optional photo.
 // Use this everywhere a circular user avatar is needed so the style is
 // defined once and consistent across the whole app.
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 
 class UserAvatar extends StatelessWidget {
   /// Display name or email — used to generate the initials fallback.
@@ -34,10 +36,17 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasPhoto = photoUrl != null && photoUrl!.isNotEmpty;
+    final cacheDimension = avatarCacheDimension(context, radius * 2);
     return CircleAvatar(
       radius: radius,
       backgroundColor: AppColors.avatarBackground,
-      backgroundImage: hasPhoto ? NetworkImage(photoUrl!) : null,
+      backgroundImage: hasPhoto
+          ? CachedNetworkImageProvider(
+              photoUrl!,
+              maxWidth: cacheDimension,
+              maxHeight: cacheDimension,
+            )
+          : null,
       child: hasPhoto
           ? null
           : Text(

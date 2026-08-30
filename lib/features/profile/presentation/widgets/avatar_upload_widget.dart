@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -148,7 +150,11 @@ class _AvatarUploadContent extends StatelessWidget {
                   CircleAvatar(
                     radius: 56,
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage: NetworkImage(currentPhotoUrl!),
+                    backgroundImage: CachedNetworkImageProvider(
+                      currentPhotoUrl!,
+                      maxWidth: avatarCacheDimension(context, 112),
+                      maxHeight: avatarCacheDimension(context, 112),
+                    ),
                     onBackgroundImageError: (_, __) {
                       // Handle image load error silently
                     },

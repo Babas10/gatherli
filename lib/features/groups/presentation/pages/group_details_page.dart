@@ -1,9 +1,11 @@
 // Displays detailed information about a group with Members/Activities tab layout.
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
@@ -712,7 +714,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                           0xFFEACE6A,
                         ).withValues(alpha: 0.25),
                         backgroundImage: member.photoUrl != null
-                            ? NetworkImage(member.photoUrl!)
+                            ? CachedNetworkImageProvider(
+                                member.photoUrl!,
+                                maxWidth: avatarCacheDimension(context, 40),
+                                maxHeight: avatarCacheDimension(context, 40),
+                              )
                             : null,
                         child: member.photoUrl == null
                             ? Text(
