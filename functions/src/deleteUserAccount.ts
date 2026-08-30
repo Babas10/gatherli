@@ -22,6 +22,7 @@ import * as admin from "firebase-admin";
  */
 export const deleteUserAccount = functions
   .region("europe-west6")
+  .runWith({ timeoutSeconds: 60, memory: "256MB" })
   .https.onCall(async (_data, context) => {
     if (!context.auth) {
       throw new functions.https.HttpsError(
@@ -90,28 +91,32 @@ export const deleteUserAccount = functions
       await promotionBatch.commit();
     }
 
-    for (const groupRef of groupsToDelete) {
-      await groupRef.delete();
-      functions.logger.info(
-        `[deleteUserAccount] Deleted empty group ${groupRef.id}`
-      );
-    }
+    await Promise.all(
+      groupsToDelete.map(async (groupRef) => {
+        await groupRef.delete();
+        functions.logger.info(
+          `[deleteUserAccount] Deleted empty group ${groupRef.id}`
+        );
+      })
+    );
 
     // ── 3. Delete group invite links created by this user ─────────────────
     // Query each group's invites subcollection directly rather than using
     // collectionGroup, which requires a COLLECTION_GROUP-scoped index.
     // This is safe since invite links can only be created within groups the
     // user belongs to.
+    const invitesSnaps = await Promise.all(
+      groupsSnap.docs.map((groupDoc) =>
+        db
+          .collection("groups")
+          .doc(groupDoc.id)
+          .collection("invites")
+          .where("createdBy", "==", uid)
+          .get()
+      )
+    );
     const allInviteDocs: FirebaseFirestore.QueryDocumentSnapshot[] = [];
-    for (const groupDoc of groupsSnap.docs) {
-      const invitesSnap = await db
-        .collection("groups")
-        .doc(groupDoc.id)
-        .collection("invites")
-        .where("createdBy", "==", uid)
-        .get();
-      allInviteDocs.push(...invitesSnap.docs);
-    }
+    invitesSnaps.forEach((snap) => allInviteDocs.push(...snap.docs));
 
     if (allInviteDocs.length > 0) {
       const inviteBatch = db.batch();

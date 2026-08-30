@@ -46,6 +46,7 @@ jest.mock("firebase-functions", () => {
   },
   };
   (_fn as any).region = jest.fn(() => _fn);
+  (_fn as any).runWith = jest.fn(() => _fn);
   return _fn;
 })
 

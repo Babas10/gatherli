@@ -272,6 +272,7 @@ export async function getCompletedGamesHandler(
  * });
  * ```
  */
-export const getCompletedGames = functions.region('europe-west6').https.onCall(
-  getCompletedGamesHandler
-);
+export const getCompletedGames = functions
+  .region('europe-west6')
+  .runWith({ timeoutSeconds: 30, memory: '256MB' })
+  .https.onCall(getCompletedGamesHandler);
