@@ -13,6 +13,9 @@ class ActivityLinkUrlBuilder {
   static String forTrainingSession(String trainingSessionId) =>
       '$_baseUrl/training/$trainingSessionId';
 
+  static String forChampionship(String championshipId) =>
+      '$_baseUrl/championship/$championshipId';
+
   static String forChampionshipMatch({
     required String championshipId,
     required String matchId,

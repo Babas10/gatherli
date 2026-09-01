@@ -1,4 +1,4 @@
-// Validates ActivityLinkTarget's encode()/decode() round-trip for all 3
+// Validates ActivityLinkTarget's encode()/decode() round-trip for all
 // subtypes, and that decode() rejects malformed/unrecognized input.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/domain/entities/activity_link_target.dart';
@@ -21,6 +21,16 @@ void main() {
         final encoded = target.encode();
 
         expect(encoded, 'training:session-456');
+        expect(ActivityLinkTarget.decode(encoded), target);
+      });
+    });
+
+    group('ChampionshipLinkTarget', () {
+      test('encode/decode round-trip', () {
+        const target = ChampionshipLinkTarget('champ-1');
+        final encoded = target.encode();
+
+        expect(encoded, 'championship:champ-1');
         expect(ActivityLinkTarget.decode(encoded), target);
       });
     });
@@ -57,6 +67,14 @@ void main() {
 
       test('returns null for training: with missing id', () {
         expect(ActivityLinkTarget.decode('training:'), isNull);
+      });
+
+      test('returns null for championship: with missing id', () {
+        expect(ActivityLinkTarget.decode('championship:'), isNull);
+      });
+
+      test('returns null for championship: with too many parts', () {
+        expect(ActivityLinkTarget.decode('championship:abc:def'), isNull);
       });
 
       test('returns null for championshipMatch: with too few parts', () {
