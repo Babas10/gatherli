@@ -162,6 +162,12 @@ export {onGameCompletedDeleteChatMessages} from "./deleteChatMessages";
 // run in production. See migrateAddDisplayNameLower.ts for deployment order.
 export {migrateAddDisplayNameLower} from "./migrateAddDisplayNameLower";
 
+// One-time migration — backfill ELO for games skipped by the result.winner/
+// overallWinner validation regression (commit ba15dd7). Remove this export
+// (and add an entry to deprecated-functions.json) once confirmed run in
+// production. See migrateBackfillMissingElo.ts for deployment order.
+export {migrateBackfillMissingElo} from "./migrateBackfillMissingElo";
+
 // Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
 export {sendInvitation} from "./sendInvitation";
 

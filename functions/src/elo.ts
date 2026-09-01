@@ -34,7 +34,9 @@ export async function processGameEloUpdates(
   if (!gameData.teams?.teamAPlayerIds || !gameData.teams?.teamBPlayerIds) {
     throw new Error("Invalid game data: Missing teams information");
   }
-  if (!gameData.result?.winner) {
+  // Regular games store the winner under `overallWinner`; championship matches
+  // use `winner`. Accept either — see the fallback below.
+  if (!gameData.result?.winner && !gameData.result?.overallWinner) {
     throw new Error("Invalid game data: Missing result winner");
   }
 
