@@ -797,19 +797,58 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                     child: Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
+                          child: OutlinedButton(
                             onPressed: () => _navigateToGameCreation(context),
-                            icon: const Icon(Icons.sports_volleyball),
-                            label: Text(l10n.createGame),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.sports_volleyball,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: AppSpacing.sm),
+                                  Flexible(
+                                    child: Text(
+                                      l10n.createGame,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: AppSpacing.md),
                         Expanded(
-                          child: OutlinedButton.icon(
+                          child: OutlinedButton(
                             onPressed: () =>
                                 _navigateToTrainingCreation(context),
-                            icon: const Icon(Icons.fitness_center),
-                            label: Text(l10n.createTraining),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.fitness_center, size: 18),
+                                  const SizedBox(width: AppSpacing.sm),
+                                  Flexible(
+                                    child: Text(
+                                      l10n.createTraining,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
