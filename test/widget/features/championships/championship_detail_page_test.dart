@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/admin_panel/admin_panel_bloc.dart';
+import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 import '../../../helpers/mocks.dart';
@@ -227,5 +234,121 @@ void main() {
       expect(updated.selectedRound, 4);
       expect(updated.standings.length, 1);
     });
+  });
+
+  group('ChampionshipDetailPage — delete championship (real page)', () {
+    late MockChampionshipRepository mockChampionshipRepository;
+    late MockUserRepository mockUserRepository;
+    late MockAuthenticationBloc mockAuthBloc;
+
+    const testUserId = 'test-admin-uid';
+
+    setUp(() async {
+      mockChampionshipRepository = MockChampionshipRepository();
+      mockUserRepository = MockUserRepository();
+      mockAuthBloc = MockAuthenticationBloc();
+
+      when(() => mockUserRepository.currentUser)
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getChampionshipById(any()))
+          .thenAnswer(
+        (_) => Stream.value(makeChampionship(id: 'c1', adminIds: [testUserId])),
+      );
+      when(() => mockChampionshipRepository.getStandings(any()))
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getTeams(any()))
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getAllMatches(any()))
+          .thenAnswer((_) => Stream.value(const []));
+      when(() => mockChampionshipRepository.getMatchesForRound(
+            championshipId: any(named: 'championshipId'),
+            round: any(named: 'round'),
+          )).thenAnswer((_) => const Stream.empty());
+
+      when(() => mockAuthBloc.state).thenReturn(
+        AuthenticationAuthenticated(
+          UserEntity(
+            uid: testUserId,
+            email: 'admin@example.com',
+            isEmailVerified: true,
+            createdAt: DateTime(2026, 1, 1),
+            lastSignInAt: DateTime(2026, 1, 1),
+          ),
+        ),
+      );
+      when(() => mockAuthBloc.stream).thenAnswer((_) => const Stream.empty());
+
+      await sl.reset();
+      sl.registerFactory<ChampionshipDetailBloc>(
+        () => ChampionshipDetailBloc(
+          repository: mockChampionshipRepository,
+          userRepository: mockUserRepository,
+        ),
+      );
+      sl.registerFactory<AdminPanelBloc>(
+        () => AdminPanelBloc(repository: mockChampionshipRepository),
+      );
+    });
+
+    tearDown(() async {
+      await sl.reset();
+    });
+
+    testWidgets(
+      'admin sees a Delete League button for a registration-status championship, '
+      'which opens a confirmation dialog',
+      (tester) async {
+        await tester.pumpWidget(testApp(
+          child: BlocProvider<AuthenticationBloc>.value(
+            value: mockAuthBloc,
+            child: const ChampionshipDetailPage(championshipId: 'c1'),
+          ),
+        ));
+        await tester.pumpAndSettle();
+
+        final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+
+        await tester.tap(find.text(l10n.adminPanelTabLabel));
+        await tester.pumpAndSettle();
+
+        expect(find.text(l10n.deleteChampionshipButton), findsOneWidget);
+
+        await tester.tap(find.text(l10n.deleteChampionshipButton));
+        await tester.pumpAndSettle();
+
+        expect(find.text(l10n.deleteChampionshipConfirmTitle), findsOneWidget);
+        expect(find.text(l10n.deleteChampionshipConfirmBody), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'no Delete League button once the championship is active',
+      (tester) async {
+        when(() => mockChampionshipRepository.getChampionshipById(any()))
+            .thenAnswer(
+          (_) => Stream.value(makeChampionship(
+            id: 'c1',
+            adminIds: [testUserId],
+            status: ChampionshipStatus.active,
+            currentRound: 1,
+          )),
+        );
+
+        await tester.pumpWidget(testApp(
+          child: BlocProvider<AuthenticationBloc>.value(
+            value: mockAuthBloc,
+            child: const ChampionshipDetailPage(championshipId: 'c1'),
+          ),
+        ));
+        await tester.pumpAndSettle();
+
+        final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+
+        await tester.tap(find.text(l10n.adminPanelTabLabel));
+        await tester.pumpAndSettle();
+
+        expect(find.text(l10n.deleteChampionshipButton), findsNothing);
+      },
+    );
   });
 }

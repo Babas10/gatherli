@@ -175,6 +175,9 @@ export {completeChampionship} from "./completeChampionship";
 // Story 30.28: Edit championship title/deadline (admin-only, before start)
 export {editChampionship} from "./editChampionship";
 
+// Delete championship (admin-only, before start)
+export {deleteChampionship} from "./deleteChampionship";
+
 // Story 30.33: Team captain can rename their team during registration
 export {renameChampionshipTeam} from "./renameChampionshipTeam";
 

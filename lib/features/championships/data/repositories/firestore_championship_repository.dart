@@ -628,4 +628,19 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       throw ChampionshipException('Failed to edit championship: $e');
     }
   }
+
+  @override
+  Future<void> deleteChampionship({required String championshipId}) async {
+    try {
+      final callable = _functions.httpsCallable('deleteChampionship');
+      await callable.call({'championshipId': championshipId});
+    } on FirebaseFunctionsException catch (e) {
+      throw ChampionshipException(
+        e.message ?? 'Failed to delete championship',
+        code: e.code,
+      );
+    } catch (e) {
+      throw ChampionshipException('Failed to delete championship: $e');
+    }
+  }
 }

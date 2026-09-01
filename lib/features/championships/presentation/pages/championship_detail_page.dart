@@ -1358,6 +1358,17 @@ class _AdminTab extends StatelessWidget {
               ),
             );
           }
+          if (state is AdminPanelLoaded && state.deleteError != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.deleteError!),
+                backgroundColor: AppColors.danger,
+              ),
+            );
+          }
+          if (state is AdminPanelLoaded && state.isDeleted) {
+            Navigator.of(context).pop(true);
+          }
         },
         builder: (context, state) {
           if (state is AdminPanelLoading || state is AdminPanelInitial) {
@@ -1379,6 +1390,7 @@ class _AdminTab extends StatelessWidget {
                   onStart: () => _showStartDialog(context),
                   onComplete: () => _showCompleteDialog(context),
                   onEdit: () => _showEditDialog(context, state),
+                  onDelete: () => _showDeleteDialog(context),
                 ),
                 // ── Matches needing attention ─────────────────────────────
                 Expanded(
@@ -1580,6 +1592,33 @@ class _AdminTab extends StatelessWidget {
     );
   }
 
+  void _showDeleteDialog(BuildContext context) {
+    final adminBloc = context.read<AdminPanelBloc>();
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: Text(l10n.deleteChampionshipConfirmTitle),
+        content: Text(l10n.deleteChampionshipConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+            onPressed: () {
+              Navigator.of(dialogCtx).pop();
+              adminBloc.add(
+                  DeleteChampionship(championshipId: championship.id));
+            },
+            child: Text(l10n.deleteChampionshipButton),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showDecisionSheet(BuildContext context, ChampionshipMatchModel match) {
     showModalBottomSheet<void>(
       context: context,
@@ -1616,6 +1655,7 @@ class _AdminActions extends StatelessWidget {
   final VoidCallback onStart;
   final VoidCallback onComplete;
   final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   const _AdminActions({
     required this.championship,
@@ -1624,6 +1664,7 @@ class _AdminActions extends StatelessWidget {
     required this.onStart,
     required this.onComplete,
     required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -1633,10 +1674,15 @@ class _AdminActions extends StatelessWidget {
             !state.isStarting;
     final canComplete = championship.status == ChampionshipStatus.active &&
         !state.isCompleting;
-    final canEdit = championship.status == ChampionshipStatus.registration ||
-        championship.status == ChampionshipStatus.registrationClosed;
+    final notStarted =
+        championship.status == ChampionshipStatus.registration ||
+            championship.status == ChampionshipStatus.registrationClosed;
+    final canEdit = notStarted;
+    final canDelete = notStarted && !state.isDeleting;
 
-    if (!canStart && !canComplete && !canEdit) return const SizedBox.shrink();
+    if (!canStart && !canComplete && !canEdit && !canDelete) {
+      return const SizedBox.shrink();
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
@@ -1687,6 +1733,31 @@ class _AdminActions extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               state.editError!,
+              style: const TextStyle(color: AppColors.danger, fontSize: 13),
+            ),
+          ],
+          if (canDelete || state.isDeleting) ...[
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton.icon(
+              onPressed: state.isDeleting ? null : onDelete,
+              icon: state.isDeleting
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.delete_outline),
+              label: Text(l10n.deleteChampionshipButton),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.danger,
+                side: const BorderSide(color: AppColors.danger),
+              ),
+            ),
+          ],
+          if (state.deleteError != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              state.deleteError!,
               style: const TextStyle(color: AppColors.danger, fontSize: 13),
             ),
           ],

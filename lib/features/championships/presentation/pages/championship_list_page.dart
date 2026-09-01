@@ -44,14 +44,23 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
     super.dispose();
   }
 
-  void _onTap(BuildContext context, ChampionshipModel championship) {
-    Navigator.push(
+  Future<void> _onTap(BuildContext context, ChampionshipModel championship) async {
+    final deleted = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (_) =>
             ChampionshipDetailPage(championshipId: championship.id),
       ),
     );
+    if (deleted == true && context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.deleteChampionshipSuccess),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    }
   }
 
   @override
