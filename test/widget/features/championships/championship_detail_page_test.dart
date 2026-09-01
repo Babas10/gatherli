@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 import '../../../helpers/mocks.dart';
@@ -226,6 +231,74 @@ void main() {
       expect(updated.currentRoundMatches, isEmpty);
       expect(updated.selectedRound, 4);
       expect(updated.standings.length, 1);
+    });
+  });
+
+  group('ChampionshipDetailPage — copy link button (real page)', () {
+    late MockChampionshipRepository mockChampionshipRepository;
+    late MockUserRepository mockUserRepository;
+    late MockAuthenticationBloc mockAuthBloc;
+
+    const testUserId = 'test-uid-not-admin';
+
+    setUp(() async {
+      mockChampionshipRepository = MockChampionshipRepository();
+      mockUserRepository = MockUserRepository();
+      mockAuthBloc = MockAuthenticationBloc();
+
+      when(() => mockUserRepository.currentUser)
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getChampionshipById(any()))
+          .thenAnswer((_) => Stream.value(makeChampionship(id: 'c1')));
+      when(() => mockChampionshipRepository.getStandings(any()))
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getTeams(any()))
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getAllMatches(any()))
+          .thenAnswer((_) => const Stream.empty());
+      when(() => mockChampionshipRepository.getMatchesForRound(
+            championshipId: any(named: 'championshipId'),
+            round: any(named: 'round'),
+          )).thenAnswer((_) => const Stream.empty());
+
+      when(() => mockAuthBloc.state).thenReturn(
+        AuthenticationAuthenticated(
+          UserEntity(
+            uid: testUserId,
+            email: 'test@example.com',
+            isEmailVerified: true,
+            createdAt: DateTime(2026, 1, 1),
+            lastSignInAt: DateTime(2026, 1, 1),
+          ),
+        ),
+      );
+      when(() => mockAuthBloc.stream).thenAnswer((_) => const Stream.empty());
+
+      await sl.reset();
+      sl.registerFactory<ChampionshipDetailBloc>(
+        () => ChampionshipDetailBloc(
+          repository: mockChampionshipRepository,
+          userRepository: mockUserRepository,
+        ),
+      );
+    });
+
+    tearDown(() async {
+      await sl.reset();
+    });
+
+    testWidgets('shows a copy link button', (tester) async {
+      await tester.pumpWidget(testApp(
+        child: BlocProvider<AuthenticationBloc>.value(
+          value: mockAuthBloc,
+          child: const ChampionshipDetailPage(championshipId: 'c1'),
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+      expect(find.byIcon(Icons.copy), findsOneWidget);
+      expect(find.text(l10n.copyLink), findsOneWidget);
     });
   });
 }

@@ -26,6 +26,9 @@ sealed class ActivityLinkTarget extends Equatable {
       case 'training':
         if (parts.length != 2 || parts[1].isEmpty) return null;
         return TrainingSessionLinkTarget(parts[1]);
+      case 'championship':
+        if (parts.length != 2 || parts[1].isEmpty) return null;
+        return ChampionshipLinkTarget(parts[1]);
       case 'championshipMatch':
         if (parts.length != 3 || parts[1].isEmpty || parts[2].isEmpty) {
           return null;
@@ -62,6 +65,18 @@ class TrainingSessionLinkTarget extends ActivityLinkTarget {
 
   @override
   List<Object?> get props => [trainingSessionId];
+}
+
+class ChampionshipLinkTarget extends ActivityLinkTarget {
+  final String championshipId;
+
+  const ChampionshipLinkTarget(this.championshipId);
+
+  @override
+  String encode() => 'championship:$championshipId';
+
+  @override
+  List<Object?> get props => [championshipId];
 }
 
 class ChampionshipMatchLinkTarget extends ActivityLinkTarget {
