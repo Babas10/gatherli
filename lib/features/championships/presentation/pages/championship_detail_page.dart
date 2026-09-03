@@ -6,7 +6,9 @@ import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
+import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
+import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -418,6 +420,23 @@ class _ChampionshipHeader extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => copyLinkToClipboard(
+                context,
+                ActivityLinkUrlBuilder.forChampionship(championship.id),
+                l10n,
+              ),
+              icon: const Icon(Icons.copy, size: 18),
+              label: Text(l10n.copyLink),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.secondary,
+                side: const BorderSide(color: AppColors.secondary),
+              ),
+            ),
           ),
           if (championship.status == ChampionshipStatus.completed) ...[
             const SizedBox(height: 10),

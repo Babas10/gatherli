@@ -22,6 +22,10 @@
           {
             "/": "/championship/*/match/*",
             "comment": "Matches Gatherli shareable championship match deep links"
+          },
+          {
+            "/": "/championship/*",
+            "comment": "Matches Gatherli shareable championship deep links"
           }
         ]
       }

@@ -211,6 +211,19 @@ void main() {
       );
 
       test(
+        'extracts ChampionshipLinkTarget from https://gatherli.org/championship/{id}',
+        () async {
+          when(() => mockAppLinks.getInitialLink()).thenAnswer(
+            (_) async => Uri.parse('https://gatherli.org/championship/champ-1'),
+          );
+          final service = buildService();
+          final target = await service.getInitialActivityLink();
+          expect(target, const ChampionshipLinkTarget('champ-1'));
+          service.dispose();
+        },
+      );
+
+      test(
         'extracts ChampionshipMatchLinkTarget from '
         'https://gatherli.org/championship/{id}/match/{id}',
         () async {
@@ -279,6 +292,19 @@ void main() {
       );
 
       test(
+        'extracts ChampionshipLinkTarget from gatherli://championship/{id}',
+        () async {
+          when(
+            () => mockAppLinks.getInitialLink(),
+          ).thenAnswer((_) async => Uri.parse('gatherli://championship/champ-2'));
+          final service = buildService();
+          final target = await service.getInitialActivityLink();
+          expect(target, const ChampionshipLinkTarget('champ-2'));
+          service.dispose();
+        },
+      );
+
+      test(
         'extracts ChampionshipMatchLinkTarget from '
         'gatherli://championship/{id}/match/{id}',
         () async {
@@ -327,6 +353,26 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 50));
         service.dispose();
       });
+
+      test(
+        'emits ChampionshipLinkTarget when HTTPS championship link received',
+        () async {
+          when(() => mockAppLinks.getInitialLink()).thenAnswer((_) async => null);
+          final service = buildService();
+
+          expectLater(
+            service.activityLinkStream,
+            emits(const ChampionshipLinkTarget('stream-champ')),
+          );
+
+          linkStreamController.add(
+            Uri.parse('https://gatherli.org/championship/stream-champ'),
+          );
+
+          await Future.delayed(const Duration(milliseconds: 50));
+          service.dispose();
+        },
+      );
 
       test(
         'emits ChampionshipMatchLinkTarget when custom scheme match link received',

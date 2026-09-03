@@ -120,6 +120,7 @@ class AppLinksDeepLinkService implements DeepLinkService {
     // HTTPS shapes:
     //   https://gatherli.org/game/{gameId}
     //   https://gatherli.org/training/{sessionId}
+    //   https://gatherli.org/championship/{championshipId}
     //   https://gatherli.org/championship/{championshipId}/match/{matchId}
     if (segments.length == 2 && segments[0] == 'game' && segments[1].isNotEmpty) {
       return GameLinkTarget(segments[1]);
@@ -128,6 +129,11 @@ class AppLinksDeepLinkService implements DeepLinkService {
         segments[0] == 'training' &&
         segments[1].isNotEmpty) {
       return TrainingSessionLinkTarget(segments[1]);
+    }
+    if (segments.length == 2 &&
+        segments[0] == 'championship' &&
+        segments[1].isNotEmpty) {
+      return ChampionshipLinkTarget(segments[1]);
     }
     if (segments.length == 4 &&
         segments[0] == 'championship' &&
@@ -143,6 +149,7 @@ class AppLinksDeepLinkService implements DeepLinkService {
     // Custom scheme shapes:
     //   gatherli://game/{gameId}
     //   gatherli://training/{sessionId}
+    //   gatherli://championship/{championshipId}
     //   gatherli://championship/{championshipId}/match/{matchId}
     if (uri.scheme == 'gatherli') {
       if (uri.host == 'game' && segments.length == 1 && segments[0].isNotEmpty) {
@@ -152,6 +159,11 @@ class AppLinksDeepLinkService implements DeepLinkService {
           segments.length == 1 &&
           segments[0].isNotEmpty) {
         return TrainingSessionLinkTarget(segments[0]);
+      }
+      if (uri.host == 'championship' &&
+          segments.length == 1 &&
+          segments[0].isNotEmpty) {
+        return ChampionshipLinkTarget(segments[0]);
       }
       if (uri.host == 'championship' &&
           segments.length == 3 &&
