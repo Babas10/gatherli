@@ -1,0 +1,11 @@
+{
+  "$comment": "Registry of visual regression flows. Each flow is one integration_test file driven end-to-end via flutter drive, producing one or more named screenshot checkpoints. Run a subset with: dart run test/visual/tooling/run_visual_tests.dart --tags <tag>[,<tag>...]",
+  "flows": [
+    {
+      "name": "smoke_app_launch",
+      "tags": ["smoke"],
+      "file": "integration_test/visual/smoke_app_launch_test.dart",
+      "description": "App boots against the Firebase emulator and reaches its initial screen."
+    }
+  ]
+}
