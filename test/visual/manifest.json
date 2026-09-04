@@ -18,6 +18,12 @@
       "tags": ["auth"],
       "file": "integration_test/visual/auth_signup_test.dart",
       "description": "Drives the real registration form and captures the resulting email-verification prompt on the home screen."
+    },
+    {
+      "name": "community_friends_and_group",
+      "tags": ["community"],
+      "file": "integration_test/visual/community_friends_and_group_test.dart",
+      "description": "Seeds 8 users, demonstrates friend request send/accept via real UI, and creates a group with all 8 as members."
     }
   ]
 }
