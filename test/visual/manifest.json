@@ -5,7 +5,7 @@
       "name": "smoke_app_launch",
       "tags": ["smoke"],
       "file": "integration_test/visual/smoke_app_launch_test.dart",
-      "description": "App boots against the Firebase emulator and reaches its initial screen."
+      "description": "App boots against the real gatherli-dev Firebase project and reaches its initial screen."
     },
     {
       "name": "auth_login_and_navigation",
@@ -24,6 +24,24 @@
       "tags": ["community"],
       "file": "integration_test/visual/community_friends_and_group_test.dart",
       "description": "Seeds 8 users, demonstrates friend request send/accept via real UI, and creates a group with all 8 as members."
+    },
+    {
+      "name": "game_workflow_male",
+      "tags": ["games"],
+      "file": "integration_test/visual/game_workflow_male_test.dart",
+      "description": "Full-depth male pickup game: create, join, submit/verify score, and confirm ELO propagation to Home, Group activity, My Games, Stats and Game Results."
+    },
+    {
+      "name": "game_workflow_female",
+      "tags": ["games"],
+      "file": "integration_test/visual/game_workflow_female_test.dart",
+      "description": "Lighter-depth female pickup game: create, join, submit/verify score, confirm ELO change on Home and Game Results."
+    },
+    {
+      "name": "game_workflow_mixed",
+      "tags": ["games"],
+      "file": "integration_test/visual/game_workflow_mixed_test.dart",
+      "description": "Mixed-gender pickup game: confirms ELO is intentionally NOT calculated (eloCalculated: true, eloUpdates: {})."
     }
   ]
 }
