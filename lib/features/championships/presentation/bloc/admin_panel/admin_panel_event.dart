@@ -98,3 +98,13 @@ class EditChampionship extends AdminPanelEvent {
   @override
   List<Object?> get props => [championshipId, title, registrationDeadline];
 }
+
+/// Admin permanently deletes the championship (only before it has started).
+class DeleteChampionship extends AdminPanelEvent {
+  final String championshipId;
+
+  const DeleteChampionship({required this.championshipId});
+
+  @override
+  List<Object?> get props => [championshipId];
+}
