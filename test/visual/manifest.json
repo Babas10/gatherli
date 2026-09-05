@@ -6,6 +6,18 @@
       "tags": ["smoke"],
       "file": "integration_test/visual/smoke_app_launch_test.dart",
       "description": "App boots against the Firebase emulator and reaches its initial screen."
+    },
+    {
+      "name": "auth_login_and_navigation",
+      "tags": ["auth"],
+      "file": "integration_test/visual/auth_login_and_navigation_test.dart",
+      "description": "Logs in with a seeded user, walks every bottom-nav tab, then logs out."
+    },
+    {
+      "name": "auth_signup",
+      "tags": ["auth"],
+      "file": "integration_test/visual/auth_signup_test.dart",
+      "description": "Drives the real registration form and captures the resulting email-verification prompt on the home screen."
     }
   ]
 }
