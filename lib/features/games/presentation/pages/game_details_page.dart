@@ -986,25 +986,34 @@ class _ViewResultsCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _QuickScoreDisplay(
-                    teamName: teamAName,
-                    score: gamesWon['teamA'] ?? 0,
-                    isWinner: result.overallWinner == 'teamA',
-                    isTied: result.overallWinner == null,
-                    isTeamA: true,
-                  ),
-                  Text(
-                    'vs',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.secondary,
+                  Expanded(
+                    child: _QuickScoreDisplay(
+                      teamName: teamAName,
+                      score: gamesWon['teamA'] ?? 0,
+                      isWinner: result.overallWinner == 'teamA',
+                      isTied: result.overallWinner == null,
+                      isTeamA: true,
                     ),
                   ),
-                  _QuickScoreDisplay(
-                    teamName: teamBName,
-                    score: gamesWon['teamB'] ?? 0,
-                    isWinner: result.overallWinner == 'teamB',
-                    isTied: result.overallWinner == null,
-                    isTeamA: false,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xs,
+                    ),
+                    child: Text(
+                      'vs',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: _QuickScoreDisplay(
+                      teamName: teamBName,
+                      score: gamesWon['teamB'] ?? 0,
+                      isWinner: result.overallWinner == 'teamB',
+                      isTied: result.overallWinner == null,
+                      isTeamA: false,
+                    ),
                   ),
                 ],
               ),
