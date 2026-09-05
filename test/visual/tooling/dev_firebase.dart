@@ -75,6 +75,12 @@ Future<void> deleteUserAccount() async {
 /// trigger fires so it lands in the auto-created Firestore doc correctly
 /// (the trigger reads `user.displayName` and uses `merge: true`, so this
 /// doesn't race with our own follow-up write below).
+///
+/// The follow-up write includes `email` even though the trigger also sets
+/// it, mirroring `functions/src/updateUserNames.ts` (the real signup flow's
+/// equivalent write) — both this write and the trigger use `merge: true`,
+/// so whichever lands first produces a document that's still fully valid
+/// for `UserModel.fromJson` instead of one transiently missing `email`.
 Future<String> createTestUser({
   required String email,
   required String password,
@@ -91,6 +97,7 @@ Future<String> createTestUser({
 
   await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
     {
+      'email': email,
       'displayName': displayName,
       if (gender != null) 'gender': gender,
     },
