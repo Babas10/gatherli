@@ -26,6 +26,16 @@ const _manifestPath = '$_repoRoot/test/visual/manifest.json';
 const _goldensRoot = '$_repoRoot/test/visual/goldens';
 const _reportsRoot = '$_repoRoot/test/visual/reports';
 const _defaultTolerancePercent = 0.5;
+const _bundleId = 'org.gatherli.app.dev';
+
+// System-dialog button labels that are safe to auto-dismiss on sight: exact
+// text that could never legitimately appear as in-app UI, so this can't
+// misfire on real app buttons. Currently only the iOS pasteboard-access
+// dialog (triggered by Flutter's on-device enterText(), not covered by
+// `idb approve` — pasteboard isn't a supported permission there). Extend
+// this list if a future flow uncovers another dialog `idb approve` doesn't
+// cover.
+const _autoDismissLabels = ['Allow Paste'];
 
 class FlowSpec {
   FlowSpec({required this.name, required this.tags, required this.file});
@@ -107,6 +117,7 @@ Future<void> main(List<String> argv) async {
   print('Running ${flows.length} flow(s): ${flows.map((f) => f.name).join(", ")}');
 
   await _freezeStatusBar(device);
+  await _preApprovePermissions(device);
 
   final runId = _timestamp();
   final runDir = Directory('$_reportsRoot/$runId')..createSync(recursive: true);
@@ -164,6 +175,83 @@ Future<void> _freezeStatusBar(String device) async {
   }
 }
 
+// Pre-authorizes permission dialogs iOS would otherwise show on first use
+// (requires idb: `brew install idb-companion && pip3 install fb-idb`, then
+// `idb connect <device>` once). Notifications is the one we've actually hit;
+// the rest are approved proactively since a future flow (e.g. avatar upload)
+// may need them, and there's no cost to approving unused ones.
+Future<void> _preApprovePermissions(String device) async {
+  final result = await Process.run('idb', [
+    'approve',
+    _bundleId,
+    'photos', 'camera', 'contacts', 'location', 'notification', 'microphone',
+    '--udid', device,
+  ]);
+  if (result.exitCode != 0) {
+    stderr.writeln(
+      'Warning: idb approve failed (is idb installed and connected? '
+      '`idb connect $device`): ${result.stderr}',
+    );
+  }
+}
+
+// Polls the accessibility tree for known system-dialog buttons that block
+// the flow (see _autoDismissLabels) and taps them immediately. Runs
+// concurrently with the checkpoint watcher for the lifetime of the flow.
+Future<void> _watchSystemDialogs({
+  required String device,
+  required bool Function() isWatching,
+}) async {
+  while (isWatching()) {
+    try {
+      final result = await Process.run('idb', [
+        'ui', 'describe-all',
+        '--udid', device,
+      ]);
+      if (result.exitCode == 0) {
+        final elements = jsonDecode(result.stdout as String) as List<dynamic>;
+        final buttons = elements
+            .cast<Map<String, dynamic>>()
+            .where((e) => e['role'] == 'AXButton')
+            .toList();
+
+        // iOS permission dialogs (notifications, etc.) aren't covered by
+        // `idb approve` for every permission type — it reports success but
+        // the system prompt still appears for notifications specifically.
+        // Detect them generically and safely: the combination of an "Allow"
+        // AND a "Don't Allow" button appearing together is a distinctive
+        // system-dialog signature the app's own UI has no reason to ever
+        // produce, so it's safe to tap "Allow" on sight.
+        final hasAllow = buttons.any((b) => b['AXLabel'] == 'Allow');
+        final hasDontAllow = buttons.any((b) => b['AXLabel'] == "Don't Allow");
+        final isPermissionDialog = hasAllow && hasDontAllow;
+
+        for (final element in buttons) {
+          final label = element['AXLabel'];
+          final shouldDismiss = _autoDismissLabels.contains(label) ||
+              (isPermissionDialog && label == 'Allow');
+          if (!shouldDismiss) continue;
+
+          final frame = element['frame'] as Map<String, dynamic>;
+          final x = (frame['x'] as num) + (frame['width'] as num) / 2;
+          final y = (frame['y'] as num) + (frame['height'] as num) / 2;
+          print('[system-dialog] auto-dismissing "$label" at ($x, $y)');
+          await Process.run('idb', [
+            'ui', 'tap',
+            x.toString(), y.toString(),
+            '--udid', device,
+          ]);
+          // Give the tap a moment to take effect before re-scanning.
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+      }
+    } catch (_) {
+      // idb hiccups shouldn't take down the flow — best-effort only.
+    }
+    await Future.delayed(const Duration(milliseconds: 750));
+  }
+}
+
 List<FlowSpec> _loadManifest(String path, List<String> requestedTags) {
   final file = File(path);
   if (!file.existsSync()) {
@@ -185,11 +273,17 @@ List<FlowSpec> _loadManifest(String path, List<String> requestedTags) {
   return flows.where((f) => f.tags.any(requestedTags.contains)).toList();
 }
 
+// `--flavor dev` is not optional: the iOS build script
+// (ios/Runner.xcodeproj, "Copy Firebase Config" phase) defaults to the PROD
+// GoogleService-Info.plist when the Xcode configuration name doesn't contain
+// "dev" or "prod" — which is exactly what a flavorless `flutter test` build
+// produces. Omitting this flag means every flow silently targets production
+// Firebase instead of gatherli-dev.
 Future<FlowResult> _runFlow(FlowSpec flow, String device, Args args, Directory runDir) async {
   VisualSyncProtocol.reset();
   final checkpoints = <CheckpointResult>[];
 
-  final process = await Process.start('flutter', ['test', flow.file, '-d', device]);
+  final process = await Process.start('flutter', ['test', flow.file, '-d', device, '--flavor', 'dev']);
   process.stdout.transform(utf8.decoder).transform(const LineSplitter()).listen((line) {
     print('[${flow.name}] $line');
   });
@@ -206,10 +300,15 @@ Future<FlowResult> _runFlow(FlowSpec flow, String device, Args args, Directory r
     checkpoints: checkpoints,
     isWatching: () => watching,
   );
+  final dialogWatcherDone = _watchSystemDialogs(
+    device: device,
+    isWatching: () => watching,
+  );
 
   final exitCode = await process.exitCode;
   watching = false;
   await watcherDone;
+  await dialogWatcherDone;
 
   return FlowResult(flowName: flow.name, checkpoints: checkpoints, processExitCode: exitCode);
 }

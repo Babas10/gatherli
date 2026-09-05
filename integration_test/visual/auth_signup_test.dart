@@ -1,12 +1,9 @@
 // Visual regression flow (tag: auth) — drives the real registration form
-// end-to-end and captures the resulting home screen with the
-// email-verification prompt banner (the app's actual "please verify your
-// email" UI, shown automatically for a freshly registered account).
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// end-to-end against the real gatherli-dev Firebase project and captures
+// the resulting home screen with the email-verification prompt banner (the
+// app's actual "please verify your email" UI, shown automatically for a
+// freshly registered account). Cleans up the created account afterward via
+// the real deleteUserAccount Cloud Function.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -15,25 +12,11 @@ import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
-import '../helpers/firebase_emulator_helper.dart';
 import '../../test/visual/tooling/checkpoint.dart';
+import '../../test/visual/tooling/dev_firebase.dart';
 
 const _testEmail = 'visual-signup@gatherli.test';
 const _testPassword = 'VisualTest123';
-
-/// See auth_login_and_navigation_test.dart — same rationale: wipes emulator
-/// auth accounts so this fixed signup email doesn't collide on rerun.
-Future<void> _resetAuthEmulator() async {
-  final client = HttpClient();
-  final request = await client.deleteUrl(
-    Uri.parse(
-      'http://localhost:9099/emulator/v1/projects/gatherli-dev/accounts',
-    ),
-  );
-  final response = await request.close();
-  await response.drain<void>();
-  client.close();
-}
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -41,24 +24,10 @@ void main() {
   testWidgets('auth: sign up reaches the email verification prompt', (
     tester,
   ) async {
-    try {
-      await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: 'test-api-key',
-          appId: 'test-app-id',
-          messagingSenderId: 'test-sender-id',
-          projectId: 'gatherli-dev',
-        ),
-      );
-    } on FirebaseException catch (e) {
-      if (e.code != 'duplicate-app') rethrow;
-      Firebase.app();
-    }
-    FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+    await bootstrapFirebaseAgainstDev();
 
-    await _resetAuthEmulator();
-    await FirebaseEmulatorHelper.clearFirestore();
+    // Defensive: clean up a leftover account from a previous crashed run.
+    await deleteTestUserIfExists(email: _testEmail, password: _testPassword);
 
     await initializeDependencies();
 
@@ -105,5 +74,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(seconds: 5));
 
     await visualCheckpoint('post_signup_home');
+
+    // The signup flow leaves the account signed in — reuse that session
+    // directly rather than deleteTestUserIfExists's sign-in-first logic.
+    await deleteUserAccount();
   });
 }
