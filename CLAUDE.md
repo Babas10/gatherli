@@ -841,6 +841,7 @@ Before marking a Story complete, confirm:
 * [ ] Commits follow conventional format
 * [ ] Branch is up to date with `main`
 * [ ] No `.env` files, Firebase configs, or API keys in git history
+* [ ] If the Story touches a feature covered by the visual regression harness (check tags in `test/visual/manifest.json`), ran `dart run test/visual/tooling/run_visual_tests.dart --tags <relevant-tag>` locally and pasted the report summary into this PR description (see `test/visual/README.md`). If a checkpoint intentionally changed, goldens were updated deliberately with `--update-goldens` and the diff was reviewed before committing.
 
 ---
 
