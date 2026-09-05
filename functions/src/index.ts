@@ -162,6 +162,12 @@ export {onGameCompletedDeleteChatMessages} from "./deleteChatMessages";
 // run in production. See migrateAddDisplayNameLower.ts for deployment order.
 export {migrateAddDisplayNameLower} from "./migrateAddDisplayNameLower";
 
+// One-time migration — backfill ELO for games skipped by the result.winner/
+// overallWinner validation regression (commit ba15dd7). Ran once on
+// gatherli-prod on 2026-09-03 (see functions/migrations/MIGRATION_LOG.md);
+// export removed and function deleted from prod so it can't be re-triggered.
+// Source kept at migrateBackfillMissingElo.ts for reference.
+
 // Story 31.6: Unified invitation sender (group + game → top-level invitations collection)
 export {sendInvitation} from "./sendInvitation";
 
