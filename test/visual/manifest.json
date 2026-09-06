@@ -54,6 +54,12 @@
       "tags": ["training"],
       "file": "integration_test/visual/training_workflow_cancelled_test.dart",
       "description": "Lighter-depth: creator cancels a training session via the real UI, confirms status and propagation to group Activities."
+    },
+    {
+      "name": "championship_workflow",
+      "tags": ["championship"],
+      "file": "integration_test/visual/championship_workflow_test.dart",
+      "description": "Full 4-team round-robin championship: create, register 4 teams, start, submit/verify all 6 matches, confirm final standings and champion banner."
     }
   ]
 }
