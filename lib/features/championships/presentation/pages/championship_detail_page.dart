@@ -61,9 +61,6 @@ class _ChampionshipDetailView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return BlocBuilder<ChampionshipDetailBloc, ChampionshipDetailState>(
-      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
-          (prev is ChampionshipDetailLoaded && curr is ChampionshipDetailLoaded &&
-           (prev.championship != curr.championship || prev.standings != curr.standings || prev.teams != curr.teams)),
       builder: (context, state) {
         final title = state is ChampionshipDetailLoaded
             ? state.championship.title
