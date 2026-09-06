@@ -2623,6 +2623,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editChampionshipChangeDeadline => 'Changer la date limite';
 
   @override
+  String get deleteChampionshipButton => 'Supprimer la ligue';
+
+  @override
+  String get deleteChampionshipConfirmTitle => 'Supprimer la ligue ?';
+
+  @override
+  String get deleteChampionshipConfirmBody =>
+      'Cela supprimera définitivement la ligue et ses équipes inscrites. Cette action est irréversible.';
+
+  @override
+  String get deleteChampionshipSuccess => 'Ligue supprimée.';
+
+  @override
   String get completeChampionshipConfirmTitle => 'Terminer le ligue ?';
 
   @override

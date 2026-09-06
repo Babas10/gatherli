@@ -3213,6 +3213,22 @@
   "@editChampionshipChangeDeadline": {
     "description": "Placeholder shown on the deadline button in the edit dialog when no new deadline is selected"
   },
+  "deleteChampionshipButton": "Delete League",
+  "@deleteChampionshipButton": {
+    "description": "Admin panel button to delete a championship before it has started"
+  },
+  "deleteChampionshipConfirmTitle": "Delete league?",
+  "@deleteChampionshipConfirmTitle": {
+    "description": "Confirmation dialog title when deleting a championship"
+  },
+  "deleteChampionshipConfirmBody": "This will permanently remove the league and its registered teams. This cannot be undone.",
+  "@deleteChampionshipConfirmBody": {
+    "description": "Confirmation dialog body when deleting a championship"
+  },
+  "deleteChampionshipSuccess": "League deleted.",
+  "@deleteChampionshipSuccess": {
+    "description": "Snackbar shown on the list page after a championship is successfully deleted"
+  },
   "@completeChampionshipButton": {
     "description": "Admin button to mark a championship as complete"
   },

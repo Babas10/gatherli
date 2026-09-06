@@ -2598,6 +2598,19 @@ class AppLocalizationsIt extends AppLocalizations {
   String get editChampionshipChangeDeadline => 'Cambia scadenza';
 
   @override
+  String get deleteChampionshipButton => 'Elimina lega';
+
+  @override
+  String get deleteChampionshipConfirmTitle => 'Eliminare la lega?';
+
+  @override
+  String get deleteChampionshipConfirmBody =>
+      'Questo rimuoverà definitivamente la lega e le squadre iscritte. L\'operazione è irreversibile.';
+
+  @override
+  String get deleteChampionshipSuccess => 'Lega eliminata.';
+
+  @override
   String get completeChampionshipConfirmTitle => 'Completare il lega?';
 
   @override

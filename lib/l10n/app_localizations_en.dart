@@ -2575,6 +2575,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editChampionshipChangeDeadline => 'Change deadline';
 
   @override
+  String get deleteChampionshipButton => 'Delete League';
+
+  @override
+  String get deleteChampionshipConfirmTitle => 'Delete league?';
+
+  @override
+  String get deleteChampionshipConfirmBody =>
+      'This will permanently remove the league and its registered teams. This cannot be undone.';
+
+  @override
+  String get deleteChampionshipSuccess => 'League deleted.';
+
+  @override
   String get completeChampionshipConfirmTitle => 'Mark league complete?';
 
   @override
