@@ -42,6 +42,18 @@
       "tags": ["games"],
       "file": "integration_test/visual/game_workflow_mixed_test.dart",
       "description": "Mixed-gender pickup game: confirms ELO is intentionally NOT calculated (eloCalculated: true, eloUpdates: {})."
+    },
+    {
+      "name": "training_workflow_completed",
+      "tags": ["training"],
+      "file": "integration_test/visual/training_workflow_completed_test.dart",
+      "description": "Create a training session, have all 4 users join, force it into a completed state, and confirm propagation to group Activities and Home (no scores/ELO involved)."
+    },
+    {
+      "name": "training_workflow_cancelled",
+      "tags": ["training"],
+      "file": "integration_test/visual/training_workflow_cancelled_test.dart",
+      "description": "Lighter-depth: creator cancels a training session via the real UI, confirms status and propagation to group Activities."
     }
   ]
 }
