@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -248,9 +249,7 @@ class _TrainingSessionDetailsPageState
     bool isOrganizer,
   ) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
+    return DetailPageHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
