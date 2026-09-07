@@ -8,6 +8,7 @@ import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_detail/championship_detail_state.dart';
@@ -47,6 +48,20 @@ ChampionshipStandingsModel _makeStanding({
     points: points,
     played: 3,
     wins20: 3,
+  );
+}
+
+ChampionshipTeamModel _makeTeam({
+  String id = 't1',
+  String name = 'Team A',
+  String captainId = 'u1',
+}) {
+  return ChampionshipTeamModel(
+    id: id,
+    name: name,
+    captainId: captainId,
+    memberIds: [captainId, 'u2'],
+    createdAt: DateTime(2026, 1, 1),
   );
 }
 
@@ -348,6 +363,127 @@ void main() {
       build: makeBloc,
       act: (bloc) => bloc.add(const ChangeDetailRound(2)),
       expect: () => [],
+    );
+  });
+
+  group('Sibling stream fires before championship stream (race)', () {
+    blocTest<ChampionshipDetailBloc, ChampionshipDetailState>(
+      'allMatches snapshot arriving before championship snapshot is not dropped',
+      build: () {
+        final champCtrl = StreamController<ChampionshipModel>();
+        final allMatchesCtrl =
+            StreamController<List<ChampionshipMatchModel>>();
+
+        when(() => mockRepo.getChampionshipById('c1'))
+            .thenAnswer((_) => champCtrl.stream);
+        when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getAllMatches('c1'))
+            .thenAnswer((_) => allMatchesCtrl.stream);
+        when(
+          () => mockRepo.getMatchesForRound(
+            championshipId: any(named: 'championshipId'),
+            round: any(named: 'round'),
+          ),
+        ).thenAnswer((_) => const Stream.empty());
+
+        // allMatches fires FIRST, championship arrives later — this is the
+        // exact ordering that left the My Matches tab stuck empty in
+        // production, since getAllMatches only re-emits on real document
+        // changes (round-robin matches don't change once created).
+        Future.microtask(() {
+          allMatchesCtrl.add([_makeMatch()]);
+          Future.delayed(
+            const Duration(milliseconds: 10),
+            () => champCtrl.add(_makeChamp()),
+          );
+        });
+
+        return makeBloc();
+      },
+      act: (bloc) => bloc.add(const LoadChampionshipDetail('c1')),
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final loaded = bloc.state as ChampionshipDetailLoaded;
+        expect(loaded.allMatches.length, 1);
+      },
+    );
+
+    blocTest<ChampionshipDetailBloc, ChampionshipDetailState>(
+      'standings snapshot arriving before championship snapshot is not dropped',
+      build: () {
+        final champCtrl = StreamController<ChampionshipModel>();
+        final standingsCtrl =
+            StreamController<List<ChampionshipStandingsModel>>();
+
+        when(() => mockRepo.getChampionshipById('c1'))
+            .thenAnswer((_) => champCtrl.stream);
+        when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => standingsCtrl.stream);
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(
+          () => mockRepo.getMatchesForRound(
+            championshipId: any(named: 'championshipId'),
+            round: any(named: 'round'),
+          ),
+        ).thenAnswer((_) => const Stream.empty());
+
+        Future.microtask(() {
+          standingsCtrl.add([_makeStanding()]);
+          Future.delayed(
+            const Duration(milliseconds: 10),
+            () => champCtrl.add(_makeChamp()),
+          );
+        });
+
+        return makeBloc();
+      },
+      act: (bloc) => bloc.add(const LoadChampionshipDetail('c1')),
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final loaded = bloc.state as ChampionshipDetailLoaded;
+        expect(loaded.standings.length, 1);
+      },
+    );
+
+    blocTest<ChampionshipDetailBloc, ChampionshipDetailState>(
+      'teams snapshot arriving before championship snapshot is not dropped',
+      build: () {
+        final champCtrl = StreamController<ChampionshipModel>();
+        final teamsCtrl = StreamController<List<ChampionshipTeamModel>>();
+
+        when(() => mockRepo.getChampionshipById('c1'))
+            .thenAnswer((_) => champCtrl.stream);
+        when(() => mockRepo.getStandings('c1'))
+            .thenAnswer((_) => const Stream.empty());
+        when(() => mockRepo.getTeams('c1'))
+            .thenAnswer((_) => teamsCtrl.stream);
+        when(
+          () => mockRepo.getMatchesForRound(
+            championshipId: any(named: 'championshipId'),
+            round: any(named: 'round'),
+          ),
+        ).thenAnswer((_) => const Stream.empty());
+
+        Future.microtask(() {
+          teamsCtrl.add([_makeTeam()]);
+          Future.delayed(
+            const Duration(milliseconds: 10),
+            () => champCtrl.add(_makeChamp()),
+          );
+        });
+
+        return makeBloc();
+      },
+      act: (bloc) => bloc.add(const LoadChampionshipDetail('c1')),
+      wait: const Duration(milliseconds: 100),
+      verify: (bloc) {
+        final loaded = bloc.state as ChampionshipDetailLoaded;
+        expect(loaded.teams.length, 1);
+      },
     );
   });
 
