@@ -59,7 +59,7 @@
       "name": "championship_workflow",
       "tags": ["championship"],
       "file": "integration_test/visual/championship_workflow_test.dart",
-      "description": "Full 4-team round-robin championship: create, register 4 teams, start, submit/verify all 6 matches, confirm final standings and champion banner."
+      "description": "Full 4-team round-robin championship: create, register 4 teams, start, submit/verify all 6 matches via the real My Matches tab, confirm final standings and champion banner."
     }
   ]
 }

@@ -17,6 +17,12 @@
 // Match scheduling (propose/accept) is optional, not required before score
 // submission, so this flow skips it entirely and submits scores as soon as
 // the championship starts.
+//
+// Every submitter/verifier navigates via the real "My Matches" tab (not a
+// direct route push) — this is the exact path that was stuck showing zero
+// matches for 60+ seconds after championship start (see #942, fixed in
+// fix/championship-matches-stuck-empty), so this flow is the regression
+// guard for that bug going forward.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +31,6 @@ import 'package:integration_test/integration_test.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/features/auth/presentation/widgets/auth_button.dart';
-import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_result_entry_widget.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -120,7 +125,6 @@ void main() {
 
       final uids = <String>[];
       final emailByUid = <String, String>{};
-      final displayNameByUid = <String, String>{};
       for (final user in _users) {
         final uid = await createTestUser(
           email: user.email,
@@ -129,7 +133,6 @@ void main() {
         );
         uids.add(uid);
         emailByUid[uid] = user.email;
-        displayNameByUid[uid] = user.displayName;
       }
 
       // Seed accepted friendships for the 4 captain/partner pairs — required
@@ -326,22 +329,12 @@ void main() {
       await _logout(tester);
 
       // ── Play every match: submit (team A always wins 2-0), then verify
-      // by a member of the opposing team.
-      //
-      // Real bug found and worked around here (filed, not fixed in this
-      // PR — see PR description): the "Matches" tab's per-round query
-      // (getMatchesForRound, where('round', isEqualTo: ...)) and even the
-      // "My Matches" tab's unfiltered query (getAllMatches, orderBy
-      // 'round')) both reliably got stuck showing zero results for 60+
-      // seconds after the championship started, despite the exact same
-      // filters run directly against Firestore returning the right docs
-      // immediately — a Firestore client-side listener-caching issue
-      // (this collection was watched while empty, before
-      // startChampionship's batch write populated it), not a timing issue
-      // fixable by waiting longer. getMatch (a single-document watch by
-      // ID, used by MatchDetailPage) does not share this problem, so this
-      // flow navigates there directly via the app's global navigatorKey
-      // instead of tapping through either match-list tab. ────────────────
+      // by a member of the opposing team. Each submitter/verifier logs in
+      // fresh (they logged out after registering their team, before the
+      // championship started) and navigates via the real "My Matches" tab —
+      // each match card shows the opponent's team name, which is unique
+      // across a team's 3 round-robin matches, so it uniquely identifies
+      // the card to tap without needing round-selector navigation. ────────
       var isFirstMatch = true;
       for (final matchDoc in matchesSnap.docs) {
         final data = matchDoc.data();
@@ -353,16 +346,17 @@ void main() {
         final verifierEmail = emailByUid[verifierUid]!;
 
         await _login(tester, l10n, submitterEmail);
-        PlayWithMeApp.navigatorKey.currentState!.push(
-          MaterialPageRoute(
-            builder: (_) => MatchDetailPage(
-              championshipId: championshipId,
-              matchId: matchDoc.id,
-              currentUserId: submitterUid,
-              currentUserDisplayName: displayNameByUid[submitterUid]!,
-            ),
-          ),
-        );
+        await _navigateToChampionship(tester, l10n);
+        await tester.tap(find.text(l10n.championshipMyMatchesTab));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        if (isFirstMatch) {
+          await visualCheckpoint('championship_my_matches_populated');
+        }
+
+        // The card shows the localized "vs {opponent}" string, not the bare
+        // team name, so match by substring.
+        await tester.tap(find.textContaining(teamNameById[teamBId]!).first);
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         if (isFirstMatch) {
@@ -394,16 +388,10 @@ void main() {
         await _logout(tester);
 
         await _login(tester, l10n, verifierEmail);
-        PlayWithMeApp.navigatorKey.currentState!.push(
-          MaterialPageRoute(
-            builder: (_) => MatchDetailPage(
-              championshipId: championshipId,
-              matchId: matchDoc.id,
-              currentUserId: verifierUid,
-              currentUserDisplayName: displayNameByUid[verifierUid]!,
-            ),
-          ),
-        );
+        await _navigateToChampionship(tester, l10n);
+        await tester.tap(find.text(l10n.championshipMyMatchesTab));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.tap(find.textContaining(teamNameById[teamAId]!).first);
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         await tester.ensureVisible(
