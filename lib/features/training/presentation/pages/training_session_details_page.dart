@@ -795,14 +795,16 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.cancel),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 LeaveTrainingSession(widget.trainingSessionId),
               );
             },
-            style: FilledButton.styleFrom(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
             ),
             child: Text(l10n.leave),
           ),
@@ -827,14 +829,17 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.keepSession),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 CancelTrainingSession(widget.trainingSessionId),
               );
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
+            ),
             child: Text(l10n.cancelSession),
           ),
         ],
