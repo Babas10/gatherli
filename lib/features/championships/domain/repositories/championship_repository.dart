@@ -206,4 +206,9 @@ abstract class ChampionshipRepository {
     DateTime? registrationDeadline,
   });
 
+  /// Permanently deletes a championship and its registered teams (admin only).
+  /// Only allowed when status is registration or registration_closed.
+  /// Throws [ChampionshipException] on error.
+  Future<void> deleteChampionship({required String championshipId});
+
 }

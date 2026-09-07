@@ -31,6 +31,9 @@ class AdminPanelLoaded extends AdminPanelState {
   final bool isCompleted;
   final bool isEditing;
   final String? editError;
+  final bool isDeleting;
+  final String? deleteError;
+  final bool isDeleted;
 
   const AdminPanelLoaded({
     required this.matches,
@@ -45,6 +48,9 @@ class AdminPanelLoaded extends AdminPanelState {
     this.isCompleted = false,
     this.isEditing = false,
     this.editError,
+    this.isDeleting = false,
+    this.deleteError,
+    this.isDeleted = false,
   });
 
   AdminPanelLoaded copyWith({
@@ -60,6 +66,9 @@ class AdminPanelLoaded extends AdminPanelState {
     bool? isCompleted,
     bool? isEditing,
     Object? editError = _sentinel,
+    bool? isDeleting,
+    Object? deleteError = _sentinel,
+    bool? isDeleted,
   }) {
     return AdminPanelLoaded(
       matches: matches ?? this.matches,
@@ -83,6 +92,10 @@ class AdminPanelLoaded extends AdminPanelState {
       isCompleted: isCompleted ?? this.isCompleted,
       isEditing: isEditing ?? this.isEditing,
       editError: editError == _sentinel ? this.editError : editError as String?,
+      isDeleting: isDeleting ?? this.isDeleting,
+      deleteError:
+          deleteError == _sentinel ? this.deleteError : deleteError as String?,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -100,6 +113,9 @@ class AdminPanelLoaded extends AdminPanelState {
         isCompleted,
         isEditing,
         editError,
+        isDeleting,
+        deleteError,
+        isDeleted,
       ];
 }
 

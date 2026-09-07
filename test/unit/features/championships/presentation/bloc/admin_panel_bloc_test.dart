@@ -382,4 +382,50 @@ void main() {
       },
     );
   });
+
+  group('DeleteChampionship', () {
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits isDeleted=true on success',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.deleteChampionship(
+              championshipId: any(named: 'championshipId'),
+            )).thenAnswer((_) async {});
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(const DeleteChampionship(championshipId: championshipId));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isDeleting, isFalse);
+        expect(state.isDeleted, isTrue);
+        expect(state.deleteError, isNull);
+      },
+    );
+
+    blocTest<AdminPanelBloc, AdminPanelState>(
+      'emits deleteError on ChampionshipException',
+      build: () {
+        when(() => mockRepo.getAllMatches(any()))
+            .thenAnswer((_) => Stream.value([]));
+        when(() => mockRepo.deleteChampionship(
+              championshipId: any(named: 'championshipId'),
+            )).thenThrow(ChampionshipException('Championship already started'));
+        return makeBloc()..add(const LoadAdminPanel(championshipId));
+      },
+      act: (bloc) async {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(const DeleteChampionship(championshipId: championshipId));
+      },
+      verify: (bloc) {
+        final state = bloc.state as AdminPanelLoaded;
+        expect(state.isDeleting, isFalse);
+        expect(state.deleteError, isNotNull);
+        expect(state.isDeleted, isFalse);
+      },
+    );
+  });
 }

@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/exceptions/repository_exceptions.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/base_bloc.dart';
+import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_standings_model.dart';
+import 'package:play_with_me/features/championships/data/models/championship_team_model.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 
 import 'championship_detail_event.dart';
@@ -16,10 +19,21 @@ class ChampionshipDetailBloc
   final UserRepository _userRepository;
   String? _championshipId;
 
-  // Caches the latest gender from the user stream so it is available when
-  // ChampionshipDetailLoaded is first emitted (race condition: user stream
-  // fires during Loading state before championship data arrives).
+  // Caches the latest value from each sibling stream so it is available when
+  // ChampionshipDetailLoaded is first emitted. All of these streams are
+  // subscribed concurrently with _champSub in _onLoad, and their handlers
+  // below only apply updates once state is already ChampionshipDetailLoaded
+  // — if one of them fires its first snapshot before _champSub does (a race,
+  // since these are independent async streams), that snapshot would
+  // otherwise be silently dropped. Because these are live Firestore
+  // listeners that only re-emit on actual document changes, a dropped
+  // snapshot for data that doesn't change again (e.g. a stable set of
+  // matches) means the UI would be stuck showing the Loaded state's default
+  // empty list forever.
   String? _pendingUserGender;
+  List<ChampionshipStandingsModel>? _pendingStandings;
+  List<ChampionshipTeamModel>? _pendingTeams;
+  List<ChampionshipMatchModel>? _pendingAllMatches;
 
   StreamSubscription? _champSub;
   StreamSubscription? _standingsSub;
@@ -52,6 +66,9 @@ class ChampionshipDetailBloc
     emit(const ChampionshipDetailLoading());
     _championshipId = event.championshipId;
     _pendingUserGender = null; // reset for new load
+    _pendingStandings = null;
+    _pendingTeams = null;
+    _pendingAllMatches = null;
 
     await _champSub?.cancel();
     await _standingsSub?.cancel();
@@ -115,15 +132,18 @@ class ChampionshipDetailBloc
 
     if (currentState is ChampionshipDetailLoading) {
       // First event — subscribe to matches and transition to loaded.
-      // Include any gender already received from the user stream (_pendingUserGender)
-      // to avoid the race condition where the user update fires during Loading.
+      // Include any values already received from the sibling streams
+      // (_pendingUserGender/_pendingStandings/_pendingTeams/_pendingAllMatches)
+      // to avoid the race condition where one of them fires during Loading,
+      // before this championship snapshot arrives.
       _subscribeToMatches(_championshipId!, round);
       emit(ChampionshipDetailLoaded(
         championship: champ,
-        standings: const [],
-        teams: const [],
+        standings: _pendingStandings ?? const [],
+        teams: _pendingTeams ?? const [],
         currentRoundMatches: const [],
         selectedRound: round,
+        allMatches: _pendingAllMatches ?? const [],
         currentUserGender: _pendingUserGender,
       ));
     } else if (currentState is ChampionshipDetailLoaded) {
@@ -135,6 +155,7 @@ class ChampionshipDetailBloc
     ChampionshipDetailStandingsUpdated event,
     Emitter<ChampionshipDetailState> emit,
   ) {
+    _pendingStandings = event.standings;
     if (state is ChampionshipDetailLoaded) {
       emit(
         (state as ChampionshipDetailLoaded)
@@ -147,6 +168,7 @@ class ChampionshipDetailBloc
     ChampionshipDetailTeamsUpdated event,
     Emitter<ChampionshipDetailState> emit,
   ) {
+    _pendingTeams = event.teams;
     if (state is ChampionshipDetailLoaded) {
       emit(
         (state as ChampionshipDetailLoaded).copyWith(teams: event.teams),
@@ -192,6 +214,7 @@ class ChampionshipDetailBloc
     ChampionshipDetailAllMatchesUpdated event,
     Emitter<ChampionshipDetailState> emit,
   ) {
+    _pendingAllMatches = event.matches;
     if (state is ChampionshipDetailLoaded) {
       emit(
         (state as ChampionshipDetailLoaded)

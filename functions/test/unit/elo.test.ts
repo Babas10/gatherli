@@ -555,6 +555,85 @@ describe("processGameEloUpdates", () => {
       .rejects.toThrow("Invalid game data: Missing result winner");
   });
 
+  // ========================================================================
+  // Regression: production group games only ever write `overallWinner`
+  // (see lib/core/data/models/game_model.dart GameResult) — they never have
+  // a `winner` field, which is championship-match-only. A prior refactor
+  // validated on `result.winner` alone and silently broke ELO for every
+  // group game. Guard against that regression here.
+  // ========================================================================
+
+  test("accepts group game result with only overallWinner (no winner field)", async () => {
+    const gameId = "game-overall-winner-only";
+    const gameData = {
+      teams: {
+        teamAPlayerIds: ["p1", "p2"],
+        teamBPlayerIds: ["p3", "p4"],
+      },
+      result: {
+        // No `winner` key — this is the real shape written by the app.
+        overallWinner: "teamA",
+        games: [
+          {
+            gameNumber: 1,
+            sets: [{ teamAPoints: 21, teamBPoints: 19, setNumber: 1 }],
+            winner: "teamA",
+          },
+        ],
+      },
+    };
+
+    const playerMap: {[key: string]: any} = {
+      p1: { eloRating: 1200, displayName: "P1" },
+      p2: { eloRating: 1200, displayName: "P2" },
+      p3: { eloRating: 1200, displayName: "P3" },
+      p4: { eloRating: 1200, displayName: "P4" },
+    };
+
+    const subCollectionMock = {
+      doc: jest.fn(() => ({ id: "historyId" })),
+    };
+    const docRefMock = {
+      collection: jest.fn(() => subCollectionMock),
+    };
+
+    const gameRef = { parent: { id: "games" } };
+    const gameDocMock = {
+      exists: true,
+      id: gameId,
+      ref: gameRef,
+      data: () => gameData,
+    };
+    const docMock = (id: string) => ({
+      id,
+      exists: true,
+      data: () => playerMap[id],
+    });
+
+    const collectionMock = {
+      doc: jest.fn((id: string) => {
+        if (id === gameId) {
+          return { ...docRefMock, get: jest.fn().mockResolvedValue(gameDocMock) };
+        }
+        return { ...docMock(id), ...docRefMock };
+      }),
+    };
+    db.collection.mockReturnValue(collectionMock);
+
+    transaction.get.mockImplementation((ref: any) => Promise.resolve({
+      exists: true,
+      id: ref.id,
+      data: () => playerMap[ref.id] || {},
+    }));
+
+    await expect(processGameEloUpdates(gameId, gameData)).resolves.not.toThrow();
+
+    const finalUpdateCall = transaction.update.mock.calls.find(
+      (call: any) => call[1]?.eloCalculated !== undefined
+    );
+    expect(finalUpdateCall[1].eloCalculated).toBe(true);
+  });
+
   test("rejects documents from non-games collection (Story 15.5)", async () => {
     const gameId = "training3";
     const gameData = {

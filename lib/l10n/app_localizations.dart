@@ -4712,6 +4712,30 @@ abstract class AppLocalizations {
   /// **'Change deadline'**
   String get editChampionshipChangeDeadline;
 
+  /// Admin panel button to delete a championship before it has started
+  ///
+  /// In en, this message translates to:
+  /// **'Delete League'**
+  String get deleteChampionshipButton;
+
+  /// Confirmation dialog title when deleting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'Delete league?'**
+  String get deleteChampionshipConfirmTitle;
+
+  /// Confirmation dialog body when deleting a championship
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently remove the league and its registered teams. This cannot be undone.'**
+  String get deleteChampionshipConfirmBody;
+
+  /// Snackbar shown on the list page after a championship is successfully deleted
+  ///
+  /// In en, this message translates to:
+  /// **'League deleted.'**
+  String get deleteChampionshipSuccess;
+
   /// Confirmation dialog title when completing a championship
   ///
   /// In en, this message translates to:
