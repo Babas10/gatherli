@@ -1,7 +1,6 @@
 // Enhanced ELO progress chart with area fill and adaptive aggregation (Story 302.4).
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
@@ -75,55 +74,15 @@ class MonthlyImprovementChart extends StatelessWidget {
   }
 
   Widget _buildEmptyPeriodPlaceholder(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+    return InsufficientDataPlaceholder(
+      featureName: l10n.noGamesInThisPeriod,
+      requirement: l10n.noGamesPlayedInLast(
+        _getPeriodDisplayName(context, timePeriod),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.calendar_today_outlined,
-            size: 48,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.noGamesInThisPeriod,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.noGamesPlayedInLast(
-              _getPeriodDisplayName(context, timePeriod),
-            ),
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.trySelectingLongerPeriod,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontStyle: FontStyle.italic,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      icon: Icons.calendar_today_outlined,
+      message: l10n.trySelectingLongerPeriod,
     );
   }
 
