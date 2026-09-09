@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_result_badge.dart';
 
 void main() {
@@ -80,5 +81,35 @@ void main() {
       await tester.tap(find.byType(GameResultBadge));
       expect(tapped, isTrue);
     });
+
+    testWidgets(
+      'background is tinted, not solid, so the icon/text stay legible',
+      (tester) async {
+        const validResult = GameResult(
+          games: [
+            IndividualGame(
+              gameNumber: 1,
+              winner: 'teamA',
+              sets: [SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1)],
+            ),
+          ],
+          overallWinner: 'teamA',
+        );
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: GameResultBadge(result: validResult)),
+          ),
+        );
+
+        final container = tester.widget<Container>(find.byType(Container));
+        final decoration = container.decoration as BoxDecoration;
+
+        // Regression guard: background must not equal the solid icon/text
+        // color (AppColors.success), or the content is invisible against
+        // its own background.
+        expect(decoration.color, isNot(equals(AppColors.success)));
+      },
+    );
   });
 }
