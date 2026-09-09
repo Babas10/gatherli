@@ -83,7 +83,7 @@ class FriendsList extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(l10n.cancel),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.of(context).pop();
               // Note: We need the friendshipId, but we only have the UserEntity
@@ -91,7 +91,10 @@ class FriendsList extends StatelessWidget {
               // For now, we'll use the uid as a placeholder
               onRemoveFriend(friend.uid);
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
+            ),
             child: Text(l10n.remove),
           ),
         ],
