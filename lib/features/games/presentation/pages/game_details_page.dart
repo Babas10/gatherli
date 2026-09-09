@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
@@ -205,24 +206,7 @@ class _GameDetailsView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _GameInfoCard(game: game),
-                  const SizedBox(height: AppSpacing.sm),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: () => copyLinkToClipboard(
-                        context,
-                        ActivityLinkUrlBuilder.forGame(gameId),
-                        l10n,
-                      ),
-                      icon: const Icon(Icons.copy, size: 18),
-                      label: Text(l10n.copyLink),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.secondary,
-                        side: const BorderSide(color: AppColors.secondary),
-                      ),
-                    ),
-                  ),
+                  _GameInfoCard(game: game, gameId: gameId, l10n: l10n),
                   const SizedBox(height: AppSpacing.lg),
                   // Verification Section
                   if (game.status == GameStatus.verification) ...[
@@ -283,17 +267,21 @@ class _ChatSectionWrapper extends StatelessWidget {
 
 class _GameInfoCard extends StatelessWidget {
   final GameModel game;
+  final String gameId;
+  final AppLocalizations l10n;
 
-  const _GameInfoCard({required this.game});
+  const _GameInfoCard({
+    required this.game,
+    required this.gameId,
+    required this.l10n,
+  });
 
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('EEEE, MMMM d, yyyy');
     final timeFormat = DateFormat('h:mm a');
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return DetailPageHeader(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -371,9 +359,25 @@ class _GameInfoCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(game.notes!, style: Theme.of(context).textTheme.bodyMedium),
             ],
+            const SizedBox(height: AppSpacing.lg),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => copyLinkToClipboard(
+                  context,
+                  ActivityLinkUrlBuilder.forGame(gameId),
+                  l10n,
+                ),
+                icon: const Icon(Icons.copy, size: 18),
+                label: Text(l10n.copyLink),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.secondary,
+                  side: const BorderSide(color: AppColors.secondary),
+                ),
+              ),
+            ),
           ],
         ),
-      ),
     );
   }
 }

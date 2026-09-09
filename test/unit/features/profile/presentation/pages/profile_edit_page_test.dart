@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/domain/repositories/image_storage_repository.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/services/image_picker_service.dart';
@@ -367,7 +368,15 @@ void main() {
           findsOneWidget,
         );
         expect(find.widgetWithText(TextButton, 'Cancel'), findsOneWidget);
-        expect(find.widgetWithText(FilledButton, 'Remove'), findsOneWidget);
+        expect(find.widgetWithText(OutlinedButton, 'Remove'), findsOneWidget);
+
+        // Destructive action must use OutlinedButton + danger color, not a
+        // solid filled button (CLAUDE.md button rules; regression guard for
+        // a violation found during the Epic 37 design-system audit).
+        final button = tester.widget<OutlinedButton>(
+          find.widgetWithText(OutlinedButton, 'Remove'),
+        );
+        expect(button.style!.foregroundColor?.resolve({}), AppColors.danger);
       });
 
       testWidgets('displays network image when user has photo URL', (

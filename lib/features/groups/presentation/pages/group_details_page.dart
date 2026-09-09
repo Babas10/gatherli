@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -875,37 +876,10 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                     ),
                   )
                 else if (state is GamesListEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.sports_volleyball,
-                            size: 48,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          Text(
-                            l10n.noActivitiesYet,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          Text(
-                            l10n.createFirstActivity,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
+                  EmptyState(
+                    icon: Icons.sports_volleyball,
+                    title: l10n.noActivitiesYet,
+                    message: l10n.createFirstActivity,
                   )
                 else if (state is GamesListLoaded) ...[
                   if (state.upcomingActivities.isNotEmpty) ...[

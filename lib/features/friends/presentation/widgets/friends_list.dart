@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -23,34 +23,10 @@ class FriendsList extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     if (friends.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.people_outline,
-                size: 64,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                l10n.noFriendsYet,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l10n.searchForFriends,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+      return EmptyState(
+        icon: Icons.people_outline,
+        title: l10n.noFriendsYet,
+        message: l10n.searchForFriends,
       );
     }
 
@@ -83,7 +59,7 @@ class FriendsList extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(l10n.cancel),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.of(context).pop();
               // Note: We need the friendshipId, but we only have the UserEntity
@@ -91,7 +67,10 @@ class FriendsList extends StatelessWidget {
               // For now, we'll use the uid as a placeholder
               onRemoveFriend(friend.uid);
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
+            ),
             child: Text(l10n.remove),
           ),
         ],

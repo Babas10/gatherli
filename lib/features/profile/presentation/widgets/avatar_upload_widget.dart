@@ -289,14 +289,17 @@ class _AvatarUploadContent extends StatelessWidget {
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Text(l10n.cancel),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
               context.read<AvatarUploadBloc>().add(
                 const AvatarUploadEvent.deleteRequested(),
               );
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
+            ),
             child: Text(l10n.remove),
           ),
         ],

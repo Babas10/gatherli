@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
@@ -202,11 +203,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return const Chip(
-        label: Text('Pending'),
-        backgroundColor: AppColors.warning,
-        labelStyle: TextStyle(color: AppColors.warning, fontSize: 11),
-      );
+      return const StatusBadge.warning('Pending');
     }
 
     if (requestStatus == FriendRequestStatus.receivedFromThem) {
