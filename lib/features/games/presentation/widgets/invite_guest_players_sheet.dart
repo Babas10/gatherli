@@ -6,6 +6,7 @@ import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -131,15 +132,9 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
                       };
 
                       if (players.isEmpty) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(24),
-                            child: Text(
-                              l10n.noInvitablePlayers,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
+                        return EmptyState(
+                          icon: Icons.people_outline,
+                          title: l10n.noInvitablePlayers,
                         );
                       }
 

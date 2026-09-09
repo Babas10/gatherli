@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -286,29 +287,10 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
 
   Widget _buildEmptyState() {
     final l10n = AppLocalizations.of(context)!;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.history,
-            size: 64,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.noCompletedGamesYet,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.gamesWillAppearAfterCompleted,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
+    return EmptyState(
+      icon: Icons.history,
+      title: l10n.noCompletedGamesYet,
+      message: l10n.gamesWillAppearAfterCompleted,
     );
   }
 

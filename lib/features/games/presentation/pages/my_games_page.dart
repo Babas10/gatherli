@@ -13,6 +13,7 @@ import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/my_game_item.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -222,25 +223,9 @@ class _MyGamesViewState extends State<_MyGamesView> {
   }
 
   Widget _emptyState(BuildContext context, AppLocalizations l10n) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.sports_volleyball_outlined,
-            size: 64,
-            color: AppColors.textMuted,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.noMyGamesYet,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return EmptyState(
+      icon: Icons.sports_volleyball_outlined,
+      title: l10n.noMyGamesYet,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/features/games/presentation/bloc/game_invitations/game_invitations_bloc.dart';
@@ -147,21 +148,9 @@ class _PendingGameInvitationsViewState
         : null;
 
     if (invitations.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.mail_outline, size: 64, color: AppColors.textMuted),
-            const SizedBox(height: AppSpacing.lg),
-            Text(
-              l10n.noPendingGameInvitations,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      return EmptyState(
+        icon: Icons.mail_outline,
+        title: l10n.noPendingGameInvitations,
       );
     }
 

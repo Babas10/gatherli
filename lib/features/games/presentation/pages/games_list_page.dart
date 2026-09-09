@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/group_activity_item.dart';
@@ -186,34 +187,14 @@ class _GamesListPageContent extends StatelessWidget {
 
   Widget _buildEmptyState(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.sports_volleyball,
-            size: 64,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.noActivitiesYet,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.createFirstActivity,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          FilledButton.icon(
-            onPressed: () => _showCreateMenu(context),
-            icon: const Icon(Icons.add),
-            label: Text(l10n.create),
-          ),
-        ],
+    return EmptyState(
+      icon: Icons.sports_volleyball,
+      title: l10n.noActivitiesYet,
+      message: l10n.createFirstActivity,
+      action: FilledButton.icon(
+        onPressed: () => _showCreateMenu(context),
+        icon: const Icon(Icons.add),
+        label: Text(l10n.create),
       ),
     );
   }
