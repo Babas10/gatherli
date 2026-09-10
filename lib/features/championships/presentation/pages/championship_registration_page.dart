@@ -11,6 +11,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -132,8 +133,9 @@ class _ChampionshipRegistrationPageState
 
           if (state is TeamRegistrationLoaded) {
             if (state.championships.isEmpty) {
-              return Center(
-                child: Text(l10n.championshipOpenRegistration),
+              return EmptyState(
+                icon: Icons.emoji_events_outlined,
+                title: l10n.championshipOpenRegistration,
               );
             }
             return ListView.builder(

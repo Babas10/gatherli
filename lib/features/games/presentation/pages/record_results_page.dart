@@ -252,7 +252,7 @@ class _TeamSection extends StatelessWidget {
                   AppLocalizations.of(context)!.noPlayersAssigned,
                   style: Theme.of(
                     context,
-                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
                 ),
               )
             else

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/data/models/rating_history_entry.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 
 class EloHistoryChart extends StatelessWidget {
@@ -21,7 +22,7 @@ class EloHistoryChart extends StatelessWidget {
           'No rating history yet',
           style: Theme.of(
             context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
         ),
       );
     }

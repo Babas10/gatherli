@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'received_request_tile.dart';
@@ -29,26 +29,9 @@ class FriendRequestsList extends StatelessWidget {
     final hasSentRequests = sentRequests.isNotEmpty;
 
     if (!hasReceivedRequests && !hasSentRequests) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.inbox_outlined,
-                size: 64,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                l10n.noPendingRequests,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+      return EmptyState(
+        icon: Icons.inbox_outlined,
+        title: l10n.noPendingRequests,
       );
     }
 
