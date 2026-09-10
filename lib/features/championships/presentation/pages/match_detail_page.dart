@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
@@ -13,6 +14,7 @@ import 'package:play_with_me/features/championships/data/models/championship_tea
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/match_detail/match_detail_state.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/championship_match_status_style.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_chat_section.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_result_entry_widget.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/match_verification_widget.dart';
@@ -240,7 +242,6 @@ class _MatchHeaderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final result = match.result;
-    final color = _statusColor();
 
     return Card(
       child: Padding(
@@ -302,21 +303,9 @@ class _MatchHeaderCard extends StatelessWidget {
             ],
             const SizedBox(height: AppSpacing.md),
             // Status badge
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: color.withValues(alpha: 0.4)),
-              ),
-              child: Text(
-                _statusLabel(l10n),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
+            StatusBadge(
+              label: match.status.label(l10n),
+              color: match.status.color,
             ),
             // Scheduled date
             if (match.scheduledAt != null) ...[
@@ -379,31 +368,6 @@ class _MatchHeaderCard extends StatelessWidget {
     );
   }
 
-  String _statusLabel(AppLocalizations l10n) {
-    return switch (match.status) {
-      ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
-      ChampionshipMatchStatus.scheduled =>
-        l10n.championshipMatchStatusScheduled,
-      ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
-      ChampionshipMatchStatus.disputed =>
-        l10n.championshipMatchStatusDisputed,
-      ChampionshipMatchStatus.adminDecided =>
-        l10n.championshipMatchStatusAdminDecided,
-      ChampionshipMatchStatus.verified =>
-        l10n.championshipMatchStatusVerified,
-    };
-  }
-
-  Color _statusColor() {
-    return switch (match.status) {
-      ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => AppColors.info,
-      ChampionshipMatchStatus.played => AppColors.warning,
-      ChampionshipMatchStatus.disputed => Colors.deepOrange,
-      ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => AppColors.success,
-    };
-  }
 }
 
 // ============================================================================
@@ -638,7 +602,7 @@ class _ResultSection extends StatelessWidget {
           teamA: teamA,
           teamB: teamB,
           icon: Icons.check_circle,
-          iconColor: AppColors.success,
+          iconColor: match.status.color,
           message: l10n.verifyResultVerified,
         );
 
@@ -648,7 +612,7 @@ class _ResultSection extends StatelessWidget {
           teamA: teamA,
           teamB: teamB,
           icon: Icons.gavel,
-          iconColor: AppColors.warning,
+          iconColor: match.status.color,
           message: l10n.verifyResultDisputed,
         );
 
@@ -658,7 +622,7 @@ class _ResultSection extends StatelessWidget {
           teamA: teamA,
           teamB: teamB,
           icon: Icons.gavel,
-          iconColor: Colors.purple,
+          iconColor: match.status.color,
           message: l10n.championshipMatchStatusAdminDecided,
         );
     }
