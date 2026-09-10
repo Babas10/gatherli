@@ -30,6 +30,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/championsh
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/championship_match_status_style.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart' hide LoadChampionships;
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
@@ -1134,30 +1135,6 @@ class _MatchCard extends StatelessWidget {
     this.onTap,
   });
 
-  String _statusLabel() {
-    return switch (match.status) {
-      ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
-      ChampionshipMatchStatus.scheduled => l10n.championshipMatchStatusScheduled,
-      ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
-      ChampionshipMatchStatus.disputed =>
-        l10n.championshipMatchStatusDisputed,
-      ChampionshipMatchStatus.adminDecided =>
-        l10n.championshipMatchStatusAdminDecided,
-      ChampionshipMatchStatus.verified => l10n.championshipMatchStatusVerified,
-    };
-  }
-
-  Color _statusColor() {
-    return switch (match.status) {
-      ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => AppColors.secondary,
-      ChampionshipMatchStatus.played => AppColors.info,
-      ChampionshipMatchStatus.disputed => AppColors.warning,
-      ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => AppColors.success,
-    };
-  }
-
   String _setScores() {
     final result = match.result;
     if (result == null) return '';
@@ -1169,7 +1146,6 @@ class _MatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final result = match.result;
-    final color = _statusColor();
 
     return Card(
       margin: EdgeInsets.zero,
@@ -1257,21 +1233,9 @@ class _MatchCard extends StatelessWidget {
                   ),
                   const Spacer(),
                 ],
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: color.withValues(alpha: 0.4)),
-                  ),
-                  child: Text(
-                    _statusLabel(),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: color,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
+                StatusBadge(
+                  label: match.status.label(l10n),
+                  color: match.status.color,
                 ),
               ],
             ),
@@ -2078,32 +2042,6 @@ class _MyMatchesTab extends StatelessWidget {
     }
   }
 
-  Color _statusColor(ChampionshipMatchStatus status) {
-    return switch (status) {
-      ChampionshipMatchStatus.pending => AppColors.textMuted,
-      ChampionshipMatchStatus.scheduled => AppColors.info,
-      ChampionshipMatchStatus.played => AppColors.warning,
-      ChampionshipMatchStatus.disputed => Colors.deepOrange,
-      ChampionshipMatchStatus.adminDecided => Colors.purple,
-      ChampionshipMatchStatus.verified => AppColors.success,
-    };
-  }
-
-  String _statusLabel(ChampionshipMatchStatus status) {
-    return switch (status) {
-      ChampionshipMatchStatus.pending => l10n.championshipMatchStatusPending,
-      ChampionshipMatchStatus.scheduled =>
-        l10n.championshipMatchStatusScheduled,
-      ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
-      ChampionshipMatchStatus.disputed =>
-        l10n.championshipMatchStatusDisputed,
-      ChampionshipMatchStatus.adminDecided =>
-        l10n.championshipMatchStatusAdminDecided,
-      ChampionshipMatchStatus.verified =>
-        l10n.championshipMatchStatusVerified,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final myMatches = allMatches
@@ -2126,8 +2064,6 @@ class _MyMatchesTab extends StatelessWidget {
         final opponentId =
             match.teamAId == myTeamId ? match.teamBId : match.teamAId;
         final opponentName = _teamName(opponentId);
-        final statusColor = _statusColor(match.status);
-        final statusLabel = _statusLabel(match.status);
 
         return Card(
           margin: const EdgeInsets.only(bottom: 10),
@@ -2208,25 +2144,9 @@ class _MyMatchesTab extends StatelessWidget {
                     ),
                   ),
                   // Status badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: statusColor.withValues(alpha: 0.10),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: statusColor.withValues(alpha: 0.4)),
-                    ),
-                    child: Text(
-                      statusLabel,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(
-                            color: statusColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
+                  StatusBadge(
+                    label: match.status.label(l10n),
+                    color: match.status.color,
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   const Icon(Icons.chevron_right,
