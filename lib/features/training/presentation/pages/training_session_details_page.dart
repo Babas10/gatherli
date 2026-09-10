@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -489,28 +490,13 @@ class _TrainingSessionDetailsPageState
       return Builder(
         builder: (context) {
           final l10n = AppLocalizations.of(context)!;
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.people_outline, size: 64, color: Colors.grey),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  l10n.noParticipantsYet,
-                  style: const TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  l10n.beFirstToJoin,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                // Show participation info even when empty
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: _buildParticipationInfoCard(session),
-                ),
-              ],
+          return EmptyState(
+            icon: Icons.people_outline,
+            title: l10n.noParticipantsYet,
+            message: l10n.beFirstToJoin,
+            action: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: _buildParticipationInfoCard(session),
             ),
           );
         },

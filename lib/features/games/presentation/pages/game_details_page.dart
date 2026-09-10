@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
@@ -487,18 +488,9 @@ class _PlayersCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 if (game.playerIds.isEmpty)
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text(
-                        'No players yet. Be the first to join!',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
-                      ),
-                    ),
+                  const EmptyState(
+                    icon: Icons.people_outline,
+                    title: 'No players yet. Be the first to join!',
                   )
                 else
                   ListView.separated(

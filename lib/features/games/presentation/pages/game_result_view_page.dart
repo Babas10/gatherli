@@ -2,6 +2,7 @@
 // Shows ELO rating changes with per-player win/loss counts and per-game team names.
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -58,30 +59,10 @@ class GameResultViewPage extends StatelessWidget {
           context: context,
           title: l10n.gameResults,
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.sports_score, size: 64, color: Colors.grey),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  l10n.noResultsAvailable,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  l10n.scoresWillAppear,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
+        body: EmptyState(
+          icon: Icons.sports_score,
+          title: l10n.noResultsAvailable,
+          message: l10n.scoresWillAppear,
         ),
       );
     }
