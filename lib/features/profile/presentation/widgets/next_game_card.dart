@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
@@ -178,57 +179,14 @@ class NextGameCard extends StatelessWidget {
     final isOnWaitlist = game!.isOnWaitlist(userId);
 
     if (isPlayer) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Text(
-          l10n.joined,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 11,
-          ),
-        ),
-      );
+      return StatusBadge.primary(l10n.joined);
     }
 
     if (isOnWaitlist) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.warning.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.warning, width: 0.5),
-        ),
-        child: Text(
-          l10n.onWaitlist,
-          style: const TextStyle(
-            color: AppColors.warning,
-            fontWeight: FontWeight.w600,
-            fontSize: 11,
-          ),
-        ),
-      );
+      return StatusBadge.warning(l10n.onWaitlist);
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Text(
-        'Join',
-        style: TextStyle(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w600,
-          fontSize: 11,
-        ),
-      ),
-    );
+    return StatusBadge.primary(l10n.join);
   }
 
   Widget _buildPlayerBar(BuildContext context) {

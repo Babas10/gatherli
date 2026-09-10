@@ -338,6 +338,18 @@ abstract class AppLocalizations {
   /// **'Verify'**
   String get verify;
 
+  /// Status label shown when the user's email is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verified;
+
+  /// Status label shown when the user's email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'Not Verified'**
+  String get notVerified;
+
   /// Account type label
   ///
   /// In en, this message translates to:

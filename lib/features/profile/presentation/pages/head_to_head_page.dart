@@ -3,8 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
+import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/head_to_head_stats.dart';
@@ -297,22 +299,15 @@ class HeadToHeadPage extends StatelessWidget {
         if (stats.currentStreak.abs() > 0) ...[
           Align(
             alignment: Alignment.centerRight,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: stats.isOnWinningStreak
-                    ? AppColors.success.withValues(alpha: 0.1)
-                    : AppColors.danger.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                '${stats.currentStreak.abs()} ${stats.isOnWinningStreak ? "W" : "L"} Streak',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: stats.isOnWinningStreak ? AppColors.success : AppColors.danger,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            child: StatusBadge(
+              label: stats.isOnWinningStreak
+                  ? AppLocalizations.of(context)!
+                      .streakWins(stats.currentStreak.abs())
+                  : AppLocalizations.of(context)!
+                      .streakLosses(stats.currentStreak.abs()),
+              color: stats.isOnWinningStreak
+                  ? AppColors.success
+                  : AppColors.danger,
             ),
           ),
           const SizedBox(height: AppSpacing.md),

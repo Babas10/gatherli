@@ -5,6 +5,7 @@ import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -436,51 +437,14 @@ class _TrainingSessionDetailsPageState
     return Builder(
       builder: (context) {
         final l10n = AppLocalizations.of(context)!;
-        Color color;
-        IconData icon;
-        String label;
 
-        switch (status) {
-          case TrainingStatus.scheduled:
-            color = AppColors.secondary;
-            icon = Icons.schedule;
-            label = l10n.scheduled;
-            break;
-          case TrainingStatus.completed:
-            color = AppColors.success;
-            icon = Icons.check_circle;
-            label = l10n.completed;
-            break;
-          case TrainingStatus.cancelled:
-            color = AppColors.danger;
-            icon = Icons.cancel;
-            label = l10n.cancelled;
-            break;
-        }
+        final (label, color) = switch (status) {
+          TrainingStatus.scheduled => (l10n.scheduled, AppColors.secondary),
+          TrainingStatus.completed => (l10n.completed, AppColors.success),
+          TrainingStatus.cancelled => (l10n.cancelled, AppColors.danger),
+        };
 
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: color.withAlpha(26),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: color),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 16, color: color),
-              const SizedBox(width: AppSpacing.xs),
-              Text(
-                label,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        );
+        return StatusBadge(label: label, color: color);
       },
     );
   }
