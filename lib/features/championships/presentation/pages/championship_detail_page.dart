@@ -10,6 +10,7 @@ import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -374,11 +375,8 @@ class _ChampionshipHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+    return DetailPageHeader(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           Row(
@@ -478,12 +476,9 @@ class _ChampionshipHeader extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           ],
         ),
-      ),
     );
   }
 }
-
-
 
 // ── Champion banner (completed championships) ─────────────────────────────────
 

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -248,9 +249,7 @@ class _TrainingSessionDetailsPageState
     bool isOrganizer,
   ) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
+    return DetailPageHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -795,14 +794,16 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.cancel),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 LeaveTrainingSession(widget.trainingSessionId),
               );
             },
-            style: FilledButton.styleFrom(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
             ),
             child: Text(l10n.leave),
           ),
@@ -827,14 +828,17 @@ class _TrainingSessionDetailsPageState
             onPressed: () => Navigator.pop(dialogContext),
             child: Text(l10n.keepSession),
           ),
-          FilledButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<TrainingSessionParticipationBloc>().add(
                 CancelTrainingSession(widget.trainingSessionId),
               );
             },
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.danger),
+            ),
             child: Text(l10n.cancelSession),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -185,31 +186,10 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
   }
 
   Widget _buildEmptyState() {
-    return Card(
-      color: AppColors.primary.withValues(alpha: 0.2),
-      child: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Icon(Icons.people_outline, color: AppColors.secondary, size: 48),
-            SizedBox(height: AppSpacing.sm),
-            Text(
-              'No Friends Yet',
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: AppSpacing.xs),
-            Text(
-              'Add friends to invite them to groups',
-              style: TextStyle(color: AppColors.secondary),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return const EmptyState(
+      icon: Icons.people_outline,
+      title: 'No Friends Yet',
+      message: 'Add friends to invite them to groups',
     );
   }
 

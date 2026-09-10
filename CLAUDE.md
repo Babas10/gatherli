@@ -1168,6 +1168,7 @@ TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textMuted,
 | `AppSnackBar` | `core/presentation/widgets/app_snack_bar.dart` | All user feedback (success/error/info) |
 | `AppPageRoute` | `core/presentation/widgets/app_page_route.dart` | All `Navigator.push` calls |
 | `FormSection` | `core/presentation/widgets/form_section.dart` | Sections in creation/edit forms |
+| `DetailPageHeader` | `core/presentation/widgets/detail_page_header.dart` | The info block between the AppBar and any TabBar on an entity detail page (game/training/championship) — floating Card container only; page-specific content (title, status, facts) is passed as `child` |
 | `Badge` | Flutter built-in | Notification count on icons (NOT Stack+Positioned) |
 
 #### AccentCard — list items

@@ -1,5 +1,6 @@
 // Empty state placeholder for users with no game data.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// A friendly empty state widget for users who haven't played any games yet.
@@ -36,7 +37,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: theme.colorScheme.primary.withValues(alpha: 0.5),
+              color: AppColors.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: AppSpacing.xl),
             // Title
@@ -44,7 +45,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
               title,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
+                color: AppColors.textMuted,
               ),
               textAlign: TextAlign.center,
             ),
@@ -53,7 +54,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
             Text(
               message,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                color: AppColors.textMuted,
               ),
               textAlign: TextAlign.center,
             ),
@@ -66,29 +67,27 @@ class EmptyStatsPlaceholder extends StatelessWidget {
                   vertical: 12.0,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(
-                    alpha: 0.3,
-                  ),
+                  color: AppColors.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.lock_outline,
                       size: 16,
-                      color: theme.colorScheme.primary,
+                      color: AppColors.secondary,
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Flexible(
                       child: Text(
                         unlockMessage!,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.primary,
+                          color: AppColors.secondary,
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
@@ -127,61 +126,58 @@ class InsufficientDataPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 48,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            featureName,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+    return Card(
+      margin: const EdgeInsets.all(16.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 64,
+              color: AppColors.primary.withValues(alpha: 0.5),
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            requirement,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          if (currentProgress != null) ...[
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.lg),
             Text(
-              currentProgress!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.primary,
+              featureName,
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-          if (message != null) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              message!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-                fontStyle: FontStyle.italic,
+                color: AppColors.textMuted,
               ),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              requirement,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textMuted,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (currentProgress != null) ...[
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                currentProgress!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.secondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+            if (message != null) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                message!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
