@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +49,7 @@ class GameListItem extends StatelessWidget {
                   Icon(
                     Icons.sports_volleyball,
                     size: 20,
-                    color: isCancelled ? Colors.grey : AppColors.secondary,
+                    color: isCancelled ? AppColors.textMuted : AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -57,7 +58,7 @@ class GameListItem extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isCancelled
-                            ? Theme.of(context).colorScheme.onSurfaceVariant
+                            ? AppColors.textMuted
                             : AppColors.secondary,
                         decoration: isCancelled
                             ? TextDecoration.lineThrough
@@ -82,14 +83,14 @@ class GameListItem extends StatelessWidget {
                 context,
                 Icons.calendar_today,
                 _formatDateTime(context, game.scheduledAt),
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.sm),
               _buildInfoRow(
                 context,
                 Icons.location_on,
                 game.location.name,
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.md),
               if (isCompletedWithResult) ...[
@@ -131,68 +132,17 @@ class GameListItem extends StatelessWidget {
 
   Widget _buildVerificationBadge(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.pending_actions, size: 16, color: AppColors.secondary),
-          const SizedBox(width: AppSpacing.xs),
-          Text(
-            l10n.pendingVerification,
-            style: const TextStyle(
-              color: AppColors.secondary,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
+    return StatusBadge.warning(l10n.pendingVerification);
   }
 
   Widget _buildTypeBadge(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        l10n.gameLabel,
-        style: const TextStyle(
-          color: AppColors.secondary,
-          fontWeight: FontWeight.bold,
-          fontSize: 10,
-        ),
-      ),
-    );
+    return StatusBadge(label: l10n.gameLabel, color: AppColors.secondary);
   }
 
   Widget _buildCancelledBadge(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Text(
-        l10n.cancelled,
-        style: TextStyle(
-          color: Colors.grey.shade700,
-          fontWeight: FontWeight.bold,
-          fontSize: 10,
-        ),
-      ),
-    );
+    return StatusBadge.muted(l10n.cancelled);
   }
 
   Widget? _buildStatusBadge(BuildContext context) {
@@ -205,41 +155,11 @@ class GameListItem extends StatelessWidget {
     }
 
     if (isOnWaitlist) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.warning.withValues(alpha: 0.2),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.warning),
-        ),
-        child: Text(
-          l10n.onWaitlist,
-          style: const TextStyle(
-            color: AppColors.warning,
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
-          ),
-        ),
-      );
+      return StatusBadge.warning(l10n.onWaitlist);
     }
 
     if (game.isFull && !game.allowWaitlist) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.danger.withValues(alpha: 0.2),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.danger),
-        ),
-        child: Text(
-          l10n.full,
-          style: const TextStyle(
-            color: AppColors.danger,
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
-          ),
-        ),
-      );
+      return StatusBadge.danger(l10n.full);
     }
 
     return null;

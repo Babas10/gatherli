@@ -6,10 +6,10 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/data/models/my_game_item.dart';
+import 'package:play_with_me/features/games/presentation/widgets/game_status_style.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-
-const _kPrimary = AppColors.primary;
 
 class MyGameTile extends StatelessWidget {
   final MyGameItem item;
@@ -31,9 +31,7 @@ class MyGameTile extends StatelessWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: _statusColor(
-                    _effectiveStatus(item.status, item.scheduledAt),
-                  ),
+                  color: _effectiveStatus(item.status, item.scheduledAt).color,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -93,21 +91,6 @@ class MyGameTile extends StatelessWidget {
     return status;
   }
 
-  Color _statusColor(GameStatus status) {
-    switch (status) {
-      case GameStatus.scheduled:
-        return _kPrimary;
-      case GameStatus.inProgress:
-        return AppColors.success;
-      case GameStatus.verification:
-        return AppColors.warning;
-      case GameStatus.completed:
-        return Colors.grey;
-      case GameStatus.cancelled:
-        return AppColors.danger;
-    }
-  }
-
   String _formatDate(BuildContext context, DateTime dateTime) {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
@@ -135,45 +118,9 @@ class _StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (label, bg, fg) = switch (status) {
-      GameStatus.scheduled => (
-        l10n.scheduled,
-        AppColors.info.withValues(alpha: 0.1),
-        AppColors.info,
-      ),
-      GameStatus.inProgress => (
-        'Live',
-        AppColors.success.withValues(alpha: 0.1),
-        AppColors.success,
-      ),
-      GameStatus.verification => (
-        l10n.verification,
-        AppColors.warning.withValues(alpha: 0.1),
-        AppColors.warning,
-      ),
-      GameStatus.completed => (
-        l10n.completed,
-        Colors.grey.withValues(alpha: 0.1),
-        Colors.grey.shade600,
-      ),
-      GameStatus.cancelled => (
-        l10n.cancelled,
-        AppColors.danger.withValues(alpha: 0.1),
-        AppColors.danger,
-      ),
-    };
-
-    return Container(
-      margin: const EdgeInsets.only(right: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: fg),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: StatusBadge(label: status.label(l10n), color: status.color),
     );
   }
 }
@@ -185,21 +132,9 @@ class _OpenBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: AppColors.success.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        l10n.open,
-        style: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: AppColors.success,
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: StatusBadge.success(l10n.open),
     );
   }
 }

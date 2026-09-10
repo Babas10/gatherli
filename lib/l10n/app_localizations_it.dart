@@ -1073,6 +1073,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get verification => 'Verifica';
 
   @override
+  String get gameLiveStatus => 'In diretta';
+
+  @override
   String get noParticipantsYet => 'Nessun partecipante ancora';
 
   @override

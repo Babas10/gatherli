@@ -47,11 +47,17 @@ class GameResultBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String scoreText;
+    final IconData icon;
+    final Color color;
     if (result.overallWinner != null) {
       final winnerName = _getTeamName(result.overallWinner!);
       scoreText = '$winnerName won ${result.scoreDescription}';
+      icon = Icons.emoji_events;
+      color = AppColors.success;
     } else {
       scoreText = 'Tie ${result.scoreDescription}';
+      icon = Icons.handshake;
+      color = AppColors.textMuted;
     }
 
     return GestureDetector(
@@ -59,19 +65,19 @@ class GameResultBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColors.success.withValues(alpha: 0.12),
+          color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
+          border: Border.all(color: color.withValues(alpha: 0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.emoji_events, size: 16, color: AppColors.success),
+            Icon(icon, size: 16, color: color),
             const SizedBox(width: AppSpacing.xs),
             Text(
               scoreText,
-              style: const TextStyle(
-                color: AppColors.success,
+              style: TextStyle(
+                color: color,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),

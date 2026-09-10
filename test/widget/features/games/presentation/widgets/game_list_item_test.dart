@@ -89,7 +89,7 @@ void main() {
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.calendar_today));
-      expect(icon.color, Colors.grey);
+      expect(icon.color, AppColors.textMuted);
 
       final title = tester.widget<Text>(find.text('Test Game'));
       expect(title.style?.decoration, TextDecoration.lineThrough);
@@ -131,8 +131,8 @@ void main() {
       );
 
       expect(find.text('Pending Verification'), findsOneWidget);
-      final icon = tester.widget<Icon>(find.byIcon(Icons.pending_actions));
-      expect(icon.color, AppColors.secondary);
+      final text = tester.widget<Text>(find.text('Pending Verification'));
+      expect(text.style?.color, AppColors.warning);
     });
 
     testWidgets('applies background tint for verification status', (
