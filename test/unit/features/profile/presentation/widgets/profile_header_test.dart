@@ -6,6 +6,8 @@ import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/profile_header.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
 
+import '../../../../../helpers/test_app.dart';
+
 void main() {
   group('ProfileHeader', () {
     testWidgets('displays user display name when available', (tester) async {
@@ -20,9 +22,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ProfileHeader(user: testUser)),
-        ),
+        testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
       expect(find.text('John Doe'), findsOneWidget);
@@ -41,9 +41,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ProfileHeader(user: testUser)),
-        ),
+        testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
       // displayNameOrEmail should return email when displayName is null
@@ -64,9 +62,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ProfileHeader(user: testUser)),
-        ),
+        testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
       expect(find.byIcon(Icons.person), findsOneWidget);
@@ -85,9 +81,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ProfileHeader(user: testUser)),
-        ),
+        testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
       expect(find.byType(VerificationBadge), findsOneWidget);
@@ -105,9 +99,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ProfileHeader(user: testUser)),
-        ),
+        testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
       final container = tester.widget<Container>(

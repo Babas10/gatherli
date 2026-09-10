@@ -130,6 +130,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get verify => 'Verifica';
 
   @override
+  String get verified => 'Verificato';
+
+  @override
+  String get notVerified => 'Non verificato';
+
+  @override
   String get accountType => 'Tipo di Account';
 
   @override

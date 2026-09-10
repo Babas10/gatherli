@@ -156,6 +156,14 @@
   "@verify": {
     "description": "Verify email button text"
   },
+  "verified": "Verified",
+  "@verified": {
+    "description": "Status label shown when the user's email is verified"
+  },
+  "notVerified": "Not Verified",
+  "@notVerified": {
+    "description": "Status label shown when the user's email is not verified"
+  },
   "accountType": "Account Type",
   "@accountType": {
     "description": "Account type label"
