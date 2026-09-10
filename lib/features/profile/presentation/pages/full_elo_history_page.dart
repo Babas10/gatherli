@@ -13,6 +13,7 @@ import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/elo_history/elo_history_state.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/best_elo_highlight_card.dart';
+import 'package:play_with_me/features/profile/presentation/widgets/empty_states/insufficient_data_placeholder.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/time_period_selector.dart';
 import 'package:intl/intl.dart';
 
@@ -151,26 +152,10 @@ class FullEloHistoryPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     if (history.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.timeline,
-              size: 64,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text('No ELO history yet', style: theme.textTheme.titleLarge),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Play some games to see your rating history',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-          ],
-        ),
+      return const EmptyStatsPlaceholder(
+        icon: Icons.timeline,
+        title: 'No ELO history yet',
+        message: 'Play some games to see your rating history',
       );
     }
 
