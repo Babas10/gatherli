@@ -5,6 +5,7 @@ import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/group_avatar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -79,15 +80,9 @@ class _FriendsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (state.friends.isEmpty) {
-      return Center(
-        child: Text(
-          l10n.noUsersToInvite,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.textMuted),
-          textAlign: TextAlign.center,
-        ),
+      return EmptyState(
+        icon: Icons.people_outline,
+        title: l10n.noUsersToInvite,
       );
     }
     return ListView.builder(
@@ -116,15 +111,9 @@ class _GroupsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (state.groups.isEmpty) {
-      return Center(
-        child: Text(
-          l10n.noGroupsToInvite,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.textMuted),
-          textAlign: TextAlign.center,
-        ),
+      return EmptyState(
+        icon: Icons.groups_outlined,
+        title: l10n.noGroupsToInvite,
       );
     }
     return ListView.builder(

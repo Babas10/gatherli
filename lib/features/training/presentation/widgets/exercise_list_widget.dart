@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/data/models/exercise_model.dart';
@@ -187,39 +188,14 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
               // Exercise list or empty state
               if (state.exercises.isEmpty)
                 Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fitness_center,
-                          size: 64,
-                          color: Colors.grey[400],
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        Text(
-                          'No exercises yet',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        if (state.canModify)
-                          const Text(
-                            'Tap "Add Exercise" to get started',
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        else if (!state.isOrganiser)
-                          const Text(
-                            'The organiser has not added any exercises yet',
-                            style: TextStyle(color: Colors.grey),
-                            textAlign: TextAlign.center,
-                          )
-                        else
-                          const Text(
-                            'Cannot add exercises after session starts',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                      ],
-                    ),
+                  child: EmptyState(
+                    icon: Icons.fitness_center,
+                    title: 'No exercises yet',
+                    message: state.canModify
+                        ? 'Tap "Add Exercise" to get started'
+                        : !state.isOrganiser
+                            ? 'The organiser has not added any exercises yet'
+                            : 'Cannot add exercises after session starts',
                   ),
                 )
               else

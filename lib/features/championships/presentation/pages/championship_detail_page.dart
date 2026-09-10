@@ -11,6 +11,7 @@ import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
@@ -813,17 +814,9 @@ class _StandingsTab extends StatelessWidget {
 
   Widget _buildTeamsList(BuildContext context) {
     if (teams.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Text(
-            l10n.championshipDetailNoTeamsYet,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+      return EmptyState(
+        icon: Icons.groups,
+        title: l10n.championshipDetailNoTeamsYet,
       );
     }
 
@@ -837,17 +830,9 @@ class _StandingsTab extends StatelessWidget {
 
   Widget _buildStandingsTable(BuildContext context) {
     if (standings.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Text(
-            l10n.championshipDetailNoStandings,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+      return EmptyState(
+        icon: Icons.leaderboard,
+        title: l10n.championshipDetailNoStandings,
       );
     }
 
@@ -1102,17 +1087,9 @@ class _MatchesTab extends StatelessWidget {
         // Match list
         Expanded(
           child: matches.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Text(
-                      l10n.championshipDetailNoMatchesForRound,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+              ? EmptyState(
+                  icon: Icons.sports_volleyball,
+                  title: l10n.championshipDetailNoMatchesForRound,
                 )
               : ListView.separated(
                   padding:
@@ -2135,14 +2112,9 @@ class _MyMatchesTab extends StatelessWidget {
       ..sort((a, b) => a.round.compareTo(b.round));
 
     if (myMatches.isEmpty) {
-      return Center(
-        child: Text(
-          l10n.championshipMyMatchesEmpty,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.textMuted),
-        ),
+      return EmptyState(
+        icon: Icons.sports_volleyball,
+        title: l10n.championshipMyMatchesEmpty,
       );
     }
 

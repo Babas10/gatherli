@@ -409,6 +409,16 @@ void main() {
     testWidgets(
       'Matches tab shows a match that arrives after the initial stable load',
       (tester) async {
+        // EmptyState's content is taller than the plain Text it replaced;
+        // the default test surface is too short to fit it inside this tab's
+        // Expanded, which isn't a real-device constraint (a real Scaffold
+        // gives this tab the full screen height) but does trip Flutter's
+        // render-overflow assertion under the default test viewport.
+        tester.view.physicalSize = const Size(1170, 2532);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
         final matchesController =
             StreamController<List<ChampionshipMatchModel>>();
         when(() => mockChampionshipRepository.getMatchesForRound(

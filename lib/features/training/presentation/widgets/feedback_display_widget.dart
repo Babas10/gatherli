@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 
 import '../../../../core/domain/repositories/training_feedback_repository.dart';
@@ -106,42 +107,25 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
   }
 
   Widget _buildEmptyState(BuildContext context, bool hasUserSubmitted) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.feedback_outlined, size: 80, color: Colors.grey[400]),
-            const SizedBox(height: AppSpacing.xl),
-            Text(
-              'No Feedback Yet',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              hasUserSubmitted
-                  ? 'You have submitted feedback, but no other participants have provided feedback yet.'
-                  : 'Be the first to provide feedback for this training session!',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey, fontSize: 16),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            if (!hasUserSubmitted)
-              FilledButton.icon(
-                onPressed: () => _navigateToSubmitFeedback(context),
-                icon: const Icon(Icons.rate_review),
-                label: const Text('Submit Feedback'),
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 16,
-                  ),
+    return EmptyState(
+      icon: Icons.feedback_outlined,
+      title: 'No Feedback Yet',
+      message: hasUserSubmitted
+          ? 'You have submitted feedback, but no other participants have provided feedback yet.'
+          : 'Be the first to provide feedback for this training session!',
+      action: hasUserSubmitted
+          ? null
+          : FilledButton.icon(
+              onPressed: () => _navigateToSubmitFeedback(context),
+              icon: const Icon(Icons.rate_review),
+              label: const Text('Submit Feedback'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
                 ),
               ),
-          ],
-        ),
-      ),
+            ),
     );
   }
 
