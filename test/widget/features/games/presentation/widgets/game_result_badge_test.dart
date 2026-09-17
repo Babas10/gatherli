@@ -111,5 +111,38 @@ void main() {
         expect(decoration.color, isNot(equals(AppColors.success)));
       },
     );
+
+    testWidgets('renders a tie distinctly from a win (muted, not success)', (
+      tester,
+    ) async {
+      const tieResult = GameResult(
+        games: [
+          IndividualGame(
+            gameNumber: 1,
+            winner: 'teamA',
+            sets: [SetScore(teamAPoints: 21, teamBPoints: 19, setNumber: 1)],
+          ),
+          IndividualGame(
+            gameNumber: 2,
+            winner: 'teamB',
+            sets: [SetScore(teamAPoints: 19, teamBPoints: 21, setNumber: 1)],
+          ),
+        ],
+        overallWinner: null,
+      );
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: GameResultBadge(result: tieResult)),
+        ),
+      );
+
+      expect(find.text('Tie 1-1'), findsOneWidget);
+      expect(find.byIcon(Icons.emoji_events), findsNothing);
+      expect(find.byIcon(Icons.handshake), findsOneWidget);
+
+      final text = tester.widget<Text>(find.text('Tie 1-1'));
+      expect(text.style?.color, AppColors.textMuted);
+    });
   });
 }

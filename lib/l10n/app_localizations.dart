@@ -2084,6 +2084,12 @@ abstract class AppLocalizations {
   /// **'Verification'**
   String get verification;
 
+  /// Status label for a game currently in progress
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get gameLiveStatus;
+
   /// Empty state message when no participants
   ///
   /// In en, this message translates to:

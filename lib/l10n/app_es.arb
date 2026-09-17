@@ -330,6 +330,7 @@
   "scheduled": "Programado",
   "completed": "Completado",
   "verification": "Verificación",
+  "gameLiveStatus": "En vivo",
   "noParticipantsYet": "Sin participantes aún",
   "beFirstToJoin": "¡Sé el primero en unirte!",
   "participation": "Participación",

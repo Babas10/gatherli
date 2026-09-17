@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
@@ -45,7 +46,7 @@ class TrainingSessionListItem extends StatelessWidget {
                   Icon(
                     Icons.fitness_center,
                     size: 20,
-                    color: isCancelled ? Colors.grey : AppColors.secondary,
+                    color: isCancelled ? AppColors.textMuted : AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -54,7 +55,7 @@ class TrainingSessionListItem extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isCancelled
-                            ? Theme.of(context).colorScheme.onSurfaceVariant
+                            ? AppColors.textMuted
                             : AppColors.secondary,
                         decoration: isCancelled
                             ? TextDecoration.lineThrough
@@ -71,7 +72,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 context,
                 Icons.calendar_today,
                 _formatDateTime(context, session.startTime),
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.sm),
               // Location
@@ -79,7 +80,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 context,
                 Icons.location_on,
                 session.location.name,
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.sm),
               // Duration
@@ -87,7 +88,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 context,
                 Icons.access_time,
                 _formatDuration(context, session.duration),
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.sm),
               // Min participants
@@ -95,7 +96,7 @@ class TrainingSessionListItem extends StatelessWidget {
                 context,
                 Icons.people,
                 l10n.minParticipants(session.minParticipants),
-                isCancelled ? Colors.grey : AppColors.secondary,
+                isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.md),
               // Participant count (no scores for training sessions)
@@ -127,38 +128,12 @@ class TrainingSessionListItem extends StatelessWidget {
     final isCancelled = session.status == TrainingStatus.cancelled;
 
     if (isCancelled) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.grey.withValues(alpha: 0.2),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey),
-        ),
-        child: Text(
-          l10n.cancelled,
-          style: TextStyle(
-            color: Colors.grey.shade700,
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
-          ),
-        ),
-      );
+      return StatusBadge.muted(l10n.cancelled);
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        l10n.training.toUpperCase(),
-        style: const TextStyle(
-          color: AppColors.secondary,
-          fontWeight: FontWeight.bold,
-          fontSize: 10,
-        ),
-      ),
+    return StatusBadge(
+      label: l10n.training.toUpperCase(),
+      color: AppColors.secondary,
     );
   }
 

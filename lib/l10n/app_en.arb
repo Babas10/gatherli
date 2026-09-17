@@ -1410,6 +1410,10 @@
   "@verification": {
     "description": "Status label for games awaiting result verification"
   },
+  "gameLiveStatus": "Live",
+  "@gameLiveStatus": {
+    "description": "Status label for a game currently in progress"
+  },
   "noParticipantsYet": "No participants yet",
   "@noParticipantsYet": {
     "description": "Empty state message when no participants"
