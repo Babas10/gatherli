@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
@@ -316,28 +317,13 @@ class PartnerDetailPage extends StatelessWidget {
                   ),
                 ),
                 if (stats.currentStreak.abs() > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: stats.isOnWinningStreak
-                          ? AppColors.success.withValues(alpha: 0.1)
-                          : AppColors.danger.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      stats.isOnWinningStreak
-                          ? l10n.streakWins(stats.currentStreak.abs())
-                          : l10n.streakLosses(stats.currentStreak.abs()),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: stats.isOnWinningStreak
-                            ? AppColors.success
-                            : AppColors.danger,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  StatusBadge(
+                    label: stats.isOnWinningStreak
+                        ? l10n.streakWins(stats.currentStreak.abs())
+                        : l10n.streakLosses(stats.currentStreak.abs()),
+                    color: stats.isOnWinningStreak
+                        ? AppColors.success
+                        : AppColors.danger,
                   ),
               ],
             ),

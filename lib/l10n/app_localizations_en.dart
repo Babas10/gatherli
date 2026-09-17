@@ -128,6 +128,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verify => 'Verify';
 
   @override
+  String get verified => 'Verified';
+
+  @override
+  String get notVerified => 'Not Verified';
+
+  @override
   String get accountType => 'Account Type';
 
   @override

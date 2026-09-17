@@ -39,6 +39,8 @@
   "stay": "Bleiben",
   "accountInformation": "Kontoinformationen",
   "verify": "Verifizieren",
+  "verified": "Verifiziert",
+  "notVerified": "Nicht verifiziert",
   "accountType": "Kontotyp",
   "anonymous": "Anonym",
   "regular": "Normal",
