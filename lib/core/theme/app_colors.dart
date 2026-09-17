@@ -22,6 +22,7 @@ class AppColors {
   static const success = Color(0xFF27AE60); // wins, verified, confirmed, accepted
   static const warning = Color(0xFFE67E22); // pending, scheduled, waitlist
   static const info    = Color(0xFF3498DB); // informational, in-progress
+  static const adminAction = Color(0xFF9C27B0); // admin-decided / admin-only actions
 
   // Avatar — all user and group circles use the same palette
   static const avatarBackground = Color(0x40EACE6A); // primary at 25% opacity
