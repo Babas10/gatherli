@@ -1,5 +1,6 @@
 // Dedicated stats page displaying detailed player performance analytics.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_bloc.dart';
@@ -61,11 +62,9 @@ class StatsPage extends StatelessWidget {
         }
 
         // Initial state
-        return Center(
-          child: Text(
-            AppLocalizations.of(context)!.noStatsYet,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
+        return EmptyState(
+          icon: Icons.bar_chart,
+          title: AppLocalizations.of(context)!.noStatsYet,
         );
       },
     );

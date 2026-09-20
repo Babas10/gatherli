@@ -15,6 +15,7 @@ import 'package:play_with_me/features/profile/presentation/bloc/player_stats/pla
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_event.dart';
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_state.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/expanded_stats_section.dart';
+import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import '../../../../../helpers/test_app.dart';
 
 class MockPlayerStatsBloc extends MockBloc<PlayerStatsEvent, PlayerStatsState>
@@ -156,6 +157,22 @@ void main() {
 
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
       expect(find.textContaining('Error loading stats'), findsOneWidget);
+    });
+
+    testWidgets('displays EmptyState in the initial (pre-load) state', (
+      tester,
+    ) async {
+      whenListen(
+        mockBloc,
+        const Stream<PlayerStatsState>.empty(),
+        initialState: PlayerStatsInitial(),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      expect(find.byType(EmptyState), findsOneWidget);
+      expect(find.byIcon(Icons.bar_chart), findsOneWidget);
     });
 
     testWidgets('is scrollable when loaded', (tester) async {
