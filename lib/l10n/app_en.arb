@@ -1193,6 +1193,18 @@
   "@removeMember": {
     "description": "Dialog title for removing member"
   },
+  "groupAdminBadge": "Admin",
+  "@groupAdminBadge": {
+    "description": "Badge label shown next to a group member who is an admin"
+  },
+  "groupMemberBadge": "Member",
+  "@groupMemberBadge": {
+    "description": "Badge label shown in search results for a user already in the group"
+  },
+  "groupInvitedBadge": "Invited",
+  "@groupInvitedBadge": {
+    "description": "Badge label shown in search results for a user already invited to the group"
+  },
   "leaveGroup": "Leave Group",
   "@leaveGroup": {
     "description": "Dialog title for leaving group"

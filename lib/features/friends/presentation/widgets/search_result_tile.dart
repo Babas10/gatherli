@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -107,11 +108,11 @@ class SearchResultTile extends StatelessWidget {
         style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: displayName != null ? Text(foundUser.email) : null,
-      trailing: _buildActionButton(context, l10n),
+      trailing: _buildActionButton(l10n),
     );
   }
 
-  Widget _buildActionButton(BuildContext context, AppLocalizations l10n) {
+  Widget _buildActionButton(AppLocalizations l10n) {
     // Request just sent — show green tick
     if (isInvited) {
       return const Icon(Icons.check_circle, color: AppColors.success, size: 28);
@@ -119,26 +120,12 @@ class SearchResultTile extends StatelessWidget {
 
     // Already friends
     if (isFriend) {
-      return Chip(
-        label: Text(l10n.friends, style: const TextStyle(fontSize: 12)),
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-        labelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-        ),
-        padding: EdgeInsets.zero,
-      );
+      return StatusBadge.muted(l10n.friends);
     }
 
     // Pending request sent
     if (hasPendingRequest && requestDirection == 'sent') {
-      return Chip(
-        label: Text(l10n.requestPending, style: const TextStyle(fontSize: 12)),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        labelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSecondaryContainer,
-        ),
-        padding: EdgeInsets.zero,
-      );
+      return StatusBadge.warning(l10n.requestPending);
     }
 
     // Pending request received - can accept
