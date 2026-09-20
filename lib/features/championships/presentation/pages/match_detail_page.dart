@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -40,11 +41,13 @@ class MatchDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<MatchDetailBloc>()
-        ..add(LoadMatchDetail(
-          championshipId: championshipId,
-          matchId: matchId,
-          currentUserId: currentUserId,
-        )),
+        ..add(
+          LoadMatchDetail(
+            championshipId: championshipId,
+            matchId: matchId,
+            currentUserId: currentUserId,
+          ),
+        ),
       child: _MatchDetailView(
         currentUserId: currentUserId,
         currentUserDisplayName: currentUserDisplayName,
@@ -167,10 +170,7 @@ class _MatchDetailBody extends StatelessWidget {
           ],
           if (_canProposeSchedule(match, state)) ...[
             const SizedBox(height: AppSpacing.md),
-            _ProposeScheduleSection(
-              state: state,
-              l10n: l10n,
-            ),
+            _ProposeScheduleSection(state: state, l10n: l10n),
           ],
           const SizedBox(height: AppSpacing.lg),
           MatchChatSection(
@@ -182,10 +182,7 @@ class _MatchDetailBody extends StatelessWidget {
             currentTeamId: state.myTeamId,
           ),
           const SizedBox(height: AppSpacing.lg),
-          _ResultSection(
-            state: state,
-            l10n: l10n,
-          ),
+          _ResultSection(state: state, l10n: l10n),
         ],
       ),
     );
@@ -194,7 +191,9 @@ class _MatchDetailBody extends StatelessWidget {
   /// True when the current user proposed the current schedule and is waiting
   /// for the opposing team to accept or reject it.
   bool _isWaitingForConfirmation(
-      ChampionshipMatchModel match, MatchDetailLoaded state) {
+    ChampionshipMatchModel match,
+    MatchDetailLoaded state,
+  ) {
     return state.isTeamMember &&
         match.scheduledByTeamId != null &&
         match.scheduledByTeamId == state.myTeamId;
@@ -203,7 +202,9 @@ class _MatchDetailBody extends StatelessWidget {
   /// True when the opposing team proposed a schedule and the current user
   /// (opposing team member) can accept or reject it.
   bool _isAwaitingMyConfirmation(
-      ChampionshipMatchModel match, MatchDetailLoaded state) {
+    ChampionshipMatchModel match,
+    MatchDetailLoaded state,
+  ) {
     return state.isTeamMember &&
         match.scheduledByTeamId != null &&
         match.scheduledByTeamId != state.myTeamId;
@@ -212,8 +213,11 @@ class _MatchDetailBody extends StatelessWidget {
   /// True when the current user may propose (or re-propose) a schedule.
   /// The proposer is hidden from the form while awaiting confirmation.
   bool _canProposeSchedule(
-      ChampionshipMatchModel match, MatchDetailLoaded state) {
-    final isProposer = match.scheduledByTeamId != null &&
+    ChampionshipMatchModel match,
+    MatchDetailLoaded state,
+  ) {
+    final isProposer =
+        match.scheduledByTeamId != null &&
         match.scheduledByTeamId == state.myTeamId;
     return state.isTeamMember &&
         (match.status == ChampionshipMatchStatus.pending ||
@@ -243,131 +247,129 @@ class _MatchHeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final result = match.result;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Teams row
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    teamA.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: result?.winner == 'teamA'
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+    return DetailPageHeader(
+      margin: EdgeInsets.zero,
+      child: Column(
+        children: [
+          // Teams row
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  teamA.name,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: result?.winner == 'teamA'
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    l10n.championshipMatchVs,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  l10n.championshipMatchVs,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  teamB.name,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: result?.winner == 'teamB'
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Expanded(
-                  child: Text(
-                    teamB.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: result?.winner == 'teamB'
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            // Set scores if result exists
-            if (result != null) ...[
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                result.sets
-                    .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
-                    .join('  '),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                textAlign: TextAlign.center,
               ),
             ],
-            const SizedBox(height: AppSpacing.md),
-            // Status badge
-            StatusBadge(
-              label: match.status.label(l10n),
-              color: match.status.color,
+          ),
+          // Set scores if result exists
+          if (result != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              result.sets
+                  .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
+                  .join('  '),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+              textAlign: TextAlign.center,
             ),
-            // Scheduled date
-            if (match.scheduledAt != null) ...[
-              const SizedBox(height: AppSpacing.sm),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.event, size: 14, color: AppColors.textMuted),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    l10n.matchDetailScheduledAt(
-                      DateFormat('d MMM yyyy · HH:mm')
-                          .format(match.scheduledAt!),
-                    ),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                  ),
-                ],
-              ),
-              if (match.location != null) ...[
-                const SizedBox(height: AppSpacing.xs),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.location_on_outlined,
-                        size: 14, color: AppColors.textMuted),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      match.location!,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                    ),
-                  ],
-                ),
-              ],
-            ],
-            // Deadline
+          ],
+          const SizedBox(height: AppSpacing.md),
+          // Status badge
+          StatusBadge(
+            label: match.status.label(l10n),
+            color: match.status.color,
+          ),
+          // Scheduled date
+          if (match.scheduledAt != null) ...[
             const SizedBox(height: AppSpacing.sm),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.schedule, size: 14,
-                    color: AppColors.textMuted),
+                const Icon(Icons.event, size: 14, color: AppColors.textMuted),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
-                  l10n.championshipDeadlineLabel(
-                    DateFormat('d MMM yyyy').format(match.deadline),
+                  l10n.matchDetailScheduledAt(
+                    DateFormat('d MMM yyyy · HH:mm').format(match.scheduledAt!),
                   ),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                 ),
               ],
             ),
+            if (match.location != null) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 14,
+                    color: AppColors.textMuted,
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  Text(
+                    match.location!,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                  ),
+                ],
+              ),
+            ],
           ],
-        ),
+          // Deadline
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.schedule, size: 14, color: AppColors.textMuted),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                l10n.championshipDeadlineLabel(
+                  DateFormat('d MMM yyyy').format(match.deadline),
+                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
-
 }
 
 // ============================================================================
@@ -429,10 +431,12 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
 
     final location = _locationController.text.trim();
 
-    context.read<MatchDetailBloc>().add(ProposeSchedule(
-          scheduledAt: scheduledAt,
-          location: location.isEmpty ? null : location,
-        ));
+    context.read<MatchDetailBloc>().add(
+      ProposeSchedule(
+        scheduledAt: scheduledAt,
+        location: location.isEmpty ? null : location,
+      ),
+    );
   }
 
   @override
@@ -458,30 +462,30 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
             Text(
               l10n.matchDetailProposeSchedule,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.secondary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.secondary,
+              ),
             ),
             const SizedBox(height: AppSpacing.md),
             Row(
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed:
-                        isProposing ? null : () => _pickDate(context),
+                    onPressed: isProposing ? null : () => _pickDate(context),
                     icon: const Icon(Icons.calendar_today, size: 16),
                     label: Text(
-                        '${l10n.matchDetailProposeDateLabel}: $dateStr'),
+                      '${l10n.matchDetailProposeDateLabel}: $dateStr',
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed:
-                        isProposing ? null : () => _pickTime(context),
+                    onPressed: isProposing ? null : () => _pickTime(context),
                     icon: const Icon(Icons.access_time, size: 16),
                     label: Text(
-                        '${l10n.matchDetailProposeTimeLabel}: $timeStr'),
+                      '${l10n.matchDetailProposeTimeLabel}: $timeStr',
+                    ),
                   ),
                 ),
               ],
@@ -500,18 +504,16 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 state.scheduleError!,
-                style:
-                    const TextStyle(color: AppColors.danger, fontSize: 13),
+                style: const TextStyle(color: AppColors.danger, fontSize: 13),
               ),
             ],
             const SizedBox(height: AppSpacing.md),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed:
-                    (isProposing || !canConfirm)
-                        ? null
-                        : () => _confirm(context),
+                onPressed: (isProposing || !canConfirm)
+                    ? null
+                    : () => _confirm(context),
                 child: isProposing
                     ? const SizedBox(
                         height: 20,
@@ -583,8 +585,11 @@ class _ResultSection extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.hourglass_top,
-                    color: AppColors.warning, size: 40),
+                const Icon(
+                  Icons.hourglass_top,
+                  color: AppColors.warning,
+                  size: 40,
+                ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   l10n.submitResultAwaitingVerification,
@@ -662,17 +667,17 @@ class _ResultSummaryCard extends StatelessWidget {
                 result.sets
                     .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
                     .join('  '),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
                 result.winner == 'teamA' ? teamA.name : teamB.name,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
@@ -687,7 +692,6 @@ class _ResultSummaryCard extends StatelessWidget {
     );
   }
 }
-
 
 // ============================================================================
 // Schedule waiting section — shown to the proposer (Story 30.20)
@@ -711,8 +715,7 @@ class _ScheduleWaitingSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondary.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(10),
-        border:
-            Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
+        border: Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -732,17 +735,17 @@ class _ScheduleWaitingSection extends StatelessWidget {
                 Text(
                   l10n.matchScheduleWaitingTitle,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.secondary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 if (dateTimeStr.isNotEmpty) ...[
                   const SizedBox(height: 2),
                   Text(
                     l10n.matchScheduleWaitingBody(dateTimeStr),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                   ),
                 ],
               ],
@@ -762,8 +765,7 @@ class _ScheduleConfirmationSection extends StatelessWidget {
   final MatchDetailLoaded state;
   final AppLocalizations l10n;
 
-  const _ScheduleConfirmationSection(
-      {required this.state, required this.l10n});
+  const _ScheduleConfirmationSection({required this.state, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -793,15 +795,18 @@ class _ScheduleConfirmationSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.event_available,
-                    size: 18, color: AppColors.secondary),
+                const Icon(
+                  Icons.event_available,
+                  size: 18,
+                  color: AppColors.secondary,
+                ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   l10n.matchScheduleConfirmTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.secondary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondary,
+                  ),
                 ),
               ],
             ),
@@ -814,15 +819,17 @@ class _ScheduleConfirmationSection extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Row(
                 children: [
-                  const Icon(Icons.location_on_outlined,
-                      size: 14, color: AppColors.textMuted),
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 14,
+                    color: AppColors.textMuted,
+                  ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     locationStr,
-                    style:
-                        Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textMuted,
-                            ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                   ),
                 ],
               ),
@@ -841,9 +848,9 @@ class _ScheduleConfirmationSection extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: isBusy
                         ? null
-                        : () => context
-                            .read<MatchDetailBloc>()
-                            .add(const RejectSchedule()),
+                        : () => context.read<MatchDetailBloc>().add(
+                            const RejectSchedule(),
+                          ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.danger,
                       side: const BorderSide(color: AppColors.danger),
@@ -865,9 +872,9 @@ class _ScheduleConfirmationSection extends StatelessWidget {
                   child: FilledButton(
                     onPressed: isBusy
                         ? null
-                        : () => context
-                            .read<MatchDetailBloc>()
-                            .add(const AcceptSchedule()),
+                        : () => context.read<MatchDetailBloc>().add(
+                            const AcceptSchedule(),
+                          ),
                     child: isAccepting
                         ? const SizedBox(
                             height: 18,
@@ -914,25 +921,27 @@ class _DisputedStateSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.warning_amber_outlined,
-                  color: AppColors.warning, size: 18),
+              const Icon(
+                Icons.warning_amber_outlined,
+                color: AppColors.warning,
+                size: 18,
+              ),
               const SizedBox(width: 6),
               Text(
                 l10n.matchDisputedTitle,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppColors.warning,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: AppColors.warning,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
             l10n.matchDisputedExplanation,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: AppColors.warning),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.warning),
           ),
           if (result != null) ...[
             const SizedBox(height: 10),
@@ -941,9 +950,9 @@ class _DisputedStateSection extends StatelessWidget {
                   .map((s) => '${s.teamAPoints} – ${s.teamBPoints}')
                   .join('   '),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.warning,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: AppColors.warning,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ],

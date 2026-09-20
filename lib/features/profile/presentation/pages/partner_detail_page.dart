@@ -1,10 +1,10 @@
 // Partner detail screen showing comprehensive teammate statistics.
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
@@ -105,54 +105,37 @@ class PartnerDetailPage extends StatelessWidget {
   Widget _buildPartnerHeader(BuildContext context, UserModel partner) {
     final theme = Theme.of(context);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: theme.colorScheme.primaryContainer,
-              backgroundImage: partner.photoUrl != null
-                  ? CachedNetworkImageProvider(
-                      partner.photoUrl!,
-                      maxWidth: avatarCacheDimension(context, 80),
-                      maxHeight: avatarCacheDimension(context, 80),
-                    )
-                  : null,
-              child: partner.photoUrl == null
-                  ? Icon(
-                      Icons.person,
-                      size: 40,
-                      color: theme.colorScheme.onPrimaryContainer,
-                    )
-                  : null,
-            ),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+    return DetailPageHeader(
+      margin: EdgeInsets.zero,
+      child: Row(
+        children: [
+          UserAvatar(
+            name: partner.displayNameOrEmail,
+            photoUrl: partner.photoUrl,
+            radius: 40,
+          ),
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  partner.displayNameOrEmail,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (partner.displayName != null)
                   Text(
-                    partner.displayNameOrEmail,
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    partner.email,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textMuted,
                     ),
                   ),
-                  if (partner.displayName != null)
-                    Text(
-                      partner.email,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.6,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -287,7 +270,9 @@ class PartnerDetailPage extends StatelessWidget {
                   stats.avgEloChange >= 0
                       ? '+${stats.avgEloChange.toStringAsFixed(1)}'
                       : stats.avgEloChange.toStringAsFixed(1),
-                  stats.avgEloChange >= 0 ? AppColors.success : AppColors.danger,
+                  stats.avgEloChange >= 0
+                      ? AppColors.success
+                      : AppColors.danger,
                 ),
               ],
             ),
@@ -406,7 +391,9 @@ class PartnerDetailPage extends StatelessWidget {
                     context,
                   )!.eloLabel(game.formattedEloChange),
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: game.eloChange >= 0 ? AppColors.success : AppColors.danger,
+                    color: game.eloChange >= 0
+                        ? AppColors.success
+                        : AppColors.danger,
                   ),
                 ),
               ],

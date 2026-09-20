@@ -9,6 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_bloc.dart';
 import 'package:play_with_me/core/presentation/bloc/invitation/invitation_state.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/authentication/authentication_state.dart';
@@ -275,7 +276,7 @@ void main() {
         expect(find.text('anonymous@example.com'), findsOneWidget);
       });
 
-      testWidgets('shows person icon when no photo url', (tester) async {
+      testWidgets('shows initials avatar when no photo url', (tester) async {
         when(
           () => mockUserRepository.getTeammateStats(testUserId, testPartnerId),
         ).thenAnswer((_) async => testStats);
@@ -286,7 +287,8 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        expect(find.byIcon(Icons.person), findsOneWidget);
+        expect(find.byType(UserAvatar), findsOneWidget);
+        expect(find.text('JP'), findsOneWidget);
       });
     });
 
