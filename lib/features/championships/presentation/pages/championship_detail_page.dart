@@ -30,8 +30,11 @@ import 'package:play_with_me/features/championships/presentation/bloc/championsh
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/partner_picker/partner_picker_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_bloc.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/championship_gender_badge.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/championship_match_status_style.dart';
-import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart' hide LoadChampionships;
+import 'package:play_with_me/features/championships/presentation/widgets/championship_status_badge.dart';
+import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_event.dart'
+    hide LoadChampionships;
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
@@ -49,8 +52,9 @@ class ChampionshipDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ChampionshipDetailBloc>()
-        ..add(LoadChampionshipDetail(championshipId)),
+      create: (_) =>
+          sl<ChampionshipDetailBloc>()
+            ..add(LoadChampionshipDetail(championshipId)),
       child: const _ChampionshipDetailView(),
     );
   }
@@ -103,18 +107,20 @@ class _ChampionshipDetailView extends StatelessWidget {
       final currentUserId = authState is AuthenticationAuthenticated
           ? authState.user.uid
           : null;
-      final isAdmin = currentUserId != null &&
+      final isAdmin =
+          currentUserId != null &&
           state.championship.adminIds.contains(currentUserId);
 
       // All registration eligibility logic centralised in the use case
-      final eligibility = const CheckChampionshipEligibilityUseCase().executeSync(
-        ChampionshipEligibilityInput(
-          championship: state.championship,
-          teams: state.teams,
-          userId: currentUserId,
-          userGender: state.currentUserGender,
-        ),
-      );
+      final eligibility = const CheckChampionshipEligibilityUseCase()
+          .executeSync(
+            ChampionshipEligibilityInput(
+              championship: state.championship,
+              teams: state.teams,
+              userId: currentUserId,
+              userGender: state.currentUserGender,
+            ),
+          );
 
       final alreadyRegistered = eligibility.isAlreadyRegistered;
       final myTeamId = eligibility.myTeamId;
@@ -127,29 +133,40 @@ class _ChampionshipDetailView extends StatelessWidget {
             _ChampionshipHeader(
               championship: state.championship,
               onRegister: eligibility.canRegister
-                  ? () => _openRegistration(context, state.championship.id,
-                      currentUserId!, l10n)
+                  ? () => _openRegistration(
+                      context,
+                      state.championship.id,
+                      currentUserId!,
+                      l10n,
+                    )
                   : null,
               genderBlockReason: eligibility.genderBlockReason,
               myTeam: alreadyRegistered
-                  ? state.teams.where((t) =>
-                      t.memberIds.contains(currentUserId)).firstOrNull
+                  ? state.teams
+                        .where((t) => t.memberIds.contains(currentUserId))
+                        .firstOrNull
                   : null,
-              onLeaveTeam: alreadyRegistered &&
-                  _isRegistrationPhase(state.championship.status)
+              onLeaveTeam:
+                  alreadyRegistered &&
+                      _isRegistrationPhase(state.championship.status)
                   ? () {
                       final myT = state.teams
                           .where((t) => t.memberIds.contains(currentUserId))
                           .firstOrNull;
                       if (myT != null) {
-                        _confirmLeaveTeam(context, state.championship.id, myT.id, l10n);
+                        _confirmLeaveTeam(
+                          context,
+                          state.championship.id,
+                          myT.id,
+                          l10n,
+                        );
                       }
                     }
                   : null,
               championTeamName: state.standings.isNotEmpty
                   ? state.standings
-                      .reduce((a, b) => a.position < b.position ? a : b)
-                      .teamName
+                        .reduce((a, b) => a.position < b.position ? a : b)
+                        .teamName
                   : null,
               currentUserId: currentUserId,
               l10n: l10n,
@@ -164,10 +181,20 @@ class _ChampionshipDetailView extends StatelessWidget {
                       ? l10n.championshipDetailTeamsTab
                       : l10n.championshipDetailStandingsTab,
                 ),
-                AppTabItem(icon: Icons.sports_volleyball, label: l10n.championshipDetailMatchesTab),
+                AppTabItem(
+                  icon: Icons.sports_volleyball,
+                  label: l10n.championshipDetailMatchesTab,
+                ),
                 if (alreadyRegistered)
-                  AppTabItem(icon: Icons.person, label: l10n.championshipMyMatchesTab),
-                if (isAdmin) AppTabItem(icon: Icons.admin_panel_settings, label: l10n.adminPanelTabLabel),
+                  AppTabItem(
+                    icon: Icons.person,
+                    label: l10n.championshipMyMatchesTab,
+                  ),
+                if (isAdmin)
+                  AppTabItem(
+                    icon: Icons.admin_panel_settings,
+                    label: l10n.adminPanelTabLabel,
+                  ),
               ],
             ),
             Expanded(
@@ -198,7 +225,8 @@ class _ChampionshipDetailView extends StatelessWidget {
                           (context.read<AuthenticationBloc>().state
                                   as AuthenticationAuthenticated)
                               .user
-                              .displayName ?? '',
+                              .displayName ??
+                          '',
                       l10n: l10n,
                     ),
                   if (isAdmin)
@@ -221,7 +249,6 @@ class _ChampionshipDetailView extends StatelessWidget {
   bool _isRegistrationPhase(ChampionshipStatus status) =>
       status == ChampionshipStatus.registration ||
       status == ChampionshipStatus.registrationClosed;
-
 
   void _openRegistration(
     BuildContext context,
@@ -246,13 +273,13 @@ class _ChampionshipDetailView extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(l10n.teamRegisteredSuccess)),
               );
-              context
-                  .read<ChampionshipListBloc>()
-                  .add(const LoadChampionships());
-            } else if (state is TeamRegistrationError) {
-              ScaffoldMessenger.of(sheetContext).showSnackBar(
-                SnackBar(content: Text(state.message)),
+              context.read<ChampionshipListBloc>().add(
+                const LoadChampionships(),
               );
+            } else if (state is TeamRegistrationError) {
+              ScaffoldMessenger.of(
+                sheetContext,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           child: CreateTeamBottomSheet(
@@ -280,9 +307,9 @@ class _ChampionshipDetailView extends StatelessWidget {
           listener: (_, state) {
             if (state is TeamLeft) {
               Navigator.of(dialogCtx).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.leaveTeamSuccess)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(l10n.leaveTeamSuccess)));
             } else if (state is TeamRegistrationError) {
               Navigator.of(dialogCtx).pop();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -293,40 +320,42 @@ class _ChampionshipDetailView extends StatelessWidget {
               );
             }
           },
-          child: BlocSelector<TeamRegistrationBloc, TeamRegistrationState, bool>(
-            selector: (state) => state is TeamRegistrationSubmitting,
-            builder: (builderCtx, isSubmitting) => AlertDialog(
-              title: Text(l10n.leaveTeamConfirmTitle),
-              content: Text(l10n.leaveTeamConfirmBody),
-              actions: [
-                TextButton(
-                  onPressed: isSubmitting
-                      ? null
-                      : () => Navigator.of(dialogCtx).pop(),
-                  child: Text(l10n.cancel),
-                ),
-                TextButton(
-                  onPressed: isSubmitting
-                      ? null
-                      : () => leaveBloc.add(
-                            LeaveTeam(
-                              championshipId: championshipId,
-                              teamId: teamId,
+          child:
+              BlocSelector<TeamRegistrationBloc, TeamRegistrationState, bool>(
+                selector: (state) => state is TeamRegistrationSubmitting,
+                builder: (builderCtx, isSubmitting) => AlertDialog(
+                  title: Text(l10n.leaveTeamConfirmTitle),
+                  content: Text(l10n.leaveTeamConfirmBody),
+                  actions: [
+                    TextButton(
+                      onPressed: isSubmitting
+                          ? null
+                          : () => Navigator.of(dialogCtx).pop(),
+                      child: Text(l10n.cancel),
+                    ),
+                    TextButton(
+                      onPressed: isSubmitting
+                          ? null
+                          : () => leaveBloc.add(
+                              LeaveTeam(
+                                championshipId: championshipId,
+                                teamId: teamId,
+                              ),
                             ),
-                          ),
-                  style:
-                      TextButton.styleFrom(foregroundColor: AppColors.danger),
-                  child: isSubmitting
-                      ? const SizedBox(
-                          height: 16,
-                          width: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.leaveTeam),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.danger,
+                      ),
+                      child: isSubmitting
+                          ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(l10n.leaveTeam),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
         ),
       ),
     );
@@ -378,8 +407,8 @@ class _ChampionshipHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return DetailPageHeader(
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -388,15 +417,22 @@ class _ChampionshipHeader extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    _StatusBadge(championship: championship, l10n: l10n),
+                    ChampionshipStatusBadge(
+                      championship: championship,
+                      l10n: l10n,
+                    ),
                     if (championship.genderCategory != null)
-                      _GenderBadge(category: championship.genderCategory!, l10n: l10n),
+                      ChampionshipGenderBadge(
+                        category: championship.genderCategory!,
+                        l10n: l10n,
+                      ),
                     if (championship.country != null)
                       _InfoChip(
                         icon: Icons.location_on_outlined,
-                        label: [championship.region, championship.country]
-                            .whereType<String>()
-                            .join(', '),
+                        label: [
+                          championship.region,
+                          championship.country,
+                        ].whereType<String>().join(', '),
                       ),
                     _InfoChip(
                       icon: Icons.group,
@@ -412,8 +448,11 @@ class _ChampionshipHeader extends StatelessWidget {
                 onTap: () => _showTiebreakerDialog(context),
                 child: const Padding(
                   padding: EdgeInsets.only(left: 8),
-                  child: Icon(Icons.info_outline,
-                      size: 20, color: AppColors.textMuted),
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 20,
+                    color: AppColors.textMuted,
+                  ),
                 ),
               ),
             ],
@@ -451,14 +490,18 @@ class _ChampionshipHeader extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                const Icon(Icons.info_outline, size: 14, color: AppColors.textMuted),
+                const Icon(
+                  Icons.info_outline,
+                  size: 14,
+                  color: AppColors.textMuted,
+                ),
                 const SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: Text(
                     genderBlockReason!,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                   ),
                 ),
               ],
@@ -475,8 +518,8 @@ class _ChampionshipHeader extends StatelessWidget {
             ),
           ],
           const SizedBox(height: AppSpacing.sm),
-          ],
-        ),
+        ],
+      ),
     );
   }
 }
@@ -556,7 +599,8 @@ class _MyTeamSection extends StatelessWidget {
       championship.status == ChampionshipStatus.registration ||
       championship.status == ChampionshipStatus.registrationClosed;
 
-  bool get _isCaptain => currentUserId != null && team.captainId == currentUserId;
+  bool get _isCaptain =>
+      currentUserId != null && team.captainId == currentUserId;
 
   Future<void> _showRenameDialog(BuildContext context) async {
     final controller = TextEditingController(text: team.name);
@@ -568,9 +612,7 @@ class _MyTeamSection extends StatelessWidget {
           controller: controller,
           autofocus: true,
           maxLength: 30,
-          decoration: InputDecoration(
-            labelText: l10n.teamRenameLabel,
-          ),
+          decoration: InputDecoration(labelText: l10n.teamRenameLabel),
         ),
         actions: [
           TextButton(
@@ -596,9 +638,9 @@ class _MyTeamSection extends StatelessWidget {
         newName: newName,
       );
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.teamRenameSuccess)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.teamRenameSuccess)));
       }
     } catch (e) {
       if (context.mounted) {
@@ -633,19 +675,18 @@ class _MyTeamSection extends StatelessWidget {
                 Text(
                   l10n.myTeamSectionTitle,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 Row(
                   children: [
                     Flexible(
                       child: Text(
                         team.name,
-                        style:
-                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     if (_isCaptain && _isRegistrationPhase) ...[
@@ -655,8 +696,11 @@ class _MyTeamSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         child: const Padding(
                           padding: EdgeInsets.all(2),
-                          child: Icon(Icons.edit_outlined,
-                              size: 14, color: AppColors.primary),
+                          child: Icon(
+                            Icons.edit_outlined,
+                            size: 14,
+                            color: AppColors.primary,
+                          ),
                         ),
                       ),
                     ],
@@ -669,9 +713,9 @@ class _MyTeamSection extends StatelessWidget {
                           ? 'Partner'
                           : '${partnerCount - 1} partners',
                     ),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                   ),
               ],
             ),
@@ -683,43 +727,6 @@ class _MyTeamSection extends StatelessWidget {
               label: Text(l10n.leaveTeam),
               style: TextButton.styleFrom(foregroundColor: AppColors.danger),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class _GenderBadge extends StatelessWidget {
-  final ChampionshipGenderCategory category;
-  final AppLocalizations l10n;
-
-  const _GenderBadge({required this.category, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final label = category == ChampionshipGenderCategory.male
-        ? l10n.championshipGenderMale
-        : l10n.championshipGenderFemale;
-    const color = AppColors.info; // blue accent — neutral gender indicator
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.person_outline, size: 12, color: color),
-          const SizedBox(width: 3),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
         ],
       ),
     );
@@ -741,46 +748,12 @@ class _InfoChip extends StatelessWidget {
         const SizedBox(width: AppSpacing.xs),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textMuted,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
         ),
       ],
     );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final ChampionshipModel championship;
-  final AppLocalizations l10n;
-
-  const _StatusBadge({required this.championship, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final (label, color) = switch (championship.status) {
-      ChampionshipStatus.registration => (
-          l10n.championshipStatusBadgeRegistration,
-          AppColors.primary,
-        ),
-      ChampionshipStatus.registrationClosed => (
-          l10n.championshipStatusBadgeClosed,
-          AppColors.warning,
-        ),
-      ChampionshipStatus.active => (
-          l10n.championshipStatusBadgeActive(
-            championship.currentRound,
-            championship.totalRounds,
-          ),
-          AppColors.primary,
-        ),
-      ChampionshipStatus.completed => (
-          l10n.championshipStatusBadgeCompleted,
-          AppColors.textMuted,
-        ),
-    };
-
-    return StatusBadge(label: label, color: color);
   }
 }
 
@@ -846,23 +819,22 @@ class _StandingsTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-            Table(
-              columnWidths: const {
-                0: FixedColumnWidth(32), // #
-                1: FlexColumnWidth(), // Team
-                2: FixedColumnWidth(32), // P
-                3: FixedColumnWidth(40), // Pts
-                4: FixedColumnWidth(32), // W
-                5: FixedColumnWidth(32), // L
-                6: FixedColumnWidth(40), // SR
-              },
-              children: [
-                _headerRow(context),
-                ...standings.map((s) => _standingsRow(context, s)),
-              ],
-            ),
-          ],
+              Table(
+                columnWidths: const {
+                  0: FixedColumnWidth(32), // #
+                  1: FlexColumnWidth(), // Team
+                  2: FixedColumnWidth(32), // P
+                  3: FixedColumnWidth(40), // Pts
+                  4: FixedColumnWidth(32), // W
+                  5: FixedColumnWidth(32), // L
+                  6: FixedColumnWidth(40), // SR
+                },
+                children: [
+                  _headerRow(context),
+                  ...standings.map((s) => _standingsRow(context, s)),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -871,15 +843,13 @@ class _StandingsTab extends StatelessWidget {
 
   TableRow _headerRow(BuildContext context) {
     final style = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.textMuted,
-          fontWeight: FontWeight.w600,
-        );
+      color: AppColors.textMuted,
+      fontWeight: FontWeight.w600,
+    );
     return TableRow(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: AppColors.textMuted.withValues(alpha: 0.3),
-          ),
+          bottom: BorderSide(color: AppColors.textMuted.withValues(alpha: 0.3)),
         ),
       ),
       children: [
@@ -894,9 +864,9 @@ class _StandingsTab extends StatelessWidget {
     );
   }
 
-  TableRow _standingsRow(
-      BuildContext context, ChampionshipStandingsModel row) {
-    final isChampion = row.position == 1 &&
+  TableRow _standingsRow(BuildContext context, ChampionshipStandingsModel row) {
+    final isChampion =
+        row.position == 1 &&
         championship.status == ChampionshipStatus.completed;
     final baseStyle = Theme.of(context).textTheme.bodySmall;
     final boldStyle = baseStyle?.copyWith(fontWeight: FontWeight.w600);
@@ -925,27 +895,41 @@ class _StandingsTab extends StatelessWidget {
             )
           : null,
       children: [
-        _cell('${row.position}',
-            isChampion ? champStyle : baseStyle?.copyWith(color: AppColors.textMuted)),
-        _cell(row.teamName, isChampion ? champStyle : boldStyle,
-            align: TextAlign.left),
+        _cell(
+          '${row.position}',
+          isChampion
+              ? champStyle
+              : baseStyle?.copyWith(color: AppColors.textMuted),
+        ),
+        _cell(
+          row.teamName,
+          isChampion ? champStyle : boldStyle,
+          align: TextAlign.left,
+        ),
         _cell('${row.played}', baseStyle),
-        _cell('${row.points}',
-            isChampion
-                ? champStyle?.copyWith(color: const Color(0xFFB8860B))
-                : boldStyle?.copyWith(color: AppColors.primary)),
+        _cell(
+          '${row.points}',
+          isChampion
+              ? champStyle?.copyWith(color: const Color(0xFFB8860B))
+              : boldStyle?.copyWith(color: AppColors.primary),
+        ),
         _cell('$winsText$winsDetail', isChampion ? champStyle : baseStyle),
         _cell(lossText, baseStyle),
         _cell(
           srText,
-          baseStyle?.copyWith(color: sr >= 0 ? AppColors.success : AppColors.danger),
+          baseStyle?.copyWith(
+            color: sr >= 0 ? AppColors.success : AppColors.danger,
+          ),
         ),
       ],
     );
   }
 
-  Widget _cell(String text, TextStyle? style,
-      {TextAlign align = TextAlign.center}) {
+  Widget _cell(
+    String text,
+    TextStyle? style, {
+    TextAlign align = TextAlign.center,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
       child: Text(text, style: style, textAlign: align, maxLines: 1),
@@ -971,27 +955,30 @@ class _TeamCard extends StatelessWidget {
           Text(
             '$position',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textMuted,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.textMuted,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               team.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
-          const Icon(Icons.people_outline, size: 16, color: AppColors.textMuted),
+          const Icon(
+            Icons.people_outline,
+            size: 16,
+            color: AppColors.textMuted,
+          ),
           const SizedBox(width: AppSpacing.xs),
           Text(
             '${team.memberIds.length}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
           ),
         ],
       ),
@@ -1062,22 +1049,22 @@ class _MatchesTab extends StatelessWidget {
                 icon: const Icon(Icons.chevron_left),
                 onPressed: selectedRound > 1
                     ? () => context.read<ChampionshipDetailBloc>().add(
-                          ChangeDetailRound(selectedRound - 1),
-                        )
+                        ChangeDetailRound(selectedRound - 1),
+                      )
                     : null,
               ),
               Text(
                 l10n.championshipDetailRound(selectedRound),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
               ),
               IconButton(
                 icon: const Icon(Icons.chevron_right),
                 onPressed: selectedRound < totalRounds
                     ? () => context.read<ChampionshipDetailBloc>().add(
-                          ChangeDetailRound(selectedRound + 1),
-                        )
+                        ChangeDetailRound(selectedRound + 1),
+                      )
                     : null,
               ),
             ],
@@ -1093,15 +1080,19 @@ class _MatchesTab extends StatelessWidget {
                   title: l10n.championshipDetailNoMatchesForRound,
                 )
               : ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   itemCount: matches.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+                  separatorBuilder: (_, __) =>
+                      const SizedBox(height: AppSpacing.sm),
                   itemBuilder: (ctx, i) => _MatchCard(
                     match: matches[i],
                     teamAName: _teamName(matches[i].teamAId),
                     teamBName: _teamName(matches[i].teamBId),
-                    isMyMatch: myTeamId != null &&
+                    isMyMatch:
+                        myTeamId != null &&
                         (matches[i].teamAId == myTeamId ||
                             matches[i].teamBId == myTeamId),
                     l10n: l10n,
@@ -1159,89 +1150,93 @@ class _MatchCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (isMyMatch) ...[
-              Text(
-                l10n.championshipMyMatch,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isMyMatch) ...[
+                Text(
+                  l10n.championshipMyMatch,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+              ],
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      teamAName,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: result?.winner == 'teamA'
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-            ],
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    teamAName,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: result?.winner == 'teamA'
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    l10n.championshipMatchVs,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      l10n.championshipMatchVs,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    teamBName,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: result?.winner == 'teamB'
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                    textAlign: TextAlign.right,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Text(
+                      teamBName,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: result?.winner == 'teamB'
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Row(
-              children: [
-                if (result != null) ...[
-                  Text(
-                    _setScores(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                  ),
-                  const Spacer(),
-                ] else if (match.scheduledAt != null) ...[
-                  const Icon(Icons.schedule, size: 12, color: AppColors.secondary),
-                  const SizedBox(width: 3),
-                  Text(
-                    DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.secondary,
-                        ),
-                  ),
-                  const Spacer(),
                 ],
-                StatusBadge(
-                  label: match.status.label(l10n),
-                  color: match.status.color,
-                ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  if (result != null) ...[
+                    Text(
+                      _setScores(),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                    const Spacer(),
+                  ] else if (match.scheduledAt != null) ...[
+                    const Icon(
+                      Icons.schedule,
+                      size: 12,
+                      color: AppColors.secondary,
+                    ),
+                    const SizedBox(width: 3),
+                    Text(
+                      DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                  StatusBadge(
+                    label: match.status.label(l10n),
+                    color: match.status.color,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -1273,8 +1268,7 @@ class _AdminTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<AdminPanelBloc>()
-        ..add(LoadAdminPanel(championship.id)),
+      create: (_) => sl<AdminPanelBloc>()..add(LoadAdminPanel(championship.id)),
       child: BlocConsumer<AdminPanelBloc, AdminPanelState>(
         listener: (context, state) {
           if (state is AdminPanelLoaded && state.lastDecidedMatchId != null) {
@@ -1285,7 +1279,9 @@ class _AdminTab extends StatelessWidget {
           if (state is AdminPanelLoaded && state.matchesGenerated != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(l10n.startChampionshipSuccess(state.matchesGenerated!)),
+                content: Text(
+                  l10n.startChampionshipSuccess(state.matchesGenerated!),
+                ),
               ),
             );
           }
@@ -1352,9 +1348,7 @@ class _AdminTab extends StatelessWidget {
                             padding: const EdgeInsets.all(32),
                             child: Text(
                               l10n.adminPanelNoMatchesNeedingAttention,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(color: AppColors.textMuted),
                               textAlign: TextAlign.center,
                             ),
@@ -1362,7 +1356,9 @@ class _AdminTab extends StatelessWidget {
                         )
                       : ListView.separated(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
                           itemCount: state.matches.length,
                           separatorBuilder: (_, __) =>
                               const SizedBox(height: AppSpacing.sm),
@@ -1373,8 +1369,7 @@ class _AdminTab extends StatelessWidget {
                               teamAName: _teamName(match.teamAId),
                               teamBName: _teamName(match.teamBId),
                               l10n: l10n,
-                              onDecide: () =>
-                                  _showDecisionSheet(ctx, match),
+                              onDecide: () => _showDecisionSheet(ctx, match),
                             );
                           },
                         ),
@@ -1434,10 +1429,12 @@ class _AdminTab extends StatelessWidget {
             FilledButton(
               onPressed: () {
                 Navigator.of(dialogCtx).pop();
-                adminBloc.add(StartChampionship(
-                  championshipId: championship.id,
-                  startDate: selectedDate,
-                ));
+                adminBloc.add(
+                  StartChampionship(
+                    championshipId: championship.id,
+                    startDate: selectedDate,
+                  ),
+                );
               },
               child: Text(l10n.startChampionshipButton),
             ),
@@ -1464,7 +1461,8 @@ class _AdminTab extends StatelessWidget {
             onPressed: () {
               Navigator.of(dialogCtx).pop();
               adminBloc.add(
-                  CompleteChampionship(championshipId: championship.id));
+                CompleteChampionship(championshipId: championship.id),
+              );
             },
             child: Text(l10n.completeChampionshipButton),
           ),
@@ -1475,8 +1473,7 @@ class _AdminTab extends StatelessWidget {
 
   void _showEditDialog(BuildContext context, AdminPanelLoaded state) {
     final adminBloc = context.read<AdminPanelBloc>();
-    final titleController =
-        TextEditingController(text: championship.title);
+    final titleController = TextEditingController(text: championship.title);
     DateTime? newDeadline;
 
     showDialog<void>(
@@ -1505,12 +1502,12 @@ class _AdminTab extends StatelessWidget {
                 onPressed: () async {
                   final picked = await showAppStyledDatePicker(
                     context: dialogCtx,
-                    initialDate: newDeadline ??
+                    initialDate:
+                        newDeadline ??
                         championship.registrationDeadline.add(
                           const Duration(days: 1),
                         ),
-                    firstDate:
-                        DateTime.now().add(const Duration(days: 1)),
+                    firstDate: DateTime.now().add(const Duration(days: 1)),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
                   if (picked != null) {
@@ -1530,11 +1527,13 @@ class _AdminTab extends StatelessWidget {
                 final newTitle = titleController.text.trim();
                 if (newTitle.length < 3) return;
                 Navigator.of(dialogCtx).pop();
-                adminBloc.add(EditChampionship(
-                  championshipId: championship.id,
-                  title: newTitle != championship.title ? newTitle : null,
-                  registrationDeadline: newDeadline,
-                ));
+                adminBloc.add(
+                  EditChampionship(
+                    championshipId: championship.id,
+                    title: newTitle != championship.title ? newTitle : null,
+                    registrationDeadline: newDeadline,
+                  ),
+                );
               },
               child: Text(l10n.save),
             ),
@@ -1562,7 +1561,8 @@ class _AdminTab extends StatelessWidget {
             onPressed: () {
               Navigator.of(dialogCtx).pop();
               adminBloc.add(
-                  DeleteChampionship(championshipId: championship.id));
+                DeleteChampionship(championshipId: championship.id),
+              );
             },
             child: Text(l10n.deleteChampionshipButton),
           ),
@@ -1582,21 +1582,24 @@ class _AdminTab extends StatelessWidget {
         value: context.read<AdminPanelBloc>(),
         child: _DecisionSheet(
           match: match,
-          teamAName: standings
-              .where((s) => s.teamId == match.teamAId)
-              .map((s) => s.teamName)
-              .firstOrNull ?? match.teamAId,
-          teamBName: standings
-              .where((s) => s.teamId == match.teamBId)
-              .map((s) => s.teamName)
-              .firstOrNull ?? match.teamBId,
+          teamAName:
+              standings
+                  .where((s) => s.teamId == match.teamAId)
+                  .map((s) => s.teamName)
+                  .firstOrNull ??
+              match.teamAId,
+          teamBName:
+              standings
+                  .where((s) => s.teamId == match.teamBId)
+                  .map((s) => s.teamName)
+                  .firstOrNull ??
+              match.teamBId,
           l10n: l10n,
         ),
       ),
     );
   }
 }
-
 
 // ── Admin actions panel ───────────────────────────────────────────────────────
 
@@ -1623,12 +1626,12 @@ class _AdminActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final canStart =
         championship.status == ChampionshipStatus.registrationClosed &&
-            !state.isStarting;
-    final canComplete = championship.status == ChampionshipStatus.active &&
-        !state.isCompleting;
+        !state.isStarting;
+    final canComplete =
+        championship.status == ChampionshipStatus.active && !state.isCompleting;
     final notStarted =
         championship.status == ChampionshipStatus.registration ||
-            championship.status == ChampionshipStatus.registrationClosed;
+        championship.status == ChampionshipStatus.registrationClosed;
     final canEdit = notStarted;
     final canDelete = notStarted && !state.isDeleting;
 
@@ -1741,8 +1744,9 @@ class _AdminMatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDisputed = match.status == ChampionshipMatchStatus.disputed;
-    final badgeLabel =
-        isDisputed ? l10n.adminPanelMatchDisputed : l10n.adminPanelMatchOverdue;
+    final badgeLabel = isDisputed
+        ? l10n.adminPanelMatchDisputed
+        : l10n.adminPanelMatchOverdue;
     final badgeColor = isDisputed ? AppColors.warning : AppColors.danger;
 
     return Card(
@@ -1761,8 +1765,8 @@ class _AdminMatchCard extends StatelessWidget {
                     Text(
                       '$teamAName  vs  $teamBName',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1770,15 +1774,14 @@ class _AdminMatchCard extends StatelessWidget {
                     Text(
                       'Round ${match.round}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
+                        color: AppColors.textMuted,
+                      ),
                     ),
                   ],
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: badgeColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),
@@ -1787,9 +1790,9 @@ class _AdminMatchCard extends StatelessWidget {
                 child: Text(
                   badgeLabel,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: badgeColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: badgeColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -1843,24 +1846,28 @@ class _DecisionSheetState extends State<_DecisionSheet> {
     final notes = _notesController.text.trim();
     if (notes.isEmpty) {
       setState(
-          () => _validationError = widget.l10n.adminPanelDecisionErrorNotesRequired);
+        () =>
+            _validationError = widget.l10n.adminPanelDecisionErrorNotesRequired,
+      );
       return;
     }
     if (_decision == 'award_walkover' && _winnerId == null) {
       setState(
-          () => _validationError = widget.l10n.adminPanelDecisionErrorWinnerRequired);
+        () => _validationError =
+            widget.l10n.adminPanelDecisionErrorWinnerRequired,
+      );
       return;
     }
     setState(() => _validationError = null);
 
     context.read<AdminPanelBloc>().add(
-          DecideMatch(
-            matchId: widget.match.id,
-            decision: _decision,
-            winnerId: _winnerId,
-            notes: notes,
-          ),
-        );
+      DecideMatch(
+        matchId: widget.match.id,
+        decision: _decision,
+        winnerId: _winnerId,
+        notes: notes,
+      ),
+    );
     Navigator.of(context).pop();
   }
 
@@ -1881,16 +1888,16 @@ class _DecisionSheetState extends State<_DecisionSheet> {
         children: [
           Text(
             l10n.adminPanelDecisionTitle,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             '${widget.teamAName}  vs  ${widget.teamBName}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
           ),
           const SizedBox(height: AppSpacing.lg),
           // Decision radio buttons
@@ -1920,15 +1927,19 @@ class _DecisionSheetState extends State<_DecisionSheet> {
           ),
           if (_decision == 'award_walkover') ...[
             const SizedBox(height: AppSpacing.sm),
-            Text(l10n.adminPanelDecisionWinnerLabel,
-                style: Theme.of(context).textTheme.labelMedium),
+            Text(
+              l10n.adminPanelDecisionWinnerLabel,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
             const SizedBox(height: AppSpacing.xs),
             Row(
               children: [
                 Expanded(
                   child: RadioListTile<String>(
-                    title: Text(widget.teamAName,
-                        style: Theme.of(context).textTheme.bodySmall),
+                    title: Text(
+                      widget.teamAName,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     value: widget.match.teamAId,
                     groupValue: _winnerId,
                     onChanged: (v) => setState(() => _winnerId = v),
@@ -1938,8 +1949,10 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                 ),
                 Expanded(
                   child: RadioListTile<String>(
-                    title: Text(widget.teamBName,
-                        style: Theme.of(context).textTheme.bodySmall),
+                    title: Text(
+                      widget.teamBName,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     value: widget.match.teamBId,
                     groupValue: _winnerId,
                     onChanged: (v) => setState(() => _winnerId = v),
@@ -1966,8 +1979,8 @@ class _DecisionSheetState extends State<_DecisionSheet> {
             Text(
               _validationError!,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
+                color: Theme.of(context).colorScheme.error,
+              ),
             ),
           ],
           const SizedBox(height: AppSpacing.lg),
@@ -1986,8 +1999,8 @@ class _DecisionSheetState extends State<_DecisionSheet> {
                     Text(
                       serverError,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                   ],
@@ -2044,10 +2057,11 @@ class _MyMatchesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myMatches = allMatches
-        .where((m) => m.teamAId == myTeamId || m.teamBId == myTeamId)
-        .toList()
-      ..sort((a, b) => a.round.compareTo(b.round));
+    final myMatches =
+        allMatches
+            .where((m) => m.teamAId == myTeamId || m.teamBId == myTeamId)
+            .toList()
+          ..sort((a, b) => a.round.compareTo(b.round));
 
     if (myMatches.isEmpty) {
       return EmptyState(
@@ -2061,8 +2075,9 @@ class _MyMatchesTab extends StatelessWidget {
       itemCount: myMatches.length,
       itemBuilder: (context, index) {
         final match = myMatches[index];
-        final opponentId =
-            match.teamAId == myTeamId ? match.teamBId : match.teamAId;
+        final opponentId = match.teamAId == myTeamId
+            ? match.teamBId
+            : match.teamAId;
         final opponentName = _teamName(opponentId);
 
         return Card(
@@ -2095,11 +2110,11 @@ class _MyMatchesTab extends StatelessWidget {
                     child: Center(
                       child: Text(
                         'R${match.round}',
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: AppColors.secondary,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                     ),
                   ),
@@ -2111,19 +2126,16 @@ class _MyMatchesTab extends StatelessWidget {
                       children: [
                         Text(
                           l10n.championshipMyMatchesVs(opponentName),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
+                          style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         if (match.scheduledAt != null) ...[
                           const SizedBox(height: 2),
                           Text(
-                            DateFormat('d MMM · HH:mm')
-                                .format(match.scheduledAt!),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            DateFormat(
+                              'd MMM · HH:mm',
+                            ).format(match.scheduledAt!),
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: AppColors.textMuted),
                           ),
                         ],
@@ -2131,12 +2143,9 @@ class _MyMatchesTab extends StatelessWidget {
                           const SizedBox(height: 2),
                           Text(
                             match.result!.sets
-                                .map((s) =>
-                                    '${s.teamAPoints}–${s.teamBPoints}')
+                                .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
                                 .join('  '),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: AppColors.textMuted),
                           ),
                         ],
@@ -2149,8 +2158,11 @@ class _MyMatchesTab extends StatelessWidget {
                     color: match.status.color,
                   ),
                   const SizedBox(width: AppSpacing.xs),
-                  const Icon(Icons.chevron_right,
-                      size: 18, color: AppColors.textMuted),
+                  const Icon(
+                    Icons.chevron_right,
+                    size: 18,
+                    color: AppColors.textMuted,
+                  ),
                 ],
               ),
             ),

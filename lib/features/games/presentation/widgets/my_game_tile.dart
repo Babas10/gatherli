@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:intl/intl.dart';
+import 'package:play_with_me/core/utils/smart_date_formatter.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
@@ -48,7 +48,7 @@ class MyGameTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '${_formatDate(context, item.scheduledAt)}  ·  ${item.locationName}',
+                      '${formatSmartDateTime(context, item.scheduledAt)}  ·  ${item.locationName}',
                       style: AppTextStyles.cardSubtitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -91,23 +91,6 @@ class MyGameTile extends StatelessWidget {
     return status;
   }
 
-  String _formatDate(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context)!;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
-    final gameDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-
-    String dayString;
-    if (gameDate == today) {
-      dayString = l10n.today;
-    } else if (gameDate == tomorrow) {
-      dayString = l10n.tomorrow;
-    } else {
-      dayString = DateFormat('EEE, MMM d').format(dateTime);
-    }
-    return '$dayString ${DateFormat('h:mm a').format(dateTime)}';
-  }
 }
 
 class _StatusBadge extends StatelessWidget {

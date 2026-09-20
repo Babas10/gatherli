@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
-import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_state.dart';
 import 'package:play_with_me/features/championships/presentation/pages/championship_detail_page.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/championship_gender_badge.dart';
+import 'package:play_with_me/features/championships/presentation/widgets/championship_status_badge.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class ChampionshipListPage extends StatelessWidget {
@@ -45,12 +46,14 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
     super.dispose();
   }
 
-  Future<void> _onTap(BuildContext context, ChampionshipModel championship) async {
+  Future<void> _onTap(
+    BuildContext context,
+    ChampionshipModel championship,
+  ) async {
     final deleted = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
-        builder: (_) =>
-            ChampionshipDetailPage(championshipId: championship.id),
+        builder: (_) => ChampionshipDetailPage(championshipId: championship.id),
       ),
     );
     if (deleted == true && context.mounted) {
@@ -87,9 +90,11 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
         // ── Tab content ──────────────────────────────────────────────────────
         Expanded(
           child: BlocBuilder<ChampionshipListBloc, ChampionshipListState>(
-            buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
-                (prev is ChampionshipListLoaded && curr is ChampionshipListLoaded &&
-                 prev.championships != curr.championships),
+            buildWhen: (prev, curr) =>
+                prev.runtimeType != curr.runtimeType ||
+                (prev is ChampionshipListLoaded &&
+                    curr is ChampionshipListLoaded &&
+                    prev.championships != curr.championships),
             builder: (context, state) {
               if (state is ChampionshipListLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -145,10 +150,7 @@ class _ChampionshipList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return EmptyState(
-        icon: Icons.emoji_events_outlined,
-        title: emptyLabel,
-      );
+      return EmptyState(icon: Icons.emoji_events_outlined, title: emptyLabel);
     }
     return RefreshIndicator(
       color: AppColors.secondary,
@@ -176,11 +178,7 @@ class ChampionshipCard extends StatelessWidget {
   final ChampionshipModel championship;
   final VoidCallback? onTap;
 
-  const ChampionshipCard({
-    super.key,
-    required this.championship,
-    this.onTap,
-  });
+  const ChampionshipCard({super.key, required this.championship, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -189,129 +187,76 @@ class ChampionshipCard extends StatelessWidget {
     return AccentCard(
       onTap: onTap,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      championship.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
+              Expanded(
+                child: Text(
+                  championship.title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  if (championship.genderCategory != null) ...[
-                    _GenderBadge(
-                      category: championship.genderCategory!,
-                      l10n: l10n,
-                    ),
-                    const SizedBox(width: 6),
-                  ],
-                  _StatusBadge(championship: championship, l10n: l10n),
-                ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  const Icon(Icons.group, size: 14, color: AppColors.textMuted),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    l10n.championshipTeamCountOf(
-                      championship.teamsCount,
-                      championship.maxTeams,
-                    ),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                  ),
-                ],
+              const SizedBox(width: AppSpacing.sm),
+              if (championship.genderCategory != null) ...[
+                ChampionshipGenderBadge(
+                  category: championship.genderCategory!,
+                  l10n: l10n,
+                ),
+                const SizedBox(width: 6),
+              ],
+              ChampionshipStatusBadge(championship: championship, l10n: l10n),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              const Icon(Icons.group, size: 14, color: AppColors.textMuted),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                l10n.championshipTeamCountOf(
+                  championship.teamsCount,
+                  championship.maxTeams,
+                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
               ),
-              if (championship.country != null ||
-                  championship.region != null) ...[
-                const SizedBox(height: AppSpacing.xs),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on_outlined,
-                        size: 14, color: AppColors.textMuted),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      [championship.region, championship.country]
-                          .whereType<String>()
-                          .join(', '),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                    ),
-                  ],
+            ],
+          ),
+          if (championship.country != null || championship.region != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  size: 14,
+                  color: AppColors.textMuted,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  [
+                    championship.region,
+                    championship.country,
+                  ].whereType<String>().join(', '),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                 ),
               ],
-              if (championship.status == ChampionshipStatus.registration ||
-                  championship.status ==
-                      ChampionshipStatus.registrationClosed) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _DeadlineRow(championship: championship, l10n: l10n),
-              ],
-            ],
+            ),
+          ],
+          if (championship.status == ChampionshipStatus.registration ||
+              championship.status == ChampionshipStatus.registrationClosed) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _DeadlineRow(championship: championship, l10n: l10n),
+          ],
+        ],
       ),
     );
-  }
-}
-
-// ── Gender badge ─────────────────────────────────────────────────────────────
-
-class _GenderBadge extends StatelessWidget {
-  final ChampionshipGenderCategory category;
-  final AppLocalizations l10n;
-
-  const _GenderBadge({required this.category, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final label = category == ChampionshipGenderCategory.male
-        ? l10n.championshipGenderMale
-        : l10n.championshipGenderFemale;
-    const color = AppColors.info;
-    return StatusBadge(label: label, color: color);
-  }
-}
-
-// ── Status badge ─────────────────────────────────────────────────────────────
-
-class _StatusBadge extends StatelessWidget {
-  final ChampionshipModel championship;
-  final AppLocalizations l10n;
-
-  const _StatusBadge({required this.championship, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final (label, color) = switch (championship.status) {
-      ChampionshipStatus.registration => (
-          l10n.championshipStatusBadgeRegistration,
-          AppColors.primary,
-        ),
-      ChampionshipStatus.registrationClosed => (
-          l10n.championshipStatusBadgeClosed,
-          AppColors.warning,
-        ),
-      ChampionshipStatus.active => (
-          l10n.championshipStatusBadgeActive(
-            championship.currentRound,
-            championship.totalRounds,
-          ),
-          AppColors.primary,
-        ),
-      ChampionshipStatus.completed => (
-          l10n.championshipStatusBadgeCompleted,
-          AppColors.textMuted,
-        ),
-    };
-
-    return StatusBadge(label: label, color: color);
   }
 }
 
@@ -336,7 +281,9 @@ class _DeadlineRow extends StatelessWidget {
       text = l10n.championshipDeadlineCountdown(daysLeft);
       color = daysLeft <= 3 ? AppColors.danger : AppColors.textMuted;
     } else {
-      text = l10n.championshipDeadlineLabel(DateFormat.yMMMd().format(deadline));
+      text = l10n.championshipDeadlineLabel(
+        DateFormat.yMMMd().format(deadline),
+      );
       color = AppColors.textMuted;
     }
 
