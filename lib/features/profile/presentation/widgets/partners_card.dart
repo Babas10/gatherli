@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/data/models/teammate_stats.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -71,11 +72,7 @@ class PartnersCard extends StatelessWidget {
     return Row(
       children: [
         // Partner avatar
-        CircleAvatar(
-          radius: 28,
-          backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
-          child: const Icon(Icons.person, size: 28, color: AppColors.secondary),
-        ),
+        UserAvatar(name: partner.displayName, radius: 28),
         const SizedBox(width: AppSpacing.lg),
         // Partner stats
         Expanded(

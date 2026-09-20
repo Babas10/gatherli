@@ -6,6 +6,7 @@ import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/training_session_model.dart';
+import 'package:play_with_me/features/games/presentation/widgets/training_status_style.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class TrainingSessionListItem extends StatelessWidget {
@@ -128,7 +129,10 @@ class TrainingSessionListItem extends StatelessWidget {
     final isCancelled = session.status == TrainingStatus.cancelled;
 
     if (isCancelled) {
-      return StatusBadge.muted(l10n.cancelled);
+      return StatusBadge(
+        label: session.status.label(l10n),
+        color: session.status.color,
+      );
     }
 
     return StatusBadge(

@@ -10,6 +10,7 @@ import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
+import 'package:play_with_me/features/games/presentation/widgets/training_status_style.dart';
 import 'package:play_with_me/core/utils/share_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -437,14 +438,7 @@ class _TrainingSessionDetailsPageState
     return Builder(
       builder: (context) {
         final l10n = AppLocalizations.of(context)!;
-
-        final (label, color) = switch (status) {
-          TrainingStatus.scheduled => (l10n.scheduled, AppColors.secondary),
-          TrainingStatus.completed => (l10n.completed, AppColors.success),
-          TrainingStatus.cancelled => (l10n.cancelled, AppColors.danger),
-        };
-
-        return StatusBadge(label: label, color: color);
+        return StatusBadge(label: status.label(l10n), color: status.color);
       },
     );
   }

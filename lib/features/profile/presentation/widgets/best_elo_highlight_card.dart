@@ -69,7 +69,7 @@ class BestEloHighlightCard extends StatelessWidget {
     final dateFormatter = DateFormat('MMM d, yyyy');
 
     return Card(
-      elevation: 1,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(

@@ -19,7 +19,6 @@ import 'package:flutter_test/flutter_test.dart';
 const _rawColorsBaseline = {
   'lib/app/play_with_me_app.dart',
   'lib/core/presentation/widgets/email_verification_banner.dart',
-  'lib/core/presentation/widgets/error_snackbar.dart',
   'lib/core/presentation/widgets/global_bottom_nav_bar.dart',
   'lib/core/presentation/widgets/offline_banner.dart',
   'lib/core/presentation/widgets/restricted_action_guard.dart',
