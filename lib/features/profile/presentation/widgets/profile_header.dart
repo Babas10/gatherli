@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
 
@@ -29,23 +28,10 @@ class ProfileHeader extends StatelessWidget {
       child: Column(
         children: [
           // Avatar
-          CircleAvatar(
+          UserAvatar(
+            name: user.displayNameOrEmail,
+            photoUrl: user.photoUrl,
             radius: 56,
-            backgroundColor: AppColors.secondary,
-            backgroundImage: user.photoUrl != null
-                ? CachedNetworkImageProvider(
-                    user.photoUrl!,
-                    maxWidth: avatarCacheDimension(context, 112),
-                    maxHeight: avatarCacheDimension(context, 112),
-                  )
-                : null,
-            child: user.photoUrl == null
-                ? const Icon(
-                    Icons.person,
-                    size: 56,
-                    color: Colors.white,
-                  )
-                : null,
           ),
           const SizedBox(height: AppSpacing.lg),
 

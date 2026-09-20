@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/profile_header.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/verification_badge.dart';
@@ -48,7 +49,7 @@ void main() {
       expect(find.text('test@example.com'), findsWidgets);
     });
 
-    testWidgets('displays default person icon when photoUrl is null', (
+    testWidgets('displays initials avatar when photoUrl is null', (
       tester,
     ) async {
       final testUser = UserEntity(
@@ -65,8 +66,8 @@ void main() {
         testApp(child: Scaffold(body: ProfileHeader(user: testUser))),
       );
 
-      expect(find.byIcon(Icons.person), findsOneWidget);
-      expect(find.byType(CircleAvatar), findsOneWidget);
+      expect(find.byType(UserAvatar), findsOneWidget);
+      expect(find.text('TU'), findsOneWidget);
     });
 
     testWidgets('includes verification badge', (tester) async {

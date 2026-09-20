@@ -1,11 +1,10 @@
 // Head-to-head rivalry screen showing comprehensive opponent statistics.
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
+import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,23 +142,10 @@ class HeadToHeadPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              CircleAvatar(
+              UserAvatar(
+                name: stats.opponentDisplayName,
+                photoUrl: stats.opponentPhotoUrl,
                 radius: 30,
-                backgroundColor: AppColors.secondary.withValues(alpha: 0.1),
-                backgroundImage: stats.opponentPhotoUrl != null
-                    ? CachedNetworkImageProvider(
-                        stats.opponentPhotoUrl!,
-                        maxWidth: avatarCacheDimension(context, 60),
-                        maxHeight: avatarCacheDimension(context, 60),
-                      )
-                    : null,
-                child: stats.opponentPhotoUrl == null
-                    ? const Icon(
-                        Icons.person,
-                        size: 30,
-                        color: AppColors.secondary,
-                      )
-                    : null,
               ),
               const SizedBox(width: 14),
               Expanded(
