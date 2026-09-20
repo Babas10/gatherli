@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/utils/avatar_cache_sizing.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:flutter/services.dart';
@@ -809,10 +810,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
-                                    Icons.sports_volleyball,
-                                    size: 18,
-                                  ),
+                                  const Icon(Icons.sports_volleyball, size: 18),
                                   const SizedBox(width: AppSpacing.sm),
                                   Flexible(
                                     child: Text(
@@ -1002,8 +1000,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
   }
 
   Widget _buildGroupHeader(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
+    return DetailPageHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1025,17 +1022,13 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             ),
           Row(
             children: [
-              Icon(
-                Icons.people,
-                size: 16,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+              const Icon(Icons.people, size: 16, color: AppColors.textMuted),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 '${_group!.memberCount} members',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
               ),
             ],
           ),
