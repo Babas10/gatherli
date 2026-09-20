@@ -571,20 +571,16 @@ class _PlayersCard extends StatelessWidget {
                                   value: 'leave',
                                   child: Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.exit_to_app,
                                         size: 20,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.error,
+                                        color: AppColors.danger,
                                       ),
                                       const SizedBox(width: AppSpacing.md),
                                       Text(
                                         l10n.leaveWaitlist,
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.error,
+                                        style: const TextStyle(
+                                          color: AppColors.danger,
                                         ),
                                       ),
                                     ],
@@ -634,17 +630,15 @@ class _PlayersCard extends StatelessWidget {
                   value: 'leave',
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.exit_to_app,
                         size: 20,
-                        color: Theme.of(context).colorScheme.error,
+                        color: AppColors.danger,
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Text(
                         l10n.leaveGame,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                        style: const TextStyle(color: AppColors.danger),
                       ),
                     ],
                   ),

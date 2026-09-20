@@ -941,6 +941,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get removeMember => 'Retirer le Membre';
 
   @override
+  String get groupAdminBadge => 'Admin';
+
+  @override
+  String get groupMemberBadge => 'Membre';
+
+  @override
+  String get groupInvitedBadge => 'Invité';
+
+  @override
   String get leaveGroup => 'Quitter le Groupe';
 
   @override

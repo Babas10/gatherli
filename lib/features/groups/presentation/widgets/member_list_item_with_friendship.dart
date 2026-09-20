@@ -8,6 +8,7 @@ import 'package:play_with_me/core/data/models/user_model.dart';
 import 'package:play_with_me/core/domain/repositories/friend_repository.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/member_action_menu.dart';
+import 'package:play_with_me/l10n/app_localizations.dart';
 
 /// Displays a group member with their friendship status and action buttons
 class MemberListItemWithFriendship extends StatelessWidget {
@@ -42,6 +43,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AccentCard(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -75,15 +77,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
           ],
           if (isAdmin) ...[
             const SizedBox(width: AppSpacing.sm),
-            const Chip(
-              label: Text('Admin', style: TextStyle(fontSize: 12)),
-              backgroundColor: AppColors.avatarBackground,
-              labelStyle: TextStyle(
-                color: AppColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-              padding: EdgeInsets.zero,
-            ),
+            StatusBadge(label: l10n.groupAdminBadge, color: AppColors.primary),
           ],
           if (isCreator) ...[
             const SizedBox(width: AppSpacing.sm),
@@ -98,7 +92,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildFriendshipStatus(context),
+                  _buildFriendshipStatus(),
                 ],
               ),
             ),
@@ -109,7 +103,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
     );
   }
 
-  Widget _buildFriendshipStatus(BuildContext context) {
+  Widget _buildFriendshipStatus() {
     if (isFriend) {
       return const Row(
         mainAxisSize: MainAxisSize.min,
@@ -152,12 +146,9 @@ class MemberListItemWithFriendship extends StatelessWidget {
       );
     }
 
-    return Text(
+    return const Text(
       'Not in Community',
-      style: TextStyle(
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
-        fontSize: 12,
-      ),
+      style: TextStyle(color: AppColors.textMuted, fontSize: 12),
     );
   }
 
@@ -203,7 +194,7 @@ class MemberListItemWithFriendship extends StatelessWidget {
     }
 
     if (requestStatus == FriendRequestStatus.sentByMe) {
-      return const StatusBadge.warning('Pending');
+      return StatusBadge.muted(AppLocalizations.of(context)!.pending);
     }
 
     if (requestStatus == FriendRequestStatus.receivedFromThem) {

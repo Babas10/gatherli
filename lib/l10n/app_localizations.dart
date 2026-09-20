@@ -1844,6 +1844,24 @@ abstract class AppLocalizations {
   /// **'Remove Member'**
   String get removeMember;
 
+  /// Badge label shown next to a group member who is an admin
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get groupAdminBadge;
+
+  /// Badge label shown in search results for a user already in the group
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get groupMemberBadge;
+
+  /// Badge label shown in search results for a user already invited to the group
+  ///
+  /// In en, this message translates to:
+  /// **'Invited'**
+  String get groupInvitedBadge;
+
   /// Dialog title for leaving group
   ///
   /// In en, this message translates to:

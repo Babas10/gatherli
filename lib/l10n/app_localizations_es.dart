@@ -936,6 +936,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get removeMember => 'Eliminar Miembro';
 
   @override
+  String get groupAdminBadge => 'Admin';
+
+  @override
+  String get groupMemberBadge => 'Miembro';
+
+  @override
+  String get groupInvitedBadge => 'Invitado';
+
+  @override
   String get leaveGroup => 'Abandonar Grupo';
 
   @override
