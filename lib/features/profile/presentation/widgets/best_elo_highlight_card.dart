@@ -39,7 +39,7 @@ class BestEloHighlightCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       elevation: 0,
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      color: AppColors.divider.withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -49,13 +49,13 @@ class BestEloHighlightCard extends StatelessWidget {
             Icon(
               Icons.emoji_events_outlined,
               size: 18,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+              color: AppColors.textMuted.withValues(alpha: 0.5),
             ),
             const SizedBox(width: AppSpacing.sm),
             Text(
               AppLocalizations.of(context)!.noGamesInThisPeriod,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+                color: AppColors.textMuted,
               ),
             ),
           ],

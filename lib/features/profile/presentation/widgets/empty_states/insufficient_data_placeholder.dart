@@ -1,4 +1,12 @@
 // Empty state placeholder for users with no game data.
+//
+// Deliberately distinct from the shared `EmptyState` widget (Story 37.7b
+// design-system re-scan): every call site here needs an "unlock criteria" /
+// progress-toward-unlock message (e.g. "2 of 3 games played") that
+// `EmptyState` has no slot for. This is a feature-gating placeholder, not a
+// plain "list has no items yet" state — the two are visually similar but
+// serve different purposes, so they're kept as separate widgets rather than
+// stretching `EmptyState`'s API to cover both.
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
