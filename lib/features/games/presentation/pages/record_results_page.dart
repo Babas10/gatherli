@@ -78,7 +78,7 @@ class _RecordResultsView extends StatelessWidget {
           if (state is RecordResultsError) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -104,7 +104,7 @@ class _RecordResultsView extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(AppSpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -210,7 +210,7 @@ class _TeamSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -246,7 +246,7 @@ class _TeamSection extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             if (playerIds.isEmpty)
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 alignment: Alignment.center,
                 child: Text(
                   AppLocalizations.of(context)!.noPlayersAssigned,
@@ -258,7 +258,7 @@ class _TeamSection extends StatelessWidget {
             else
               ...playerIds.map(
                 (playerId) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: _PlayerChip(
                     playerId: playerId,
                     players: players,
@@ -292,7 +292,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -306,7 +306,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             if (unassignedPlayerIds.isEmpty)
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -338,7 +338,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
             else
               ...unassignedPlayerIds.map(
                 (playerId) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: _UnassignedPlayerItem(
                     playerId: playerId,
                     players: players,
@@ -383,7 +383,10 @@ class _PlayerChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
       child: Row(
         children: [
           UserAvatar(name: playerName, radius: 16),
@@ -434,7 +437,7 @@ class _UnassignedPlayerItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
       ),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
         children: [
           UserAvatar(name: playerName, radius: 16),
@@ -484,7 +487,7 @@ class _SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
@@ -501,7 +504,7 @@ class _SaveButton extends StatelessWidget {
           child: FilledButton(
             onPressed: canSave ? onSave : null,
             style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
               disabledBackgroundColor: AppColors.divider,
             ),
             child: Text(

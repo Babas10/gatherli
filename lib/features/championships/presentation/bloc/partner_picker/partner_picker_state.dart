@@ -21,10 +21,7 @@ class PartnerPickerLoaded extends PartnerPickerState {
   final List<InvitableUser> friends;
   final String? selectedPartnerId;
 
-  const PartnerPickerLoaded({
-    required this.friends,
-    this.selectedPartnerId,
-  });
+  const PartnerPickerLoaded({required this.friends, this.selectedPartnerId});
 
   PartnerPickerLoaded copyWith({
     List<InvitableUser>? friends,

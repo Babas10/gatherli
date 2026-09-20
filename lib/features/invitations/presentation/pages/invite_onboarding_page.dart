@@ -27,7 +27,7 @@ class InviteOnboardingPage extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: BlocBuilder<InviteJoinBloc, InviteJoinState>(
               builder: (context, state) {
                 if (state is InviteJoinValidating) {
@@ -137,7 +137,7 @@ class InviteOnboardingPage extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

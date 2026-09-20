@@ -40,11 +40,7 @@ class FormRow extends StatelessWidget {
   final List<Widget> children;
   final double gap;
 
-  const FormRow({
-    super.key,
-    required this.children,
-    this.gap = AppSpacing.md,
-  });
+  const FormRow({super.key, required this.children, this.gap = AppSpacing.md});
 
   @override
   Widget build(BuildContext context) {

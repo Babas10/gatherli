@@ -71,7 +71,7 @@ class HeadToHeadPage extends StatelessWidget {
 
   Widget _buildLoadedView(BuildContext context, HeadToHeadStats stats) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -114,18 +114,18 @@ class HeadToHeadPage extends StatelessWidget {
     required Widget child,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: AppTextStyles.sectionLabel,
-          ),
+          Text(label, style: AppTextStyles.sectionLabel),
           const SizedBox(height: AppSpacing.md),
           Card(
             margin: EdgeInsets.zero,
-            child: Padding(padding: const EdgeInsets.all(16), child: child),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: child,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
         ],
@@ -135,11 +135,11 @@ class HeadToHeadPage extends StatelessWidget {
 
   Widget _buildOpponentHeader(BuildContext context, HeadToHeadStats stats) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Row(
             children: [
               UserAvatar(
@@ -287,10 +287,12 @@ class HeadToHeadPage extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: StatusBadge(
               label: stats.isOnWinningStreak
-                  ? AppLocalizations.of(context)!
-                      .streakWins(stats.currentStreak.abs())
-                  : AppLocalizations.of(context)!
-                      .streakLosses(stats.currentStreak.abs()),
+                  ? AppLocalizations.of(
+                      context,
+                    )!.streakWins(stats.currentStreak.abs())
+                  : AppLocalizations.of(
+                      context,
+                    )!.streakLosses(stats.currentStreak.abs()),
               color: stats.isOnWinningStreak
                   ? AppColors.success
                   : AppColors.danger,
@@ -373,7 +375,9 @@ class HeadToHeadPage extends StatelessWidget {
                   'ELO: ${matchup.formattedEloChange}',
                   style: TextStyle(
                     fontSize: 11,
-                    color: matchup.eloChange >= 0 ? AppColors.success : AppColors.danger,
+                    color: matchup.eloChange >= 0
+                        ? AppColors.success
+                        : AppColors.danger,
                   ),
                 ),
               ],
@@ -397,10 +401,7 @@ class HeadToHeadPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.xs),
-        Text(
-          label,
-          style: AppTextStyles.tinyCaption,
-        ),
+        Text(label, style: AppTextStyles.tinyCaption),
       ],
     );
   }

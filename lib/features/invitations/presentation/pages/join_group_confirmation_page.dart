@@ -22,7 +22,7 @@ class JoinGroupConfirmationPage extends StatelessWidget {
       appBar: AppBar(title: Text(l10n.joinGroupConfirmation)),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: BlocConsumer<InviteJoinBloc, InviteJoinState>(
             listener: (context, state) {
               if (state is InviteJoinJoined) {
@@ -90,7 +90,7 @@ class JoinGroupConfirmationPage extends StatelessWidget {
         Card(
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

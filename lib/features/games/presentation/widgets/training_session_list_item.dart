@@ -29,14 +29,17 @@ class TrainingSessionListItem extends StatelessWidget {
     final isCancelled = session.status == TrainingStatus.cancelled;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xs,
+      ),
       elevation: isPast ? 0 : 1,
       color: _getCardBackgroundColor(context),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,7 +50,9 @@ class TrainingSessionListItem extends StatelessWidget {
                   Icon(
                     Icons.fitness_center,
                     size: 20,
-                    color: isCancelled ? AppColors.textMuted : AppColors.secondary,
+                    color: isCancelled
+                        ? AppColors.textMuted
+                        : AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -208,11 +213,13 @@ class TrainingSessionListItem extends StatelessWidget {
             ],
           ),
         ),
-        if (isParticipant) ...[const SizedBox(width: AppSpacing.md), const JoinedBadge()],
+        if (isParticipant) ...[
+          const SizedBox(width: AppSpacing.md),
+          const JoinedBadge(),
+        ],
       ],
     );
   }
-
 
   String _formatDuration(BuildContext context, Duration duration) {
     final l10n = AppLocalizations.of(context)!;

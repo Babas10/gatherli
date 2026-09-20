@@ -142,4 +142,3 @@ abstract class FriendshipModel with _$FriendshipModel {
         (initiatorId == userId2 && recipientId == userId1);
   }
 }
-

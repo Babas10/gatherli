@@ -104,7 +104,7 @@ class GameTeamPickerWidget extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
+                  horizontal: AppSpacing.md,
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
@@ -123,7 +123,7 @@ class GameTeamPickerWidget extends StatelessWidget {
                   children: [
                     if (isSelected)
                       const Padding(
-                        padding: EdgeInsets.only(right: 8),
+                        padding: EdgeInsets.only(right: AppSpacing.sm),
                         child: Icon(
                           Icons.check_circle,
                           key: Key('team_combo_selected_icon'),

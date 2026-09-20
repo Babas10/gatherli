@@ -117,7 +117,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
               }
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -219,7 +219,7 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                       Card(
                         color: AppColors.primary.withValues(alpha: 0.2),
                         child: const Padding(
-                          padding: EdgeInsets.all(12.0),
+                          padding: EdgeInsets.all(AppSpacing.md),
                           child: Row(
                             children: [
                               Icon(
@@ -262,7 +262,9 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             : const Icon(Icons.add),
                         label: Text(isLoading ? 'Creating...' : 'Create Group'),
                         style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.lg,
+                          ),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.lg),
@@ -273,7 +275,9 @@ class _GroupCreationPageState extends State<GroupCreationPage> {
                             ? null
                             : () => Navigator.of(context).pop(),
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.lg,
+                          ),
                         ),
                         child: const Text('Cancel'),
                       ),

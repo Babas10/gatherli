@@ -42,7 +42,7 @@ class BestEloHighlightCard extends StatelessWidget {
       color: AppColors.divider.withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -92,11 +92,18 @@ class BestEloHighlightCard extends StatelessWidget {
               ],
             ),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSpacing.md,
+            horizontal: AppSpacing.lg,
+          ),
           child: Row(
             children: [
               // Trophy icon
-              const Icon(Icons.emoji_events, size: 20, color: AppColors.primary),
+              const Icon(
+                Icons.emoji_events,
+                size: 20,
+                color: AppColors.primary,
+              ),
               const SizedBox(width: AppSpacing.md),
               // Content
               Expanded(

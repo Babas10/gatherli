@@ -48,9 +48,12 @@ class StatsErrorPlaceholder extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      margin: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(AppSpacing.lg),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.xxl,
+          horizontal: AppSpacing.xl,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,7 +116,7 @@ class CompactStatsError extends StatelessWidget {
 
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -137,7 +140,7 @@ class CompactStatsError extends StatelessWidget {
                 onPressed: onRetry,
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
+                    horizontal: AppSpacing.sm,
                     vertical: 2,
                   ),
                   minimumSize: const Size(0, 0),

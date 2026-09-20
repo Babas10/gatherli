@@ -62,8 +62,7 @@ Future<bool> showDemoteConfirmationDialog(
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(
-              ),
+              style: FilledButton.styleFrom(),
               child: Text(l10n.demote),
             ),
           ],

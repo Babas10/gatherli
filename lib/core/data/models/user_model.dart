@@ -239,7 +239,6 @@ abstract class UserModel with _$UserModel {
       updatedAt: DateTime.now(),
     );
   }
-
 }
 
 /// Gender identity used to classify games and route ELO updates (Story 26.1).
@@ -261,7 +260,6 @@ enum UserPrivacyLevel {
   @JsonValue('private')
   private,
 }
-
 
 /// Nemesis record tracking the opponent a player has lost to most often.
 /// This record is automatically updated by Cloud Functions after each game.
@@ -349,7 +347,6 @@ abstract class BestWinRecord with _$BestWinRecord {
   /// Get formatted team ELO (rounded)
   String get teamEloString => opponentTeamElo.toStringAsFixed(0);
 }
-
 
 /// Point statistics tracking average point differential per set.
 /// Separates winning sets from losing sets to show dominance vs competitiveness.

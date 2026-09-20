@@ -23,9 +23,11 @@ class InviteePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
-      buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
-          (prev is InviteeSelectionLoaded && curr is InviteeSelectionLoaded &&
-           prev.selectedIds != curr.selectedIds),
+      buildWhen: (prev, curr) =>
+          prev.runtimeType != curr.runtimeType ||
+          (prev is InviteeSelectionLoaded &&
+              curr is InviteeSelectionLoaded &&
+              prev.selectedIds != curr.selectedIds),
       builder: (context, state) {
         if (state is InviteeSelectionLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -34,10 +36,9 @@ class InviteePicker extends StatelessWidget {
           return Center(
             child: Text(
               state.message,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: AppColors.danger),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.danger),
             ),
           );
         }
@@ -86,15 +87,16 @@ class _FriendsTab extends StatelessWidget {
       );
     }
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       itemCount: state.friends.length,
       itemBuilder: (context, i) {
         final user = state.friends[i];
         return _InviteeRow(
           user: user,
           isSelected: state.selectedFriendIds.contains(user.uid),
-          onTap: () =>
-              context.read<InviteeSelectionBloc>().add(ToggleInvitee(uid: user.uid)),
+          onTap: () => context.read<InviteeSelectionBloc>().add(
+            ToggleInvitee(uid: user.uid),
+          ),
         );
       },
     );
@@ -117,7 +119,7 @@ class _GroupsTab extends StatelessWidget {
       );
     }
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       itemCount: state.groups.length,
       itemBuilder: (context, i) {
         final group = state.groups[i];
@@ -125,9 +127,9 @@ class _GroupsTab extends StatelessWidget {
         return _GroupRow(
           group: group,
           isSelected: isSelected,
-          onTap: () => context
-              .read<InviteeSelectionBloc>()
-              .add(ToggleGroup(groupId: group.id)),
+          onTap: () => context.read<InviteeSelectionBloc>().add(
+            ToggleGroup(groupId: group.id),
+          ),
         );
       },
     );
@@ -151,8 +153,14 @@ class _InviteeRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return AccentCard(
       onTap: onTap,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       child: Row(
         children: [
           UserAvatar(name: user.displayNameOrFallback, photoUrl: user.photoUrl),
@@ -165,7 +173,6 @@ class _InviteeRow extends StatelessWidget {
                   user.displayNameOrFallback,
                   style: AppTextStyles.cardTitle,
                 ),
-
               ],
             ),
           ),
@@ -199,8 +206,14 @@ class _GroupRow extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return AccentCard(
       onTap: onTap,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       child: Row(
         children: [
           GroupAvatar(name: group.name, radius: 22),
@@ -209,10 +222,7 @@ class _GroupRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  group.name,
-                  style: AppTextStyles.cardTitle,
-                ),
+                Text(group.name, style: AppTextStyles.cardTitle),
                 Text(
                   l10n.groupMembersCount(group.members.length),
                   style: AppTextStyles.cardSubtitle,
@@ -233,4 +243,3 @@ class _GroupRow extends StatelessWidget {
     );
   }
 }
-

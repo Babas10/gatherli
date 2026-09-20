@@ -110,7 +110,7 @@ class _TrainingSessionFeedbackPageState
     final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -147,7 +147,7 @@ class _TrainingSessionFeedbackPageState
     final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.xl),
       child: Form(
         key: _formKey,
         child: Column(
@@ -157,7 +157,7 @@ class _TrainingSessionFeedbackPageState
             Card(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -234,7 +234,7 @@ class _TrainingSessionFeedbackPageState
             FilledButton(
               onPressed: isSubmitting ? null : () => _submitFeedback(context),
               style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
                 backgroundColor: AppColors.secondary,
                 foregroundColor: Colors.white,
               ),
@@ -261,7 +261,7 @@ class _TrainingSessionFeedbackPageState
             Card(
               color: AppColors.primary,
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppSpacing.md),
                 child: Row(
                   children: [
                     const Icon(
@@ -313,7 +313,7 @@ class _TrainingSessionFeedbackPageState
             return GestureDetector(
               onTap: () => onRatingChanged(rating),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
                 child: Icon(
                   Icons.sports_volleyball,
                   size: isSelected ? 44 : 40,

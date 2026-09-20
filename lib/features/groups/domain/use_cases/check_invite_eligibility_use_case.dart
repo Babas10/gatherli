@@ -31,7 +31,6 @@ class InviteEligibilityResult {
 
 class CheckInviteEligibilityUseCase
     extends UseCase<InviteEligibilityInput, InviteEligibilityResult> {
-
   const CheckInviteEligibilityUseCase();
 
   @override

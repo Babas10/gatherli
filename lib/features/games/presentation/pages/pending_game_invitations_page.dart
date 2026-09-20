@@ -111,7 +111,7 @@ class _PendingGameInvitationsViewState
     if (state is GameInvitationsError) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -158,7 +158,7 @@ class _PendingGameInvitationsViewState
       onRefresh: () async =>
           context.read<GameInvitationsBloc>().add(const LoadGameInvitations()),
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         itemCount: invitations.length,
         itemBuilder: (context, index) {
           final inv = invitations[index];

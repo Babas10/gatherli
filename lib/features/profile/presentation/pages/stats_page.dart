@@ -52,7 +52,7 @@ class StatsPage extends StatelessWidget {
 
         if (statsState is PlayerStatsLoaded) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 16, bottom: 20),
+            padding: const EdgeInsets.only(top: AppSpacing.lg, bottom: 20),
             child: ExpandedStatsSection(
               user: statsState.user,
               ratingHistory: statsState.history,

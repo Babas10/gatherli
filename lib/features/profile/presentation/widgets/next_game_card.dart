@@ -73,7 +73,7 @@ class NextGameCard extends StatelessWidget {
                 ),
                 // Card content
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 20, 16, 20),
+                  padding: const EdgeInsets.fromLTRB(22, 20, AppSpacing.lg, 20),
                   child: _buildGameContent(context, l10n),
                 ),
               ],
@@ -144,12 +144,19 @@ class NextGameCard extends StatelessWidget {
         // Date/time + Location
         Row(
           children: [
-            const Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
+            const Icon(
+              Icons.calendar_today,
+              size: 14,
+              color: AppColors.textMuted,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
                 formatSmartDateTime(context, game!.scheduledAt),
-                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textMuted,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -160,7 +167,10 @@ class NextGameCard extends StatelessWidget {
             Expanded(
               child: Text(
                 game!.location.name,
-                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textMuted,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -225,16 +235,12 @@ class NextGameCard extends StatelessWidget {
           ),
           if (game!.waitlistCount > 0) ...[
             const SizedBox(width: 6),
-            Text(
-              '+${game!.waitlistCount}',
-              style: AppTextStyles.caption,
-            ),
+            Text('+${game!.waitlistCount}', style: AppTextStyles.caption),
           ],
         ],
       ),
     );
   }
-
 }
 
 /// Paints a dashed rounded rectangle border for empty states.

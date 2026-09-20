@@ -33,7 +33,7 @@ class ELOTrendIndicator extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -68,7 +68,9 @@ class ELOTrendIndicator extends StatelessWidget {
                         ? Icons.arrow_upward
                         : Icons.arrow_downward,
                     size: 16,
-                    color: trendData['isPositive'] ? AppColors.success : AppColors.danger,
+                    color: trendData['isPositive']
+                        ? AppColors.success
+                        : AppColors.danger,
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   // Delta

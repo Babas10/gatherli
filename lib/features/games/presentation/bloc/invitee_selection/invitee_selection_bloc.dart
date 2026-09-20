@@ -15,9 +15,9 @@ class InviteeSelectionBloc
   InviteeSelectionBloc({
     required FriendRepository friendRepository,
     required UserRepository userRepository,
-  })  : _friendRepository = friendRepository,
-        _userRepository = userRepository,
-        super(const InviteeSelectionInitial()) {
+  }) : _friendRepository = friendRepository,
+       _userRepository = userRepository,
+       super(const InviteeSelectionInitial()) {
     on<LoadInvitees>(_onLoadInvitees);
     on<ToggleInvitee>(_onToggleInvitee);
     on<ToggleGroup>(_onToggleGroup);
@@ -35,11 +35,13 @@ class InviteeSelectionBloc
       final friends = <InvitableUser>[];
       for (final f in friendEntities) {
         if (seenFriendIds.add(f.uid)) {
-          friends.add(InvitableUser(
-            uid: f.uid,
-            displayName: f.displayName,
-            photoUrl: f.photoUrl,
-          ));
+          friends.add(
+            InvitableUser(
+              uid: f.uid,
+              displayName: f.displayName,
+              photoUrl: f.photoUrl,
+            ),
+          );
         }
       }
 
@@ -49,32 +51,40 @@ class InviteeSelectionBloc
         final members = await _userRepository.getUsersInGroup(entry.key);
         final groupMembers = members
             .where((m) => m.uid != event.userId)
-            .map((m) => InvitableUser(
-                  uid: m.uid,
-                  displayName: m.displayName,
-                  photoUrl: m.photoUrl,
-                ))
+            .map(
+              (m) => InvitableUser(
+                uid: m.uid,
+                displayName: m.displayName,
+                photoUrl: m.photoUrl,
+              ),
+            )
             .toList();
         if (groupMembers.isNotEmpty) {
-          groups.add(InvitableGroup(
-            id: entry.key,
-            name: entry.value,
-            members: groupMembers,
-          ));
+          groups.add(
+            InvitableGroup(
+              id: entry.key,
+              name: entry.value,
+              members: groupMembers,
+            ),
+          );
         }
       }
 
       emit(InviteeSelectionLoaded(friends: friends, groups: groups));
     } on FriendshipException catch (e) {
-      emit(InviteeSelectionError(
-        message: e.message,
-        errorCode: e.code ?? 'LOAD_INVITEES_ERROR',
-      ));
+      emit(
+        InviteeSelectionError(
+          message: e.message,
+          errorCode: e.code ?? 'LOAD_INVITEES_ERROR',
+        ),
+      );
     } catch (e) {
-      emit(InviteeSelectionError(
-        message: 'Failed to load invitees: ${e.toString()}',
-        errorCode: 'LOAD_INVITEES_ERROR',
-      ));
+      emit(
+        InviteeSelectionError(
+          message: 'Failed to load invitees: ${e.toString()}',
+          errorCode: 'LOAD_INVITEES_ERROR',
+        ),
+      );
     }
   }
 
@@ -93,10 +103,7 @@ class InviteeSelectionBloc
     emit(current.copyWith(selectedFriendIds: newIds));
   }
 
-  void _onToggleGroup(
-    ToggleGroup event,
-    Emitter<InviteeSelectionState> emit,
-  ) {
+  void _onToggleGroup(ToggleGroup event, Emitter<InviteeSelectionState> emit) {
     if (state is! InviteeSelectionLoaded) return;
     final current = state as InviteeSelectionLoaded;
     final newGroupIds = Set<String>.from(current.selectedGroupIds);

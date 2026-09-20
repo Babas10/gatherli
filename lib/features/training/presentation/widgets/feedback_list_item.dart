@@ -16,9 +16,12 @@ class FeedbackListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 6,
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,8 +89,8 @@ class FeedbackListItem extends StatelessWidget {
                 // Rating pill — top right
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.15),
@@ -195,10 +198,7 @@ class FeedbackListItem extends StatelessWidget {
           style: TextStyle(fontSize: 11, color: AppColors.primary),
         ),
         const SizedBox(width: AppSpacing.xs),
-        Text(
-          label,
-          style: AppTextStyles.caption,
-        ),
+        Text(label, style: AppTextStyles.caption),
       ],
     );
   }

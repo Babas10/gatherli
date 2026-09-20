@@ -605,8 +605,9 @@ class FirestoreGameRepository implements GameRepository {
   /// Creates a pickup game via Cloud Function (Admin SDK bypasses Firestore rules).
   Future<String> _createPickupGameViaCF(GameModel game) async {
     try {
-      final callable = FirebaseFunctions.instanceFor(region: 'europe-west6')
-          .httpsCallable('createPickupGame');
+      final callable = FirebaseFunctions.instanceFor(
+        region: 'europe-west6',
+      ).httpsCallable('createPickupGame');
       final result = await callable.call({
         'title': game.title,
         'description': game.description,
@@ -620,7 +621,10 @@ class FirestoreGameRepository implements GameRepository {
       final gameId = result.data['gameId'] as String;
       return gameId;
     } on FirebaseFunctionsException catch (e) {
-      throw GameException(e.message ?? 'Failed to create pickup game', code: e.code);
+      throw GameException(
+        e.message ?? 'Failed to create pickup game',
+        code: e.code,
+      );
     } catch (e) {
       throw GameException('Failed to create pickup game: $e', code: 'unknown');
     }
@@ -1644,5 +1648,4 @@ class FirestoreGameRepository implements GameRepository {
       throw GameException('Failed to get completed games: $e', code: 'unknown');
     }
   }
-
 }

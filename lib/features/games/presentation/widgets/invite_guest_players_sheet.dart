@@ -65,7 +65,7 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
           children: [
             // Handle bar
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               child: Container(
                 width: 40,
                 height: 4,
@@ -76,7 +76,12 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                0,
+                AppSpacing.lg,
+                AppSpacing.md,
+              ),
               child: Text(
                 l10n.inviteGuestPlayers,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -154,8 +159,8 @@ class _InviteGroupsSheetState extends State<_InviteGroupsSheet> {
                       return ListView.builder(
                         controller: scrollController,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
+                          horizontal: AppSpacing.lg,
+                          vertical: AppSpacing.md,
                         ),
                         itemCount: groupEntries.length,
                         itemBuilder: (context, index) {
@@ -229,7 +234,10 @@ class _GroupCard extends StatelessWidget {
       child: InkWell(
         onTap: isDisabled ? null : onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: 14,
+          ),
           child: Row(
             children: [
               // Single group avatar
@@ -322,7 +330,7 @@ class _ErrorView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

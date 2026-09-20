@@ -8,7 +8,8 @@ import 'package:play_with_me/core/presentation/bloc/account_status/account_statu
 import 'package:play_with_me/core/presentation/bloc/account_status/account_status_state.dart';
 import 'package:play_with_me/features/auth/domain/repositories/auth_repository.dart';
 
-class AccountStatusBloc extends BaseBloc<AccountStatusEvent, AccountStatusState> {
+class AccountStatusBloc
+    extends BaseBloc<AccountStatusEvent, AccountStatusState> {
   final AuthRepository _authRepository;
   StreamSubscription<dynamic>? _authStateSubscription;
 

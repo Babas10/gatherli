@@ -6,17 +6,12 @@ class InvitableUser {
   final String? displayName;
   final String? photoUrl;
 
-  const InvitableUser({
-    required this.uid,
-    this.displayName,
-    this.photoUrl,
-  });
+  const InvitableUser({required this.uid, this.displayName, this.photoUrl});
 
   String get displayNameOrFallback => displayName ?? 'Unknown player';
 
   @override
-  bool operator ==(Object other) =>
-      other is InvitableUser && other.uid == uid;
+  bool operator ==(Object other) => other is InvitableUser && other.uid == uid;
 
   @override
   int get hashCode => uid.hashCode;

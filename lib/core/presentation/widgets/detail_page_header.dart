@@ -5,6 +5,7 @@
 // (title placement, status badges, key facts) — this widget only owns the
 // container, not the layout of what's inside it.
 import 'package:flutter/material.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 class DetailPageHeader extends StatelessWidget {
   final Widget child;
@@ -13,7 +14,12 @@ class DetailPageHeader extends StatelessWidget {
   const DetailPageHeader({
     super.key,
     required this.child,
-    this.margin = const EdgeInsets.fromLTRB(16, 12, 16, 4),
+    this.margin = const EdgeInsets.fromLTRB(
+      AppSpacing.lg,
+      AppSpacing.md,
+      AppSpacing.lg,
+      AppSpacing.xs,
+    ),
   });
 
   @override
@@ -21,7 +27,7 @@ class DetailPageHeader extends StatelessWidget {
     return Card(
       margin: margin,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: child,
       ),
     );

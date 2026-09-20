@@ -4,7 +4,8 @@ part 'notification_preferences_entity.freezed.dart';
 part 'notification_preferences_entity.g.dart';
 
 @freezed
-abstract class NotificationPreferencesEntity with _$NotificationPreferencesEntity {
+abstract class NotificationPreferencesEntity
+    with _$NotificationPreferencesEntity {
   const factory NotificationPreferencesEntity({
     @Default(true) bool groupInvitations,
     @Default(true) bool invitationAccepted,

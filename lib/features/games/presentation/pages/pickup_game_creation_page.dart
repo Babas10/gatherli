@@ -31,7 +31,9 @@ class PickupGameCreationPage extends StatelessWidget {
       providers: [
         BlocProvider<GameCreationBloc>(
           create: (_) => sl<GameCreationBloc>()
-            ..add(const SetContextType(contextType: ActivityContextType.pickup)),
+            ..add(
+              const SetContextType(contextType: ActivityContextType.pickup),
+            ),
         ),
         BlocProvider<InviteeSelectionBloc>(
           create: (ctx) {
@@ -167,8 +169,13 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
         date.year == now.year && date.month == now.month && date.day == now.day;
     final minPickerTime = isToday ? now : null;
     DateTime pickerTime = isToday
-        ? DateTime(date.year, date.month, date.day, now.hour, now.minute)
-            .add(const Duration(hours: 1))
+        ? DateTime(
+            date.year,
+            date.month,
+            date.day,
+            now.hour,
+            now.minute,
+          ).add(const Duration(hours: 1))
         : DateTime(date.year, date.month, date.day, 14, 0);
 
     // ignore: use_build_context_synchronously
@@ -178,49 +185,63 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
         return Dialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(dialogContext),
-                      child: Text(l10n.cancel,
-                          style: const TextStyle(color: blue, fontSize: 16)),
+                      child: Text(
+                        l10n.cancel,
+                        style: const TextStyle(color: blue, fontSize: 16),
+                      ),
                     ),
                     Column(
                       children: [
-                        Text(l10n.selectGameTime,
-                            style: const TextStyle(
-                                color: blue,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600)),
+                        Text(
+                          l10n.selectGameTime,
+                          style: const TextStyle(
+                            color: blue,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         if (isToday)
                           Text(
                             '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} ${l10n.orLater}',
                             style: const TextStyle(
-                                color: Colors.grey, fontSize: 12),
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
                           ),
                       ],
                     ),
                     TextButton(
                       onPressed: () {
                         time = TimeOfDay(
-                            hour: pickerTime.hour,
-                            minute: pickerTime.minute);
+                          hour: pickerTime.hour,
+                          minute: pickerTime.minute,
+                        );
                         Navigator.pop(dialogContext);
                       },
-                      child: Text(l10n.ok,
-                          style: const TextStyle(
-                              color: blue,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600)),
+                      child: Text(
+                        l10n.ok,
+                        style: const TextStyle(
+                          color: blue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -245,7 +266,12 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
     if (time == null || !mounted) return;
 
     final dateTime = DateTime(
-        date.year, date.month, date.day, time!.hour, time!.minute);
+      date.year,
+      date.month,
+      date.day,
+      time!.hour,
+      time!.minute,
+    );
     setState(() => _selectedDateTime = dateTime);
     bloc.add(SetDateTime(dateTime: dateTime));
   }
@@ -266,15 +292,16 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
     final bloc = context.read<GameCreationBloc>();
     bloc.add(SetTitle(title: _titleController.text.trim()));
     if (_descriptionController.text.trim().isNotEmpty) {
-      bloc.add(
-          SetDescription(description: _descriptionController.text.trim()));
+      bloc.add(SetDescription(description: _descriptionController.text.trim()));
     }
-    bloc.add(SetLocation(
-      locationName: _locationController.text.trim(),
-      address: _addressController.text.trim().isNotEmpty
-          ? _addressController.text.trim()
-          : null,
-    ));
+    bloc.add(
+      SetLocation(
+        locationName: _locationController.text.trim(),
+        address: _addressController.text.trim().isNotEmpty
+            ? _addressController.text.trim()
+            : null,
+      ),
+    );
     bloc.add(SetDateTime(dateTime: _selectedDateTime!));
     _goToStep(1);
   }
@@ -324,8 +351,9 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content:
-                  Text(AppLocalizations.of(context)!.invitationsSentSuccess),
+              content: Text(
+                AppLocalizations.of(context)!.invitationsSentSuccess,
+              ),
               backgroundColor: AppColors.success,
             ),
           );
@@ -336,15 +364,14 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.pickupGameCreatedSuccess),
+          content: Text(AppLocalizations.of(context)!.pickupGameCreatedSuccess),
           backgroundColor: AppColors.success,
           duration: const Duration(seconds: 2),
         ),
       );
-      Navigator.of(context).pop(resultState is GameCreationSuccess
-          ? resultState.game
-          : null);
+      Navigator.of(
+        context,
+      ).pop(resultState is GameCreationSuccess ? resultState.game : null);
     }
   }
 
@@ -371,7 +398,9 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
             if (authState is! AuthenticationAuthenticated) {
               return Scaffold(
                 appBar: PlayWithMeAppBar.build(
-                    context: context, title: l10n.pickupGame),
+                  context: context,
+                  title: l10n.pickupGame,
+                ),
                 body: Center(child: Text(l10n.pleaseLogInToCreateGame)),
               );
             }
@@ -401,10 +430,10 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
                   ),
                   _InviteStep(
                     isSubmitting: isSubmitting,
-                    onSkip: () => _onSubmit(context, userId,
-                        skipInvitations: true),
-                    onSubmit: () => _onSubmit(context, userId,
-                        skipInvitations: false),
+                    onSkip: () =>
+                        _onSubmit(context, userId, skipInvitations: true),
+                    onSubmit: () =>
+                        _onSubmit(context, userId, skipInvitations: false),
                   ),
                 ],
               ),
@@ -443,7 +472,7 @@ class _GameDetailsStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Form(
         key: formKey,
         child: Column(
@@ -453,26 +482,33 @@ class _GameDetailsStep extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.secondary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                      color: AppColors.secondary.withValues(alpha: 0.3)),
+                    color: AppColors.secondary.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.flash_on,
-                        color: AppColors.secondary, size: 16),
+                    const Icon(
+                      Icons.flash_on,
+                      color: AppColors.secondary,
+                      size: 16,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       l10n.pickupGame,
                       style: const TextStyle(
-                          color: AppColors.secondary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13),
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),
@@ -484,103 +520,105 @@ class _GameDetailsStep extends StatelessWidget {
             Card(
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Title
+                    TextFormField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        labelText: l10n.gameTitle,
+                        hintText: l10n.gameTitleHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.sports_volleyball),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return l10n.pleaseTitleRequired;
+                        }
+                        if (value.trim().length < 3) return l10n.titleMinLength;
+                        if (value.trim().length > 100) {
+                          return l10n.titleMaxLength;
+                        }
+                        return null;
+                      },
+                      enabled: !isSubmitting,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
 
-            // Title
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: l10n.gameTitle,
-                hintText: l10n.gameTitleHint,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.sports_volleyball),
-              ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return l10n.pleaseTitleRequired;
-                }
-                if (value.trim().length < 3) return l10n.titleMinLength;
-                if (value.trim().length > 100) return l10n.titleMaxLength;
-                return null;
-              },
-              enabled: !isSubmitting,
-            ),
-            const SizedBox(height: AppSpacing.lg),
+                    // Description
+                    TextFormField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                        labelText: l10n.descriptionOptional,
+                        hintText: l10n.gameDescriptionHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.description),
+                      ),
+                      maxLines: 3,
+                      enabled: !isSubmitting,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
 
-            // Description
-            TextFormField(
-              controller: descriptionController,
-              decoration: InputDecoration(
-                labelText: l10n.descriptionOptional,
-                hintText: l10n.gameDescriptionHint,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.description),
-              ),
-              maxLines: 3,
-              enabled: !isSubmitting,
-            ),
-            const SizedBox(height: AppSpacing.lg),
+                    // Date/Time picker
+                    Material(
+                      child: ListTile(
+                        title: Text(l10n.dateTime),
+                        subtitle: selectedDateTime != null
+                            ? Text(
+                                '${selectedDateTime!.day}/${selectedDateTime!.month}/${selectedDateTime!.year}'
+                                ' ${selectedDateTime!.hour.toString().padLeft(2, '0')}:${selectedDateTime!.minute.toString().padLeft(2, '0')}',
+                              )
+                            : Text(
+                                l10n.tapToSelect,
+                                style: const TextStyle(color: AppColors.danger),
+                              ),
+                        leading: const Icon(Icons.calendar_today),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: isSubmitting ? null : onSelectDateTime,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(
+                            color: selectedDateTime == null
+                                ? AppColors.danger
+                                : Colors.grey.shade300,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
 
-            // Date/Time picker
-            Material(
-              child: ListTile(
-                title: Text(l10n.dateTime),
-                subtitle: selectedDateTime != null
-                    ? Text(
-                        '${selectedDateTime!.day}/${selectedDateTime!.month}/${selectedDateTime!.year}'
-                        ' ${selectedDateTime!.hour.toString().padLeft(2, '0')}:${selectedDateTime!.minute.toString().padLeft(2, '0')}',
-                      )
-                    : Text(l10n.tapToSelect,
-                        style: const TextStyle(color: AppColors.danger)),
-                leading: const Icon(Icons.calendar_today),
-                trailing:
-                    const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: isSubmitting ? null : onSelectDateTime,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: selectedDateTime == null
-                        ? AppColors.danger
-                        : Colors.grey.shade300,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
+                    // Location
+                    TextFormField(
+                      controller: locationController,
+                      decoration: InputDecoration(
+                        labelText: l10n.location,
+                        hintText: l10n.locationHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.location_on),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return l10n.pleaseEnterLocation;
+                        }
+                        return null;
+                      },
+                      enabled: !isSubmitting,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
 
-            // Location
-            TextFormField(
-              controller: locationController,
-              decoration: InputDecoration(
-                labelText: l10n.location,
-                hintText: l10n.locationHint,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.location_on),
-              ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return l10n.pleaseEnterLocation;
-                }
-                return null;
-              },
-              enabled: !isSubmitting,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            // Address (optional)
-            TextFormField(
-              controller: addressController,
-              decoration: InputDecoration(
-                labelText: l10n.addressOptional,
-                hintText: l10n.addressHint,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.place),
-              ),
-              enabled: !isSubmitting,
-            ),
+                    // Address (optional)
+                    TextFormField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                        labelText: l10n.addressOptional,
+                        hintText: l10n.addressHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.place),
+                      ),
+                      enabled: !isSubmitting,
+                    ),
                   ],
                 ),
               ),
@@ -591,7 +629,8 @@ class _GameDetailsStep extends StatelessWidget {
             OutlinedButton(
               onPressed: isSubmitting ? null : onNext,
               style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16)),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+              ),
               child: Text(l10n.next, style: const TextStyle(fontSize: 16)),
             ),
           ],
@@ -619,21 +658,30 @@ class _InviteStep extends StatelessWidget {
       children: [
         // Selected count badge
         BlocBuilder<InviteeSelectionBloc, InviteeSelectionState>(
-          buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType ||
-          (prev is InviteeSelectionLoaded && curr is InviteeSelectionLoaded &&
-           prev.selectedIds != curr.selectedIds),
+          buildWhen: (prev, curr) =>
+              prev.runtimeType != curr.runtimeType ||
+              (prev is InviteeSelectionLoaded &&
+                  curr is InviteeSelectionLoaded &&
+                  prev.selectedIds != curr.selectedIds),
           builder: (context, state) {
-            if (state is! InviteeSelectionLoaded) return const SizedBox.shrink();
+            if (state is! InviteeSelectionLoaded) {
+              return const SizedBox.shrink();
+            }
             final count = state.selectedIds.length;
             if (count == 0) return const SizedBox.shrink();
             return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.md,
+                AppSpacing.lg,
+                0,
+              ),
               child: Text(
                 l10n.selectedCount(count),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.secondary,
+                  fontWeight: FontWeight.w600,
+                ),
                 textAlign: TextAlign.center,
               ),
             );
@@ -643,9 +691,9 @@ class _InviteStep extends StatelessWidget {
         const Expanded(child: InviteePicker()),
         // Action buttons
         Card(
-          margin: const EdgeInsets.all(12),
+          margin: const EdgeInsets.all(AppSpacing.md),
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppSpacing.md),
             child: Row(
               children: [
                 Expanded(

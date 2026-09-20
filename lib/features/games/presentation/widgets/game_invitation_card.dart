@@ -40,23 +40,26 @@ class GameInvitationCard extends StatelessWidget {
     );
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── Game title ──────────────────────────────────────────────────
               Text(
                 invitation.gameTitle,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: AppSpacing.sm),
 
@@ -102,7 +105,7 @@ class GameInvitationCard extends StatelessWidget {
                 children: [
                   if (isProcessing)
                     const Padding(
-                      padding: EdgeInsets.only(right: 12),
+                      padding: EdgeInsets.only(right: AppSpacing.md),
                       child: SizedBox(
                         width: 20,
                         height: 20,

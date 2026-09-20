@@ -71,11 +71,11 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
 
   void _onVerify(BuildContext context) {
     context.read<MatchVerificationBloc>().add(
-          VerifyMatchResult(
-            championshipId: widget.championshipId,
-            matchId: widget.matchId,
-          ),
-        );
+      VerifyMatchResult(
+        championshipId: widget.championshipId,
+        matchId: widget.matchId,
+      ),
+    );
   }
 
   void _onDispute(BuildContext context, AppLocalizations l10n) {
@@ -86,12 +86,12 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
     }
     setState(() => _reasonError = null);
     context.read<MatchVerificationBloc>().add(
-          DisputeMatchResult(
-            championshipId: widget.championshipId,
-            matchId: widget.matchId,
-            reason: reason,
-          ),
-        );
+      DisputeMatchResult(
+        championshipId: widget.championshipId,
+        matchId: widget.matchId,
+        reason: reason,
+      ),
+    );
   }
 
   @override
@@ -101,9 +101,9 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
     return BlocConsumer<MatchVerificationBloc, MatchVerificationState>(
       listener: (context, state) {
         if (state is MatchVerificationError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -127,7 +127,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
 
         return Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -135,16 +135,16 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                 Text(
                   l10n.verifyResultTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.secondary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondary,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   l10n.verifyResultSubmittedBy(widget.submittingTeamName),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 if (!_showDisputeForm) ...[
@@ -152,7 +152,9 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                     children: [
                       Expanded(
                         child: FilledButton.icon(
-                          onPressed: isLoading ? null : () => _onVerify(context),
+                          onPressed: isLoading
+                              ? null
+                              : () => _onVerify(context),
                           icon: const Icon(Icons.check, size: 18),
                           label: Text(l10n.verifyResultConfirmButton),
                           style: FilledButton.styleFrom(
@@ -180,7 +182,9 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                   Text(
                     l10n.verifyResultDisputeReasonLabel,
                     style: const TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 13),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   TextField(
@@ -203,9 +207,9 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                         onPressed: isLoading
                             ? null
                             : () => setState(() {
-                                  _showDisputeForm = false;
-                                  _reasonError = null;
-                                }),
+                                _showDisputeForm = false;
+                                _reasonError = null;
+                              }),
                         child: Text(l10n.cancel),
                       ),
                       const SizedBox(width: AppSpacing.sm),
@@ -234,7 +238,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                 ],
                 if (isLoading && !_showDisputeForm)
                   const Padding(
-                    padding: EdgeInsets.only(top: 12),
+                    padding: EdgeInsets.only(top: AppSpacing.md),
                     child: Center(child: CircularProgressIndicator()),
                   ),
               ],
@@ -261,7 +265,7 @@ class _StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

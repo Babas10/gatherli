@@ -9,10 +9,10 @@ class MatchVerificationBloc
     extends Bloc<MatchVerificationEvent, MatchVerificationState> {
   final ChampionshipRepository _championshipRepository;
 
-  MatchVerificationBloc(
-      {required ChampionshipRepository championshipRepository})
-      : _championshipRepository = championshipRepository,
-        super(const MatchVerificationInitial()) {
+  MatchVerificationBloc({
+    required ChampionshipRepository championshipRepository,
+  }) : _championshipRepository = championshipRepository,
+       super(const MatchVerificationInitial()) {
     on<VerifyMatchResult>(_onVerify);
     on<DisputeMatchResult>(_onDispute);
   }
@@ -32,8 +32,11 @@ class MatchVerificationBloc
     } on ChampionshipException catch (e) {
       emit(MatchVerificationError(message: e.message, errorCode: e.code));
     } catch (e) {
-      emit(MatchVerificationError(
-          message: 'Failed to verify result: ${e.toString()}'));
+      emit(
+        MatchVerificationError(
+          message: 'Failed to verify result: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -53,8 +56,11 @@ class MatchVerificationBloc
     } on ChampionshipException catch (e) {
       emit(MatchVerificationError(message: e.message, errorCode: e.code));
     } catch (e) {
-      emit(MatchVerificationError(
-          message: 'Failed to dispute result: ${e.toString()}'));
+      emit(
+        MatchVerificationError(
+          message: 'Failed to dispute result: ${e.toString()}',
+        ),
+      );
     }
   }
 }

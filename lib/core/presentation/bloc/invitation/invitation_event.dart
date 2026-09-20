@@ -8,10 +8,7 @@ class SendInvitation extends InvitationEvent {
   final String groupId;
   final String invitedUserId;
 
-  const SendInvitation({
-    required this.groupId,
-    required this.invitedUserId,
-  });
+  const SendInvitation({required this.groupId, required this.invitedUserId});
 
   @override
   List<Object?> get props => [groupId, invitedUserId];

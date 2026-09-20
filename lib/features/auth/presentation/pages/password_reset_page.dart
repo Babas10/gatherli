@@ -56,7 +56,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Form(
             key: _formKey,
             child: Column(

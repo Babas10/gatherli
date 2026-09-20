@@ -23,9 +23,9 @@ class ProfileInfoCard extends StatelessWidget {
     final dateFormat = DateFormat('MMM d, yyyy');
 
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppSpacing.lg),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,55 +39,54 @@ class ProfileInfoCard extends StatelessWidget {
 
             // Email and verification status
             Row(
-                children: [
-                  Icon(
-                    Icons.email_outlined,
-                    size: 20,
-                    color: theme.colorScheme.primary,
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.email,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
+              children: [
+                Icon(
+                  Icons.email_outlined,
+                  size: 20,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.email,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(user.email, style: theme.textTheme.bodyMedium),
-                        const SizedBox(height: AppSpacing.sm),
-                        Row(
-                          children: [
-                            VerificationBadge(isVerified: user.isEmailVerified),
-                            if (!user.isEmailVerified &&
-                                onVerificationTap != null) ...[
-                              const SizedBox(width: AppSpacing.sm),
-                              TextButton.icon(
-                                onPressed: onVerificationTap,
-                                icon: const Icon(Icons.send, size: 16),
-                                label: Text(l10n.verify),
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  minimumSize: Size.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(user.email, style: theme.textTheme.bodyMedium),
+                      const SizedBox(height: AppSpacing.sm),
+                      Row(
+                        children: [
+                          VerificationBadge(isVerified: user.isEmailVerified),
+                          if (!user.isEmailVerified &&
+                              onVerificationTap != null) ...[
+                            const SizedBox(width: AppSpacing.sm),
+                            TextButton.icon(
+                              onPressed: onVerificationTap,
+                              icon: const Icon(Icons.send, size: 16),
+                              label: Text(l10n.verify),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.md,
+                                  vertical: AppSpacing.sm,
                                 ),
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                            ],
+                            ),
                           ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              const Divider(height: 24),
+                ),
+              ],
+            ),
+            const Divider(height: 24),
 
             // Account type
             _InfoRow(

@@ -55,7 +55,7 @@ class EmailVerificationPage extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               child: state.when(
                 initial: () => const Center(child: CircularProgressIndicator()),
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -89,7 +89,7 @@ class EmailVerificationPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             decoration: BoxDecoration(
               color: theme.colorScheme.primaryContainer,
               shape: BoxShape.circle,
@@ -152,7 +152,7 @@ class EmailVerificationPage extends StatelessWidget {
           // Icon and title
           Center(
             child: Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               decoration: BoxDecoration(
                 color: theme.colorScheme.secondaryContainer,
                 shape: BoxShape.circle,
@@ -178,7 +178,7 @@ class EmailVerificationPage extends StatelessWidget {
 
           // Email display
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
@@ -303,7 +303,7 @@ class EmailVerificationPage extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.errorContainer,
               borderRadius: BorderRadius.circular(12),
@@ -346,7 +346,7 @@ class EmailVerificationPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     final content = Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
@@ -361,7 +361,7 @@ class EmailVerificationPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
               color: theme.colorScheme.primaryContainer,
               shape: BoxShape.circle,
@@ -423,7 +423,12 @@ class EmailVerificationPage extends StatelessWidget {
       leading: Icon(Icons.help_outline, color: theme.colorScheme.primary),
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            0,
+            AppSpacing.lg,
+            AppSpacing.lg,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -465,7 +470,7 @@ class EmailVerificationPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

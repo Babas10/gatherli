@@ -67,7 +67,7 @@ class _ScoreEntryView extends StatelessWidget {
           if (state is ScoreEntryError) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -131,7 +131,7 @@ class _GameCountSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -186,7 +186,7 @@ class _ScoreEntryForm extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             itemCount: state.games.length,
             itemBuilder: (context, index) {
               return _GameCard(
@@ -237,9 +237,9 @@ class _GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: AppSpacing.lg),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -424,7 +424,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -459,8 +459,8 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                         ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.sm,
                       ),
                     ),
                     keyboardType: TextInputType.number,
@@ -511,8 +511,8 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                         ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.sm,
                       ),
                     ),
                     keyboardType: TextInputType.number,
@@ -560,7 +560,11 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                 ? Tooltip(
                     message: widget.setData.validationError ?? 'Invalid score',
                     triggerMode: TooltipTriggerMode.tap,
-                    child: const Icon(Icons.error, color: AppColors.danger, size: 20),
+                    child: const Icon(
+                      Icons.error,
+                      color: AppColors.danger,
+                      size: 20,
+                    ),
                   )
                 : null,
           ),
@@ -591,7 +595,7 @@ class _SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: const BoxDecoration(
         color: AppColors.bottomNavBackground,
         boxShadow: [
@@ -608,7 +612,7 @@ class _SaveButton extends StatelessWidget {
           children: [
             if (canSave)
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: Text(
                   isTied
                       ? l10n.resultTie
@@ -626,7 +630,7 @@ class _SaveButton extends StatelessWidget {
               child: FilledButton(
                 onPressed: canSave ? onSave : null,
                 style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
                   disabledBackgroundColor: AppColors.divider,
                 ),
                 child: Text(

@@ -22,7 +22,7 @@ class RivalsCard extends StatelessWidget {
     final nemesis = user.nemesis;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,7 +49,7 @@ class RivalsCard extends StatelessWidget {
                   : null,
               borderRadius: BorderRadius.circular(16),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: nemesis != null
                     ? _buildNemesisData(context, nemesis)
                     : _buildEmptyState(context),
@@ -72,10 +72,7 @@ class RivalsCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              nemesis.opponentName,
-              style: AppTextStyles.cardTitle,
-            ),
+            Text(nemesis.opponentName, style: AppTextStyles.cardTitle),
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
@@ -139,7 +136,10 @@ class RivalsCard extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         // Tap hint chip
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: 6,
+          ),
           decoration: BoxDecoration(
             color: AppColors.secondary,
             borderRadius: BorderRadius.circular(8),

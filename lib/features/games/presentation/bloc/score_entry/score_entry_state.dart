@@ -27,7 +27,11 @@ class SetScoreData {
   // True for the deciding 3rd set in best-of-3 — plays to 15 points instead of 21
   final bool isDeciderSet;
 
-  const SetScoreData({this.teamAPoints, this.teamBPoints, this.isDeciderSet = false});
+  const SetScoreData({
+    this.teamAPoints,
+    this.teamBPoints,
+    this.isDeciderSet = false,
+  });
 
   SetScoreData copyWith({
     int? teamAPoints,
@@ -99,7 +103,8 @@ class SetScoreData {
           isDeciderSet == other.isDeciderSet;
 
   @override
-  int get hashCode => teamAPoints.hashCode ^ teamBPoints.hashCode ^ isDeciderSet.hashCode;
+  int get hashCode =>
+      teamAPoints.hashCode ^ teamBPoints.hashCode ^ isDeciderSet.hashCode;
 }
 
 /// Helper class to store data for a single game

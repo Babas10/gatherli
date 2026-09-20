@@ -19,7 +19,10 @@ class RestrictedModeBanner extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       color: Colors.red.shade700,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -60,7 +63,7 @@ class RestrictedModeBanner extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.red.shade800,
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),

@@ -14,7 +14,9 @@ import 'package:share_plus/share_plus.dart';
 /// as the iOS popover anchor.
 Future<void> shareText(BuildContext context, String text) {
   final box = context.findRenderObject() as RenderBox?;
-  final origin = box != null ? (box.localToGlobal(Offset.zero) & box.size) : null;
+  final origin = box != null
+      ? (box.localToGlobal(Offset.zero) & box.size)
+      : null;
   return Share.share(text, sharePositionOrigin: origin);
 }
 

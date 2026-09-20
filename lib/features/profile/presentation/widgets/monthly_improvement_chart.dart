@@ -7,6 +7,7 @@ import 'package:play_with_me/core/data/models/rating_history_entry.dart';
 import 'package:play_with_me/core/domain/entities/time_period.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/empty_states/insufficient_data_placeholder.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// Enhanced area chart showing ELO progress over time with adaptive aggregation.
 ///
@@ -246,7 +247,10 @@ class MonthlyImprovementChart extends StatelessWidget {
     return SizedBox(
       height: 220,
       child: Padding(
-        padding: const EdgeInsets.only(right: 16.0, top: 16.0),
+        padding: const EdgeInsets.only(
+          right: AppSpacing.lg,
+          top: AppSpacing.lg,
+        ),
         child: LineChart(
           LineChartData(
             gridData: const FlGridData(show: false),
@@ -298,7 +302,7 @@ class MonthlyImprovementChart extends StatelessWidget {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: AppSpacing.xs),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

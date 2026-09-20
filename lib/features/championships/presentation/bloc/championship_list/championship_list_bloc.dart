@@ -13,8 +13,8 @@ class ChampionshipListBloc
   StreamSubscription? _subscription;
 
   ChampionshipListBloc({required ChampionshipRepository repository})
-      : _repository = repository,
-        super(const ChampionshipListInitial()) {
+    : _repository = repository,
+      super(const ChampionshipListInitial()) {
     on<LoadChampionships>(_onLoad);
     on<ChampionshipsUpdated>(_onUpdated);
     on<ChampionshipsLoadFailed>(_onLoadFailed);
@@ -45,14 +45,15 @@ class ChampionshipListBloc
     ChampionshipsUpdated event,
     Emitter<ChampionshipListState> emit,
   ) {
-    final currentFilter =
-        state is ChampionshipListLoaded
-            ? (state as ChampionshipListLoaded).activeFilter
-            : null;
-    emit(ChampionshipListLoaded(
-      allChampionships: event.championships,
-      activeFilter: currentFilter,
-    ));
+    final currentFilter = state is ChampionshipListLoaded
+        ? (state as ChampionshipListLoaded).activeFilter
+        : null;
+    emit(
+      ChampionshipListLoaded(
+        allChampionships: event.championships,
+        activeFilter: currentFilter,
+      ),
+    );
   }
 
   void _onLoadFailed(
@@ -67,8 +68,9 @@ class ChampionshipListBloc
     Emitter<ChampionshipListState> emit,
   ) {
     if (state is ChampionshipListLoaded) {
-      emit((state as ChampionshipListLoaded)
-          .copyWith(activeFilter: event.status));
+      emit(
+        (state as ChampionshipListLoaded).copyWith(activeFilter: event.status),
+      );
     }
   }
 }

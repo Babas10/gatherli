@@ -4,10 +4,10 @@ import 'package:play_with_me/core/domain/use_cases/base_use_case.dart';
 
 class GameScoreInput {
   final List<SetScore> sets;
-  final int requiredSetsToWin;    // e.g. 2 for best-of-3
-  final int pointsToWinSet;       // e.g. 21 for regular sets
-  final int deciderSetPoints;     // e.g. 15 for the deciding 3rd set
-  final int minimumPointDiff;     // e.g. 2
+  final int requiredSetsToWin; // e.g. 2 for best-of-3
+  final int pointsToWinSet; // e.g. 21 for regular sets
+  final int deciderSetPoints; // e.g. 15 for the deciding 3rd set
+  final int minimumPointDiff; // e.g. 2
 
   const GameScoreInput({
     required this.sets,
@@ -44,7 +44,6 @@ class GameScoreValidationResult {
 
 class ValidateGameScoresUseCase
     extends UseCase<GameScoreInput, GameScoreValidationResult> {
-
   const ValidateGameScoresUseCase();
 
   @override
@@ -67,7 +66,11 @@ class ValidateGameScoresUseCase
     return GameScoreValidationResult(isValid: true, winner: winner);
   }
 
-  String? _validateSet(SetScore set, GameScoreInput input, {required int setIndex}) {
+  String? _validateSet(
+    SetScore set,
+    GameScoreInput input, {
+    required int setIndex,
+  }) {
     final a = set.teamAPoints;
     final b = set.teamBPoints;
 

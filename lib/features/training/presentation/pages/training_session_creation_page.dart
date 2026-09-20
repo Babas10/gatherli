@@ -167,7 +167,10 @@ class _TrainingSessionCreationPageState
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -283,7 +286,10 @@ class _TrainingSessionCreationPageState
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -437,7 +443,10 @@ class _TrainingSessionCreationPageState
           );
         } else if (state is TrainingSessionCreationError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
           );
         }
       },
@@ -461,10 +470,11 @@ class _TrainingSessionCreationPageState
                   TrainingSessionCreationState,
                   bool
                 >(
-                  selector: (state) => state is TrainingSessionCreationSubmitting,
+                  selector: (state) =>
+                      state is TrainingSessionCreationSubmitting,
                   builder: (context, isLoading) {
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppSpacing.lg),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -650,7 +660,7 @@ class _TrainingSessionCreationPageState
                                       authState.user.uid,
                                     ),
                               child: Padding(
-                                padding: const EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(AppSpacing.lg),
                                 child: isLoading
                                     ? const SizedBox(
                                         height: 20,

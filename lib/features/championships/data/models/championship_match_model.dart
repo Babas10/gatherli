@@ -114,6 +114,7 @@ abstract class ChampionshipMatchModel with _$ChampionshipMatchModel {
     @Default(ChampionshipMatchStatus.pending) ChampionshipMatchStatus status,
     @NullableTimestampConverter() DateTime? scheduledAt,
     String? location,
+
     /// The team ID that proposed the current schedule. Null once the opposing
     /// team accepts (confirmed). Reset to null when the schedule is rejected.
     String? scheduledByTeamId,
@@ -124,6 +125,7 @@ abstract class ChampionshipMatchModel with _$ChampionshipMatchModel {
     String? verifiedByUserId,
     @NullableTimestampConverter() DateTime? verifiedAt,
     @AdminDecisionConverter() AdminDecision? adminDecision,
+
     /// Idempotency guard — set to true by the standings trigger (Story 30.8).
     @Default(false) bool standingsUpdated,
   }) = _ChampionshipMatchModel;
@@ -146,9 +148,11 @@ abstract class ChampionshipMatchModel with _$ChampionshipMatchModel {
 
   bool get isPastDeadline => DateTime.now().isAfter(deadline);
 
-  bool isTeamMember(String userId, ChampionshipTeamModel teamA,
-          ChampionshipTeamModel teamB) =>
-      teamA.isMember(userId) || teamB.isMember(userId);
+  bool isTeamMember(
+    String userId,
+    ChampionshipTeamModel teamA,
+    ChampionshipTeamModel teamB,
+  ) => teamA.isMember(userId) || teamB.isMember(userId);
 }
 
 // ── Custom JSON converters ────────────────────────────────────────────────────
@@ -158,8 +162,9 @@ class MatchSetScoreListConverter
   const MatchSetScoreListConverter();
 
   @override
-  List<MatchSetScore> fromJson(List<dynamic> json) =>
-      json.map((e) => MatchSetScore.fromJson(e as Map<String, dynamic>)).toList();
+  List<MatchSetScore> fromJson(List<dynamic> json) => json
+      .map((e) => MatchSetScore.fromJson(e as Map<String, dynamic>))
+      .toList();
 
   @override
   List<dynamic> toJson(List<MatchSetScore> object) =>

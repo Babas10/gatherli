@@ -10,8 +10,8 @@ class PartnerPickerBloc extends Bloc<PartnerPickerEvent, PartnerPickerState> {
   final FriendRepository _friendRepository;
 
   PartnerPickerBloc({required FriendRepository friendRepository})
-      : _friendRepository = friendRepository,
-        super(const PartnerPickerInitial()) {
+    : _friendRepository = friendRepository,
+      super(const PartnerPickerInitial()) {
     on<LoadPartners>(_onLoadPartners);
     on<SelectPartner>(_onSelectPartner);
   }
@@ -27,36 +27,38 @@ class PartnerPickerBloc extends Bloc<PartnerPickerEvent, PartnerPickerState> {
       final friends = <InvitableUser>[];
       for (final f in friendEntities) {
         if (seenIds.add(f.uid)) {
-          friends.add(InvitableUser(
-            uid: f.uid,
-            displayName: f.displayName,
-            photoUrl: f.photoUrl,
-          ));
+          friends.add(
+            InvitableUser(
+              uid: f.uid,
+              displayName: f.displayName,
+              photoUrl: f.photoUrl,
+            ),
+          );
         }
       }
       emit(PartnerPickerLoaded(friends: friends));
     } on FriendshipException catch (e) {
-      emit(PartnerPickerError(
-        message: e.message,
-        errorCode: e.code ?? 'LOAD_PARTNERS_ERROR',
-      ));
+      emit(
+        PartnerPickerError(
+          message: e.message,
+          errorCode: e.code ?? 'LOAD_PARTNERS_ERROR',
+        ),
+      );
     } catch (e) {
-      emit(PartnerPickerError(
-        message: 'Failed to load partners: ${e.toString()}',
-        errorCode: 'LOAD_PARTNERS_ERROR',
-      ));
+      emit(
+        PartnerPickerError(
+          message: 'Failed to load partners: ${e.toString()}',
+          errorCode: 'LOAD_PARTNERS_ERROR',
+        ),
+      );
     }
   }
 
-  void _onSelectPartner(
-    SelectPartner event,
-    Emitter<PartnerPickerState> emit,
-  ) {
+  void _onSelectPartner(SelectPartner event, Emitter<PartnerPickerState> emit) {
     if (state is! PartnerPickerLoaded) return;
     final current = state as PartnerPickerLoaded;
     // Tapping the already-selected partner deselects it.
-    final newId =
-        event.uid == current.selectedPartnerId ? null : event.uid;
+    final newId = event.uid == current.selectedPartnerId ? null : event.uid;
     emit(current.copyWith(selectedPartnerId: () => newId));
   }
 }

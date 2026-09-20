@@ -25,7 +25,7 @@ class StatCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,7 +58,7 @@ class StatCard extends StatelessWidget {
             ),
             if (subLabel != null)
               Padding(
-                padding: const EdgeInsets.only(top: 4.0),
+                padding: const EdgeInsets.only(top: AppSpacing.xs),
                 child: Text(
                   subLabel!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

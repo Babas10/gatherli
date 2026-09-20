@@ -13,7 +13,7 @@ class FirestoreMessageRepository implements MessageRepository {
   static const int _messagesLimit = 100;
 
   FirestoreMessageRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Stream<List<ChatMessageModel>> getMessages({required String contextPath}) {

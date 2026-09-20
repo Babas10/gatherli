@@ -5,11 +5,14 @@ class AppSpacing {
   AppSpacing._();
 
   // ── Base scale ────────────────────────────────────────────────────────────
-  static const double xs  = 4;
-  static const double sm  = 8;
-  static const double md  = 12;
-  static const double lg  = 16;
-  static const double xl  = 24;
+  /// Tightest inline gap — icon-to-text spacing inside a compact row, small
+  /// caption offsets. Below this, use zero.
+  static const double xxs = 2;
+  static const double xs = 4;
+  static const double sm = 8;
+  static const double md = 12;
+  static const double lg = 16;
+  static const double xl = 24;
   static const double xxl = 32;
 
   // ── Semantic spacing ──────────────────────────────────────────────────────
@@ -29,12 +32,12 @@ class AppSpacing {
   static const double widgetGap = md;
 
   // ── Icon sizes ───────────────────────────────────────────────────────────────
-  static const double iconXs  = 14;  // tiny inline (badge, tag)
-  static const double iconSm  = 16;  // secondary metadata icons
-  static const double iconMd  = 20;  // standard list tile icons
-  static const double iconLg  = 24;  // primary action icons (AppBar, FAB)
-  static const double iconXl  = 48;  // empty state illustrations
-  static const double iconXxl = 64;  // large empty state icons
+  static const double iconXs = 14; // tiny inline (badge, tag)
+  static const double iconSm = 16; // secondary metadata icons
+  static const double iconMd = 20; // standard list tile icons
+  static const double iconLg = 24; // primary action icons (AppBar, FAB)
+  static const double iconXl = 48; // empty state illustrations
+  static const double iconXxl = 64; // large empty state icons
 
   // ── Border radii ──────────────────────────────────────────────────────────
   /// Card and dialog corners (matches AppTheme.cardTheme)

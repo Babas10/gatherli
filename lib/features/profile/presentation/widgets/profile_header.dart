@@ -17,7 +17,7 @@ class ProfileHeader extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(

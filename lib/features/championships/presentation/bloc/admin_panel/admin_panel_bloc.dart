@@ -23,8 +23,8 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
   String? _championshipId;
 
   AdminPanelBloc({required ChampionshipRepository repository})
-      : _repository = repository,
-        super(const AdminPanelInitial()) {
+    : _repository = repository,
+      super(const AdminPanelInitial()) {
     on<LoadAdminPanel>(_onLoadAdminPanel);
     on<DecideMatch>(_onDecideMatch);
     on<AdminMatchesUpdated>(_onMatchesUpdated);
@@ -71,10 +71,7 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     }
   }
 
-  void _onMatchesError(
-    AdminMatchesError event,
-    Emitter<AdminPanelState> emit,
-  ) {
+  void _onMatchesError(AdminMatchesError event, Emitter<AdminPanelState> emit) {
     emit(AdminPanelError(message: event.message));
   }
 
@@ -85,11 +82,13 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     if (state is! AdminPanelLoaded) return;
     final current = state as AdminPanelLoaded;
 
-    emit(current.copyWith(
-      isDeciding: true,
-      decisionError: null,
-      lastDecidedMatchId: null,
-    ));
+    emit(
+      current.copyWith(
+        isDeciding: true,
+        decisionError: null,
+        lastDecidedMatchId: null,
+      ),
+    );
 
     try {
       await _repository.adminDecideMatch(
@@ -103,29 +102,35 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
 
       if (state is AdminPanelLoaded) {
         final updated = state as AdminPanelLoaded;
-        emit(updated.copyWith(
-          isDeciding: false,
-          lastDecidedMatchId: event.matchId,
-          decisionError: null,
-        ));
+        emit(
+          updated.copyWith(
+            isDeciding: false,
+            lastDecidedMatchId: event.matchId,
+            decisionError: null,
+          ),
+        );
       }
     } on ChampionshipException catch (e) {
       if (state is AdminPanelLoaded) {
         final updated = state as AdminPanelLoaded;
-        emit(updated.copyWith(
-          isDeciding: false,
-          decisionError: e.message,
-          lastDecidedMatchId: null,
-        ));
+        emit(
+          updated.copyWith(
+            isDeciding: false,
+            decisionError: e.message,
+            lastDecidedMatchId: null,
+          ),
+        );
       }
     } catch (e) {
       if (state is AdminPanelLoaded) {
         final updated = state as AdminPanelLoaded;
-        emit(updated.copyWith(
-          isDeciding: false,
-          decisionError: e.toString(),
-          lastDecidedMatchId: null,
-        ));
+        emit(
+          updated.copyWith(
+            isDeciding: false,
+            decisionError: e.toString(),
+            lastDecidedMatchId: null,
+          ),
+        );
       }
     }
   }
@@ -137,7 +142,13 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     if (state is! AdminPanelLoaded) return;
     final current = state as AdminPanelLoaded;
 
-    emit(current.copyWith(isStarting: true, startError: null, matchesGenerated: null));
+    emit(
+      current.copyWith(
+        isStarting: true,
+        startError: null,
+        matchesGenerated: null,
+      ),
+    );
 
     try {
       final matchCount = await _repository.startChampionship(
@@ -145,25 +156,31 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
         startDate: event.startDate,
       );
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isStarting: false,
-          matchesGenerated: matchCount,
-          startError: null,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isStarting: false,
+            matchesGenerated: matchCount,
+            startError: null,
+          ),
+        );
       }
     } on ChampionshipException catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isStarting: false,
-          startError: e.message,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isStarting: false,
+            startError: e.message,
+          ),
+        );
       }
     } catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isStarting: false,
-          startError: e.toString(),
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isStarting: false,
+            startError: e.toString(),
+          ),
+        );
       }
     }
   }
@@ -175,32 +192,44 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     if (state is! AdminPanelLoaded) return;
     final current = state as AdminPanelLoaded;
 
-    emit(current.copyWith(isCompleting: true, completeError: null, isCompleted: false));
+    emit(
+      current.copyWith(
+        isCompleting: true,
+        completeError: null,
+        isCompleted: false,
+      ),
+    );
 
     try {
       await _repository.completeChampionship(
         championshipId: event.championshipId,
       );
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isCompleting: false,
-          isCompleted: true,
-          completeError: null,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isCompleting: false,
+            isCompleted: true,
+            completeError: null,
+          ),
+        );
       }
     } on ChampionshipException catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isCompleting: false,
-          completeError: e.message,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isCompleting: false,
+            completeError: e.message,
+          ),
+        );
       }
     } catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isCompleting: false,
-          completeError: e.toString(),
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isCompleting: false,
+            completeError: e.toString(),
+          ),
+        );
       }
     }
   }
@@ -226,10 +255,12 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     } on ChampionshipException catch (e) {
       emit(loaded.copyWith(isEditing: false, editError: e.message));
     } catch (e) {
-      emit(loaded.copyWith(
-        isEditing: false,
-        editError: 'Failed to edit championship: $e',
-      ));
+      emit(
+        loaded.copyWith(
+          isEditing: false,
+          editError: 'Failed to edit championship: $e',
+        ),
+      );
     }
   }
 
@@ -240,30 +271,40 @@ class AdminPanelBloc extends BaseBloc<AdminPanelEvent, AdminPanelState> {
     if (state is! AdminPanelLoaded) return;
     final current = state as AdminPanelLoaded;
 
-    emit(current.copyWith(isDeleting: true, deleteError: null, isDeleted: false));
+    emit(
+      current.copyWith(isDeleting: true, deleteError: null, isDeleted: false),
+    );
 
     try {
-      await _repository.deleteChampionship(championshipId: event.championshipId);
+      await _repository.deleteChampionship(
+        championshipId: event.championshipId,
+      );
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isDeleting: false,
-          isDeleted: true,
-          deleteError: null,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isDeleting: false,
+            isDeleted: true,
+            deleteError: null,
+          ),
+        );
       }
     } on ChampionshipException catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isDeleting: false,
-          deleteError: e.message,
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isDeleting: false,
+            deleteError: e.message,
+          ),
+        );
       }
     } catch (e) {
       if (state is AdminPanelLoaded) {
-        emit((state as AdminPanelLoaded).copyWith(
-          isDeleting: false,
-          deleteError: e.toString(),
-        ));
+        emit(
+          (state as AdminPanelLoaded).copyWith(
+            isDeleting: false,
+            deleteError: e.toString(),
+          ),
+        );
       }
     }
   }

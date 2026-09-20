@@ -118,7 +118,10 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
       listener: (context, state) {
         if (state is ExerciseError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
           );
         } else if (state is ExercisesLocked) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -167,7 +170,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
             children: [
               // Header with add button (organiser only)
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -194,8 +197,8 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                     message: state.canModify
                         ? 'Tap "Add Exercise" to get started'
                         : !state.isOrganiser
-                            ? 'The organiser has not added any exercises yet'
-                            : 'Cannot add exercises after session starts',
+                        ? 'The organiser has not added any exercises yet'
+                        : 'Cannot add exercises after session starts',
                   ),
                 )
               else
@@ -217,7 +220,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
               // Lock message (only for organiser whose session has started)
               if (!state.canModify && state.isOrganiser)
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
                   color: AppColors.primary.withValues(alpha: 0.2),
                   child: const Row(
                     children: [

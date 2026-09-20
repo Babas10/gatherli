@@ -54,7 +54,7 @@ class MomentumConsistencyCard extends StatelessWidget {
         ),
       ],
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,7 +70,7 @@ class MomentumConsistencyCard extends StatelessWidget {
             Card(
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: _buildStreakSection(context),
               ),
             ),
@@ -127,7 +127,7 @@ class MomentumConsistencyCard extends StatelessWidget {
                 return Card(
                   margin: EdgeInsets.zero,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppSpacing.lg),
                     child: Column(
                       children: [
                         TimePeriodSelector(
@@ -183,7 +183,10 @@ class MomentumConsistencyCard extends StatelessWidget {
       return Align(
         alignment: Alignment.centerLeft,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
           decoration: BoxDecoration(
             color: streakColor.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(20),

@@ -80,7 +80,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           }
         },
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Form(
             key: _formKey,
             child: Column(
@@ -233,7 +233,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 if (_selectedGender == null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 6, left: 4),
+                    padding: const EdgeInsets.only(top: 6, left: AppSpacing.xs),
                     child: Text(
                       l10n.registrationGenderRequired,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -279,7 +279,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: AppSpacing.md),
                   child: Text(
                     l10n.passwordRequirementsHint,
                     style: Theme.of(
@@ -343,7 +343,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: Text(
                     l10n.termsAgreement,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

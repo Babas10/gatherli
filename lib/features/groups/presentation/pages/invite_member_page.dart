@@ -172,11 +172,11 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
             children: [
               // Info card
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Card(
                   color: AppColors.primary.withValues(alpha: 0.2),
                   child: const Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(AppSpacing.md),
                     child: Row(
                       children: [
                         Icon(Icons.info_outline, color: AppColors.secondary),
@@ -213,7 +213,7 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
 
               // Send invitations button
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -247,7 +247,9 @@ class _InviteMemberPageState extends State<InviteMemberPage> {
                             : 'Send ${_selectedFriendIds.length} Invitations',
                       ),
                       style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppSpacing.lg,
+                        ),
                       ),
                     ),
                   ],

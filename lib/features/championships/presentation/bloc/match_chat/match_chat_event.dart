@@ -12,10 +12,7 @@ class LoadMatchChat extends MatchChatEvent {
   final String championshipId;
   final String matchId;
 
-  const LoadMatchChat({
-    required this.championshipId,
-    required this.matchId,
-  });
+  const LoadMatchChat({required this.championshipId, required this.matchId});
 
   @override
   List<Object?> get props => [championshipId, matchId];

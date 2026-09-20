@@ -42,7 +42,10 @@ class WinStreakBadge extends StatelessWidget {
       elevation: 2,
       color: streakColor.withValues(alpha: 0.1),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

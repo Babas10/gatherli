@@ -24,8 +24,14 @@ class SentRequestTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return AccentCard(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -65,5 +71,4 @@ class SentRequestTile extends StatelessWidget {
     if (difference.inMinutes > 0) return '${difference.inMinutes}m ago';
     return 'Just now';
   }
-
 }

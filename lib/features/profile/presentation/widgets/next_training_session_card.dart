@@ -73,7 +73,7 @@ class NextTrainingSessionCard extends StatelessWidget {
                 ),
                 // Card content
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 20, 16, 20),
+                  padding: const EdgeInsets.fromLTRB(22, 20, AppSpacing.lg, 20),
                   child: _buildSessionContent(context, l10n),
                 ),
               ],
@@ -144,12 +144,19 @@ class NextTrainingSessionCard extends StatelessWidget {
         // Date/time + Location + Duration
         Row(
           children: [
-            const Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
+            const Icon(
+              Icons.calendar_today,
+              size: 14,
+              color: AppColors.textMuted,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
                 formatSmartDateTime(context, session!.startTime),
-                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textMuted,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -160,7 +167,10 @@ class NextTrainingSessionCard extends StatelessWidget {
             Expanded(
               child: Text(
                 session!.location.name,
-                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textMuted,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -31,14 +31,17 @@ class GameListItem extends StatelessWidget {
     final isVerification = game.status == GameStatus.verification;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xs,
+      ),
       elevation: 1,
       color: AppColors.cardBackground,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,7 +52,9 @@ class GameListItem extends StatelessWidget {
                   Icon(
                     Icons.sports_volleyball,
                     size: 20,
-                    color: isCancelled ? AppColors.textMuted : AppColors.secondary,
+                    color: isCancelled
+                        ? AppColors.textMuted
+                        : AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -107,7 +112,6 @@ class GameListItem extends StatelessWidget {
     );
   }
 
-
   Widget _buildInfoRow(
     BuildContext context,
     IconData icon,
@@ -121,9 +125,9 @@ class GameListItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.onSurface,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.onSurface),
           ),
         ),
       ],
@@ -202,15 +206,19 @@ class GameListItem extends StatelessWidget {
                   value: progress,
                   minHeight: 6,
                   backgroundColor: AppColors.divider,
-                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppColors.primary,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        if (statusBadge != null) ...[const SizedBox(width: AppSpacing.md), statusBadge],
+        if (statusBadge != null) ...[
+          const SizedBox(width: AppSpacing.md),
+          statusBadge,
+        ],
       ],
     );
   }
-
 }

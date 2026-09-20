@@ -88,4 +88,3 @@ abstract class ExerciseModel with _$ExerciseModel {
       durationMinutes == null ||
       (durationMinutes! > 0 && durationMinutes! <= 300); // Max 5 hours
 }
-

@@ -116,7 +116,7 @@ class _GameDetailsView extends StatelessWidget {
     if (state is GameDetailsError) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -154,7 +154,7 @@ class _GameDetailsView extends StatelessWidget {
     if (state is GameDetailsNotFound) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -204,7 +204,7 @@ class _GameDetailsView extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -254,7 +254,9 @@ class _ChatSectionWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authState = context.read<AuthenticationBloc>().state;
-    if (authState is! AuthenticationAuthenticated) return const SizedBox.shrink();
+    if (authState is! AuthenticationAuthenticated) {
+      return const SizedBox.shrink();
+    }
     final currentUserId = authState.user.uid;
     final currentUserDisplayName = authState.user.displayNameOrEmail;
     final isPlayer = game.isPlayer(currentUserId);
@@ -284,102 +286,102 @@ class _GameInfoCard extends StatelessWidget {
     final timeFormat = DateFormat('h:mm a');
 
     return DetailPageHeader(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    game.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                ),
-                if (game.gameGenderType == GameGenderType.mix) ...[
-                  const SizedBox(width: AppSpacing.sm),
-                  const MixGameBadge(),
-                ],
-              ],
-            ),
-            if (game.description != null) ...[
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                game.description!,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-            const SizedBox(height: AppSpacing.lg),
-            _InfoRow(
-              icon: Icons.calendar_today,
-              label: 'Date',
-              value: dateFormat.format(game.scheduledAt),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            _InfoRow(
-              icon: Icons.access_time,
-              label: 'Time',
-              value: timeFormat.format(game.scheduledAt),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            _InfoRow(
-              icon: Icons.people,
-              label: 'Players',
-              value:
-                  '${game.currentPlayerCount}/${game.maxPlayers} (min: ${game.minPlayers})',
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            _InfoRow(
-              icon: Icons.location_on,
-              label: 'Location',
-              value: game.location.name,
-            ),
-            if (game.location.address != null) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 28),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
                 child: Text(
-                  game.location.address!,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  game.title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondary,
                   ),
                 ),
               ),
+              if (game.gameGenderType == GameGenderType.mix) ...[
+                const SizedBox(width: AppSpacing.sm),
+                const MixGameBadge(),
+              ],
             ],
-            if (game.notes != null) ...[
-              const SizedBox(height: AppSpacing.lg),
-              const Divider(),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Notes',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(game.notes!, style: Theme.of(context).textTheme.bodyMedium),
-            ],
-            const SizedBox(height: AppSpacing.lg),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => copyLinkToClipboard(
-                  context,
-                  ActivityLinkUrlBuilder.forGame(gameId),
-                  l10n,
-                ),
-                icon: const Icon(Icons.copy, size: 18),
-                label: Text(l10n.copyLink),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.secondary,
-                  side: const BorderSide(color: AppColors.secondary),
+          ),
+          if (game.description != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              game.description!,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+          const SizedBox(height: AppSpacing.lg),
+          _InfoRow(
+            icon: Icons.calendar_today,
+            label: 'Date',
+            value: dateFormat.format(game.scheduledAt),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.access_time,
+            label: 'Time',
+            value: timeFormat.format(game.scheduledAt),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.people,
+            label: 'Players',
+            value:
+                '${game.currentPlayerCount}/${game.maxPlayers} (min: ${game.minPlayers})',
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.location_on,
+            label: 'Location',
+            value: game.location.name,
+          ),
+          if (game.location.address != null) ...[
+            Padding(
+              padding: const EdgeInsets.only(left: 28),
+              child: Text(
+                game.location.address!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
           ],
-        ),
+          if (game.notes != null) ...[
+            const SizedBox(height: AppSpacing.lg),
+            const Divider(),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Notes',
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(game.notes!, style: Theme.of(context).textTheme.bodyMedium),
+          ],
+          const SizedBox(height: AppSpacing.lg),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => copyLinkToClipboard(
+                context,
+                ActivityLinkUrlBuilder.forGame(gameId),
+                l10n,
+              ),
+              icon: const Icon(Icons.copy, size: 18),
+              label: Text(l10n.copyLink),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.secondary,
+                side: const BorderSide(color: AppColors.secondary),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -446,7 +448,7 @@ class _PlayersCard extends StatelessWidget {
 
         return Card(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -743,7 +745,7 @@ class _RsvpButtons extends StatelessWidget {
               ),
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -759,8 +761,8 @@ class _RsvpButtons extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 8,
+                            horizontal: AppSpacing.xl,
+                            vertical: AppSpacing.sm,
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -801,7 +803,7 @@ class _RsvpButtons extends StatelessWidget {
           }
 
           return Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: const BoxDecoration(
               color: AppColors.bottomNavBackground,
               boxShadow: [
@@ -841,7 +843,9 @@ class _RsvpButtons extends StatelessWidget {
                       : const Icon(Icons.add_circle_outline),
                   label: Text(game.isFull ? 'Join Waitlist' : 'I\'m In'),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.lg,
+                    ),
                   ),
                 ),
               ),
@@ -916,13 +920,17 @@ class _ViewResultsCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Icon(Icons.emoji_events, color: AppColors.primary, size: 28),
+                  const Icon(
+                    Icons.emoji_events,
+                    color: AppColors.primary,
+                    size: 28,
+                  ),
                   const SizedBox(width: AppSpacing.md),
                   Text(
                     'Game Results',
@@ -1103,7 +1111,7 @@ class _VerificationSection extends StatelessWidget {
         }
 
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             color: bannerColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
@@ -1152,7 +1160,8 @@ class _VerificationSection extends StatelessWidget {
                         ),
                       ),
                     ),
-                  if (!isSubmitter && !hasConfirmed) const SizedBox(width: AppSpacing.sm),
+                  if (!isSubmitter && !hasConfirmed)
+                    const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: FilledButton.icon(
                       onPressed: isOperationInProgress

@@ -13,12 +13,16 @@ class StatusBadge extends StatelessWidget {
 
   const StatusBadge({super.key, required this.label, required this.color});
 
-  const StatusBadge.success(this.label, {super.key}) : color = AppColors.success;
-  const StatusBadge.warning(this.label, {super.key}) : color = AppColors.warning;
-  const StatusBadge.danger(this.label, {super.key})  : color = AppColors.danger;
-  const StatusBadge.info(this.label, {super.key})    : color = AppColors.info;
-  const StatusBadge.primary(this.label, {super.key}) : color = AppColors.primary;
-  const StatusBadge.muted(this.label, {super.key})   : color = AppColors.textMuted;
+  const StatusBadge.success(this.label, {super.key})
+    : color = AppColors.success;
+  const StatusBadge.warning(this.label, {super.key})
+    : color = AppColors.warning;
+  const StatusBadge.danger(this.label, {super.key}) : color = AppColors.danger;
+  const StatusBadge.info(this.label, {super.key}) : color = AppColors.info;
+  const StatusBadge.primary(this.label, {super.key})
+    : color = AppColors.primary;
+  const StatusBadge.muted(this.label, {super.key})
+    : color = AppColors.textMuted;
 
   @override
   Widget build(BuildContext context) {

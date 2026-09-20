@@ -45,9 +45,9 @@ class ChampionshipDetailBloc
   ChampionshipDetailBloc({
     required ChampionshipRepository repository,
     required UserRepository userRepository,
-  })  : _repository = repository,
-        _userRepository = userRepository,
-        super(const ChampionshipDetailInitial()) {
+  }) : _repository = repository,
+       _userRepository = userRepository,
+       super(const ChampionshipDetailInitial()) {
     on<LoadChampionshipDetail>(_onLoad);
     on<ChangeDetailRound>(_onChangeRound);
     on<ChampionshipDetailDataUpdated>(_onChampionshipUpdated);
@@ -117,7 +117,8 @@ class ChampionshipDetailBloc
         .getAllMatches(event.championshipId)
         .listen(
           (matches) => add(ChampionshipDetailAllMatchesUpdated(matches)),
-          onError: (_) {}, // no matches yet is normal before championship starts
+          onError:
+              (_) {}, // no matches yet is normal before championship starts
         );
     trackSubscription(_allMatchesSub!);
   }
@@ -137,15 +138,17 @@ class ChampionshipDetailBloc
       // to avoid the race condition where one of them fires during Loading,
       // before this championship snapshot arrives.
       _subscribeToMatches(_championshipId!, round);
-      emit(ChampionshipDetailLoaded(
-        championship: champ,
-        standings: _pendingStandings ?? const [],
-        teams: _pendingTeams ?? const [],
-        currentRoundMatches: const [],
-        selectedRound: round,
-        allMatches: _pendingAllMatches ?? const [],
-        currentUserGender: _pendingUserGender,
-      ));
+      emit(
+        ChampionshipDetailLoaded(
+          championship: champ,
+          standings: _pendingStandings ?? const [],
+          teams: _pendingTeams ?? const [],
+          currentRoundMatches: const [],
+          selectedRound: round,
+          allMatches: _pendingAllMatches ?? const [],
+          currentUserGender: _pendingUserGender,
+        ),
+      );
     } else if (currentState is ChampionshipDetailLoaded) {
       emit(currentState.copyWith(championship: champ));
     }
@@ -158,8 +161,9 @@ class ChampionshipDetailBloc
     _pendingStandings = event.standings;
     if (state is ChampionshipDetailLoaded) {
       emit(
-        (state as ChampionshipDetailLoaded)
-            .copyWith(standings: event.standings),
+        (state as ChampionshipDetailLoaded).copyWith(
+          standings: event.standings,
+        ),
       );
     }
   }
@@ -170,9 +174,7 @@ class ChampionshipDetailBloc
   ) {
     _pendingTeams = event.teams;
     if (state is ChampionshipDetailLoaded) {
-      emit(
-        (state as ChampionshipDetailLoaded).copyWith(teams: event.teams),
-      );
+      emit((state as ChampionshipDetailLoaded).copyWith(teams: event.teams));
     }
   }
 
@@ -186,15 +188,17 @@ class ChampionshipDetailBloc
 
     if (state is ChampionshipDetailLoaded) {
       final current = state as ChampionshipDetailLoaded;
-      emit(ChampionshipDetailLoaded(
-        championship: current.championship,
-        standings: current.standings,
-        teams: current.teams,
-        currentRoundMatches: current.currentRoundMatches,
-        selectedRound: current.selectedRound,
-        allMatches: current.allMatches,
-        currentUserGender: event.gender,
-      ));
+      emit(
+        ChampionshipDetailLoaded(
+          championship: current.championship,
+          standings: current.standings,
+          teams: current.teams,
+          currentRoundMatches: current.currentRoundMatches,
+          selectedRound: current.selectedRound,
+          allMatches: current.allMatches,
+          currentUserGender: event.gender,
+        ),
+      );
     }
   }
 
@@ -204,8 +208,9 @@ class ChampionshipDetailBloc
   ) {
     if (state is ChampionshipDetailLoaded) {
       emit(
-        (state as ChampionshipDetailLoaded)
-            .copyWith(currentRoundMatches: event.matches),
+        (state as ChampionshipDetailLoaded).copyWith(
+          currentRoundMatches: event.matches,
+        ),
       );
     }
   }
@@ -217,8 +222,7 @@ class ChampionshipDetailBloc
     _pendingAllMatches = event.matches;
     if (state is ChampionshipDetailLoaded) {
       emit(
-        (state as ChampionshipDetailLoaded)
-            .copyWith(allMatches: event.matches),
+        (state as ChampionshipDetailLoaded).copyWith(allMatches: event.matches),
       );
     }
   }
@@ -231,10 +235,12 @@ class ChampionshipDetailBloc
     final current = state as ChampionshipDetailLoaded;
     if (event.round == current.selectedRound) return;
 
-    emit(current.copyWith(
-      selectedRound: event.round,
-      currentRoundMatches: const [],
-    ));
+    emit(
+      current.copyWith(
+        selectedRound: event.round,
+        currentRoundMatches: const [],
+      ),
+    );
 
     await _matchesSub?.cancel();
     _subscribeToMatches(_championshipId!, event.round);
@@ -249,10 +255,7 @@ class ChampionshipDetailBloc
 
   void _subscribeToMatches(String championshipId, int round) {
     _matchesSub = _repository
-        .getMatchesForRound(
-          championshipId: championshipId,
-          round: round,
-        )
+        .getMatchesForRound(championshipId: championshipId, round: round)
         .listen(
           (matches) => add(ChampionshipDetailMatchesUpdated(matches)),
           onError: (_) {}, // empty rounds are normal before championship starts

@@ -12,8 +12,8 @@ class MatchChatBloc extends BaseBloc<MatchChatEvent, MatchChatState> {
   StreamSubscription<dynamic>? _messagesSubscription;
 
   MatchChatBloc({required MessageRepository messageRepository})
-      : _messageRepository = messageRepository,
-        super(const MatchChatInitial()) {
+    : _messageRepository = messageRepository,
+      super(const MatchChatInitial()) {
     on<LoadMatchChat>(_onLoadMatchChat);
     on<MatchChatMessagesUpdated>(_onMessagesUpdated);
     on<SendMatchChatMessage>(_onSendMatchChatMessage);
@@ -42,10 +42,9 @@ class MatchChatBloc extends BaseBloc<MatchChatEvent, MatchChatState> {
     MatchChatMessagesUpdated event,
     Emitter<MatchChatState> emit,
   ) {
-    final isSending =
-        state is MatchChatLoaded
-            ? (state as MatchChatLoaded).isSending
-            : false;
+    final isSending = state is MatchChatLoaded
+        ? (state as MatchChatLoaded).isSending
+        : false;
     emit(MatchChatLoaded(messages: event.messages, isSending: isSending));
   }
 

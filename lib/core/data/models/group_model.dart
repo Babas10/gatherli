@@ -204,4 +204,3 @@ enum GroupPrivacy {
   @JsonValue('invite_only')
   inviteOnly,
 }
-

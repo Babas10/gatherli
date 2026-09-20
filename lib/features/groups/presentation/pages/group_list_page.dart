@@ -88,7 +88,9 @@ class GroupListPage extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xxl,
+                    ),
                     child: Text(
                       groupState.message,
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -123,7 +125,7 @@ class GroupListPage extends StatelessWidget {
                 );
               },
               child: ListView.builder(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 itemCount: groupState.groups.length,
                 itemBuilder: (context, index) {
                   final group = groupState.groups[index];

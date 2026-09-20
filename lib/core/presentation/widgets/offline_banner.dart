@@ -12,7 +12,7 @@ class OfflineBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppSpacing.sm),
       color: Colors.orange.shade700,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,

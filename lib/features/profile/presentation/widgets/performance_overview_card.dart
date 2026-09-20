@@ -25,7 +25,7 @@ class PerformanceOverviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (user.gamesPlayed == 0) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: EmptyStatsPlaceholder(
           title: AppLocalizations.of(context)!.noPerformanceData,
           message: AppLocalizations.of(context)!.playFirstGameToSeeStats,
@@ -36,7 +36,7 @@ class PerformanceOverviewCard extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -498,7 +498,10 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero,
-      child: Padding(padding: const EdgeInsets.all(16), child: child),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: child,
+      ),
     );
   }
 }

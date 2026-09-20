@@ -10,8 +10,8 @@ class ChampionshipCreationBloc
   final ChampionshipRepository _repository;
 
   ChampionshipCreationBloc({required ChampionshipRepository repository})
-      : _repository = repository,
-        super(const ChampionshipCreationInitial()) {
+    : _repository = repository,
+      super(const ChampionshipCreationInitial()) {
     on<SubmitChampionshipCreation>(_onSubmit);
   }
 
@@ -35,9 +35,9 @@ class ChampionshipCreationBloc
     } on ChampionshipException catch (e) {
       emit(ChampionshipCreationError(message: e.message));
     } catch (e) {
-      emit(ChampionshipCreationError(
-        message: 'Failed to create championship: $e',
-      ));
+      emit(
+        ChampionshipCreationError(message: 'Failed to create championship: $e'),
+      );
     }
   }
 }

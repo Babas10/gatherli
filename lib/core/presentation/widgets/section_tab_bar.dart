@@ -29,12 +29,18 @@ class SectionTabBar extends StatelessWidget {
     return TabBar(
       controller: ctrl,
       // No overrides — all colours/styles come from AppTheme.tabBarTheme.
-      tabs: tabs.asMap().entries.map((e) => _AppTab(
-        icon: e.value.icon,
-        label: e.value.label,
-        index: e.key,
-        controller: ctrl,
-      )).toList(),
+      tabs: tabs
+          .asMap()
+          .entries
+          .map(
+            (e) => _AppTab(
+              icon: e.value.icon,
+              label: e.value.label,
+              index: e.key,
+              controller: ctrl,
+            ),
+          )
+          .toList(),
     );
   }
 }

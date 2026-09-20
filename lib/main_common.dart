@@ -23,9 +23,14 @@ Future<void> _step(
   final sw = Stopwatch()..start();
   debugPrint('[startup] ⏳ $name...');
   try {
-    await fn().timeout(timeout, onTimeout: () {
-      debugPrint('[startup] ⚠️  $name TIMED OUT after ${timeout.inSeconds}s — continuing');
-    });
+    await fn().timeout(
+      timeout,
+      onTimeout: () {
+        debugPrint(
+          '[startup] ⚠️  $name TIMED OUT after ${timeout.inSeconds}s — continuing',
+        );
+      },
+    );
     debugPrint('[startup] ✅ $name done in ${sw.elapsedMilliseconds}ms');
   } catch (e) {
     debugPrint('[startup] ❌ $name failed in ${sw.elapsedMilliseconds}ms: $e');
@@ -41,8 +46,9 @@ Future<void> mainCommon() async {
     await _step('Firebase.initialize', FirebaseService.initialize);
 
     await _step('Crashlytics.setEnabled', () async {
-      await FirebaseCrashlytics.instance
-          .setCrashlyticsCollectionEnabled(!kDebugMode);
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        !kDebugMode,
+      );
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
       PlatformDispatcher.instance.onError = (error, stack) {

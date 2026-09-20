@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           // Don't pop on success - let AuthenticationBloc handle navigation
         },
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(

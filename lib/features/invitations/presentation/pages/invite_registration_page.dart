@@ -71,7 +71,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
           body: BlocListener<InviteRegistrationBloc, InviteRegistrationState>(
             listener: _onStateChange,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -90,7 +90,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
                     _buildPasswordField(l10n),
                     const SizedBox(height: AppSpacing.xs),
                     Padding(
-                      padding: const EdgeInsets.only(left: 12),
+                      padding: const EdgeInsets.only(left: AppSpacing.md),
                       child: Text(
                         l10n.passwordRequirementsHint,
                         style: Theme.of(blocContext).textTheme.bodySmall
@@ -128,7 +128,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
         Card(
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -349,7 +349,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
         ),
         if (_genderSubmitAttempted && _selectedGender == null)
           Padding(
-            padding: const EdgeInsets.only(top: 6, left: 4),
+            padding: const EdgeInsets.only(top: 6, left: AppSpacing.xs),
             child: Text(
               l10n.registrationGenderRequired,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

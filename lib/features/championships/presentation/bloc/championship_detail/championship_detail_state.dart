@@ -26,8 +26,10 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
   final List<ChampionshipTeamModel> teams;
   final List<ChampionshipMatchModel> currentRoundMatches;
   final int selectedRound;
+
   /// All matches across all rounds — used by the My Matches tab.
   final List<ChampionshipMatchModel> allMatches;
+
   /// Current user's gender: 'male', 'female', 'none', or null (unknown).
   final String? currentUserGender;
 
@@ -63,14 +65,14 @@ class ChampionshipDetailLoaded extends ChampionshipDetailState {
 
   @override
   List<Object?> get props => [
-        championship,
-        standings,
-        teams,
-        currentRoundMatches,
-        selectedRound,
-        allMatches,
-        currentUserGender,
-      ];
+    championship,
+    standings,
+    teams,
+    currentRoundMatches,
+    selectedRound,
+    allMatches,
+    currentUserGender,
+  ];
 }
 
 class ChampionshipDetailError extends ChampionshipDetailState {

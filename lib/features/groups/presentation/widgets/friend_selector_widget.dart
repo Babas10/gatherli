@@ -153,7 +153,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
   Widget _buildLoadingState() {
     return const Center(
       child: Padding(
-        padding: EdgeInsets.all(32.0),
+        padding: EdgeInsets.all(AppSpacing.xxl),
         child: CircularProgressIndicator(),
       ),
     );
@@ -163,7 +163,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
     return Card(
       color: AppColors.danger,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             const Icon(Icons.error_outline, color: AppColors.danger, size: 48),
@@ -219,7 +219,11 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
               const SizedBox(width: AppSpacing.sm),
               TextButton.icon(
                 onPressed: _selectedFriendIds.isEmpty ? null : _clearAll,
-                icon: const Icon(Icons.clear, size: 18, color: AppColors.secondary),
+                icon: const Icon(
+                  Icons.clear,
+                  size: 18,
+                  color: AppColors.secondary,
+                ),
                 label: const Text(
                   'Clear All',
                   style: TextStyle(color: AppColors.secondary),
@@ -246,7 +250,10 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                 if (isInvited) {
                   // Show green tick — already invited, not selectable
                   return ListTile(
-                    leading: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
+                    leading: UserAvatar(
+                      name: friend.displayName ?? friend.email,
+                      photoUrl: friend.photoUrl,
+                    ),
                     title: Text(
                       friend.displayNameOrEmail,
                       style: TextStyle(
@@ -294,7 +301,10 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
                           ),
                         )
                       : null,
-                  secondary: UserAvatar(name: friend.displayName ?? friend.email, photoUrl: friend.photoUrl),
+                  secondary: UserAvatar(
+                    name: friend.displayName ?? friend.email,
+                    photoUrl: friend.photoUrl,
+                  ),
                   controlAffinity: ListTileControlAffinity.trailing,
                 );
               },

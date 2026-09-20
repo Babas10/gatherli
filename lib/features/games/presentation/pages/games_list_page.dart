@@ -140,7 +140,12 @@ class _GamesListPageContent extends StatelessWidget {
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.sm,
+      ),
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -165,7 +170,7 @@ class _GamesListPageContent extends StatelessWidget {
           Text('Error', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: AppSpacing.sm),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
             child: Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium,
@@ -214,7 +219,7 @@ class _GamesListPageContent extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -241,7 +246,10 @@ class _GamesListPageContent extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl,
+          vertical: AppSpacing.sm,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -249,7 +257,10 @@ class _GamesListPageContent extends StatelessWidget {
             const SizedBox(height: AppSpacing.xs),
             Text(
               label,
-              style: const TextStyle(color: AppColors.navLabelColor, fontSize: 12),
+              style: const TextStyle(
+                color: AppColors.navLabelColor,
+                fontSize: 12,
+              ),
             ),
           ],
         ),

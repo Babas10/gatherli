@@ -22,7 +22,10 @@ class ExerciseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
       child: ListTile(
         leading: const CircleAvatar(child: Icon(Icons.fitness_center)),
         title: Text(
@@ -84,7 +87,10 @@ class ExerciseListItem extends StatelessWidget {
                       children: [
                         Icon(Icons.delete, color: AppColors.danger),
                         SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: AppColors.danger)),
+                        Text(
+                          'Delete',
+                          style: TextStyle(color: AppColors.danger),
+                        ),
                       ],
                     ),
                   ),

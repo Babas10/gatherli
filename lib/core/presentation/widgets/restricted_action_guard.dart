@@ -79,7 +79,7 @@ class RestrictedActionGuard {
             if (daysUntilDeletion > 0) ...[
               const SizedBox(height: AppSpacing.md),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
                   color: Colors.red.shade50,
                   borderRadius: BorderRadius.circular(6),

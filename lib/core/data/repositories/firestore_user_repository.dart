@@ -534,19 +534,19 @@ class FirestoreUserRepository implements UserRepository {
         .collection('stats')
         .snapshots()
         .map((snapshot) {
-      final statsList = snapshot.docs
-          .map((doc) {
-            try {
-              return TeammateStats.fromFirestore(doc.id, doc.data());
-            } catch (_) {
-              return null;
-            }
-          })
-          .whereType<TeammateStats>()
-          .toList();
-      statsList.sort((a, b) => b.gamesPlayed.compareTo(a.gamesPlayed));
-      return statsList;
-    });
+          final statsList = snapshot.docs
+              .map((doc) {
+                try {
+                  return TeammateStats.fromFirestore(doc.id, doc.data());
+                } catch (_) {
+                  return null;
+                }
+              })
+              .whereType<TeammateStats>()
+              .toList();
+          statsList.sort((a, b) => b.gamesPlayed.compareTo(a.gamesPlayed));
+          return statsList;
+        });
   }
 
   @override

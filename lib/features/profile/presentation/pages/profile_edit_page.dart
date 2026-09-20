@@ -236,7 +236,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                             localeState is LocalePreferencesLoading)
                     ? const Center(child: CircularProgressIndicator())
                     : SingleChildScrollView(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppSpacing.lg),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -451,7 +451,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                     .primaryContainer
                                     .withValues(alpha: 0.3),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(12),
+                                  padding: const EdgeInsets.all(AppSpacing.md),
                                   child: Row(
                                     children: [
                                       Icon(

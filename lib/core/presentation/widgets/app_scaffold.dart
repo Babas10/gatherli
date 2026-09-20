@@ -45,10 +45,7 @@ class AppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: actions,
-      ),
+      appBar: AppBar(title: Text(title), actions: actions),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: showBottomNav && bottomNavIndex != null
           ? GlobalBottomNavBar(
@@ -83,11 +80,15 @@ class AppScaffold extends StatelessWidget {
     if (errorMessage != null) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(AppSpacing.xxl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: AppColors.danger),
+              const Icon(
+                Icons.error_outline,
+                size: 48,
+                color: AppColors.danger,
+              ),
               const SizedBox(height: AppSpacing.lg),
               Text(
                 errorMessage!,

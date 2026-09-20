@@ -35,4 +35,3 @@ abstract class ChatMessageModel with _$ChatMessageModel {
     return json;
   }
 }
-

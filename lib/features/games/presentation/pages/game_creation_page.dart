@@ -109,7 +109,10 @@ class _GameCreationPageState extends State<GameCreationPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -265,7 +268,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
               }
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -351,7 +354,10 @@ class _GameCreationPageState extends State<GameCreationPage> {
                       ),
                       if (_selectedDateTime == null)
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 8),
+                          padding: const EdgeInsets.only(
+                            left: AppSpacing.lg,
+                            top: AppSpacing.sm,
+                          ),
                           child: Text(
                             l10n.tapToSelect,
                             style: const TextStyle(
@@ -400,7 +406,9 @@ class _GameCreationPageState extends State<GameCreationPage> {
                             ? null
                             : () => _handleSubmit(context, authState.user.uid),
                         style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.lg,
+                          ),
                         ),
                         child: isSubmitting
                             ? const SizedBox(

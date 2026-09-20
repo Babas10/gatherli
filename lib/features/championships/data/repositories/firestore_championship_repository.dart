@@ -15,8 +15,8 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   FirestoreChampionshipRepository({
     required FirebaseFirestore firestore,
     required FirebaseFunctions functions,
-  })  : _firestore = firestore,
-        _functions = functions;
+  }) : _firestore = firestore,
+       _functions = functions;
 
   @override
   Stream<List<ChampionshipModel>> getChampionships() {
@@ -25,28 +25,33 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('championships')
           .orderBy('createdAt', descending: true)
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load championships: $e',
+              code: 'LOAD_CHAMPIONSHIPS_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load championships: $e',
           code: 'LOAD_CHAMPIONSHIPS_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load championships: $e',
-        code: 'LOAD_CHAMPIONSHIPS_ERROR',
-      ));
+        ),
+      );
     }
   }
 
   @override
   Stream<List<ChampionshipModel>> getOpenChampionships() {
     return getChampionships().map(
-      (all) =>
-          all.where((c) => c.status == ChampionshipStatus.registration).toList(),
+      (all) => all
+          .where((c) => c.status == ChampionshipStatus.registration)
+          .toList(),
     );
   }
 
@@ -58,30 +63,32 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .doc(championshipId)
           .snapshots()
           .map((doc) {
-        if (!doc.exists) {
-          throw ChampionshipException(
-            'Championship not found',
-            code: 'NOT_FOUND',
-          );
-        }
-        return ChampionshipModel.fromFirestore(doc);
-      }).handleError((e) {
-        throw ChampionshipException(
+            if (!doc.exists) {
+              throw ChampionshipException(
+                'Championship not found',
+                code: 'NOT_FOUND',
+              );
+            }
+            return ChampionshipModel.fromFirestore(doc);
+          })
+          .handleError((e) {
+            throw ChampionshipException(
+              'Failed to load championship: $e',
+              code: 'LOAD_CHAMPIONSHIP_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load championship: $e',
           code: 'LOAD_CHAMPIONSHIP_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load championship: $e',
-        code: 'LOAD_CHAMPIONSHIP_ERROR',
-      ));
+        ),
+      );
     }
   }
 
   @override
-  Stream<List<ChampionshipStandingsModel>> getStandings(
-      String championshipId) {
+  Stream<List<ChampionshipStandingsModel>> getStandings(String championshipId) {
     try {
       return _firestore
           .collection('championships')
@@ -89,20 +96,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('standings')
           .orderBy('position')
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipStandingsModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipStandingsModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load standings: $e',
+              code: 'LOAD_STANDINGS_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load standings: $e',
           code: 'LOAD_STANDINGS_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load standings: $e',
-        code: 'LOAD_STANDINGS_ERROR',
-      ));
+        ),
+      );
     }
   }
 
@@ -115,20 +126,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('teams')
           .orderBy('createdAt')
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipTeamModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipTeamModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load teams: $e',
+              code: 'LOAD_TEAMS_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load teams: $e',
           code: 'LOAD_TEAMS_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load teams: $e',
-        code: 'LOAD_TEAMS_ERROR',
-      ));
+        ),
+      );
     }
   }
 
@@ -144,20 +159,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('matches')
           .where('round', isEqualTo: round)
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipMatchModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipMatchModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load matches: $e',
+              code: 'LOAD_MATCHES_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load matches: $e',
           code: 'LOAD_MATCHES_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load matches: $e',
-        code: 'LOAD_MATCHES_ERROR',
-      ));
+        ),
+      );
     }
   }
 
@@ -202,7 +221,10 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       });
       return result.data['teamId'] as String;
     } on FirebaseFunctionsException catch (e) {
-      throw ChampionshipException(e.message ?? 'Failed to create team', code: e.code);
+      throw ChampionshipException(
+        e.message ?? 'Failed to create team',
+        code: e.code,
+      );
     } catch (e) {
       throw ChampionshipException('Failed to create team: $e');
     }
@@ -215,12 +237,12 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
   }) async {
     try {
       final callable = _functions.httpsCallable('leaveChampionshipTeam');
-      await callable.call({
-        'championshipId': championshipId,
-        'teamId': teamId,
-      });
+      await callable.call({'championshipId': championshipId, 'teamId': teamId});
     } on FirebaseFunctionsException catch (e) {
-      throw ChampionshipException(e.message ?? 'Failed to leave team', code: e.code);
+      throw ChampionshipException(
+        e.message ?? 'Failed to leave team',
+        code: e.code,
+      );
     } catch (e) {
       throw ChampionshipException('Failed to leave team: $e');
     }
@@ -239,7 +261,10 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
       });
       return result.data['matchesCreated'] as int;
     } on FirebaseFunctionsException catch (e) {
-      throw ChampionshipException(e.message ?? 'Failed to start championship', code: e.code);
+      throw ChampionshipException(
+        e.message ?? 'Failed to start championship',
+        code: e.code,
+      );
     } catch (e) {
       throw ChampionshipException('Failed to start championship: $e');
     }
@@ -252,7 +277,9 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     required List<MatchSetScore> sets,
   }) async {
     try {
-      final callable = _functions.httpsCallable('submitChampionshipMatchResult');
+      final callable = _functions.httpsCallable(
+        'submitChampionshipMatchResult',
+      );
       await callable.call({
         'championshipId': championshipId,
         'matchId': matchId,
@@ -276,8 +303,9 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     String? disputeReason,
   }) async {
     try {
-      final callable =
-          _functions.httpsCallable('verifyChampionshipMatchResult');
+      final callable = _functions.httpsCallable(
+        'verifyChampionshipMatchResult',
+      );
       final result = await callable.call({
         'championshipId': championshipId,
         'matchId': matchId,
@@ -308,19 +336,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .doc(matchId)
           .snapshots()
           .map((doc) {
-        if (!doc.exists) {
-          throw ChampionshipException('Match not found', code: 'NOT_FOUND');
-        }
-        return ChampionshipMatchModel.fromFirestore(doc);
-      }).handleError((e) {
-        throw ChampionshipException(
-          'Failed to load match: $e',
-          code: 'LOAD_MATCH_ERROR',
-        );
-      });
+            if (!doc.exists) {
+              throw ChampionshipException('Match not found', code: 'NOT_FOUND');
+            }
+            return ChampionshipMatchModel.fromFirestore(doc);
+          })
+          .handleError((e) {
+            throw ChampionshipException(
+              'Failed to load match: $e',
+              code: 'LOAD_MATCH_ERROR',
+            );
+          });
     } catch (e) {
       return Stream.error(
-          ChampionshipException('Failed to load match: $e', code: 'LOAD_MATCH_ERROR'));
+        ChampionshipException(
+          'Failed to load match: $e',
+          code: 'LOAD_MATCH_ERROR',
+        ),
+      );
     }
   }
 
@@ -338,18 +371,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('messages')
           .orderBy('sentAt')
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipMessageModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipMessageModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load match messages: $e',
+              code: 'LOAD_MESSAGES_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load match messages: $e',
           code: 'LOAD_MESSAGES_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-          'Failed to load match messages: $e', code: 'LOAD_MESSAGES_ERROR'));
+        ),
+      );
     }
   }
 
@@ -370,12 +409,12 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .doc(matchId)
           .collection('messages')
           .add({
-        'senderId': senderId,
-        'senderDisplayName': senderDisplayName,
-        'teamId': teamId,
-        'text': text,
-        'sentAt': FieldValue.serverTimestamp(),
-      });
+            'senderId': senderId,
+            'senderDisplayName': senderDisplayName,
+            'teamId': teamId,
+            'text': text,
+            'sentAt': FieldValue.serverTimestamp(),
+          });
     } on FirebaseException catch (e) {
       throw ChampionshipException(
         'Failed to send message: ${e.message}',
@@ -486,20 +525,24 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
           .collection('matches')
           .orderBy('round')
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => ChampionshipMatchModel.fromFirestore(d))
-              .toList())
+          .map(
+            (snap) => snap.docs
+                .map((d) => ChampionshipMatchModel.fromFirestore(d))
+                .toList(),
+          )
           .handleError((e) {
-        throw ChampionshipException(
+            throw ChampionshipException(
+              'Failed to load matches: $e',
+              code: 'LOAD_MATCHES_ERROR',
+            );
+          });
+    } catch (e) {
+      return Stream.error(
+        ChampionshipException(
           'Failed to load matches: $e',
           code: 'LOAD_MATCHES_ERROR',
-        );
-      });
-    } catch (e) {
-      return Stream.error(ChampionshipException(
-        'Failed to load matches: $e',
-        code: 'LOAD_MATCHES_ERROR',
-      ));
+        ),
+      );
     }
   }
 
@@ -513,8 +556,7 @@ class FirestoreChampionshipRepository implements ChampionshipRepository {
     required String notes,
   }) async {
     try {
-      final callable =
-          _functions.httpsCallable('adminDecideChampionshipMatch');
+      final callable = _functions.httpsCallable('adminDecideChampionshipMatch');
       await callable.call({
         'championshipId': championshipId,
         'matchId': matchId,

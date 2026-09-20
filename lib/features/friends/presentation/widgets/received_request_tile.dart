@@ -25,7 +25,10 @@ class ReceivedRequestTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return AccentCard(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -35,10 +38,7 @@ class ReceivedRequestTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  request.initiatorName,
-                  style: AppTextStyles.cardTitle,
-                ),
+                Text(request.initiatorName, style: AppTextStyles.cardTitle),
                 Text(
                   'Sent ${_formatDate(request.createdAt)}',
                   style: AppTextStyles.cardSubtitle,
@@ -53,7 +53,7 @@ class ReceivedRequestTile extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.success,
               side: const BorderSide(color: AppColors.success),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             ),
             child: Text(l10n.accept),
           ),
@@ -64,7 +64,7 @@ class ReceivedRequestTile extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.danger,
               side: const BorderSide(color: AppColors.danger),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             ),
             child: Text(l10n.decline),
           ),
