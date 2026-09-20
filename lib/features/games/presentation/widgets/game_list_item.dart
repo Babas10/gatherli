@@ -4,8 +4,8 @@ import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/utils/smart_date_formatter.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
 import 'set_scores_display.dart';
 
@@ -82,7 +82,7 @@ class GameListItem extends StatelessWidget {
               _buildInfoRow(
                 context,
                 Icons.calendar_today,
-                _formatDateTime(context, game.scheduledAt),
+                formatSmartDateTime(context, game.scheduledAt),
                 isCancelled ? AppColors.textMuted : AppColors.secondary,
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -213,23 +213,4 @@ class GameListItem extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final l10n = AppLocalizations.of(context)!;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
-    final gameDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-
-    String dayString;
-    if (gameDate == today) {
-      dayString = l10n.today;
-    } else if (gameDate == tomorrow) {
-      dayString = l10n.tomorrow;
-    } else {
-      dayString = DateFormat('EEE, MMM d').format(dateTime);
-    }
-
-    final timeString = DateFormat('h:mm a').format(dateTime);
-    return '$dayString • $timeString';
-  }
 }
