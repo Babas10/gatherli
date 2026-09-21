@@ -2,9 +2,11 @@
 // Allows the user to accept or decline each invitation.
 
 import 'package:flutter/material.dart';
-import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
@@ -12,7 +14,6 @@ import 'package:play_with_me/features/games/presentation/bloc/game_invitations/g
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_invitation_card.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class PendingGameInvitationsPage extends StatelessWidget {
   final GameInvitationsBloc? blocOverride;
@@ -51,15 +52,23 @@ class _PendingGameInvitationsViewState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(
-        context: context,
-        title: l10n.gameInvitations,
-      ),
-      body: BlocConsumer<GameInvitationsBloc, GameInvitationsState>(
-        listener: _handleStateChange,
-        builder: (context, state) => _buildBody(context, state, l10n),
-      ),
+    return BlocConsumer<GameInvitationsBloc, GameInvitationsState>(
+      listener: _handleStateChange,
+      builder: (context, state) {
+        return AppScaffold(
+          title: l10n.gameInvitations,
+          appBar: PlayWithMeAppBar.build(
+            context: context,
+            title: l10n.gameInvitations,
+          ),
+          isLoading: state is GameInvitationsLoading,
+          errorMessage: state is GameInvitationsError ? state.message : null,
+          onRetry: () => context.read<GameInvitationsBloc>().add(
+            const LoadGameInvitations(),
+          ),
+          body: _buildBody(context, state, l10n),
+        );
+      },
     );
   }
 
@@ -105,37 +114,6 @@ class _PendingGameInvitationsViewState
     GameInvitationsState state,
     AppLocalizations l10n,
   ) {
-    if (state is GameInvitationsLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (state is GameInvitationsError) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: AppSpacing.iconXxl,
-                color: Theme.of(context).colorScheme.error,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(state.message, textAlign: TextAlign.center),
-              const SizedBox(height: AppSpacing.lg),
-              FilledButton(
-                onPressed: () => context.read<GameInvitationsBloc>().add(
-                  const LoadGameInvitations(),
-                ),
-                child: Text(l10n.retry),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     final invitations = switch (state) {
       GameInvitationsLoaded() => state.invitations,
       GameInvitationActionInFlight() => state.invitations,

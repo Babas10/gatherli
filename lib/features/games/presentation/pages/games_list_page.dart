@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,30 +59,23 @@ class _GamesListPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(context: context, title: 'Activities'),
-      body: BlocBuilder<GamesListBloc, GamesListState>(
-        builder: (context, state) {
-          if (state is GamesListLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is GamesListError) {
-            return _buildErrorState(context, state.message);
-          }
-
-          if (state is GamesListEmpty) {
-            return _buildEmptyState(context);
-          }
-
-          if (state is GamesListLoaded) {
-            return _buildLoadedState(context, state);
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
-      bottomNavigationBar: _buildBottomNavBar(context),
+    return BlocBuilder<GamesListBloc, GamesListState>(
+      builder: (context, state) {
+        return AppScaffold(
+          title: 'Activities',
+          appBar: PlayWithMeAppBar.build(context: context, title: 'Activities'),
+          isLoading: state is GamesListLoading,
+          errorMessage: state is GamesListError ? state.message : null,
+          onRetry: () =>
+              context.read<GamesListBloc>().add(const RefreshGamesList()),
+          bottomNavigationBar: _buildBottomNavBar(context),
+          body: state is GamesListEmpty
+              ? _buildEmptyState(context)
+              : state is GamesListLoaded
+              ? _buildLoadedState(context, state)
+              : const SizedBox.shrink(),
+        );
+      },
     );
   }
 
@@ -153,40 +147,6 @@ class _GamesListPageContent extends StatelessWidget {
           fontWeight: FontWeight.bold,
           color: AppColors.secondary,
         ),
-      ),
-    );
-  }
-
-  Widget _buildErrorState(BuildContext context, String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: AppSpacing.iconXxl,
-            color: Theme.of(context).colorScheme.error,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text('Error', style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: AppSpacing.sm),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-            child: Text(
-              message,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          FilledButton.icon(
-            onPressed: () {
-              context.read<GamesListBloc>().add(const RefreshGamesList());
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
-          ),
-        ],
       ),
     );
   }

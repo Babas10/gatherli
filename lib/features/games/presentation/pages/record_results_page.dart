@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
-import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -17,7 +19,6 @@ import '../bloc/record_results/record_results_bloc.dart';
 import '../bloc/record_results/record_results_event.dart';
 import '../bloc/record_results/record_results_state.dart';
 import 'score_entry_page.dart';
-import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class RecordResultsPage extends StatelessWidget {
   final String gameId;
@@ -49,146 +50,123 @@ class _RecordResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(
-        context: context,
-        title: AppLocalizations.of(context)!.recordResults,
-      ),
-      body: BlocConsumer<RecordResultsBloc, RecordResultsState>(
-        listener: (context, state) {
-          if (state is RecordResultsSaved) {
-            // Navigate to score entry page
-            Navigator.of(context).pushReplacement(
-              AppPageRoute.detail(
-                builder: (context) => ScoreEntryPage(gameId: state.game.id),
-              ),
-            );
-          } else if (state is RecordResultsError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.danger,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is RecordResultsLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return BlocConsumer<RecordResultsBloc, RecordResultsState>(
+      listener: (context, state) {
+        if (state is RecordResultsSaved) {
+          // Navigate to score entry page
+          Navigator.of(context).pushReplacement(
+            AppPageRoute.detail(
+              builder: (context) => ScoreEntryPage(gameId: state.game.id),
+            ),
+          );
+        } else if (state is RecordResultsError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return AppScaffold(
+          title: AppLocalizations.of(context)!.recordResults,
+          appBar: PlayWithMeAppBar.build(
+            context: context,
+            title: AppLocalizations.of(context)!.recordResults,
+          ),
+          isLoading: state is RecordResultsLoading,
+          errorMessage: state is RecordResultsError ? state.message : null,
+          body: _buildBody(context, state),
+        );
+      },
+    );
+  }
 
-          if (state is RecordResultsError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: AppSpacing.iconXxl,
-                      color: AppColors.danger,
+  Widget _buildBody(BuildContext context, RecordResultsState state) {
+    if (state is RecordResultsLoaded || state is RecordResultsSaving) {
+      return Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.assignPlayersToTeams,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    AppLocalizations.of(context)!.dragPlayersToAssign,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  if (state is RecordResultsLoaded) ...[
+                    _TeamSection(
+                      key: const Key('team_a_section'),
+                      title: AppLocalizations.of(context)!.teamA,
+                      playerIds: state.teamAPlayerIds,
+                      players: state.players,
+                      color: AppColors.primary,
+                      onRemove: (playerId) {
+                        context.read<RecordResultsBloc>().add(
+                          RemovePlayerFromTeam(playerId: playerId),
+                        );
+                      },
                     ),
                     const SizedBox(height: AppSpacing.lg),
-                    Text(
-                      state.message,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
+                    _TeamSection(
+                      key: const Key('team_b_section'),
+                      title: AppLocalizations.of(context)!.teamB,
+                      playerIds: state.teamBPlayerIds,
+                      players: state.players,
+                      color: AppColors.secondary,
+                      onRemove: (playerId) {
+                        context.read<RecordResultsBloc>().add(
+                          RemovePlayerFromTeam(playerId: playerId),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    _UnassignedPlayersSection(
+                      key: const Key('unassigned_section'),
+                      unassignedPlayerIds: state.unassignedPlayerIds,
+                      players: state.players,
+                      onAssignToTeamA: (playerId) {
+                        context.read<RecordResultsBloc>().add(
+                          AssignPlayerToTeamA(playerId: playerId),
+                        );
+                      },
+                      onAssignToTeamB: (playerId) {
+                        context.read<RecordResultsBloc>().add(
+                          AssignPlayerToTeamB(playerId: playerId),
+                        );
+                      },
                     ),
                   ],
-                ),
+                ],
               ),
-            );
-          }
+            ),
+          ),
+          if (state is RecordResultsLoaded)
+            _SaveButton(
+              canSave: state.canSave,
+              onSave: () {
+                final authState = context.read<AuthenticationBloc>().state;
+                if (authState is AuthenticationAuthenticated) {
+                  context.read<RecordResultsBloc>().add(
+                    SaveTeams(userId: authState.user.uid),
+                  );
+                }
+              },
+            ),
+        ],
+      );
+    }
 
-          if (state is RecordResultsLoaded || state is RecordResultsSaving) {
-            return Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.assignPlayersToTeams,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        Text(
-                          AppLocalizations.of(context)!.dragPlayersToAssign,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
-                        if (state is RecordResultsLoaded) ...[
-                          _TeamSection(
-                            key: const Key('team_a_section'),
-                            title: AppLocalizations.of(context)!.teamA,
-                            playerIds: state.teamAPlayerIds,
-                            players: state.players,
-                            color: AppColors.primary,
-                            onRemove: (playerId) {
-                              context.read<RecordResultsBloc>().add(
-                                RemovePlayerFromTeam(playerId: playerId),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: AppSpacing.lg),
-                          _TeamSection(
-                            key: const Key('team_b_section'),
-                            title: AppLocalizations.of(context)!.teamB,
-                            playerIds: state.teamBPlayerIds,
-                            players: state.players,
-                            color: AppColors.secondary,
-                            onRemove: (playerId) {
-                              context.read<RecordResultsBloc>().add(
-                                RemovePlayerFromTeam(playerId: playerId),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: AppSpacing.lg),
-                          _UnassignedPlayersSection(
-                            key: const Key('unassigned_section'),
-                            unassignedPlayerIds: state.unassignedPlayerIds,
-                            players: state.players,
-                            onAssignToTeamA: (playerId) {
-                              context.read<RecordResultsBloc>().add(
-                                AssignPlayerToTeamA(playerId: playerId),
-                              );
-                            },
-                            onAssignToTeamB: (playerId) {
-                              context.read<RecordResultsBloc>().add(
-                                AssignPlayerToTeamB(playerId: playerId),
-                              );
-                            },
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-                if (state is RecordResultsLoaded)
-                  _SaveButton(
-                    canSave: state.canSave,
-                    onSave: () {
-                      final authState = context
-                          .read<AuthenticationBloc>()
-                          .state;
-                      if (authState is AuthenticationAuthenticated) {
-                        context.read<RecordResultsBloc>().add(
-                          SaveTeams(userId: authState.user.uid),
-                        );
-                      }
-                    },
-                  ),
-              ],
-            );
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
-    );
+    return const SizedBox.shrink();
   }
 }
 

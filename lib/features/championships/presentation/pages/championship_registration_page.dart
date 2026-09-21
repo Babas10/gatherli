@@ -12,8 +12,8 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
-import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 
@@ -90,77 +90,79 @@ class _ChampionshipRegistrationPageState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.championshipsTitle)),
-      bottomNavigationBar: GlobalBottomNavBar(
-        selectedIndex: 4,
-        onTabSelected: (index) {
-          HomePage.onNavigateToTab?.call(index);
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
-      ),
-      body: BlocConsumer<TeamRegistrationBloc, TeamRegistrationState>(
-        listener: (context, state) {
-          if (state is TeamCreated) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(l10n.teamRegisteredSuccess)));
-            Navigator.of(context).pop(); // close bottom sheet
-            // Reload
-            context.read<TeamRegistrationBloc>().add(
-              LoadChampionships(widget.userId),
-            );
-          } else if (state is TeamLeft) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(l10n.teamLeftSuccess)));
-            context.read<TeamRegistrationBloc>().add(
-              LoadChampionships(widget.userId),
-            );
-          } else if (state is TeamRegistrationError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
-        builder: (context, state) {
-          if (state is TeamRegistrationLoading ||
-              state is TeamRegistrationSubmitting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is TeamRegistrationLoaded) {
-            if (state.championships.isEmpty) {
-              return EmptyState(
-                icon: Icons.emoji_events_outlined,
-                title: l10n.championshipOpenRegistration,
-              );
-            }
-            return ListView.builder(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              itemCount: state.championships.length,
-              itemBuilder: (context, index) {
-                final champ = state.championships[index];
-                final myTeam = _myTeams[champ.id];
-                return _ChampionshipCard(
-                  championship: champ,
-                  myTeam: myTeam,
-                  userId: widget.userId,
-                  onRegister: () => _openCreateTeamSheet(context, champ.id),
-                  onLeave: (teamId) => _confirmLeave(context, champ.id, teamId),
-                );
-              },
-            );
-          }
-
-          if (state is TeamRegistrationError) {
-            return Center(child: Text(state.message));
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
+    return BlocConsumer<TeamRegistrationBloc, TeamRegistrationState>(
+      listener: (context, state) {
+        if (state is TeamCreated) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.teamRegisteredSuccess)));
+          Navigator.of(context).pop(); // close bottom sheet
+          // Reload
+          context.read<TeamRegistrationBloc>().add(
+            LoadChampionships(widget.userId),
+          );
+        } else if (state is TeamLeft) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.teamLeftSuccess)));
+          context.read<TeamRegistrationBloc>().add(
+            LoadChampionships(widget.userId),
+          );
+        } else if (state is TeamRegistrationError) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      builder: (context, state) {
+        return AppScaffold(
+          title: l10n.championshipsTitle,
+          isLoading:
+              state is TeamRegistrationLoading ||
+              state is TeamRegistrationSubmitting,
+          errorMessage: state is TeamRegistrationError ? state.message : null,
+          showBottomNav: true,
+          bottomNavIndex: 4,
+          onBottomNavTap: (index) {
+            HomePage.onNavigateToTab?.call(index);
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          body: _buildContent(context, state, l10n),
+        );
+      },
     );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    TeamRegistrationState state,
+    AppLocalizations l10n,
+  ) {
+    if (state is TeamRegistrationLoaded) {
+      if (state.championships.isEmpty) {
+        return EmptyState(
+          icon: Icons.emoji_events_outlined,
+          title: l10n.championshipOpenRegistration,
+        );
+      }
+      return ListView.builder(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        itemCount: state.championships.length,
+        itemBuilder: (context, index) {
+          final champ = state.championships[index];
+          final myTeam = _myTeams[champ.id];
+          return _ChampionshipCard(
+            championship: champ,
+            myTeam: myTeam,
+            userId: widget.userId,
+            onRegister: () => _openCreateTeamSheet(context, champ.id),
+            onLeave: (teamId) => _confirmLeave(context, champ.id, teamId),
+          );
+        },
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }
 
