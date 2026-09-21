@@ -58,7 +58,7 @@ class InviteOnboardingPage extends StatelessWidget {
         children: [
           const Icon(
             Icons.sports_volleyball,
-            size: 64,
+            size: AppSpacing.iconXxl,
             color: AppColors.primary,
           ),
           const SizedBox(height: AppSpacing.xl),
@@ -80,7 +80,11 @@ class InviteOnboardingPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        const Icon(Icons.sports_volleyball, size: 64, color: AppColors.primary),
+        const Icon(
+          Icons.sports_volleyball,
+          size: AppSpacing.iconXxl,
+          color: AppColors.primary,
+        ),
         const SizedBox(height: AppSpacing.xl),
         Text(
           l10n.inviteOnboardingTitle,
@@ -176,7 +180,11 @@ class InviteOnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+          const Icon(
+            Icons.error_outline,
+            size: AppSpacing.iconXxl,
+            color: AppColors.danger,
+          ),
           const SizedBox(height: AppSpacing.xl),
           Text(
             message,

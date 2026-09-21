@@ -304,7 +304,7 @@ class _TrainingSessionDetailsPageState
                 children: [
                   Icon(
                     isOrganizer ? Icons.star : Icons.person_outline,
-                    size: 16,
+                    size: AppSpacing.iconSm,
                     color: AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.xs),
@@ -332,7 +332,7 @@ class _TrainingSessionDetailsPageState
             children: [
               const Icon(
                 Icons.calendar_today,
-                size: 16,
+                size: AppSpacing.iconSm,
                 color: AppColors.secondary,
               ),
               const SizedBox(width: AppSpacing.xs),
@@ -348,7 +348,7 @@ class _TrainingSessionDetailsPageState
             children: [
               const Icon(
                 Icons.location_on,
-                size: 16,
+                size: AppSpacing.iconSm,
                 color: AppColors.secondary,
               ),
               const SizedBox(width: AppSpacing.xs),
@@ -370,7 +370,7 @@ class _TrainingSessionDetailsPageState
                 children: [
                   const Icon(
                     Icons.people,
-                    size: 16,
+                    size: AppSpacing.iconSm,
                     color: AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.xs),
@@ -389,7 +389,9 @@ class _TrainingSessionDetailsPageState
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red.withAlpha(26),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.inputRadius,
+                        ),
                         border: Border.all(color: AppColors.danger),
                       ),
                       child: Text(
@@ -434,13 +436,17 @@ class _TrainingSessionDetailsPageState
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
                 color: AppColors.secondary.withAlpha(26),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
                 border: Border.all(color: AppColors.secondary.withAlpha(77)),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.note, size: 16, color: AppColors.secondary),
+                  const Icon(
+                    Icons.note,
+                    size: AppSpacing.iconSm,
+                    color: AppColors.secondary,
+                  ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
@@ -499,7 +505,7 @@ class _TrainingSessionDetailsPageState
               children: [
                 const Icon(
                   Icons.error_outline,
-                  size: 64,
+                  size: AppSpacing.iconXxl,
                   color: AppColors.danger,
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -548,7 +554,7 @@ class _TrainingSessionDetailsPageState
                       const SizedBox(width: AppSpacing.sm),
                       const Icon(
                         Icons.star,
-                        size: 16,
+                        size: AppSpacing.iconSm,
                         color: AppColors.warning,
                       ),
                     ],
@@ -571,7 +577,9 @@ class _TrainingSessionDetailsPageState
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.inputRadius,
+                          ),
                         ),
                         child: Text(
                           l10n.you,

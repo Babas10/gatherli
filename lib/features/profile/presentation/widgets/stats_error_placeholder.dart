@@ -122,7 +122,7 @@ class CompactStatsError extends StatelessWidget {
           children: [
             Icon(
               Icons.error_outline,
-              size: 20,
+              size: AppSpacing.iconMd,
               color: theme.colorScheme.error.withValues(alpha: 0.7),
             ),
             const SizedBox(height: AppSpacing.xs),

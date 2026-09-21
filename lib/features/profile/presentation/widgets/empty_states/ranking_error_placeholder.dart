@@ -23,7 +23,7 @@ class RankingErrorPlaceholder extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

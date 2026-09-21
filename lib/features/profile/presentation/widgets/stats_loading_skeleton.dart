@@ -51,7 +51,9 @@ class _StatsLoadingSkeletonState extends State<StatsLoadingSkeleton>
           height: widget.height,
           width: widget.width,
           decoration: BoxDecoration(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
+            borderRadius:
+                widget.borderRadius ??
+                BorderRadius.circular(AppSpacing.badgeRadius),
             gradient: LinearGradient(
               begin: Alignment(-1.0 - _controller.value * 2, 0.0),
               end: Alignment(1.0 + _controller.value * 2, 0.0),
@@ -124,7 +126,7 @@ class _StatItemSkeleton extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,

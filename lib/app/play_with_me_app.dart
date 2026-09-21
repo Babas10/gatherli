@@ -839,7 +839,7 @@ class _HomeTabState extends State<_HomeTab> {
                         children: [
                           const Icon(
                             Icons.error_outline,
-                            size: 48,
+                            size: AppSpacing.iconXl,
                             color: AppColors.danger,
                           ),
                           const SizedBox(height: AppSpacing.lg),
@@ -1026,7 +1026,7 @@ class _SplashScreen extends StatelessWidget {
           children: [
             const Icon(
               Icons.sports_volleyball,
-              size: 64,
+              size: AppSpacing.iconXxl,
               color: AppColors.secondary,
             ),
             const SizedBox(height: AppSpacing.xl),

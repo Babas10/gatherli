@@ -25,7 +25,7 @@ class GameHistoryCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
@@ -82,7 +82,7 @@ class GameHistoryCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.trending_up,
-                      size: 16,
+                      size: AppSpacing.iconSm,
                       color: theme.colorScheme.primary,
                     ),
                     const SizedBox(width: AppSpacing.xs),
@@ -163,7 +163,7 @@ class GameHistoryCard extends StatelessWidget {
         color: isWinner
             ? theme.colorScheme.primaryContainer.withValues(alpha: 0.3)
             : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
         border: isWinner
             ? Border.all(color: theme.colorScheme.primary, width: 2)
             : null,
@@ -183,7 +183,7 @@ class GameHistoryCard extends StatelessWidget {
                 const SizedBox(width: AppSpacing.xs),
                 Icon(
                   Icons.emoji_events,
-                  size: 16,
+                  size: AppSpacing.iconSm,
                   color: theme.colorScheme.primary,
                 ),
               ],

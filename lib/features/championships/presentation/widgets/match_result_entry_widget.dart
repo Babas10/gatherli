@@ -171,7 +171,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                 const Icon(
                   Icons.check_circle,
                   color: AppColors.success,
-                  size: 48,
+                  size: AppSpacing.iconXl,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
@@ -375,11 +375,11 @@ class _PointsInput extends StatelessWidget {
           vertical: 10,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
           borderSide: const BorderSide(color: AppColors.divider),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
           borderSide: const BorderSide(color: AppColors.divider),
         ),
       ),

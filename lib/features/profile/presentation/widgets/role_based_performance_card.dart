@@ -99,7 +99,7 @@ class _RoleCard extends StatelessWidget {
               color: accentColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: accentColor, size: 20),
+            child: Icon(icon, color: accentColor, size: AppSpacing.iconMd),
           ),
           const SizedBox(width: 14),
           Expanded(

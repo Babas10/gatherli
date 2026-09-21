@@ -189,13 +189,13 @@ class MomentumConsistencyCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: streakColor.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
             border: Border.all(color: streakColor.withValues(alpha: 0.3)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(streakIcon, size: 16, color: streakColor),
+              Icon(streakIcon, size: AppSpacing.iconSm, color: streakColor),
               const SizedBox(width: 6),
               Text(
                 '$streakValue',

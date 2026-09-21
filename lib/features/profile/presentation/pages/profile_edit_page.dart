@@ -456,7 +456,7 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                                     children: [
                                       Icon(
                                         Icons.info_outline,
-                                        size: 20,
+                                        size: AppSpacing.iconMd,
                                         color: Theme.of(
                                           context,
                                         ).colorScheme.primary,

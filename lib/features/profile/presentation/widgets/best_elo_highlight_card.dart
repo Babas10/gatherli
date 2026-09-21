@@ -40,7 +40,9 @@ class BestEloHighlightCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: AppColors.divider.withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
@@ -71,7 +73,7 @@ class BestEloHighlightCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         side: BorderSide(
           color: theme.colorScheme.primary.withValues(alpha: 0.2),
           width: 1,
@@ -79,10 +81,10 @@ class BestEloHighlightCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -101,7 +103,7 @@ class BestEloHighlightCard extends StatelessWidget {
               // Trophy icon
               const Icon(
                 Icons.emoji_events,
-                size: 20,
+                size: AppSpacing.iconMd,
                 color: AppColors.primary,
               ),
               const SizedBox(width: AppSpacing.md),

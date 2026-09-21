@@ -53,7 +53,7 @@ class GroupListItem extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.people,
-                      size: 16,
+                      size: AppSpacing.iconSm,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(width: AppSpacing.xs),
@@ -69,7 +69,7 @@ class GroupListItem extends StatelessWidget {
                         group.privacy == GroupPrivacy.public
                             ? Icons.public
                             : Icons.lock_outline,
-                        size: 16,
+                        size: AppSpacing.iconSm,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(width: AppSpacing.xs),

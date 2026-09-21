@@ -260,7 +260,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
                             children: [
                               const Icon(
                                 Icons.error_outline,
-                                size: 64,
+                                size: AppSpacing.iconXxl,
                                 color: AppColors.danger,
                               ),
                               const SizedBox(height: AppSpacing.lg),

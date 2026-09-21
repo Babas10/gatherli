@@ -94,14 +94,14 @@ class FeedbackListItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(
                         Icons.star,
-                        size: 14,
+                        size: AppSpacing.iconXs,
                         color: AppColors.primary,
                       ),
                       const SizedBox(width: AppSpacing.xs),
@@ -182,7 +182,7 @@ class FeedbackListItem extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: AppColors.secondary),
+        Icon(icon, size: AppSpacing.iconXs, color: AppColors.secondary),
         const SizedBox(width: AppSpacing.xs),
         Text(
           rating.toString(),

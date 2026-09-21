@@ -225,7 +225,7 @@ class _GroupCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         side: BorderSide(
           color: isInvited ? AppColors.success : Colors.grey.shade200,
         ),
@@ -306,7 +306,7 @@ class _GroupCard extends StatelessWidget {
               else
                 const Icon(
                   Icons.chevron_right,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                   color: AppColors.textMuted,
                 ),
             ],
@@ -336,7 +336,7 @@ class _ErrorView extends StatelessWidget {
           children: [
             Icon(
               Icons.error_outline,
-              size: 48,
+              size: AppSpacing.iconXl,
               color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: AppSpacing.md),

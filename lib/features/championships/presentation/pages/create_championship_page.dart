@@ -312,11 +312,11 @@ class _GenderOption extends StatelessWidget {
     final color = selected ? blue : Colors.grey.shade400;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
           border: Border.all(
             color: selected ? blue : Colors.grey.shade300,
             width: selected ? 2 : 1,
@@ -428,7 +428,7 @@ class _DatePicker extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: label,

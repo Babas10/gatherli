@@ -163,7 +163,7 @@ class _GamesListPageContent extends StatelessWidget {
         children: [
           Icon(
             Icons.error_outline,
-            size: 64,
+            size: AppSpacing.iconXxl,
             color: Theme.of(context).colorScheme.error,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -244,7 +244,7 @@ class _GamesListPageContent extends StatelessWidget {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.xl,
@@ -253,7 +253,7 @@ class _GamesListPageContent extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: AppColors.primary, size: 24),
+            Icon(icon, color: AppColors.primary, size: AppSpacing.iconLg),
             const SizedBox(height: AppSpacing.xs),
             Text(
               label,

@@ -155,7 +155,11 @@ class JoinGroupConfirmationPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+          const Icon(
+            Icons.error_outline,
+            size: AppSpacing.iconXxl,
+            color: AppColors.danger,
+          ),
           const SizedBox(height: AppSpacing.xl),
           Text(
             message,

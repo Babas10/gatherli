@@ -39,7 +39,7 @@ class GameListItem extends StatelessWidget {
       color: AppColors.cardBackground,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
@@ -51,7 +51,7 @@ class GameListItem extends StatelessWidget {
                   // Game icon to distinguish from training sessions
                   Icon(
                     Icons.sports_volleyball,
-                    size: 20,
+                    size: AppSpacing.iconMd,
                     color: isCancelled
                         ? AppColors.textMuted
                         : AppColors.secondary,
@@ -120,7 +120,7 @@ class GameListItem extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: iconColor),
+        Icon(icon, size: AppSpacing.iconSm, color: iconColor),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(

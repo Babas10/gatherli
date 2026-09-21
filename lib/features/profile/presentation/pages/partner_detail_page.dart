@@ -54,7 +54,7 @@ class PartnerDetailPage extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.error_outline,
-                      size: 48,
+                      size: AppSpacing.iconXl,
                       color: AppColors.danger,
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -339,7 +339,7 @@ class PartnerDetailPage extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
         border: Border.all(color: resultColor.withValues(alpha: 0.3), width: 2),
       ),
       child: Row(

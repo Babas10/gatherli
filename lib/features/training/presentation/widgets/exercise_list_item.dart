@@ -50,7 +50,7 @@ class ExerciseListItem extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Row(
                 children: [
-                  const Icon(Icons.timer, size: 16),
+                  const Icon(Icons.timer, size: AppSpacing.iconSm),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     exercise.formattedDuration,

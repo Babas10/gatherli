@@ -73,7 +73,7 @@ class _ScoreEntryView extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.error_outline,
-                      size: 64,
+                      size: AppSpacing.iconXxl,
                       color: AppColors.danger,
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -155,7 +155,9 @@ class _GameCountSelector extends StatelessWidget {
                   onPressed: () => onGameCountSelected(count),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(
+                        AppSpacing.inputRadius,
+                      ),
                     ),
                   ),
                   child: Text(
@@ -264,7 +266,7 @@ class _GameCard extends StatelessWidget {
                     child: const Icon(
                       Icons.check,
                       color: AppColors.secondary,
-                      size: 16,
+                      size: AppSpacing.iconSm,
                     ),
                   ),
               ],
@@ -553,7 +555,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                     child: const Icon(
                       Icons.check,
                       color: AppColors.secondary,
-                      size: 14,
+                      size: AppSpacing.iconXs,
                     ),
                   )
                 : widget.setData.isComplete
@@ -563,7 +565,7 @@ class _SetScoreInputState extends State<_SetScoreInput> {
                     child: const Icon(
                       Icons.error,
                       color: AppColors.danger,
-                      size: 20,
+                      size: AppSpacing.iconMd,
                     ),
                   )
                 : null,

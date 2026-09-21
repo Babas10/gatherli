@@ -117,7 +117,7 @@ class _PendingGameInvitationsViewState
             children: [
               Icon(
                 Icons.error_outline,
-                size: 64,
+                size: AppSpacing.iconXxl,
                 color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: AppSpacing.lg),

@@ -17,7 +17,7 @@ class OfflineBanner extends StatelessWidget {
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.cloud_off, color: Colors.white, size: 16),
+          Icon(Icons.cloud_off, color: Colors.white, size: AppSpacing.iconSm),
           SizedBox(width: AppSpacing.sm),
           Flexible(
             child: Text(

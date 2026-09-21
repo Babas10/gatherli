@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Icon(
                     Icons.sports_volleyball,
-                    size: 64,
+                    size: AppSpacing.iconXxl,
                     color: Theme.of(context).primaryColor,
                   ),
                   const SizedBox(height: AppSpacing.xl),

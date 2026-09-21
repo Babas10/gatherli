@@ -47,7 +47,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
             // Icon
             Icon(
               icon,
-              size: 64,
+              size: AppSpacing.iconXxl,
               color: AppColors.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: AppSpacing.xl),
@@ -79,7 +79,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
                   border: Border.all(
                     color: AppColors.primary.withValues(alpha: 0.3),
                     width: 1,
@@ -90,7 +90,7 @@ class EmptyStatsPlaceholder extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.lock_outline,
-                      size: 16,
+                      size: AppSpacing.iconSm,
                       color: AppColors.secondary,
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -149,7 +149,7 @@ class InsufficientDataPlaceholder extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 64,
+              size: AppSpacing.iconXxl,
               color: AppColors.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: AppSpacing.lg),

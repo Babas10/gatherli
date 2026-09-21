@@ -60,7 +60,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
                 children: [
                   const Icon(
                     Icons.error_outline,
-                    size: 64,
+                    size: AppSpacing.iconXxl,
                     color: AppColors.danger,
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -217,7 +217,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
                   ),
                   child: Text(
                     '${aggregation.totalCount}',

@@ -113,7 +113,7 @@ class _GameChatViewState extends State<_GameChatView> {
                 const Icon(
                   Icons.chat_bubble_outline,
                   color: AppColors.secondary,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(

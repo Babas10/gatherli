@@ -161,7 +161,7 @@ class _TrainingSessionCreationPageState
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -280,7 +280,7 @@ class _TrainingSessionCreationPageState
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -543,7 +543,9 @@ class _TrainingSessionCreationPageState
                                 context,
                               ).colorScheme.surfaceContainerHighest,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(
+                                  AppSpacing.badgeRadius,
+                                ),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.lg),
@@ -562,7 +564,9 @@ class _TrainingSessionCreationPageState
                                 context,
                               ).colorScheme.surfaceContainerHighest,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(
+                                  AppSpacing.badgeRadius,
+                                ),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.lg),

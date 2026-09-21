@@ -48,7 +48,7 @@ class PartnersCard extends StatelessWidget {
                       ),
                     )
                   : null,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: bestPartner != null
@@ -116,14 +116,14 @@ class PartnersCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
                 color: AppColors.success.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.trending_up,
-                    size: 14,
+                    size: AppSpacing.iconXs,
                     color: AppColors.success,
                   ),
                   const SizedBox(width: AppSpacing.xs),
@@ -141,7 +141,7 @@ class PartnersCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Icon(
               Icons.arrow_forward_ios,
-              size: 14,
+              size: AppSpacing.iconXs,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ],

@@ -107,7 +107,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
             Icon(
               Icons.show_chart,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: AppColors.textMuted.withValues(alpha: 0.5),
             ),
           ],
@@ -137,7 +137,11 @@ class PerformanceOverviewCard extends StatelessWidget {
               AppLocalizations.of(context)!.peakElo,
               style: AppTextStyles.caption,
             ),
-            const Icon(Icons.emoji_events, size: 16, color: AppColors.primary),
+            const Icon(
+              Icons.emoji_events,
+              size: AppSpacing.iconSm,
+              color: AppColors.primary,
+            ),
           ],
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -209,7 +213,7 @@ class PerformanceOverviewCard extends StatelessWidget {
               ),
               const Icon(
                 Icons.emoji_events,
-                size: 14,
+                size: AppSpacing.iconXs,
                 color: AppColors.primary,
               ),
             ],
@@ -271,7 +275,7 @@ class PerformanceOverviewCard extends StatelessWidget {
               bestWin != null
                   ? Icons.emoji_events
                   : Icons.emoji_events_outlined,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: bestWin != null
                   ? AppColors.primary
                   : AppColors.primary.withValues(alpha: 0.4),
@@ -343,7 +347,7 @@ class PerformanceOverviewCard extends StatelessWidget {
           children: [
             const Icon(
               Icons.compare_arrows,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: AppColors.secondary,
             ),
             const SizedBox(width: 6),
@@ -461,7 +465,7 @@ class PerformanceOverviewCard extends StatelessWidget {
             ),
             Icon(
               Icons.trending_up_outlined,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: AppColors.textMuted.withValues(alpha: 0.4),
             ),
           ],

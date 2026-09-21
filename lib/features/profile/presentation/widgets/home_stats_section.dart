@@ -193,7 +193,7 @@ class HomeStatsSection extends StatelessWidget {
                 ),
                 const Icon(
                   Icons.emoji_events,
-                  size: 16,
+                  size: AppSpacing.iconSm,
                   color: AppColors.primary,
                 ),
               ],
@@ -265,7 +265,7 @@ class HomeStatsSection extends StatelessWidget {
               const Spacer(),
               Icon(
                 Icons.sports_volleyball,
-                size: 24,
+                size: AppSpacing.iconLg,
                 color: AppColors.textMuted.withValues(alpha: 0.5),
               ),
             ],
@@ -307,7 +307,7 @@ class _StatsCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
           boxShadow: const [
             BoxShadow(
               color: AppColors.shadow,

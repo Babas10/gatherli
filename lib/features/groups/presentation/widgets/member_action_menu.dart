@@ -46,7 +46,7 @@ class MemberActionMenu extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.admin_panel_settings,
-                    size: 20,
+                    size: AppSpacing.iconMd,
                     color: AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.md),
@@ -69,7 +69,7 @@ class MemberActionMenu extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.person,
-                    size: 20,
+                    size: AppSpacing.iconMd,
                     color: AppColors.secondary,
                   ),
                   const SizedBox(width: AppSpacing.md),
@@ -95,7 +95,7 @@ class MemberActionMenu extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.person_remove,
-                    size: 20,
+                    size: AppSpacing.iconMd,
                     color: Theme.of(context).colorScheme.error,
                   ),
                   const SizedBox(width: AppSpacing.md),

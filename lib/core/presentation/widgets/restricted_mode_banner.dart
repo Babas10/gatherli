@@ -30,7 +30,11 @@ class RestrictedModeBanner extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.block, color: Colors.white, size: 20),
+              const Icon(
+                Icons.block,
+                color: Colors.white,
+                size: AppSpacing.iconMd,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -47,7 +51,11 @@ class RestrictedModeBanner extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
-              const Icon(Icons.schedule, color: Colors.white70, size: 16),
+              const Icon(
+                Icons.schedule,
+                color: Colors.white70,
+                size: AppSpacing.iconSm,
+              ),
               const SizedBox(width: 6),
               Text(
                 l10n.accountDeletionWarning(daysUntilDeletion),

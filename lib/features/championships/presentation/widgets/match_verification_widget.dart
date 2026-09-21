@@ -196,7 +196,9 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                       hintText: l10n.verifyResultDisputeReasonHint,
                       errorText: _reasonError,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.badgeRadius,
+                        ),
                       ),
                     ),
                   ),
@@ -269,7 +271,7 @@ class _StatusCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: iconColor, size: 48),
+            Icon(icon, color: iconColor, size: AppSpacing.iconXl),
             const SizedBox(height: AppSpacing.md),
             Text(
               message,
