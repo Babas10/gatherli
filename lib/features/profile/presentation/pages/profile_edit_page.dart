@@ -4,6 +4,7 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/domain/repositories/user_repository.dart';
+import 'package:play_with_me/core/presentation/widgets/form_section.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/utils/countries.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -289,108 +290,123 @@ class _ProfileEditContentState extends State<_ProfileEditContent> {
                               ),
                               const SizedBox(height: AppSpacing.xxl),
 
-                              // Preferences Section Header
-                              Text(
-                                'Preferences',
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const Divider(),
-                              const SizedBox(height: AppSpacing.lg),
+                              // Preferences section
+                              FormSection(
+                                label: 'Preferences',
+                                bottomSpacing: AppSpacing.xxl,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    // Language Dropdown
+                                    DropdownButtonFormField<Locale>(
+                                      value:
+                                          localeState is LocalePreferencesLoaded
+                                          ? localeState.preferences.locale
+                                          : const Locale('en'),
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(
+                                          context,
+                                        )!.preferredLanguage,
+                                        helperText:
+                                            'Select your preferred language',
+                                        prefixIcon: const Icon(Icons.language),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      items: LocalePreferencesEntity
+                                          .supportedLocales
+                                          .map((locale) {
+                                            return DropdownMenuItem(
+                                              value: locale,
+                                              child: Text(
+                                                LocalePreferencesEntity.getLanguageName(
+                                                  locale,
+                                                ),
+                                              ),
+                                            );
+                                          })
+                                          .toList(),
+                                      onChanged: isSaving
+                                          ? null
+                                          : (locale) {
+                                              if (locale != null) {
+                                                context
+                                                    .read<
+                                                      LocalePreferencesBloc
+                                                    >()
+                                                    .add(
+                                                      LocalePreferencesEvent.updateLanguage(
+                                                        locale,
+                                                      ),
+                                                    );
+                                              }
+                                            },
+                                    ),
+                                    const SizedBox(height: AppSpacing.lg),
 
-                              // Language Dropdown
-                              DropdownButtonFormField<Locale>(
-                                value: localeState is LocalePreferencesLoaded
-                                    ? localeState.preferences.locale
-                                    : const Locale('en'),
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(
-                                    context,
-                                  )!.preferredLanguage,
-                                  helperText: 'Select your preferred language',
-                                  prefixIcon: const Icon(Icons.language),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                items: LocalePreferencesEntity.supportedLocales
-                                    .map((locale) {
-                                      return DropdownMenuItem(
-                                        value: locale,
-                                        child: Text(
-                                          LocalePreferencesEntity.getLanguageName(
-                                            locale,
-                                          ),
+                                    // Country Dropdown
+                                    DropdownButtonFormField<String>(
+                                      value:
+                                          localeState is LocalePreferencesLoaded
+                                          ? Countries.normalize(
+                                              localeState.preferences.country,
+                                            )
+                                          : Countries.defaultCountry,
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(
+                                          context,
+                                        )!.country,
+                                        helperText: 'Select your country',
+                                        prefixIcon: const Icon(Icons.flag),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      items: Countries.all.map((country) {
+                                        return DropdownMenuItem(
+                                          value: country,
+                                          child: Text(country),
+                                        );
+                                      }).toList(),
+                                      onChanged: isSaving
+                                          ? null
+                                          : (country) {
+                                              if (country != null) {
+                                                context
+                                                    .read<
+                                                      LocalePreferencesBloc
+                                                    >()
+                                                    .add(
+                                                      LocalePreferencesEvent.updateCountry(
+                                                        country,
+                                                      ),
+                                                    );
+                                              }
+                                            },
+                                    ),
+                                    const SizedBox(height: AppSpacing.lg),
+
+                                    // Time Zone (Read-only)
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(
+                                          context,
+                                        )!.timezone,
+                                        helperText:
+                                            'Automatically detected from your device',
+                                        prefixIcon: const Icon(
+                                          Icons.access_time,
                                         ),
-                                      );
-                                    })
-                                    .toList(),
-                                onChanged: isSaving
-                                    ? null
-                                    : (locale) {
-                                        if (locale != null) {
-                                          context.read<LocalePreferencesBloc>().add(
-                                            LocalePreferencesEvent.updateLanguage(
-                                              locale,
-                                            ),
-                                          );
-                                        }
-                                      },
-                              ),
-                              const SizedBox(height: AppSpacing.lg),
-
-                              // Country Dropdown
-                              DropdownButtonFormField<String>(
-                                value: localeState is LocalePreferencesLoaded
-                                    ? Countries.normalize(
-                                        localeState.preferences.country,
-                                      )
-                                    : Countries.defaultCountry,
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(
-                                    context,
-                                  )!.country,
-                                  helperText: 'Select your country',
-                                  prefixIcon: const Icon(Icons.flag),
-                                  border: const OutlineInputBorder(),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      initialValue:
+                                          localeState is LocalePreferencesLoaded
+                                          ? localeState.preferences.timeZone ??
+                                                'Not detected'
+                                          : 'Not detected',
+                                      enabled: false,
+                                    ),
+                                  ],
                                 ),
-                                items: Countries.all.map((country) {
-                                  return DropdownMenuItem(
-                                    value: country,
-                                    child: Text(country),
-                                  );
-                                }).toList(),
-                                onChanged: isSaving
-                                    ? null
-                                    : (country) {
-                                        if (country != null) {
-                                          context.read<LocalePreferencesBloc>().add(
-                                            LocalePreferencesEvent.updateCountry(
-                                              country,
-                                            ),
-                                          );
-                                        }
-                                      },
                               ),
-                              const SizedBox(height: AppSpacing.lg),
-
-                              // Time Zone (Read-only)
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(
-                                    context,
-                                  )!.timezone,
-                                  helperText:
-                                      'Automatically detected from your device',
-                                  prefixIcon: const Icon(Icons.access_time),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                initialValue:
-                                    localeState is LocalePreferencesLoaded
-                                    ? localeState.preferences.timeZone ??
-                                          'Not detected'
-                                    : 'Not detected',
-                                enabled: false,
-                              ),
-                              const SizedBox(height: AppSpacing.xxl),
 
                               // Save Button
                               FilledButton.icon(
