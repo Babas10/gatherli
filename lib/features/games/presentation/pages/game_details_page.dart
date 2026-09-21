@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
@@ -1046,11 +1047,7 @@ class _QuickScoreDisplay extends StatelessWidget {
           child: Center(
             child: Text(
               score.toString(),
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: textColor,
-              ),
+              style: AppTextStyles.headlineBold.copyWith(color: textColor),
             ),
           ),
         ),
@@ -1128,9 +1125,7 @@ class _VerificationSection extends StatelessWidget {
                   const SizedBox(width: AppSpacing.md),
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    style: AppTextStyles.emphasisTitle.copyWith(
                       color: bannerColor,
                     ),
                   ),

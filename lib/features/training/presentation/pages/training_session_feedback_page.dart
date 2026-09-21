@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -122,7 +123,7 @@ class _TrainingSessionFeedbackPageState
             const SizedBox(height: AppSpacing.xl),
             Text(
               l10n.feedbackAlreadySubmitted,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: AppTextStyles.headlineBold,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -214,7 +215,7 @@ class _TrainingSessionFeedbackPageState
             // Comment section
             Text(
               l10n.additionalCommentsOptional,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: AppTextStyles.emphasisTitle,
             ),
             const SizedBox(height: AppSpacing.lg),
             TextFormField(
@@ -249,10 +250,7 @@ class _TrainingSessionFeedbackPageState
                     )
                   : Text(
                       l10n.submitFeedback,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.emphasisTitle,
                     ),
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -298,10 +296,7 @@ class _TrainingSessionFeedbackPageState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
+        Text(label, style: AppTextStyles.emphasisTitle),
         const SizedBox(height: AppSpacing.xs),
         Text(subtitle, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
         const SizedBox(height: AppSpacing.lg),

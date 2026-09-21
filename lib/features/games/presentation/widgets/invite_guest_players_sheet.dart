@@ -246,11 +246,7 @@ class _GroupCard extends StatelessWidget {
                 backgroundColor: AppColors.primary.withValues(alpha: 0.25),
                 child: Text(
                   groupName.isNotEmpty ? groupName[0].toUpperCase() : '?',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.secondary,
-                  ),
+                  style: AppTextStyles.cardTitle,
                 ),
               ),
               const SizedBox(width: 14),
@@ -259,14 +255,7 @@ class _GroupCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      groupName,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.secondary,
-                      ),
-                    ),
+                    Text(groupName, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 2),
                     Text(
                       l10n.groupMembersCount(members.length),

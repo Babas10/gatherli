@@ -43,12 +43,7 @@ class HomeStatsSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Text(
               l10n.performanceOverview.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-                letterSpacing: 0.8,
-              ),
+              style: AppTextStyles.sectionLabel,
             ),
           ),
           // Row 1: ELO + Win Rate side-by-side — IntrinsicHeight ensures equal height
@@ -93,11 +88,7 @@ class HomeStatsSection extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             user.eloRating.toStringAsFixed(0),
-            style: const TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w600,
-              color: AppColors.secondary,
-            ),
+            style: AppTextStyles.statValue,
           ),
           if (trendData != null && trendData['delta'] != 0) ...[
             const SizedBox(height: 5),
@@ -153,11 +144,7 @@ class HomeStatsSection extends StatelessWidget {
               children: [
                 Text(
                   '${(user.winRate * 100).toStringAsFixed(1)}%',
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.secondary,
-                  ),
+                  style: AppTextStyles.statValue,
                 ),
                 const SizedBox(height: 2),
                 Text(l10n.winRate, style: AppTextStyles.caption),
@@ -254,14 +241,7 @@ class HomeStatsSection extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
-              Text(
-                user.gamesPlayed.toString(),
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondary,
-                ),
-              ),
+              Text(user.gamesPlayed.toString(), style: AppTextStyles.statValue),
               const Spacer(),
               Icon(
                 Icons.sports_volleyball,

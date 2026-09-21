@@ -223,9 +223,7 @@ class NextTrainingSessionCard extends StatelessWidget {
               session!.currentParticipantCount,
               session!.maxParticipants,
             ),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.mediumLabel.copyWith(
               color: AppColors.onSurface,
             ),
           ),

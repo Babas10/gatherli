@@ -4,6 +4,7 @@ import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import '../bloc/match_verification/match_verification_bloc.dart';
@@ -181,10 +182,7 @@ class _MatchVerificationViewState extends State<_MatchVerificationView> {
                 ] else ...[
                   Text(
                     l10n.verifyResultDisputeReasonLabel,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                    ),
+                    style: AppTextStyles.mediumLabel,
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   TextField(

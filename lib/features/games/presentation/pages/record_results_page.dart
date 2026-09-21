@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -511,7 +512,7 @@ class _SaveButton extends StatelessWidget {
               canSave
                   ? AppLocalizations.of(context)!.saveTeams
                   : AppLocalizations.of(context)!.assignAllPlayersToContinue,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: AppTextStyles.emphasisTitle,
             ),
           ),
         ),
