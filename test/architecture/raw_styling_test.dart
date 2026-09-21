@@ -93,8 +93,12 @@ const _rawHexBaseline = {
   'lib/features/profile/presentation/widgets/next_training_session_card.dart',
 };
 
-/// Files allowed to use `Theme.of(context).colorScheme.*` (M3 auto-generated
-/// tints) instead of `AppColors.*` (baseline as of Story 37.6).
+/// Files allowed to use `colorScheme.*` (M3 auto-generated tints) instead of
+/// `AppColors.*` (baseline recomputed in Story 37.8c). Matches both the
+/// inline `Theme.of(context).colorScheme.x` form and the equally common
+/// `final theme = Theme.of(context); ...theme.colorScheme.x` alias — the
+/// original Story 37.6 regex only matched the former, silently missing 17+
+/// files that only used the latter.
 const _colorSchemeBaseline = {
   'lib/features/auth/presentation/pages/registration_page.dart',
   'lib/features/championships/presentation/pages/championship_detail_page.dart',
@@ -105,6 +109,7 @@ const _colorSchemeBaseline = {
   'lib/features/games/presentation/pages/game_history_screen.dart',
   'lib/features/games/presentation/pages/games_list_page.dart',
   'lib/features/games/presentation/pages/pending_game_invitations_page.dart',
+  'lib/features/games/presentation/widgets/game_history_card.dart',
   'lib/features/games/presentation/widgets/game_list_item.dart',
   'lib/features/games/presentation/widgets/invite_guest_players_sheet.dart',
   'lib/features/games/presentation/widgets/set_scores_display.dart',
@@ -117,11 +122,27 @@ const _colorSchemeBaseline = {
   'lib/features/groups/presentation/widgets/member_list_item_with_friendship.dart',
   'lib/features/invitations/presentation/pages/invite_registration_page.dart',
   'lib/features/invitations/presentation/widgets/invitation_tile.dart',
+  'lib/features/profile/presentation/pages/email_verification_page.dart',
+  'lib/features/profile/presentation/pages/full_elo_history_page.dart',
+  'lib/features/profile/presentation/pages/partner_detail_page.dart',
   'lib/features/profile/presentation/pages/profile_edit_page.dart',
   'lib/features/profile/presentation/pages/profile_page.dart',
   'lib/features/profile/presentation/pages/stats_page.dart',
   'lib/features/profile/presentation/widgets/avatar_upload_widget.dart',
+  'lib/features/profile/presentation/widgets/best_elo_highlight_card.dart',
+  'lib/features/profile/presentation/widgets/compact_stat_card.dart',
+  'lib/features/profile/presentation/widgets/elo_trend_indicator.dart',
+  'lib/features/profile/presentation/widgets/empty_states/ranking_error_placeholder.dart',
+  'lib/features/profile/presentation/widgets/monthly_improvement_chart.dart',
+  'lib/features/profile/presentation/widgets/partners_card.dart',
+  'lib/features/profile/presentation/widgets/performance_overview_card.dart',
   'lib/features/profile/presentation/widgets/profile_actions.dart',
+  'lib/features/profile/presentation/widgets/profile_info_card.dart',
+  'lib/features/profile/presentation/widgets/ranking_stats_cards.dart',
+  'lib/features/profile/presentation/widgets/rivals_card.dart',
+  'lib/features/profile/presentation/widgets/stats_error_placeholder.dart',
+  'lib/features/profile/presentation/widgets/stats_loading_skeleton.dart',
+  'lib/features/training/presentation/pages/training_session_creation_page.dart',
   'lib/features/training/presentation/pages/training_session_feedback_page.dart',
   'lib/features/training/presentation/widgets/feedback_display_widget.dart',
 };
@@ -183,9 +204,13 @@ void main() {
       );
     });
 
-    test('no new files use Theme.of(context).colorScheme.* instead of AppColors.*', () {
-      final violators =
-          _findViolatingFiles(RegExp(r'Theme\.of\(context\)\.colorScheme\.'));
+    test('no new files use colorScheme.* instead of AppColors.*', () {
+      // Matches both `Theme.of(context).colorScheme.x` and the equally common
+      // `final theme = Theme.of(context); ...theme.colorScheme.x` alias.
+      // Nothing in this codebase legitimately accesses a `colorScheme` field
+      // outside of Flutter's ColorScheme/ThemeData, so the bare substring is
+      // safe and avoids missing the aliased form (Story 37.8c).
+      final violators = _findViolatingFiles(RegExp(r'\.colorScheme\.'));
 
       final newViolations = violators
           .where((path) => !_colorSchemeBaseline.contains(path))
@@ -195,8 +220,8 @@ void main() {
         newViolations,
         isEmpty,
         reason:
-            'New file(s) use Theme.of(context).colorScheme.* (M3 auto-generated '
-            'tints) instead of AppColors.*:\n${newViolations.join('\n')}\n\n'
+            'New file(s) use colorScheme.* (M3 auto-generated tints) instead '
+            'of AppColors.*:\n${newViolations.join('\n')}\n\n'
             'ARCHITECTURE RULE (Story 37.6 / CLAUDE.md section 9b): M3 colorScheme '
             'produces generated tints (cream, warm grey) that clash with the '
             "app's design system — use AppColors.* exclusively.",
