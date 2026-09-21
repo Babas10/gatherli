@@ -521,7 +521,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             Text('Error', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: AppSpacing.sm),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
               child: Text(
                 _error!,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -610,7 +610,12 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                   // Index 0: header
                   if (index == 0) {
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.lg,
+                        AppSpacing.lg,
+                        AppSpacing.lg,
+                        AppSpacing.sm,
+                      ),
                       child: Text(
                         'Members (${_members.length})',
                         style: Theme.of(context).textTheme.titleMedium
@@ -625,7 +630,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                       final l10n = AppLocalizations.of(context)!;
                       return AccentCard(
                         margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
+                          horizontal: AppSpacing.lg,
                           vertical: 5,
                         ),
                         onTap: () => _navigateToInvitePage(context),
@@ -658,7 +663,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                           inviteLinkState is GroupInviteLinkLoading;
                       return AccentCard(
                         margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
+                          horizontal: AppSpacing.lg,
                           vertical: 5,
                         ),
                         onTap: isGenerating
@@ -793,9 +798,14 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
               children: [
                 // Create action buttons — wrapped in Card for contrast
                 Card(
-                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  margin: const EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    AppSpacing.md,
+                    AppSpacing.lg,
+                    0,
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppSpacing.md),
                     child: Row(
                       children: [
                         Expanded(
@@ -803,7 +813,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                             onPressed: () => _navigateToGameCreation(context),
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: AppSpacing.sm,
                               ),
                             ),
                             child: Center(
@@ -830,7 +840,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                 _navigateToTrainingCreation(context),
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: AppSpacing.sm,
                               ),
                             ),
                             child: Center(
@@ -859,12 +869,12 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                 // Activity list
                 if (state is GamesListLoading)
                   const Padding(
-                    padding: EdgeInsets.all(32),
+                    padding: EdgeInsets.all(AppSpacing.xxl),
                     child: Center(child: CircularProgressIndicator()),
                   )
                 else if (state is GamesListError)
                   Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: const EdgeInsets.all(AppSpacing.xxl),
                     child: Center(
                       child: Text(
                         state.message,
@@ -919,8 +929,8 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                   if (!state.olderActivitiesLoaded)
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.md,
                       ),
                       child: state.isLoadingOlderActivities
                           ? const Center(child: CircularProgressIndicator())
@@ -950,7 +960,12 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
 
   Widget _buildActivitySectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.sm,
+      ),
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1014,7 +1029,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
           const SizedBox(height: AppSpacing.sm),
           if (_group!.description != null && _group!.description!.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
                 _group!.description!,
                 style: Theme.of(context).textTheme.bodyMedium,

@@ -335,7 +335,10 @@ class GameDetailsBloc extends BaseBloc<GameDetailsEvent, GameDetailsState> {
         );
       }
 
-      await _invitationsRepository?.acceptInvitation(userId: '', invitationId: event.invitationId);
+      await _invitationsRepository?.acceptInvitation(
+        userId: '',
+        invitationId: event.invitationId,
+      );
 
       // Stream will automatically update state once Firestore reflects the change
     } on GameException catch (e) {

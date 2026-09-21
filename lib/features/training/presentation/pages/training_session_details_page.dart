@@ -171,11 +171,16 @@ class _TrainingSessionDetailsPageState
                             value: 'cancel',
                             child: Row(
                               children: [
-                                const Icon(Icons.cancel, color: AppColors.danger),
+                                const Icon(
+                                  Icons.cancel,
+                                  color: AppColors.danger,
+                                ),
                                 const SizedBox(width: AppSpacing.sm),
                                 Text(
                                   l10n.cancelSession,
-                                  style: const TextStyle(color: AppColors.danger),
+                                  style: const TextStyle(
+                                    color: AppColors.danger,
+                                  ),
                                 ),
                               ],
                             ),
@@ -197,9 +202,15 @@ class _TrainingSessionDetailsPageState
                   SectionTabBar(
                     tabs: [
                       AppTabItem(icon: Icons.people, label: l10n.participants),
-                      AppTabItem(icon: Icons.fitness_center, label: l10n.exercises),
+                      AppTabItem(
+                        icon: Icons.fitness_center,
+                        label: l10n.exercises,
+                      ),
                       if (showFeedbackTab)
-                        AppTabItem(icon: Icons.feedback_outlined, label: l10n.feedback),
+                        AppTabItem(
+                          icon: Icons.feedback_outlined,
+                          label: l10n.feedback,
+                        ),
                     ],
                   ),
 
@@ -276,7 +287,7 @@ class _TrainingSessionDetailsPageState
           // Description
           if (session.description != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
                 session.description!,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -319,7 +330,11 @@ class _TrainingSessionDetailsPageState
           // Date/Time
           Row(
             children: [
-              const Icon(Icons.calendar_today, size: 16, color: AppColors.secondary),
+              const Icon(
+                Icons.calendar_today,
+                size: 16,
+                color: AppColors.secondary,
+              ),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 DateFormat('MMM dd, yyyy • HH:mm').format(session.startTime),
@@ -331,7 +346,11 @@ class _TrainingSessionDetailsPageState
           // Location
           Row(
             children: [
-              const Icon(Icons.location_on, size: 16, color: AppColors.secondary),
+              const Icon(
+                Icons.location_on,
+                size: 16,
+                color: AppColors.secondary,
+              ),
               const SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: Text(
@@ -349,7 +368,11 @@ class _TrainingSessionDetailsPageState
               final l10n = AppLocalizations.of(context)!;
               return Row(
                 children: [
-                  const Icon(Icons.people, size: 16, color: AppColors.secondary),
+                  const Icon(
+                    Icons.people,
+                    size: 16,
+                    color: AppColors.secondary,
+                  ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     l10n.participantsCount(
@@ -361,7 +384,7 @@ class _TrainingSessionDetailsPageState
                     const SizedBox(width: AppSpacing.sm),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
+                        horizontal: AppSpacing.sm,
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
@@ -408,7 +431,7 @@ class _TrainingSessionDetailsPageState
           if (session.notes != null && session.notes!.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.sm),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
                 color: AppColors.secondary.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
@@ -453,7 +476,7 @@ class _TrainingSessionDetailsPageState
             title: l10n.noParticipantsYet,
             message: l10n.beFirstToJoin,
             action: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
               child: _buildParticipationInfoCard(session),
             ),
           );
@@ -474,7 +497,11 @@ class _TrainingSessionDetailsPageState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+                const Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: AppColors.danger,
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(l10n.errorLoadingParticipants),
                 const SizedBox(height: AppSpacing.sm),
@@ -490,13 +517,13 @@ class _TrainingSessionDetailsPageState
         final participants = snapshot.data ?? [];
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           itemCount: participants.length + 1, // +1 for participation info card
           itemBuilder: (context, index) {
             // First item is the participation info card
             if (index == 0) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(bottom: AppSpacing.lg),
                 child: _buildParticipationInfoCard(session),
               );
             }
@@ -508,15 +535,22 @@ class _TrainingSessionDetailsPageState
 
             final l10n = AppLocalizations.of(context)!;
             return Card(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: ListTile(
-                leading: UserAvatar(name: participant.displayName ?? participant.email, photoUrl: participant.photoUrl),
+                leading: UserAvatar(
+                  name: participant.displayName ?? participant.email,
+                  photoUrl: participant.photoUrl,
+                ),
                 title: Row(
                   children: [
                     Text(participant.displayNameOrEmail),
                     if (isOrg) ...[
                       const SizedBox(width: AppSpacing.sm),
-                      const Icon(Icons.star, size: 16, color: AppColors.warning),
+                      const Icon(
+                        Icons.star,
+                        size: 16,
+                        color: AppColors.warning,
+                      ),
                     ],
                   ],
                 ),
@@ -532,7 +566,7 @@ class _TrainingSessionDetailsPageState
                 trailing: participant.uid == _currentUserId
                     ? Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
+                          horizontal: AppSpacing.md,
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
@@ -564,7 +598,7 @@ class _TrainingSessionDetailsPageState
         return Card(
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -599,7 +633,7 @@ class _TrainingSessionDetailsPageState
 
   Widget _buildParticipationRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -652,7 +686,10 @@ class _TrainingSessionDetailsPageState
           );
         } else if (state is ParticipationError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: AppColors.danger),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
           );
         }
       },

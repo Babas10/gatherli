@@ -33,8 +33,13 @@ class PlayerStatsLoaded extends PlayerStatsState {
   });
 
   @override
-  List<Object?> get props =>
-      [user, history, ranking, rankingLoadFailed, teammateStats];
+  List<Object?> get props => [
+    user,
+    history,
+    ranking,
+    rankingLoadFailed,
+    teammateStats,
+  ];
 
   PlayerStatsLoaded copyWith({
     UserModel? user,

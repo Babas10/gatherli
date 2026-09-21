@@ -24,8 +24,11 @@ class AccentCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    this.margin = const EdgeInsets.only(bottom: 12),
+    this.contentPadding = const EdgeInsets.symmetric(
+      horizontal: AppSpacing.lg,
+      vertical: AppSpacing.lg,
+    ),
+    this.margin = const EdgeInsets.only(bottom: AppSpacing.md),
     this.accentColor = AppColors.primary,
   });
 
@@ -49,10 +52,7 @@ class AccentCard extends StatelessWidget {
                 Container(width: 6, color: accentColor),
                 // Card content
                 Expanded(
-                  child: Padding(
-                    padding: contentPadding,
-                    child: child,
-                  ),
+                  child: Padding(padding: contentPadding, child: child),
                 ),
               ],
             ),

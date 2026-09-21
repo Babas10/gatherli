@@ -12,8 +12,8 @@ class GameChatBloc extends BaseBloc<GameChatEvent, GameChatState> {
   StreamSubscription<dynamic>? _messagesSubscription;
 
   GameChatBloc({required MessageRepository messageRepository})
-      : _messageRepository = messageRepository,
-        super(const GameChatInitial()) {
+    : _messageRepository = messageRepository,
+      super(const GameChatInitial()) {
     on<LoadGameChat>(_onLoadGameChat);
     on<GameChatMessagesUpdated>(_onMessagesUpdated);
     on<SendChatMessage>(_onSendChatMessage);
@@ -37,8 +37,9 @@ class GameChatBloc extends BaseBloc<GameChatEvent, GameChatState> {
     GameChatMessagesUpdated event,
     Emitter<GameChatState> emit,
   ) {
-    final isSending =
-        state is GameChatLoaded ? (state as GameChatLoaded).isSending : false;
+    final isSending = state is GameChatLoaded
+        ? (state as GameChatLoaded).isSending
+        : false;
     emit(GameChatLoaded(messages: event.messages, isSending: isSending));
   }
 

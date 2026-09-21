@@ -14,6 +14,7 @@ abstract class ChampionshipMessageModel with _$ChampionshipMessageModel {
     required String id,
     required String senderId,
     required String senderDisplayName,
+
     /// Null for system messages (e.g. schedule proposals).
     String? teamId,
     required String text,

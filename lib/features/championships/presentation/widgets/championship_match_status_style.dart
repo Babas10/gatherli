@@ -23,8 +23,7 @@ extension ChampionshipMatchStatusStyle on ChampionshipMatchStatus {
       ChampionshipMatchStatus.scheduled =>
         l10n.championshipMatchStatusScheduled,
       ChampionshipMatchStatus.played => l10n.championshipMatchStatusPlayed,
-      ChampionshipMatchStatus.disputed =>
-        l10n.championshipMatchStatusDisputed,
+      ChampionshipMatchStatus.disputed => l10n.championshipMatchStatusDisputed,
       ChampionshipMatchStatus.adminDecided =>
         l10n.championshipMatchStatusAdminDecided,
       ChampionshipMatchStatus.verified => l10n.championshipMatchStatusVerified,

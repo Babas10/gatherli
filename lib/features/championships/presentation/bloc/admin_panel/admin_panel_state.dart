@@ -80,8 +80,9 @@ class AdminPanelLoaded extends AdminPanelState {
           ? this.lastDecidedMatchId
           : lastDecidedMatchId as String?,
       isStarting: isStarting ?? this.isStarting,
-      startError:
-          startError == _sentinel ? this.startError : startError as String?,
+      startError: startError == _sentinel
+          ? this.startError
+          : startError as String?,
       matchesGenerated: matchesGenerated == _sentinel
           ? this.matchesGenerated
           : matchesGenerated as int?,
@@ -93,30 +94,31 @@ class AdminPanelLoaded extends AdminPanelState {
       isEditing: isEditing ?? this.isEditing,
       editError: editError == _sentinel ? this.editError : editError as String?,
       isDeleting: isDeleting ?? this.isDeleting,
-      deleteError:
-          deleteError == _sentinel ? this.deleteError : deleteError as String?,
+      deleteError: deleteError == _sentinel
+          ? this.deleteError
+          : deleteError as String?,
       isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
   @override
   List<Object?> get props => [
-        matches,
-        isDeciding,
-        decisionError,
-        lastDecidedMatchId,
-        isStarting,
-        startError,
-        matchesGenerated,
-        isCompleting,
-        completeError,
-        isCompleted,
-        isEditing,
-        editError,
-        isDeleting,
-        deleteError,
-        isDeleted,
-      ];
+    matches,
+    isDeciding,
+    decisionError,
+    lastDecidedMatchId,
+    isStarting,
+    startError,
+    matchesGenerated,
+    isCompleting,
+    completeError,
+    isCompleted,
+    isEditing,
+    editError,
+    isDeleting,
+    deleteError,
+    isDeleted,
+  ];
 }
 
 class AdminPanelError extends AdminPanelState {

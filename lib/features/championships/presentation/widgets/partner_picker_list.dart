@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 class PartnerPickerList extends StatelessWidget {
   final List<InvitableUser> friends;
@@ -22,7 +23,7 @@ class PartnerPickerList extends StatelessWidget {
 
     if (friends.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         child: Text(
           l10n.noFriendsForPartner,
           style: Theme.of(context).textTheme.bodyMedium,
@@ -40,11 +41,16 @@ class PartnerPickerList extends StatelessWidget {
         final isSelected = friend.uid == selectedPartnerId;
 
         return ListTile(
-          leading: UserAvatar(name: friend.displayNameOrFallback, photoUrl: friend.photoUrl),
+          leading: UserAvatar(
+            name: friend.displayNameOrFallback,
+            photoUrl: friend.photoUrl,
+          ),
           title: Text(friend.displayNameOrFallback),
           trailing: isSelected
-              ? Icon(Icons.radio_button_checked,
-                  color: Theme.of(context).colorScheme.primary)
+              ? Icon(
+                  Icons.radio_button_checked,
+                  color: Theme.of(context).colorScheme.primary,
+                )
               : const Icon(Icons.radio_button_unchecked),
           onTap: () => onPartnerSelected(isSelected ? null : friend.uid),
         );

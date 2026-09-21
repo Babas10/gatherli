@@ -249,7 +249,8 @@ class FirestoreInvitationRepository implements InvitationRepository {
       case 'not-found':
         return e.message ?? 'User or group not found';
       case 'already-exists':
-        return e.message ?? 'Invitation already exists or user is already a member';
+        return e.message ??
+            'Invitation already exists or user is already a member';
       case 'invalid-argument':
         return e.message ?? 'Invalid invitation parameters';
       default:

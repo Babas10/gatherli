@@ -332,14 +332,18 @@ class FirestoreFriendRepository implements FriendRepository {
           return FriendshipStatusResult(
             isFriend: false,
             hasPendingRequest: true,
-            requestDirection:
-                initiatorId == currentUserId ? 'sent' : 'received',
+            requestDirection: initiatorId == currentUserId
+                ? 'sent'
+                : 'received',
           );
         }
       }
 
       // No friendship or pending request found
-      return const FriendshipStatusResult(isFriend: false, hasPendingRequest: false);
+      return const FriendshipStatusResult(
+        isFriend: false,
+        hasPendingRequest: false,
+      );
     } on FriendshipException {
       rethrow;
     } on FirebaseException catch (e) {

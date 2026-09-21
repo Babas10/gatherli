@@ -24,7 +24,7 @@ class PartnersCard extends StatelessWidget {
     final bestPartner = _findBestPartner();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,7 +50,7 @@ class PartnersCard extends StatelessWidget {
                   : null,
               borderRadius: BorderRadius.circular(16),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: bestPartner != null
                     ? _buildPartnerInfo(context, bestPartner)
                     : _buildEmptyState(context),
@@ -121,7 +121,11 @@ class PartnersCard extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.trending_up, size: 14, color: AppColors.success),
+                  const Icon(
+                    Icons.trending_up,
+                    size: 14,
+                    color: AppColors.success,
+                  ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     '$winRate%',
@@ -193,7 +197,9 @@ class PartnersCard extends StatelessWidget {
       if (ts.gamesPlayed < minGames) continue;
       final winRate = ts.gamesWon / ts.gamesPlayed;
       if (winRate > bestWinRate ||
-          (winRate == bestWinRate && best != null && ts.gamesPlayed > best.gamesPlayed)) {
+          (winRate == bestWinRate &&
+              best != null &&
+              ts.gamesPlayed > best.gamesPlayed)) {
         bestWinRate = winRate;
         best = _PartnerData(
           userId: ts.userId,

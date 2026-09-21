@@ -166,7 +166,8 @@ class _MyGamesViewState extends State<_MyGamesView> {
                   ),
                 ],
                 if (past.isNotEmpty) ...[
-                  if (upcoming.isNotEmpty) const SizedBox(height: AppSpacing.sm),
+                  if (upcoming.isNotEmpty)
+                    const SizedBox(height: AppSpacing.sm),
                   _SectionHeader(title: l10n.pastGames),
                   ...past.map(
                     (item) => MyGameTile(
@@ -182,7 +183,7 @@ class _MyGamesViewState extends State<_MyGamesView> {
                   const LoadGameInvitations(),
                 ),
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
                   itemCount: items.length,
                   itemBuilder: (context, index) => items[index],
                 ),
@@ -237,7 +238,11 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, bottom: 8, top: 4),
+      padding: const EdgeInsets.only(
+        left: 20,
+        bottom: AppSpacing.sm,
+        top: AppSpacing.xs,
+      ),
       child: Text(
         title.toUpperCase(),
         style: const TextStyle(

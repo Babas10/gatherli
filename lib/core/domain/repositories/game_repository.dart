@@ -187,7 +187,6 @@ abstract class GameRepository {
     DateTime? endDate,
     DocumentSnapshot? lastDocument,
   });
-
 }
 
 /// Container for paginated game history results

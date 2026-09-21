@@ -10,8 +10,8 @@ class TeamRegistrationBloc
   final ChampionshipRepository _championshipRepository;
 
   TeamRegistrationBloc({required ChampionshipRepository championshipRepository})
-      : _championshipRepository = championshipRepository,
-        super(const TeamRegistrationInitial()) {
+    : _championshipRepository = championshipRepository,
+      super(const TeamRegistrationInitial()) {
     on<LoadChampionships>(_onLoadChampionships);
     on<CreateTeam>(_onCreateTeam);
     on<LeaveTeam>(_onLeaveTeam);
@@ -34,15 +34,19 @@ class TeamRegistrationBloc
         ),
       );
     } on ChampionshipException catch (e) {
-      emit(TeamRegistrationError(
-        message: e.message,
-        errorCode: e.code ?? 'LOAD_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: e.message,
+          errorCode: e.code ?? 'LOAD_ERROR',
+        ),
+      );
     } catch (e) {
-      emit(TeamRegistrationError(
-        message: 'Failed to load championships: ${e.toString()}',
-        errorCode: 'LOAD_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: 'Failed to load championships: ${e.toString()}',
+          errorCode: 'LOAD_ERROR',
+        ),
+      );
     }
   }
 
@@ -59,15 +63,19 @@ class TeamRegistrationBloc
       );
       emit(TeamCreated(teamId: teamId));
     } on ChampionshipException catch (e) {
-      emit(TeamRegistrationError(
-        message: e.message,
-        errorCode: e.code ?? 'CREATE_TEAM_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: e.message,
+          errorCode: e.code ?? 'CREATE_TEAM_ERROR',
+        ),
+      );
     } catch (e) {
-      emit(TeamRegistrationError(
-        message: 'Failed to create team: ${e.toString()}',
-        errorCode: 'CREATE_TEAM_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: 'Failed to create team: ${e.toString()}',
+          errorCode: 'CREATE_TEAM_ERROR',
+        ),
+      );
     }
   }
 
@@ -83,15 +91,19 @@ class TeamRegistrationBloc
       );
       emit(const TeamLeft());
     } on ChampionshipException catch (e) {
-      emit(TeamRegistrationError(
-        message: e.message,
-        errorCode: e.code ?? 'LEAVE_TEAM_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: e.message,
+          errorCode: e.code ?? 'LEAVE_TEAM_ERROR',
+        ),
+      );
     } catch (e) {
-      emit(TeamRegistrationError(
-        message: 'Failed to leave team: ${e.toString()}',
-        errorCode: 'LEAVE_TEAM_ERROR',
-      ));
+      emit(
+        TeamRegistrationError(
+          message: 'Failed to leave team: ${e.toString()}',
+          errorCode: 'LEAVE_TEAM_ERROR',
+        ),
+      );
     }
   }
 }

@@ -45,8 +45,14 @@ class MemberListItemWithFriendship extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AccentCard(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -54,46 +60,47 @@ class MemberListItemWithFriendship extends StatelessWidget {
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Row(
-        children: [
-          Flexible(
-            child: Text(
-              user.fullDisplayName,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: AppColors.secondary,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (isCurrentUser) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Text(
-              '(You)',
-              style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-          if (isAdmin) ...[
-            const SizedBox(width: AppSpacing.sm),
-            StatusBadge(label: l10n.groupAdminBadge, color: AppColors.primary),
-          ],
-          if (isCreator) ...[
-            const SizedBox(width: AppSpacing.sm),
-            const Icon(Icons.star, size: 16, color: AppColors.warning),
-          ],
-          ],
+              children: [
+                Flexible(
+                  child: Text(
+                    user.fullDisplayName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.secondary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (isCurrentUser) ...[
+                  const SizedBox(width: AppSpacing.sm),
+                  Text(
+                    '(You)',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+                if (isAdmin) ...[
+                  const SizedBox(width: AppSpacing.sm),
+                  StatusBadge(
+                    label: l10n.groupAdminBadge,
+                    color: AppColors.primary,
+                  ),
+                ],
+                if (isCreator) ...[
+                  const SizedBox(width: AppSpacing.sm),
+                  const Icon(Icons.star, size: 16, color: AppColors.warning),
+                ],
+              ],
             ),
           ),
           if (!isCurrentUser)
             Padding(
-              padding: const EdgeInsets.only(left: 4),
+              padding: const EdgeInsets.only(left: AppSpacing.xs),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildFriendshipStatus(),
-                ],
+                children: [_buildFriendshipStatus()],
               ),
             ),
           if (!isCurrentUser && _buildTrailingWidget(context) != null)

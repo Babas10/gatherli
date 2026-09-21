@@ -41,7 +41,7 @@ class InviteLinkSection extends StatelessWidget {
       },
       builder: (context, state) {
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -76,7 +76,7 @@ class InviteLinkSection extends StatelessWidget {
     if (state is GroupInviteLinkLoading) {
       return const Center(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppSpacing.lg),
           child: CircularProgressIndicator(),
         ),
       );
@@ -100,7 +100,7 @@ class InviteLinkSection extends StatelessWidget {
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         ),
       ),
     );
@@ -117,7 +117,7 @@ class InviteLinkSection extends StatelessWidget {
         // Link display
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
             color: AppColors.scaffoldBackground,
             borderRadius: BorderRadius.circular(8),

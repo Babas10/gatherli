@@ -104,7 +104,7 @@ class _GameChatViewState extends State<_GameChatView> {
     final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -158,8 +158,9 @@ class _GameChatViewState extends State<_GameChatView> {
                   final messages = state is GameChatLoaded
                       ? state.messages
                       : <ChatMessageModel>[];
-                  final isSending =
-                      state is GameChatLoaded ? state.isSending : false;
+                  final isSending = state is GameChatLoaded
+                      ? state.isSending
+                      : false;
 
                   return Column(
                     children: [
@@ -169,11 +170,8 @@ class _GameChatViewState extends State<_GameChatView> {
                             ? Center(
                                 child: Text(
                                   l10n.chatEmpty,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textMuted,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: AppColors.textMuted),
                                   textAlign: TextAlign.center,
                                 ),
                               )
@@ -216,10 +214,9 @@ class _MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('HH:mm');
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Align(
-        alignment:
-            isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: isCurrentUser
               ? CrossAxisAlignment.end
@@ -227,7 +224,7 @@ class _MessageBubble extends StatelessWidget {
           children: [
             if (!isCurrentUser)
               Padding(
-                padding: const EdgeInsets.only(left: 8, bottom: 2),
+                padding: const EdgeInsets.only(left: AppSpacing.sm, bottom: 2),
                 child: Text(
                   message.senderDisplayName,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -249,8 +246,8 @@ class _MessageBubble extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.65,
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.sm,
                     ),
                     decoration: BoxDecoration(
                       color: isCurrentUser
@@ -323,7 +320,7 @@ class _ChatInput extends StatelessWidget {
                 borderSide: const BorderSide(color: AppColors.divider),
               ),
               contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
+                horizontal: AppSpacing.lg,
                 vertical: 10,
               ),
               isDense: true,

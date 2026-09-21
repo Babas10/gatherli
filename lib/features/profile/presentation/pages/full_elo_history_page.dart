@@ -171,7 +171,7 @@ class FullEloHistoryPage extends StatelessWidget {
       children: [
         // Stats summary
         Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           color: theme.colorScheme.surfaceContainerHighest.withValues(
             alpha: 0.3,
           ),
@@ -184,7 +184,12 @@ class FullEloHistoryPage extends StatelessWidget {
                 history.length.toString(),
                 AppColors.info,
               ),
-              _buildStatChip(context, 'W-L', '$wins-$losses', AppColors.warning),
+              _buildStatChip(
+                context,
+                'W-L',
+                '$wins-$losses',
+                AppColors.warning,
+              ),
               _buildStatChip(
                 context,
                 'Total',
@@ -213,7 +218,7 @@ class FullEloHistoryPage extends StatelessWidget {
             if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: TimePeriodSelector(
                 selectedPeriod: state.selectedPeriod,
                 onPeriodChanged: (period) {
@@ -235,7 +240,7 @@ class FullEloHistoryPage extends StatelessWidget {
             if (state is! EloHistoryLoaded) return const SizedBox.shrink();
 
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: BestEloHighlightCard(
                 bestElo: state.bestEloInPeriod,
                 timePeriod: state.selectedPeriod,
@@ -260,7 +265,10 @@ class FullEloHistoryPage extends StatelessWidget {
         // Filter indicator
         if (filterStartDate != null && filterEndDate != null)
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              vertical: AppSpacing.sm,
+              horizontal: AppSpacing.lg,
+            ),
             color: theme.colorScheme.primaryContainer,
             child: Row(
               children: [
@@ -285,7 +293,7 @@ class FullEloHistoryPage extends StatelessWidget {
         // History list
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             itemCount: history.length,
             itemBuilder: (context, index) => _buildHistoryTile(
               context,
@@ -336,7 +344,7 @@ class FullEloHistoryPage extends StatelessWidget {
     final changeColor = entry.isGain ? AppColors.success : AppColors.danger;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AppSpacing.md),
       elevation: isLatest ? 4 : 1,
       child: Container(
         decoration: BoxDecoration(
@@ -346,7 +354,7 @@ class FullEloHistoryPage extends StatelessWidget {
               : null,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Row(
             children: [
               // Result indicator

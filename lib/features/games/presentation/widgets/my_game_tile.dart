@@ -24,60 +24,65 @@ class MyGameTile extends StatelessWidget {
     return AccentCard(
       onTap: onTap,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      contentPadding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      contentPadding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+      ),
       child: Row(
-            children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: _effectiveStatus(item.status, item.scheduledAt).color,
-                  shape: BoxShape.circle,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: _effectiveStatus(item.status, item.scheduledAt).color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  style: AppTextStyles.cardTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.title,
-                      style: AppTextStyles.cardTitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      '${formatSmartDateTime(context, item.scheduledAt)}  ·  ${item.locationName}',
-                      style: AppTextStyles.cardSubtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (item.groupName.isNotEmpty) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        item.groupName,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textMuted,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ],
+                const SizedBox(height: 3),
+                Text(
+                  '${formatSmartDateTime(context, item.scheduledAt)}  ·  ${item.locationName}',
+                  style: AppTextStyles.cardSubtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              item.isGroupGame
-                  ? _OpenBadge(l10n: l10n)
-                  : _StatusBadge(
-                      status: _effectiveStatus(item.status, item.scheduledAt),
-                      l10n: l10n,
+                if (item.groupName.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    item.groupName,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                      fontStyle: FontStyle.italic,
                     ),
-              const Icon(Icons.chevron_right, size: 18, color: AppColors.textMuted),
-            ],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          item.isGroupGame
+              ? _OpenBadge(l10n: l10n)
+              : _StatusBadge(
+                  status: _effectiveStatus(item.status, item.scheduledAt),
+                  l10n: l10n,
+                ),
+          const Icon(Icons.chevron_right, size: 18, color: AppColors.textMuted),
+        ],
       ),
     );
   }
@@ -90,7 +95,6 @@ class MyGameTile extends StatelessWidget {
     }
     return status;
   }
-
 }
 
 class _StatusBadge extends StatelessWidget {
@@ -102,7 +106,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.only(right: AppSpacing.xs),
       child: StatusBadge(label: status.label(l10n), color: status.color),
     );
   }
@@ -116,7 +120,7 @@ class _OpenBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.only(right: AppSpacing.xs),
       child: StatusBadge.success(l10n.open),
     );
   }

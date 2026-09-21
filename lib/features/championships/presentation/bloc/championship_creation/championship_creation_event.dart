@@ -33,7 +33,13 @@ class SubmitChampionshipCreation extends ChampionshipCreationEvent {
 
   @override
   List<Object?> get props => [
-        title, registrationDeadline, startDate, endDate,
-        country, region, genderCategory, maxTeams,
-      ];
+    title,
+    registrationDeadline,
+    startDate,
+    endDate,
+    country,
+    region,
+    genderCategory,
+    maxTeams,
+  ];
 }

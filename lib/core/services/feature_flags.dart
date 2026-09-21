@@ -14,11 +14,12 @@ class FeatureFlags {
 
   // ── Known flag names ─────────────────────────────────────────────────────
   // Add new flags here when gating a feature. Never use raw strings inline.
-  static const String scoreEntry              = 'score_entry_enabled';
-  static const String championshipRegistration= 'championship_registration_enabled';
-  static const String pickupGameCreation      = 'pickup_game_creation_enabled';
-  static const String trainingFeedback        = 'training_feedback_enabled';
-  static const String friendRequests          = 'friend_requests_enabled';
+  static const String scoreEntry = 'score_entry_enabled';
+  static const String championshipRegistration =
+      'championship_registration_enabled';
+  static const String pickupGameCreation = 'pickup_game_creation_enabled';
+  static const String trainingFeedback = 'training_feedback_enabled';
+  static const String friendRequests = 'friend_requests_enabled';
 
   // ── Internal ─────────────────────────────────────────────────────────────
   static final _collection = FirebaseFirestore.instance.collection('config');
@@ -41,7 +42,9 @@ class FeatureFlags {
   static Future<Map<String, bool>> _fetch() async {
     try {
       // 3-second timeout — feature flags must never block app startup.
-      final doc = await _collection.doc(_doc).get()
+      final doc = await _collection
+          .doc(_doc)
+          .get()
           .timeout(const Duration(seconds: 3));
       if (!doc.exists) return {};
       return (doc.data() ?? {}).map(

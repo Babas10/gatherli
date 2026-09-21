@@ -90,7 +90,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: BlocSelector<FriendBloc, FriendState, bool>(
         selector: (state) => state is FriendSearchLoading,
         builder: (context, isSearching) {
@@ -234,7 +234,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
     required bool isInvited,
   }) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         SearchResultTile(
           user: snapshot.user,

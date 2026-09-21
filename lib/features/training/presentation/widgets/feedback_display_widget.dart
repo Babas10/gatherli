@@ -54,11 +54,15 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
         if (state is FeedbackError) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 64, color: AppColors.danger),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: AppColors.danger,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     'Error loading feedback',
@@ -121,8 +125,8 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               label: const Text('Submit Feedback'),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
+                  horizontal: AppSpacing.xxl,
+                  vertical: AppSpacing.lg,
                 ),
               ),
             ),
@@ -145,11 +149,14 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
         if (!hasUserSubmitted)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.sm,
+              ),
               child: Card(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
                   child: Row(
                     children: [
                       Icon(
@@ -190,7 +197,12 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
         // Section header — uppercase gray label matching homepage/stats page style
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.xl,
+              AppSpacing.lg,
+              AppSpacing.sm,
+            ),
             child: Row(
               children: [
                 const Text(
@@ -200,8 +212,8 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
                 const SizedBox(width: AppSpacing.sm),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.2),
@@ -230,7 +242,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: Padding(
-                    padding: EdgeInsets.all(32),
+                    padding: EdgeInsets.all(AppSpacing.xxl),
                     child: CircularProgressIndicator(),
                   ),
                 );

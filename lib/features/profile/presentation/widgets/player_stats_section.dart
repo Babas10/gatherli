@@ -7,6 +7,7 @@ import 'package:play_with_me/features/profile/presentation/bloc/player_stats/pla
 import 'package:play_with_me/features/profile/presentation/bloc/player_stats/player_stats_state.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/elo_history_chart.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/stat_card.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 class PlayerStatsSection extends StatelessWidget {
   const PlayerStatsSection({super.key});
@@ -35,8 +36,8 @@ class PlayerStatsSection extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
+                  horizontal: AppSpacing.lg,
+                  vertical: AppSpacing.sm,
                 ),
                 child: Text(
                   l10n.performanceStats,
@@ -49,7 +50,7 @@ class PlayerStatsSection extends StatelessWidget {
               // ELO History Chart
               Container(
                 height: 200,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 child: EloHistoryChart(
                   history: history,
                   currentRating: user.eloRating,
@@ -62,7 +63,7 @@ class PlayerStatsSection extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
                 childAspectRatio: 1.5,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 mainAxisSpacing: 12.0,
                 crossAxisSpacing: 12.0,
                 children: [
@@ -131,7 +132,10 @@ class _BestTeammateCard extends StatelessWidget {
         : '0.0';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
       child: Card(
         child: ListTile(
           leading: const CircleAvatar(child: Icon(Icons.person)),

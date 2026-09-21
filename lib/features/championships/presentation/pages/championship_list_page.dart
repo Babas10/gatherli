@@ -159,7 +159,12 @@ class _ChampionshipList extends StatelessWidget {
         await Future.delayed(const Duration(milliseconds: 300));
       },
       child: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.md,
+          AppSpacing.lg,
+          AppSpacing.xl,
+        ),
         itemCount: items.length,
         itemBuilder: (_, i) => ChampionshipCard(
           championship: items[i],

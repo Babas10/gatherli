@@ -49,15 +49,18 @@ class _NotificationSettingsView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline,
-                      size: 48, color: AppColors.danger),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: AppColors.danger,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(message),
                   const SizedBox(height: AppSpacing.lg),
                   FilledButton(
-                    onPressed: () => context
-                        .read<NotificationBloc>()
-                        .add(const NotificationEvent.loadPreferences()),
+                    onPressed: () => context.read<NotificationBloc>().add(
+                      const NotificationEvent.loadPreferences(),
+                    ),
                     child: Text(l10n.retryButton),
                   ),
                 ],
@@ -87,8 +90,7 @@ class _NotificationSettingsView extends StatelessWidget {
           subtitle: l10n.notifCategorySocialSubtitle,
           value: prefs.social,
           enabled: enabled,
-          onChanged: (v) =>
-              bloc.add(NotificationEvent.toggleSocial(v)),
+          onChanged: (v) => bloc.add(NotificationEvent.toggleSocial(v)),
         ),
         _CategoryTile(
           icon: Icons.sports_volleyball_outlined,
@@ -96,8 +98,7 @@ class _NotificationSettingsView extends StatelessWidget {
           subtitle: l10n.notifCategoryGamesSubtitle,
           value: prefs.games,
           enabled: enabled,
-          onChanged: (v) =>
-              bloc.add(NotificationEvent.toggleGames(v)),
+          onChanged: (v) => bloc.add(NotificationEvent.toggleGames(v)),
         ),
         _CategoryTile(
           icon: Icons.fitness_center_outlined,
@@ -105,8 +106,7 @@ class _NotificationSettingsView extends StatelessWidget {
           subtitle: l10n.notifCategoryTrainingSubtitle,
           value: prefs.training,
           enabled: enabled,
-          onChanged: (v) =>
-              bloc.add(NotificationEvent.toggleTraining(v)),
+          onChanged: (v) => bloc.add(NotificationEvent.toggleTraining(v)),
         ),
         _CategoryTile(
           icon: Icons.emoji_events_outlined,
@@ -114,8 +114,7 @@ class _NotificationSettingsView extends StatelessWidget {
           subtitle: l10n.notifCategoryChampionshipsSubtitle,
           value: prefs.championship,
           enabled: enabled,
-          onChanged: (v) =>
-              bloc.add(NotificationEvent.toggleChampionship(v)),
+          onChanged: (v) => bloc.add(NotificationEvent.toggleChampionship(v)),
         ),
 
         const Divider(height: 32),
@@ -125,10 +124,12 @@ class _NotificationSettingsView extends StatelessWidget {
         SwitchListTile(
           title: Text(l10n.notifQuietHoursEnable),
           subtitle: prefs.quietHoursEnabled
-              ? Text(l10n.notifQuietHoursRange(
-                  prefs.quietHoursStart ?? '22:00',
-                  prefs.quietHoursEnd ?? '08:00',
-                ))
+              ? Text(
+                  l10n.notifQuietHoursRange(
+                    prefs.quietHoursStart ?? '22:00',
+                    prefs.quietHoursEnd ?? '08:00',
+                  ),
+                )
               : Text(l10n.notifQuietHoursSubtitle),
           value: prefs.quietHoursEnabled,
           onChanged: enabled
@@ -140,11 +141,13 @@ class _NotificationSettingsView extends StatelessWidget {
                       prefs.quietHoursEnd ?? '08:00',
                     );
                   } else {
-                    bloc.add(NotificationEvent.toggleQuietHours(
-                      enabled: false,
-                      start: prefs.quietHoursStart,
-                      end: prefs.quietHoursEnd,
-                    ));
+                    bloc.add(
+                      NotificationEvent.toggleQuietHours(
+                        enabled: false,
+                        start: prefs.quietHoursStart,
+                        end: prefs.quietHoursEnd,
+                      ),
+                    );
                   }
                 }
               : null,
@@ -159,10 +162,10 @@ class _NotificationSettingsView extends StatelessWidget {
             ),
             onTap: enabled
                 ? () => _showQuietHoursDialog(
-                      context,
-                      prefs.quietHoursStart ?? '22:00',
-                      prefs.quietHoursEnd ?? '08:00',
-                    )
+                    context,
+                    prefs.quietHoursStart ?? '22:00',
+                    prefs.quietHoursEnd ?? '08:00',
+                  )
                 : null,
           ),
 
@@ -259,7 +262,12 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.sm,
+      ),
       child: Text(
         title,
         style: const TextStyle(
@@ -292,8 +300,10 @@ class _CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      secondary: Icon(icon,
-          color: value ? AppColors.secondary : AppColors.textMuted),
+      secondary: Icon(
+        icon,
+        color: value ? AppColors.secondary : AppColors.textMuted,
+      ),
       title: Text(title),
       subtitle: Text(subtitle),
       value: value,

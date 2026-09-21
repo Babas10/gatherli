@@ -85,7 +85,9 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
               color: AppColors.scaffoldBackground,
               child: TabBar(
                 controller: _tabController,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+                labelPadding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                ),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: AppColors.primary,
                 labelColor: AppColors.secondary,

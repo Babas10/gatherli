@@ -15,8 +15,8 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
   String? _currentUserId;
 
   MatchDetailBloc({required ChampionshipRepository repository})
-      : _repository = repository,
-        super(const MatchDetailInitial()) {
+    : _repository = repository,
+      super(const MatchDetailInitial()) {
     on<LoadMatchDetail>(_onLoad);
     on<ProposeSchedule>(_onProposeSchedule);
     on<AcceptSchedule>(_onAcceptSchedule);
@@ -35,10 +35,7 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
 
     await _matchSubscription?.cancel();
     _matchSubscription = _repository
-        .getMatch(
-          championshipId: event.championshipId,
-          matchId: event.matchId,
-        )
+        .getMatch(championshipId: event.championshipId, matchId: event.matchId)
         .listen(
           (match) => add(MatchDetailMatchUpdated(match)),
           onError: (e) => add(MatchDetailLoadError(e.toString())),
@@ -85,16 +82,18 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
       final myTeamId = teamA.isMember(userId)
           ? match.teamAId
           : teamB.isMember(userId)
-              ? match.teamBId
-              : null;
+          ? match.teamBId
+          : null;
 
-      emit(MatchDetailLoaded(
-        championshipId: championshipId,
-        match: match,
-        teamA: teamA,
-        teamB: teamB,
-        myTeamId: myTeamId,
-      ));
+      emit(
+        MatchDetailLoaded(
+          championshipId: championshipId,
+          match: match,
+          teamA: teamA,
+          teamB: teamB,
+          myTeamId: myTeamId,
+        ),
+      );
     } on ChampionshipException catch (e) {
       emit(MatchDetailError(message: e.message));
     } catch (e) {
@@ -109,10 +108,7 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
     if (state is! MatchDetailLoaded) return;
     final loaded = state as MatchDetailLoaded;
 
-    emit(loaded.copyWith(
-      isProposingSchedule: true,
-      scheduleError: null,
-    ));
+    emit(loaded.copyWith(isProposingSchedule: true, scheduleError: null));
 
     try {
       await _repository.proposeMatchSchedule(
@@ -126,15 +122,16 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
         emit((state as MatchDetailLoaded).copyWith(isProposingSchedule: false));
       }
     } on ChampionshipException catch (e) {
-      emit(loaded.copyWith(
-        isProposingSchedule: false,
-        scheduleError: e.message,
-      ));
+      emit(
+        loaded.copyWith(isProposingSchedule: false, scheduleError: e.message),
+      );
     } catch (e) {
-      emit(loaded.copyWith(
-        isProposingSchedule: false,
-        scheduleError: 'Failed to propose schedule: $e',
-      ));
+      emit(
+        loaded.copyWith(
+          isProposingSchedule: false,
+          scheduleError: 'Failed to propose schedule: $e',
+        ),
+      );
     }
   }
 
@@ -145,10 +142,9 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
     if (state is! MatchDetailLoaded) return;
     final loaded = state as MatchDetailLoaded;
 
-    emit(loaded.copyWith(
-      isAcceptingSchedule: true,
-      scheduleConfirmError: null,
-    ));
+    emit(
+      loaded.copyWith(isAcceptingSchedule: true, scheduleConfirmError: null),
+    );
 
     try {
       await _repository.confirmMatchSchedule(
@@ -160,15 +156,19 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
         emit((state as MatchDetailLoaded).copyWith(isAcceptingSchedule: false));
       }
     } on ChampionshipException catch (e) {
-      emit(loaded.copyWith(
-        isAcceptingSchedule: false,
-        scheduleConfirmError: e.message,
-      ));
+      emit(
+        loaded.copyWith(
+          isAcceptingSchedule: false,
+          scheduleConfirmError: e.message,
+        ),
+      );
     } catch (e) {
-      emit(loaded.copyWith(
-        isAcceptingSchedule: false,
-        scheduleConfirmError: 'Failed to confirm schedule: $e',
-      ));
+      emit(
+        loaded.copyWith(
+          isAcceptingSchedule: false,
+          scheduleConfirmError: 'Failed to confirm schedule: $e',
+        ),
+      );
     }
   }
 
@@ -179,10 +179,9 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
     if (state is! MatchDetailLoaded) return;
     final loaded = state as MatchDetailLoaded;
 
-    emit(loaded.copyWith(
-      isRejectingSchedule: true,
-      scheduleConfirmError: null,
-    ));
+    emit(
+      loaded.copyWith(isRejectingSchedule: true, scheduleConfirmError: null),
+    );
 
     try {
       await _repository.rejectMatchSchedule(
@@ -194,15 +193,19 @@ class MatchDetailBloc extends BaseBloc<MatchDetailEvent, MatchDetailState> {
         emit((state as MatchDetailLoaded).copyWith(isRejectingSchedule: false));
       }
     } on ChampionshipException catch (e) {
-      emit(loaded.copyWith(
-        isRejectingSchedule: false,
-        scheduleConfirmError: e.message,
-      ));
+      emit(
+        loaded.copyWith(
+          isRejectingSchedule: false,
+          scheduleConfirmError: e.message,
+        ),
+      );
     } catch (e) {
-      emit(loaded.copyWith(
-        isRejectingSchedule: false,
-        scheduleConfirmError: 'Failed to reject schedule: $e',
-      ));
+      emit(
+        loaded.copyWith(
+          isRejectingSchedule: false,
+          scheduleConfirmError: 'Failed to reject schedule: $e',
+        ),
+      );
     }
   }
 

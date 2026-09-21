@@ -100,17 +100,17 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
     final region = _regionController.text.trim();
 
     context.read<ChampionshipCreationBloc>().add(
-          SubmitChampionshipCreation(
-            title: _titleController.text.trim(),
-            registrationDeadline: _registrationDeadline!,
-            startDate: _startDate,
-            endDate: _endDate,
-            country: country.isNotEmpty ? country : null,
-            region: region.isNotEmpty ? region : null,
-            genderCategory: _genderCategory,
-            maxTeams: _maxTeams,
-          ),
-        );
+      SubmitChampionshipCreation(
+        title: _titleController.text.trim(),
+        registrationDeadline: _registrationDeadline!,
+        startDate: _startDate,
+        endDate: _endDate,
+        country: country.isNotEmpty ? country : null,
+        region: region.isNotEmpty ? region : null,
+        genderCategory: _genderCategory,
+        maxTeams: _maxTeams,
+      ),
+    );
   }
 
   @override
@@ -146,7 +146,7 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
         body: Form(
           key: _formKey,
           child: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             children: [
               // Title
               TextFormField(
@@ -160,7 +160,9 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
                 validator: (v) {
                   final val = v?.trim() ?? '';
                   if (val.isEmpty) return l10n.championshipCreateTitleRequired;
-                  if (val.length < 3) return l10n.championshipCreateTitleTooShort;
+                  if (val.length < 3) {
+                    return l10n.championshipCreateTitleTooShort;
+                  }
                   return null;
                 },
               ),
@@ -264,8 +266,11 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
               const SizedBox(height: AppSpacing.xxl),
 
               // Submit
-              BlocSelector<ChampionshipCreationBloc, ChampionshipCreationState,
-                  bool>(
+              BlocSelector<
+                ChampionshipCreationBloc,
+                ChampionshipCreationState,
+                bool
+              >(
                 selector: (state) => state is ChampionshipCreationSubmitting,
                 builder: (context, isSubmitting) {
                   return FilledButton(
@@ -309,16 +314,14 @@ class _GenderOption extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selected ? blue : Colors.grey.shade300,
             width: selected ? 2 : 1,
           ),
-          color: selected
-              ? blue.withValues(alpha: 0.06)
-              : Colors.transparent,
+          color: selected ? blue.withValues(alpha: 0.06) : Colors.transparent,
         ),
         child: Column(
           children: [
@@ -327,10 +330,9 @@ class _GenderOption extends StatelessWidget {
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: color,
-                    fontWeight:
-                        selected ? FontWeight.w700 : FontWeight.normal,
-                  ),
+                color: color,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -361,19 +363,14 @@ class _SegmentedField<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodyMedium),
         const SizedBox(height: AppSpacing.sm),
         Row(
           children: options.map((option) {
             final isSelected = option == selected;
             return Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
-                  right: option == options.last ? 0 : 8,
-                ),
+                padding: EdgeInsets.only(right: option == options.last ? 0 : 8),
                 child: InkWell(
                   onTap: () => onChanged(option),
                   borderRadius: BorderRadius.circular(10),
@@ -394,11 +391,11 @@ class _SegmentedField<T> extends StatelessWidget {
                       labelFor(option),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: isSelected ? blue : AppColors.textMuted,
-                            fontWeight: isSelected
-                                ? FontWeight.w700
-                                : FontWeight.normal,
-                          ),
+                        color: isSelected ? blue : AppColors.textMuted,
+                        fontWeight: isSelected
+                            ? FontWeight.w700
+                            : FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
@@ -440,7 +437,9 @@ class _DatePicker extends StatelessWidget {
         child: Text(
           hasValue ? DateFormat.yMMMd().format(date!) : placeholder,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: hasValue ? theme.textTheme.bodyMedium?.color : theme.hintColor,
+            color: hasValue
+                ? theme.textTheme.bodyMedium?.color
+                : theme.hintColor,
           ),
         ),
       ),

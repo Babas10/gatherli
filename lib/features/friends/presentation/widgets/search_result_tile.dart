@@ -40,9 +40,12 @@ class SearchResultTile extends StatelessWidget {
     // Handle case where user searches for their own email
     if (user == null && isSelfSearch) {
       return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        margin: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.sm,
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             children: [
               Icon(
@@ -65,9 +68,12 @@ class SearchResultTile extends StatelessWidget {
     // Handle case where no user was found
     if (user == null) {
       return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        margin: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.sm,
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             children: [
               Icon(
@@ -102,7 +108,10 @@ class SearchResultTile extends StatelessWidget {
     final displayName = foundUser.displayName;
 
     return ListTile(
-      leading: UserAvatar(name: displayName ?? foundUser.email, photoUrl: photoUrl),
+      leading: UserAvatar(
+        name: displayName ?? foundUser.email,
+        photoUrl: photoUrl,
+      ),
       title: Text(
         displayName ?? foundUser.email,
         style: const TextStyle(fontWeight: FontWeight.w500),
@@ -133,7 +142,7 @@ class SearchResultTile extends StatelessWidget {
       return FilledButton(
         onPressed: onAcceptRequest,
         style: FilledButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         ),
         child: Text(l10n.acceptRequest),
       );
@@ -145,10 +154,9 @@ class SearchResultTile extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.avatarBackground,
         foregroundColor: AppColors.secondary,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       ),
       child: Text(l10n.sendFriendRequest),
     );
   }
-
 }

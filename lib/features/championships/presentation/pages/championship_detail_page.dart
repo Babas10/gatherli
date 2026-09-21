@@ -447,7 +447,7 @@ class _ChampionshipHeader extends StatelessWidget {
               GestureDetector(
                 onTap: () => _showTiebreakerDialog(context),
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: EdgeInsets.only(left: AppSpacing.sm),
                   child: Icon(
                     Icons.info_outline,
                     size: 20,
@@ -536,7 +536,10 @@ class _ChampionBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [AppColors.primary, Color(0xFFD4A017)],
@@ -658,7 +661,10 @@ class _MyTeamSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final partnerCount = team.memberIds.length;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       decoration: BoxDecoration(
         color: AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
@@ -795,7 +801,10 @@ class _StandingsTab extends StatelessWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       itemCount: teams.length,
       separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (_, i) => _TeamCard(team: teams[i], position: i + 1),
@@ -811,11 +820,14 @@ class _StandingsTab extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppSpacing.md),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -931,7 +943,10 @@ class _StandingsTab extends StatelessWidget {
     TextAlign align = TextAlign.center,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSpacing.sm,
+        horizontal: 2,
+      ),
       child: Text(text, style: style, textAlign: align, maxLines: 1),
     );
   }
@@ -949,7 +964,10 @@ class _TeamCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AccentCard(
       margin: EdgeInsets.zero,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.md,
+      ),
       child: Row(
         children: [
           Text(
@@ -1041,7 +1059,12 @@ class _MatchesTab extends StatelessWidget {
       children: [
         // Round selector
         Card(
-          margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          margin: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.sm,
+            AppSpacing.lg,
+            0,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -1081,8 +1104,8 @@ class _MatchesTab extends StatelessWidget {
                 )
               : ListView.separated(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
                   ),
                   itemCount: matches.length,
                   separatorBuilder: (_, __) =>
@@ -1150,7 +1173,7 @@ class _MatchCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1179,7 +1202,9 @@ class _MatchCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                    ),
                     child: Text(
                       l10n.championshipMatchVs,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1345,7 +1370,7 @@ class _AdminTab extends StatelessWidget {
                   child: state.matches.isEmpty
                       ? Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(32),
+                            padding: const EdgeInsets.all(AppSpacing.xxl),
                             child: Text(
                               l10n.adminPanelNoMatchesNeedingAttention,
                               style: Theme.of(context).textTheme.bodyMedium
@@ -1356,8 +1381,8 @@ class _AdminTab extends StatelessWidget {
                         )
                       : ListView.separated(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
+                            horizontal: AppSpacing.lg,
+                            vertical: AppSpacing.md,
                           ),
                           itemCount: state.matches.length,
                           separatorBuilder: (_, __) =>
@@ -1640,7 +1665,12 @@ class _AdminActions extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        AppSpacing.xs,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1755,7 +1785,7 @@ class _AdminMatchCard extends StatelessWidget {
         onTap: onDecide,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
             children: [
               Expanded(
@@ -1877,9 +1907,9 @@ class _DecisionSheetState extends State<_DecisionSheet> {
 
     return Padding(
       padding: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 16,
+        left: AppSpacing.lg,
+        right: AppSpacing.lg,
+        top: AppSpacing.lg,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
       ),
       child: Column(
@@ -2071,7 +2101,12 @@ class _MyMatchesTab extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        AppSpacing.xl,
+      ),
       itemCount: myMatches.length,
       itemBuilder: (context, index) {
         final match = myMatches[index];

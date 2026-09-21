@@ -229,10 +229,7 @@ Future<void> initializeDependencies() async {
 
   if (!sl.isRegistered<ChampionshipRepository>()) {
     sl.registerLazySingleton<ChampionshipRepository>(
-      () => FirestoreChampionshipRepository(
-        firestore: sl(),
-        functions: sl(),
-      ),
+      () => FirestoreChampionshipRepository(firestore: sl(), functions: sl()),
     );
   }
 
@@ -274,9 +271,7 @@ Future<void> initializeDependencies() async {
   }
 
   if (!sl.isRegistered<AdminPanelBloc>()) {
-    sl.registerFactory<AdminPanelBloc>(
-      () => AdminPanelBloc(repository: sl()),
-    );
+    sl.registerFactory<AdminPanelBloc>(() => AdminPanelBloc(repository: sl()));
   }
 
   if (!sl.isRegistered<ChampionshipListBloc>()) {
@@ -293,10 +288,7 @@ Future<void> initializeDependencies() async {
 
   if (!sl.isRegistered<ChampionshipDetailBloc>()) {
     sl.registerFactory<ChampionshipDetailBloc>(
-      () => ChampionshipDetailBloc(
-        repository: sl(),
-        userRepository: sl(),
-      ),
+      () => ChampionshipDetailBloc(repository: sl(), userRepository: sl()),
     );
   }
 
@@ -437,10 +429,7 @@ Future<void> initializeDependencies() async {
 
   if (!sl.isRegistered<InviteeSelectionBloc>()) {
     sl.registerFactory<InviteeSelectionBloc>(
-      () => InviteeSelectionBloc(
-        friendRepository: sl(),
-        userRepository: sl(),
-      ),
+      () => InviteeSelectionBloc(friendRepository: sl(), userRepository: sl()),
     );
   }
 

@@ -675,7 +675,6 @@ enum GameGenderType {
   mix,
 }
 
-
 /// Custom converter for List&lt;SetScore&gt; to handle proper JSON serialization
 class SetScoreListConverter
     implements JsonConverter<List<SetScore>, List<dynamic>> {

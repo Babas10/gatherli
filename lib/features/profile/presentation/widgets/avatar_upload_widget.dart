@@ -214,12 +214,11 @@ class _AvatarUploadContent extends StatelessWidget {
                           size: 18,
                           color: Colors.white,
                         ),
-                        onPressed: () =>
-                            context.read<AvatarUploadBloc>().add(
-                              const AvatarUploadEvent.imageSourceSelected(
-                                source: ImageSource.camera,
-                              ),
-                            ),
+                        onPressed: () => context.read<AvatarUploadBloc>().add(
+                          const AvatarUploadEvent.imageSourceSelected(
+                            source: ImageSource.camera,
+                          ),
+                        ),
                         padding: EdgeInsets.zero,
                       ),
                     ),

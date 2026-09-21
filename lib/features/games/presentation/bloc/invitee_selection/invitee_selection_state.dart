@@ -19,10 +19,13 @@ class InviteeSelectionLoading extends InviteeSelectionState
 class InviteeSelectionLoaded extends InviteeSelectionState {
   /// Friends from My Community (individually selectable).
   final List<InvitableUser> friends;
+
   /// Groups the user belongs to (selectable as a whole).
   final List<InvitableGroup> groups;
+
   /// UIDs of individually selected friends.
   final Set<String> selectedFriendIds;
+
   /// IDs of groups whose members are all invited.
   final Set<String> selectedGroupIds;
 
@@ -58,11 +61,16 @@ class InviteeSelectionLoaded extends InviteeSelectionState {
   }
 
   @override
-  List<Object?> get props =>
-      [friends, groups, selectedFriendIds, selectedGroupIds];
+  List<Object?> get props => [
+    friends,
+    groups,
+    selectedFriendIds,
+    selectedGroupIds,
+  ];
 }
 
-class InviteeSelectionError extends InviteeSelectionState implements ErrorState {
+class InviteeSelectionError extends InviteeSelectionState
+    implements ErrorState {
   @override
   final String message;
   @override

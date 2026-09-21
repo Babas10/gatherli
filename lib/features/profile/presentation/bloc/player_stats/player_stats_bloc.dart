@@ -76,8 +76,9 @@ class PlayerStatsBloc extends BaseBloc<PlayerStatsEvent, PlayerStatsState> {
             .listen(
               (stats) {
                 if (state is PlayerStatsLoaded) {
-                  emit((state as PlayerStatsLoaded)
-                      .copyWith(teammateStats: stats));
+                  emit(
+                    (state as PlayerStatsLoaded).copyWith(teammateStats: stats),
+                  );
                 }
               },
               onError: (e) =>
@@ -169,8 +170,9 @@ class PlayerStatsBloc extends BaseBloc<PlayerStatsEvent, PlayerStatsState> {
       }
 
       // Preserve existing ranking, error flag, and teammate stats from previous state
-      final prevLoaded =
-          state is PlayerStatsLoaded ? state as PlayerStatsLoaded : null;
+      final prevLoaded = state is PlayerStatsLoaded
+          ? state as PlayerStatsLoaded
+          : null;
       final ranking = prevLoaded?.ranking;
       final rankingLoadFailed = prevLoaded?.rankingLoadFailed ?? false;
       final teammateStats = prevLoaded?.teammateStats ?? const [];

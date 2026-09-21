@@ -21,23 +21,20 @@ class FeedbackSummaryCard extends StatelessWidget {
     final overallAverage = aggregation.overallAverage;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           // Section label — uppercase, muted, letter-spaced
-          const Text(
-            'FEEDBACK SUMMARY',
-            style: AppTextStyles.sectionLabel,
-          ),
+          const Text('FEEDBACK SUMMARY', style: AppTextStyles.sectionLabel),
           const SizedBox(height: AppSpacing.md),
 
           // Overall rating card
           Card(
             margin: EdgeInsets.zero,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Center(
                 child: Column(
                   children: [
@@ -67,7 +64,7 @@ class FeedbackSummaryCard extends StatelessWidget {
           Card(
             margin: EdgeInsets.zero,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 children: [
                   _buildCategoryRating(

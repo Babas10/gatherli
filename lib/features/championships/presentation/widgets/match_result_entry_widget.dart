@@ -115,8 +115,10 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
     for (final set in sets) {
       final isDecider = set.setNumber == 3;
       if (!set.isValid(isDeciderSet: isDecider)) {
-        setState(() => _validationError =
-            '${l10n.submitResultInvalidSetScore} (${l10n.submitResultSet(set.setNumber)})');
+        setState(
+          () => _validationError =
+              '${l10n.submitResultInvalidSetScore} (${l10n.submitResultSet(set.setNumber)})',
+        );
         return null;
       }
     }
@@ -154,19 +156,23 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
     return BlocConsumer<ResultSubmissionBloc, ResultSubmissionState>(
       listener: (context, state) {
         if (state is ResultSubmissionError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
         if (state is ResultSubmissionSuccess) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle, color: AppColors.success, size: 48),
+                const Icon(
+                  Icons.check_circle,
+                  color: AppColors.success,
+                  size: 48,
+                ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   l10n.submitResultAwaitingVerification,
@@ -181,7 +187,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
         final isSubmitting = state is ResultSubmissionSubmitting;
 
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,10 +235,10 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
                   onPressed: isSubmitting
                       ? null
                       : () => setState(() {
-                            _hasSet3 = false;
-                            _set3TeamA.clear();
-                            _set3TeamB.clear();
-                          }),
+                          _hasSet3 = false;
+                          _set3TeamA.clear();
+                          _set3TeamB.clear();
+                        }),
                   child: Text(l10n.submitResultRemoveSet3),
                 ),
               ] else
@@ -289,10 +295,7 @@ class _TeamHeader extends StatelessWidget {
         Expanded(
           child: Text(
             teamAName,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
           ),
@@ -301,10 +304,7 @@ class _TeamHeader extends StatelessWidget {
         Expanded(
           child: Text(
             teamBName,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
           ),
@@ -343,7 +343,7 @@ class _SetRow extends StatelessWidget {
           child: _PointsInput(controller: controllerA, enabled: enabled),
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
           child: Text('–', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         Expanded(
@@ -371,7 +371,7 @@ class _PointsInput extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 8,
+          horizontal: AppSpacing.sm,
           vertical: 10,
         ),
         border: OutlineInputBorder(

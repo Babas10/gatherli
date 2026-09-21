@@ -54,7 +54,7 @@ class _FriendSearchBarState extends State<FriendSearchBar> {
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: BlocSelector<FriendBloc, FriendState, bool>(
         selector: (state) => state is FriendSearchLoading,
         builder: (context, isSearching) {

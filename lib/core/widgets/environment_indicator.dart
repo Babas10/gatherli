@@ -19,7 +19,10 @@ class EnvironmentIndicator extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSpacing.xs,
+        horizontal: AppSpacing.sm,
+      ),
       decoration: BoxDecoration(
         color: _getEnvironmentColor(),
         border: Border(
@@ -142,7 +145,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
 
     return Positioned(
       top: 100,
-      right: 16,
+      right: AppSpacing.lg,
       child: Material(
         elevation: 8,
         borderRadius: BorderRadius.circular(12),
@@ -161,7 +164,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
     return GestureDetector(
       onTap: () => setState(() => _isExpanded = true),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppSpacing.md),
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -179,7 +182,7 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 250),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -221,9 +224,12 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
               onPressed: _testConnection,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
               ),
-              child: const Text('Test Connection', style: TextStyle(fontSize: 12)),
+              child: const Text(
+                'Test Connection',
+                style: TextStyle(fontSize: 12),
+              ),
             ),
           ),
         ],

@@ -49,7 +49,10 @@ class GameInvitationsBloc
         (i) => i.invitationId == event.invitationId,
         orElse: () => current.first,
       );
-      await _repository.acceptInvitation(userId: '', invitationId: event.invitationId);
+      await _repository.acceptInvitation(
+        userId: '',
+        invitationId: event.invitationId,
+      );
       final updated = current
           .where((i) => i.invitationId != event.invitationId)
           .toList();
@@ -82,7 +85,10 @@ class GameInvitationsBloc
 
     emit(GameInvitationActionInFlight(current, event.invitationId));
     try {
-      await _repository.declineInvitation(userId: '', invitationId: event.invitationId);
+      await _repository.declineInvitation(
+        userId: '',
+        invitationId: event.invitationId,
+      );
       final updated = current
           .where((i) => i.invitationId != event.invitationId)
           .toList();

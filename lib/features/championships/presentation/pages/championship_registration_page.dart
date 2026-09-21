@@ -34,24 +34,18 @@ class _ChampionshipRegistrationPageState
   @override
   void initState() {
     super.initState();
-    context
-        .read<TeamRegistrationBloc>()
-        .add(LoadChampionships(widget.userId));
+    context.read<TeamRegistrationBloc>().add(LoadChampionships(widget.userId));
   }
 
-  void _openCreateTeamSheet(
-      BuildContext context, String championshipId) {
+  void _openCreateTeamSheet(BuildContext context, String championshipId) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => MultiBlocProvider(
         providers: [
-          BlocProvider.value(
-              value: context.read<TeamRegistrationBloc>()),
-          BlocProvider(
-            create: (_) => GetIt.instance<PartnerPickerBloc>(),
-          ),
+          BlocProvider.value(value: context.read<TeamRegistrationBloc>()),
+          BlocProvider(create: (_) => GetIt.instance<PartnerPickerBloc>()),
         ],
         child: CreateTeamBottomSheet(
           championshipId: championshipId,
@@ -62,7 +56,10 @@ class _ChampionshipRegistrationPageState
   }
 
   Future<void> _confirmLeave(
-      BuildContext context, String championshipId, String teamId) async {
+    BuildContext context,
+    String championshipId,
+    String teamId,
+  ) async {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
@@ -83,8 +80,8 @@ class _ChampionshipRegistrationPageState
     );
     if (confirmed == true && context.mounted) {
       context.read<TeamRegistrationBloc>().add(
-            LeaveTeam(championshipId: championshipId, teamId: teamId),
-          );
+        LeaveTeam(championshipId: championshipId, teamId: teamId),
+      );
     }
   }
 
@@ -104,25 +101,25 @@ class _ChampionshipRegistrationPageState
       body: BlocConsumer<TeamRegistrationBloc, TeamRegistrationState>(
         listener: (context, state) {
           if (state is TeamCreated) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(l10n.teamRegisteredSuccess)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(l10n.teamRegisteredSuccess)));
             Navigator.of(context).pop(); // close bottom sheet
             // Reload
-            context
-                .read<TeamRegistrationBloc>()
-                .add(LoadChampionships(widget.userId));
+            context.read<TeamRegistrationBloc>().add(
+              LoadChampionships(widget.userId),
+            );
           } else if (state is TeamLeft) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(l10n.teamLeftSuccess)),
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(l10n.teamLeftSuccess)));
+            context.read<TeamRegistrationBloc>().add(
+              LoadChampionships(widget.userId),
             );
-            context
-                .read<TeamRegistrationBloc>()
-                .add(LoadChampionships(widget.userId));
           } else if (state is TeamRegistrationError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -139,7 +136,7 @@ class _ChampionshipRegistrationPageState
               );
             }
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               itemCount: state.championships.length,
               itemBuilder: (context, index) {
                 final champ = state.championships[index];
@@ -149,8 +146,7 @@ class _ChampionshipRegistrationPageState
                   myTeam: myTeam,
                   userId: widget.userId,
                   onRegister: () => _openCreateTeamSheet(context, champ.id),
-                  onLeave: (teamId) =>
-                      _confirmLeave(context, champ.id, teamId),
+                  onLeave: (teamId) => _confirmLeave(context, champ.id, teamId),
                 );
               },
             );
@@ -189,13 +185,14 @@ class _ChampionshipCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final deadlineFormatted =
-        DateFormat.yMMMd().format(championship.registrationDeadline);
+    final deadlineFormatted = DateFormat.yMMMd().format(
+      championship.registrationDeadline,
+    );
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: AppSpacing.lg),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

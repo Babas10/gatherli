@@ -159,11 +159,10 @@ class _ProfileContent extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (newContext) => BlocProvider(
-          create: (context) =>
-              EmailVerificationBloc(
-                authRepository: authRepository,
-                userRepository: sl(),
-              )..add(const EmailVerificationEvent.checkStatus()),
+          create: (context) => EmailVerificationBloc(
+            authRepository: authRepository,
+            userRepository: sl(),
+          )..add(const EmailVerificationEvent.checkStatus()),
           child: EmailVerificationPage(
             onVerified: () =>
                 accountStatusBloc.add(const AccountEmailVerified()),

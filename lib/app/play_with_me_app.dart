@@ -85,8 +85,9 @@ Widget _buildActivityLinkTargetPage(
     GameLinkTarget(:final gameId) => GameDetailsPage(gameId: gameId),
     TrainingSessionLinkTarget(:final trainingSessionId) =>
       TrainingSessionDetailsPage(trainingSessionId: trainingSessionId),
-    ChampionshipLinkTarget(:final championshipId) =>
-      ChampionshipDetailPage(championshipId: championshipId),
+    ChampionshipLinkTarget(:final championshipId) => ChampionshipDetailPage(
+      championshipId: championshipId,
+    ),
     ChampionshipMatchLinkTarget(:final championshipId, :final matchId) =>
       MatchDetailPage(
         championshipId: championshipId,

@@ -43,12 +43,7 @@ class MatchChatSection extends StatelessWidget {
     return BlocProvider(
       create: (_) => MatchChatBloc(
         messageRepository: messageRepository ?? sl<MessageRepository>(),
-      )..add(
-          LoadMatchChat(
-            championshipId: championshipId,
-            matchId: matchId,
-          ),
-        ),
+      )..add(LoadMatchChat(championshipId: championshipId, matchId: matchId)),
       child: _MatchChatView(
         championshipId: championshipId,
         matchId: matchId,
@@ -126,7 +121,7 @@ class _MatchChatViewState extends State<_MatchChatView> {
     final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -150,9 +145,9 @@ class _MatchChatViewState extends State<_MatchChatView> {
             const SizedBox(height: AppSpacing.xs),
             Text(
               l10n.matchChatCoordinationHint,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textMuted,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
             ),
             const SizedBox(height: AppSpacing.md),
             if (!widget.isTeamMember)
@@ -187,8 +182,9 @@ class _MatchChatViewState extends State<_MatchChatView> {
                   final messages = state is MatchChatLoaded
                       ? state.messages
                       : <ChatMessageModel>[];
-                  final isSending =
-                      state is MatchChatLoaded ? state.isSending : false;
+                  final isSending = state is MatchChatLoaded
+                      ? state.isSending
+                      : false;
 
                   return Column(
                     children: [
@@ -198,11 +194,8 @@ class _MatchChatViewState extends State<_MatchChatView> {
                             ? Center(
                                 child: Text(
                                   l10n.matchChatEmpty,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textMuted,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: AppColors.textMuted),
                                   textAlign: TextAlign.center,
                                 ),
                               )
@@ -249,10 +242,9 @@ class _MatchMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('HH:mm');
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Align(
-        alignment:
-            isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: isCurrentUser
               ? CrossAxisAlignment.end
@@ -260,7 +252,7 @@ class _MatchMessageBubble extends StatelessWidget {
           children: [
             if (!isCurrentUser)
               Padding(
-                padding: const EdgeInsets.only(left: 8, bottom: 2),
+                padding: const EdgeInsets.only(left: AppSpacing.sm, bottom: 2),
                 child: Text(
                   message.senderDisplayName,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -282,8 +274,8 @@ class _MatchMessageBubble extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.65,
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.sm,
                     ),
                     decoration: BoxDecoration(
                       color: isCurrentUser
@@ -356,7 +348,7 @@ class _ChatInput extends StatelessWidget {
                 borderSide: const BorderSide(color: AppColors.divider),
               ),
               contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
+                horizontal: AppSpacing.lg,
                 vertical: 10,
               ),
               isDense: true,

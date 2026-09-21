@@ -300,7 +300,6 @@ class TrainingSessionParticipationBloc
     }
     return null;
   }
-
 }
 
 // Internal events for stream handling

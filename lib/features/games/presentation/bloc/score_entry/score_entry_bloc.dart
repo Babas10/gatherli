@@ -145,7 +145,8 @@ class ScoreEntryBloc extends Bloc<ScoreEntryEvent, ScoreEntryState> {
     // The last set of a best-of-N format (index == numberOfSets - 1 && numberOfSets > 1)
     // is the deciding set and plays to 15 points instead of 21.
     final newSets = List.generate(event.numberOfSets, (index) {
-      final isDecider = event.numberOfSets > 1 && index == event.numberOfSets - 1;
+      final isDecider =
+          event.numberOfSets > 1 && index == event.numberOfSets - 1;
       if (index < currentGame.sets.length) {
         // Preserve existing score data but update isDeciderSet flag
         return currentGame.sets[index].copyWith(isDeciderSet: isDecider);

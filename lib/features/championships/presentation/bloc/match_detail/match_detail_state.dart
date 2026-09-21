@@ -81,17 +81,17 @@ class MatchDetailLoaded extends MatchDetailState {
 
   @override
   List<Object?> get props => [
-        championshipId,
-        match,
-        teamA,
-        teamB,
-        myTeamId,
-        isProposingSchedule,
-        isAcceptingSchedule,
-        isRejectingSchedule,
-        scheduleError,
-        scheduleConfirmError,
-      ];
+    championshipId,
+    match,
+    teamA,
+    teamB,
+    myTeamId,
+    isProposingSchedule,
+    isAcceptingSchedule,
+    isRejectingSchedule,
+    scheduleError,
+    scheduleConfirmError,
+  ];
 }
 
 // Sentinel value used to distinguish "not provided" from explicit null in copyWith.

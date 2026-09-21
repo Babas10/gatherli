@@ -122,7 +122,9 @@ class AppLinksDeepLinkService implements DeepLinkService {
     //   https://gatherli.org/training/{sessionId}
     //   https://gatherli.org/championship/{championshipId}
     //   https://gatherli.org/championship/{championshipId}/match/{matchId}
-    if (segments.length == 2 && segments[0] == 'game' && segments[1].isNotEmpty) {
+    if (segments.length == 2 &&
+        segments[0] == 'game' &&
+        segments[1].isNotEmpty) {
       return GameLinkTarget(segments[1]);
     }
     if (segments.length == 2 &&
@@ -152,7 +154,9 @@ class AppLinksDeepLinkService implements DeepLinkService {
     //   gatherli://championship/{championshipId}
     //   gatherli://championship/{championshipId}/match/{matchId}
     if (uri.scheme == 'gatherli') {
-      if (uri.host == 'game' && segments.length == 1 && segments[0].isNotEmpty) {
+      if (uri.host == 'game' &&
+          segments.length == 1 &&
+          segments[0].isNotEmpty) {
         return GameLinkTarget(segments[0]);
       }
       if (uri.host == 'training' &&

@@ -29,55 +29,55 @@ class GroupBottomNavBar extends StatelessWidget {
       builder: (BuildContext context) {
         return SafeArea(
           child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  leading: const Icon(
-                    Icons.sports_volleyball,
-                    color: AppColors.secondary,
-                  ),
-                  title: Text(
-                    l10n.createGame,
-                    style: const TextStyle(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    l10n.competitiveGameWithElo,
-                    style: TextStyle(
-                      color: AppColors.secondary.withValues(alpha: 0.7),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onCreateGameTap?.call();
-                  },
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(
+                  Icons.sports_volleyball,
+                  color: AppColors.secondary,
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.fitness_center,
+                title: Text(
+                  l10n.createGame,
+                  style: const TextStyle(
                     color: AppColors.secondary,
+                    fontWeight: FontWeight.bold,
                   ),
-                  title: Text(
-                    l10n.createTrainingSession,
-                    style: const TextStyle(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    l10n.practiceSessionNoElo,
-                    style: TextStyle(
-                      color: AppColors.secondary.withValues(alpha: 0.7),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onCreateTrainingTap?.call();
-                  },
                 ),
-              ],
+                subtitle: Text(
+                  l10n.competitiveGameWithElo,
+                  style: TextStyle(
+                    color: AppColors.secondary.withValues(alpha: 0.7),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onCreateGameTap?.call();
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.fitness_center,
+                  color: AppColors.secondary,
+                ),
+                title: Text(
+                  l10n.createTrainingSession,
+                  style: const TextStyle(
+                    color: AppColors.secondary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  l10n.practiceSessionNoElo,
+                  style: TextStyle(
+                    color: AppColors.secondary.withValues(alpha: 0.7),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  onCreateTrainingTap?.call();
+                },
+              ),
+            ],
           ),
         );
       },

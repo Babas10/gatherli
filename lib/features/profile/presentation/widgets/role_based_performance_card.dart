@@ -8,8 +8,8 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 // Gold accent bar, teal win rate text — consistent, minimal palette
-const _kAccentBarColor = AppColors.primary;    // gold left bar
-const _kWinRateColor = AppColors.secondary;    // teal win rate percentage
+const _kAccentBarColor = AppColors.primary; // gold left bar
+const _kWinRateColor = AppColors.secondary; // teal win rate percentage
 
 class RoleBasedPerformanceCard extends StatelessWidget {
   final UserModel user;
@@ -23,7 +23,7 @@ class RoleBasedPerformanceCard extends StatelessWidget {
     final hasData = stats != null && stats.hasData;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -159,7 +159,7 @@ class _LockedCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Row(
           children: [
             Icon(

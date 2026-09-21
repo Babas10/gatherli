@@ -4,6 +4,7 @@ import 'package:play_with_me/core/domain/entities/friendship_entity.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'received_request_tile.dart';
 import 'sent_request_tile.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 /// Widget for displaying friend requests (received and sent)
 class FriendRequestsList extends StatelessWidget {
@@ -38,7 +39,7 @@ class FriendRequestsList extends StatelessWidget {
     final items = <Widget>[
       if (hasReceivedRequests) ...[
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Text(
             l10n.receivedRequests,
             style: Theme.of(
@@ -57,7 +58,7 @@ class FriendRequestsList extends StatelessWidget {
       if (hasReceivedRequests && hasSentRequests) const Divider(height: 32),
       if (hasSentRequests) ...[
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Text(
             l10n.sentRequests,
             style: Theme.of(
@@ -74,7 +75,7 @@ class FriendRequestsList extends StatelessWidget {
       ],
       if (!hasReceivedRequests && hasSentRequests)
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Text(
             'No pending requests to respond to',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

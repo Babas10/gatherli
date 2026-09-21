@@ -22,7 +22,10 @@ class AuthButton extends StatelessWidget {
             width: 20,
             child: CircularProgressIndicator(strokeWidth: 2),
           )
-        : Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
+        : Text(
+            text,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          );
 
     if (isOutlined) {
       return OutlinedButton(
@@ -31,9 +34,6 @@ class AuthButton extends StatelessWidget {
       );
     }
 
-    return FilledButton(
-      onPressed: isLoading ? null : onPressed,
-      child: child,
-    );
+    return FilledButton(onPressed: isLoading ? null : onPressed, child: child);
   }
 }

@@ -77,7 +77,7 @@ class GameResultViewPage extends StatelessWidget {
     return Scaffold(
       appBar: PlayWithMeAppBar.build(context: context, title: l10n.gameResults),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -156,7 +156,11 @@ class _EloUpdatesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.trending_up, size: 20, color: AppColors.primary),
+                const Icon(
+                  Icons.trending_up,
+                  size: 20,
+                  color: AppColors.primary,
+                ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   l10n.eloRatingChanges,
@@ -180,7 +184,7 @@ class _EloUpdatesCard extends StatelessWidget {
               final record = winLoss[playerId];
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
+                padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -209,7 +213,9 @@ class _EloUpdatesCard extends StatelessWidget {
                         ),
                         // Arrow
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.sm,
+                          ),
                           child: Icon(
                             Icons.arrow_forward,
                             size: 16,
@@ -228,7 +234,9 @@ class _EloUpdatesCard extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: isGain
                                       ? AppColors.success
-                                      : (isLoss ? AppColors.danger : Colors.grey),
+                                      : (isLoss
+                                            ? AppColors.danger
+                                            : Colors.grey),
                                 ),
                             textAlign: TextAlign.right,
                           ),
@@ -308,7 +316,7 @@ class _IndividualGameCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.only(bottom: isLast ? 0 : 12),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -376,7 +384,7 @@ class _IndividualGameCard extends StatelessWidget {
               final teamBWon = setWinner == 'teamB';
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: Row(
                   children: [
                     SizedBox(
@@ -396,8 +404,8 @@ class _IndividualGameCard extends StatelessWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                              horizontal: AppSpacing.lg,
+                              vertical: AppSpacing.sm,
                             ),
                             decoration: BoxDecoration(
                               color: teamAWon
@@ -423,7 +431,9 @@ class _IndividualGameCard extends StatelessWidget {
                             ),
                           ),
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.md,
+                            ),
                             child: Text(
                               '-',
                               style: TextStyle(
@@ -435,8 +445,8 @@ class _IndividualGameCard extends StatelessWidget {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                              horizontal: AppSpacing.lg,
+                              vertical: AppSpacing.sm,
                             ),
                             decoration: BoxDecoration(
                               color: teamBWon

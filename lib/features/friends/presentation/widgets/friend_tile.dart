@@ -23,11 +23,20 @@ class FriendTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return AccentCard(
       onTap: onTap,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 5,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
       child: Row(
         children: [
-          UserAvatar(name: friend.displayNameOrEmail, photoUrl: friend.photoUrl),
+          UserAvatar(
+            name: friend.displayNameOrEmail,
+            photoUrl: friend.photoUrl,
+          ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -38,10 +47,7 @@ class FriendTile extends StatelessWidget {
                   style: AppTextStyles.cardTitle,
                 ),
                 if (friend.displayName != null)
-                  Text(
-                    friend.email,
-                    style: AppTextStyles.cardSubtitle,
-                  ),
+                  Text(friend.email, style: AppTextStyles.cardSubtitle),
               ],
             ),
           ),
@@ -54,5 +60,4 @@ class FriendTile extends StatelessWidget {
       ),
     );
   }
-
 }

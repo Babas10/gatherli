@@ -57,7 +57,9 @@ abstract class TrainingFeedbackModel with _$TrainingFeedbackModel {
   Map<String, dynamic> toFirestore() {
     final json = toJson();
     json.remove('id'); // Remove id as it's the document ID
-    json.remove('trainingSessionId'); // Remove trainingSessionId as it's in the path
+    json.remove(
+      'trainingSessionId',
+    ); // Remove trainingSessionId as it's in the path
     return json;
   }
 
@@ -95,4 +97,3 @@ abstract class TrainingFeedbackModel with _$TrainingFeedbackModel {
   double get averageRating =>
       (exercisesQuality + trainingIntensity + coachingClarity) / 3;
 }
-

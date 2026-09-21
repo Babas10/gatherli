@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 class AuthFormField extends StatelessWidget {
   const AuthFormField({
@@ -64,8 +65,8 @@ class AuthFormField extends StatelessWidget {
         filled: true,
         fillColor: enabled ? Colors.grey.shade50 : Colors.grey.shade100,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.lg,
         ),
       ),
     );

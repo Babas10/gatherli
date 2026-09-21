@@ -48,19 +48,19 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
         partnerState.selectedPartnerId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.selectPartnerLabel,
-          ),
+          content: Text(AppLocalizations.of(context)!.selectPartnerLabel),
         ),
       );
       return;
     }
 
-    context.read<TeamRegistrationBloc>().add(CreateTeam(
-          championshipId: widget.championshipId,
-          teamName: _teamNameController.text.trim(),
-          partnerId: partnerState.selectedPartnerId!,
-        ));
+    context.read<TeamRegistrationBloc>().add(
+      CreateTeam(
+        championshipId: widget.championshipId,
+        teamName: _teamNameController.text.trim(),
+        partnerId: partnerState.selectedPartnerId!,
+      ),
+    );
   }
 
   @override
@@ -75,9 +75,9 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
       builder: (context, scrollController) {
         return Padding(
           padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
+            left: AppSpacing.lg,
+            right: AppSpacing.lg,
+            top: AppSpacing.lg,
             bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           ),
           child: Form(
@@ -128,9 +128,9 @@ class _CreateTeamBottomSheetState extends State<CreateTeamBottomSheet> {
                         friends: state.friends,
                         selectedPartnerId: state.selectedPartnerId,
                         onPartnerSelected: (uid) {
-                          context
-                              .read<PartnerPickerBloc>()
-                              .add(SelectPartner(uid));
+                          context.read<PartnerPickerBloc>().add(
+                            SelectPartner(uid),
+                          );
                         },
                       );
                     }

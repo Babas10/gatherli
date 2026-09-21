@@ -222,7 +222,6 @@ class TrainingFeedbackBloc
       return 'An unexpected error occurred';
     }
   }
-
 }
 
 /// Internal event for aggregated feedback updates from stream

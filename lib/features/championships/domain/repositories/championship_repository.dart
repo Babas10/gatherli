@@ -210,5 +210,4 @@ abstract class ChampionshipRepository {
   /// Only allowed when status is registration or registration_closed.
   /// Throws [ChampionshipException] on error.
   Future<void> deleteChampionship({required String championshipId});
-
 }

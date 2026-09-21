@@ -204,7 +204,9 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                                       if (index >= games.length) {
                                         return const Center(
                                           child: Padding(
-                                            padding: EdgeInsets.all(16),
+                                            padding: EdgeInsets.all(
+                                              AppSpacing.lg,
+                                            ),
                                             child: CircularProgressIndicator(),
                                           ),
                                         );
@@ -260,7 +262,10 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
   ) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Row(
         children: [

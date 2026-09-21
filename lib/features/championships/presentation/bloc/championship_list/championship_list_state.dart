@@ -37,9 +37,11 @@ class ChampionshipListLoaded extends ChampionshipListState {
     if (activeFilter == null) return allChampionships;
     if (activeFilter == 'registration') {
       return allChampionships
-          .where((c) =>
-              c.status == ChampionshipStatus.registration ||
-              c.status == ChampionshipStatus.registrationClosed)
+          .where(
+            (c) =>
+                c.status == ChampionshipStatus.registration ||
+                c.status == ChampionshipStatus.registrationClosed,
+          )
           .toList();
     }
     return allChampionships
@@ -53,8 +55,9 @@ class ChampionshipListLoaded extends ChampionshipListState {
   }) {
     return ChampionshipListLoaded(
       allChampionships: allChampionships ?? this.allChampionships,
-      activeFilter:
-          activeFilter == _sentinel ? this.activeFilter : activeFilter as String?,
+      activeFilter: activeFilter == _sentinel
+          ? this.activeFilter
+          : activeFilter as String?,
     );
   }
 

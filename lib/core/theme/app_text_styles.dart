@@ -57,8 +57,33 @@ class AppTextStyles {
   static const caption = TextStyle(fontSize: 12, color: AppColors.textMuted);
 
   // Tiny label (e.g., below a stat value)
-  static const tinyCaption = TextStyle(fontSize: 11, color: AppColors.textMuted);
+  static const tinyCaption = TextStyle(
+    fontSize: 11,
+    color: AppColors.textMuted,
+  );
 
   // Danger / error inline text
   static const danger = TextStyle(fontSize: 13, color: AppColors.danger);
+
+  // ── Emphasis (Story 37.9) ──────────────────────────────────────────────────
+  // No baked-in color — callers `.copyWith(color: ...)` since usage varies.
+
+  // Prominent inline title, larger than cardTitle but not a headline
+  // (result banners, summary card titles, dialog emphasis text).
+  static const emphasisTitle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
+  // Medium-weight label, heavier than cardSubtitle/caption.
+  static const mediumLabel = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+  );
+
+  // Large bold headline (page-level totals, prominent numeric summaries).
+  static const headlineBold = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
 }

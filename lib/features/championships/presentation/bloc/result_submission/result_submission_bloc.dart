@@ -10,8 +10,8 @@ class ResultSubmissionBloc
   final ChampionshipRepository _championshipRepository;
 
   ResultSubmissionBloc({required ChampionshipRepository championshipRepository})
-      : _championshipRepository = championshipRepository,
-        super(const ResultSubmissionInitial()) {
+    : _championshipRepository = championshipRepository,
+      super(const ResultSubmissionInitial()) {
     on<SubmitMatchResult>(_onSubmitMatchResult);
   }
 
@@ -31,7 +31,9 @@ class ResultSubmissionBloc
       emit(ResultSubmissionError(message: e.message, errorCode: e.code));
     } catch (e) {
       emit(
-        ResultSubmissionError(message: 'Failed to submit result: ${e.toString()}'),
+        ResultSubmissionError(
+          message: 'Failed to submit result: ${e.toString()}',
+        ),
       );
     }
   }
