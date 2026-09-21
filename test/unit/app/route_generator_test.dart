@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/app/route_generator.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/password_reset/password_reset_bloc.dart';
 import 'package:play_with_me/features/auth/presentation/bloc/registration/registration_bloc.dart';
@@ -16,14 +17,10 @@ void main() {
           const RouteSettings(name: '/login'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
+        expect(route, isA<AppPageRoute>());
         // LoginPage is now wrapped in its own page-scoped BlocProvider
         // (Story 35.5) instead of relying on an app-root LoginBloc.
-        expect(
-          pageRoute.builder(MockBuildContext()),
-          isA<BlocProvider<LoginBloc>>(),
-        );
+        expect(_buildPage(route), isA<BlocProvider<LoginBloc>>());
       });
 
       test('generates RegistrationPage for /register', () {
@@ -31,12 +28,8 @@ void main() {
           const RouteSettings(name: '/register'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
-        expect(
-          pageRoute.builder(MockBuildContext()),
-          isA<BlocProvider<RegistrationBloc>>(),
-        );
+        expect(route, isA<AppPageRoute>());
+        expect(_buildPage(route), isA<BlocProvider<RegistrationBloc>>());
       });
 
       test('generates PasswordResetPage for /forgot-password', () {
@@ -44,12 +37,8 @@ void main() {
           const RouteSettings(name: '/forgot-password'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
-        expect(
-          pageRoute.builder(MockBuildContext()),
-          isA<BlocProvider<PasswordResetBloc>>(),
-        );
+        expect(route, isA<AppPageRoute>());
+        expect(_buildPage(route), isA<BlocProvider<PasswordResetBloc>>());
       });
 
       test('generates MyCommunityPage for /my-community', () {
@@ -57,9 +46,8 @@ void main() {
           const RouteSettings(name: '/my-community'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
-        expect(pageRoute.builder(MockBuildContext()), isA<MyCommunityPage>());
+        expect(route, isA<AppPageRoute>());
+        expect(_buildPage(route), isA<MyCommunityPage>());
       });
     });
 
@@ -69,12 +57,8 @@ void main() {
           const RouteSettings(name: '/invite/abc123def456'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
-        expect(
-          pageRoute.builder(MockBuildContext()),
-          isA<BlocProvider<LoginBloc>>(),
-        );
+        expect(route, isA<AppPageRoute>());
+        expect(_buildPage(route), isA<BlocProvider<LoginBloc>>());
       });
 
       test('generates LoginPage for invite deep link with complex token', () {
@@ -82,12 +66,8 @@ void main() {
           const RouteSettings(name: '/invite/R3nD0m-T0k3n_base64url'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
-        final pageRoute = route as MaterialPageRoute;
-        expect(
-          pageRoute.builder(MockBuildContext()),
-          isA<BlocProvider<LoginBloc>>(),
-        );
+        expect(route, isA<AppPageRoute>());
+        expect(_buildPage(route), isA<BlocProvider<LoginBloc>>());
       });
     });
 
@@ -97,7 +77,7 @@ void main() {
           const RouteSettings(name: '/nonexistent'),
         );
 
-        expect(route, isA<MaterialPageRoute>());
+        expect(route, isA<AppPageRoute>());
       });
 
       test('generates unknown route page for null route name', () {
@@ -105,7 +85,7 @@ void main() {
           const RouteSettings(name: null),
         );
 
-        expect(route, isA<MaterialPageRoute>());
+        expect(route, isA<AppPageRoute>());
       });
 
       test('preserves route settings', () {
@@ -119,3 +99,13 @@ void main() {
 }
 
 class MockBuildContext extends Fake implements BuildContext {}
+
+/// Invokes an [AppPageRoute]'s pageBuilder to get the page widget it wraps.
+Widget _buildPage(Route<dynamic> route) {
+  final pageRoute = route as PageRouteBuilder;
+  return pageRoute.pageBuilder(
+    MockBuildContext(),
+    const AlwaysStoppedAnimation(1.0),
+    const AlwaysStoppedAnimation(1.0),
+  );
+}

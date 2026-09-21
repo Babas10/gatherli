@@ -53,6 +53,7 @@ import 'package:play_with_me/features/notifications/presentation/bloc/notificati
 import 'package:play_with_me/features/notifications/presentation/bloc/notification_event.dart';
 import 'package:play_with_me/features/notifications/presentation/bloc/notification_state.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class GroupDetailsPage extends StatelessWidget {
   final String groupId;
@@ -1008,7 +1009,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         isPast: isPast,
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => GameDetailsPage(gameId: game.id)),
+          AppPageRoute.detail(builder: (_) => GameDetailsPage(gameId: game.id)),
         ),
       ),
       training: (session) => TrainingSessionListItem(
@@ -1017,7 +1018,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
         isPast: isPast,
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(
+          AppPageRoute.detail(
             builder: (_) =>
                 TrainingSessionDetailsPage(trainingSessionId: session.id),
           ),
@@ -1119,7 +1120,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.modal(
         builder: (context) => BlocProvider(
           create: (context) => sl<InvitationBloc>(),
           child: InviteMemberPage(
@@ -1141,7 +1142,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.modal(
         builder: (context) => BlocProvider(
           create: (context) => sl<GameCreationBloc>(),
           child: GameCreationPage(
@@ -1158,7 +1159,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.modal(
         builder: (context) => BlocProvider(
           create: (context) => sl<TrainingSessionCreationBloc>(),
           child: TrainingSessionCreationPage(

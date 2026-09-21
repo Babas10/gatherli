@@ -21,6 +21,7 @@ import 'package:play_with_me/features/training/presentation/bloc/training_sessio
 import 'package:play_with_me/features/training/presentation/pages/training_session_creation_page.dart';
 import 'package:play_with_me/features/training/presentation/pages/training_session_details_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class GamesListPage extends StatelessWidget {
   final String groupId;
@@ -337,7 +338,7 @@ class _GamesListPageContent extends StatelessWidget {
   void _navigateToGameCreation(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.modal(
         builder: (context) => BlocProvider(
           create: (context) => sl<GameCreationBloc>(),
           child: GameCreationPage(groupId: groupId, groupName: groupName),
@@ -349,7 +350,7 @@ class _GamesListPageContent extends StatelessWidget {
   void _navigateToTrainingCreation(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.modal(
         builder: (context) => BlocProvider(
           create: (context) => sl<TrainingSessionCreationBloc>(),
           child: TrainingSessionCreationPage(
@@ -364,14 +365,16 @@ class _GamesListPageContent extends StatelessWidget {
   void _navigateToGameDetails(BuildContext context, String gameId) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => GameDetailsPage(gameId: gameId)),
+      AppPageRoute.detail(
+        builder: (context) => GameDetailsPage(gameId: gameId),
+      ),
     );
   }
 
   void _navigateToTrainingDetails(BuildContext context, String sessionId) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (context) =>
             TrainingSessionDetailsPage(trainingSessionId: sessionId),
       ),

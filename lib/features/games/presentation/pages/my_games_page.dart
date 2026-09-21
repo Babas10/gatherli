@@ -22,6 +22,7 @@ import 'package:play_with_me/features/games/presentation/bloc/game_invitations/g
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
 import 'package:play_with_me/features/games/presentation/widgets/my_game_tile.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class MyGamesPage extends StatelessWidget {
   const MyGamesPage({super.key});
@@ -209,7 +210,7 @@ class _MyGamesViewState extends State<_MyGamesView> {
     final invBloc = context.read<GameInvitationsBloc>();
     await Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) => GameDetailsPage(
           gameId: item.gameId,
           invitationId: item.invitationId,

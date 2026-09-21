@@ -7,6 +7,7 @@ import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/head_to_head_page.dart';
 import 'package:play_with_me/features/profile/presentation/widgets/empty_states/insufficient_data_placeholder.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Rival section: gray background, gray section label, white card.
 ///
@@ -39,7 +40,7 @@ class RivalsCard extends StatelessWidget {
               onTap: nemesis != null
                   ? () => Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      AppPageRoute.detail(
                         builder: (context) => HeadToHeadPage(
                           userId: user.uid,
                           opponentId: nemesis.opponentId,

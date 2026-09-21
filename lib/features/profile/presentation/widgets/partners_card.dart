@@ -8,6 +8,7 @@ import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/profile/presentation/pages/partner_detail_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Best partner section: gray background, gray section label, white card.
 ///
@@ -40,7 +41,7 @@ class PartnersCard extends StatelessWidget {
             child: InkWell(
               onTap: bestPartner != null
                   ? () => Navigator.of(context).push(
-                      MaterialPageRoute(
+                      AppPageRoute.detail(
                         builder: (context) => PartnerDetailPage(
                           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
                           partnerId: bestPartner.userId,

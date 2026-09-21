@@ -13,6 +13,7 @@ import '../bloc/game_history/game_history_event.dart';
 import '../bloc/game_history/game_history_state.dart';
 import '../widgets/game_history_card.dart';
 import 'game_details_page.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class GameHistoryScreen extends StatefulWidget {
   final String? groupId;
@@ -302,7 +303,9 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
   void _navigateToGameDetail(String gameId) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => GameDetailsPage(gameId: gameId)),
+      AppPageRoute.detail(
+        builder: (context) => GameDetailsPage(gameId: gameId),
+      ),
     );
   }
 }

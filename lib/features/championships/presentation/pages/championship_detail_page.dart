@@ -43,6 +43,7 @@ import 'package:play_with_me/features/championships/domain/use_cases/check_champ
 import 'package:play_with_me/features/championships/presentation/pages/match_detail_page.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class ChampionshipDetailPage extends StatelessWidget {
   final String championshipId;
@@ -1036,7 +1037,7 @@ class _MatchesTab extends StatelessWidget {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) => MatchDetailPage(
           championshipId: championship.id,
           matchId: match.id,
@@ -2114,7 +2115,7 @@ class _MyMatchesTab extends StatelessWidget {
           contentPadding: const EdgeInsets.all(14),
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(
+            AppPageRoute.detail(
               builder: (_) => MatchDetailPage(
                 championshipId: championshipId,
                 matchId: match.id,

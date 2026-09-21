@@ -13,6 +13,7 @@ import '../bloc/feedback/training_feedback_state.dart';
 import '../pages/training_session_feedback_page.dart';
 import 'feedback_list_item.dart';
 import 'feedback_summary_card.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Displays feedback for a training session
 /// Shows aggregated statistics and individual feedback entries
@@ -274,7 +275,7 @@ class _FeedbackDisplayWidgetState extends State<FeedbackDisplayWidget> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (context) => BlocProvider(
           create: (context) => sl<TrainingFeedbackBloc>(),
           child: TrainingSessionFeedbackPage(

@@ -17,6 +17,7 @@ import 'package:play_with_me/features/groups/presentation/pages/group_details_pa
 import 'package:play_with_me/features/groups/presentation/widgets/group_list_item.dart';
 import 'package:play_with_me/features/groups/presentation/widgets/empty_group_list.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class GroupListPage extends StatelessWidget {
   final GroupBloc? blocOverride; // Optional bloc for testing
@@ -156,7 +157,7 @@ class GroupListPage extends StatelessWidget {
 
   void _navigateToGroupDetails(BuildContext context, GroupModel group) {
     Navigator.of(context).push(
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (context) => GroupDetailsPage(groupId: group.id),
       ),
     );
@@ -173,7 +174,7 @@ class GroupListPage extends StatelessWidget {
     }
 
     Navigator.of(context).push(
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (context) => BlocProvider(
           create: (context) => sl<GroupBloc>(),
           child: GroupCreationPage(friendRepository: friendRepository),

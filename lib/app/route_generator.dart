@@ -10,6 +10,7 @@ import 'package:play_with_me/features/auth/presentation/pages/registration_page.
 import 'package:play_with_me/features/auth/presentation/pages/password_reset_page.dart';
 import 'package:play_with_me/features/friends/presentation/pages/my_community_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -53,11 +54,8 @@ class RouteGenerator {
     }
   }
 
-  static MaterialPageRoute<dynamic> _buildRoute(
-    Widget page,
-    RouteSettings settings,
-  ) {
-    return MaterialPageRoute(builder: (_) => page, settings: settings);
+  static Route<dynamic> _buildRoute(Widget page, RouteSettings settings) {
+    return AppPageRoute.detail(builder: (_) => page, settings: settings);
   }
 
   static Widget _buildLoginPage() {

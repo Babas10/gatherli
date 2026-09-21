@@ -13,6 +13,7 @@ import 'package:play_with_me/features/friends/presentation/pages/add_friend_page
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_bloc.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_request_count_state.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Page for managing friends and friend requests
 class MyCommunityPage extends StatelessWidget {
@@ -271,7 +272,7 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
         final friendBloc = context.read<FriendBloc>();
         Navigator.of(context)
             .push(
-              MaterialPageRoute(
+              AppPageRoute.detail(
                 builder: (_) => BlocProvider.value(
                   value: friendBloc,
                   child: const AddFriendPage(),

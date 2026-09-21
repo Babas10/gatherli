@@ -22,6 +22,7 @@ import 'package:play_with_me/features/profile/presentation/widgets/profile_heade
 import 'package:play_with_me/features/profile/presentation/widgets/profile_info_card.dart';
 import 'package:play_with_me/features/notifications/presentation/pages/notification_settings_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Profile tab content displaying user identity and account settings.
 ///
@@ -117,7 +118,7 @@ class _ProfileContent extends StatelessWidget {
               final authBloc = context.read<AuthenticationBloc>();
 
               Navigator.of(context).push(
-                MaterialPageRoute(
+                AppPageRoute.modal(
                   builder: (newContext) => MultiRepositoryProvider(
                     providers: [
                       RepositoryProvider.value(value: authRepository),
@@ -132,7 +133,7 @@ class _ProfileContent extends StatelessWidget {
             },
             onNotificationSettings: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
+                AppPageRoute.modal(
                   builder: (context) => const NotificationSettingsPage(),
                 ),
               );
@@ -157,7 +158,7 @@ class _ProfileContent extends StatelessWidget {
     final accountStatusBloc = context.read<AccountStatusBloc>();
 
     Navigator.of(context).push(
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (newContext) => BlocProvider(
           create: (context) => EmailVerificationBloc(
             authRepository: authRepository,
