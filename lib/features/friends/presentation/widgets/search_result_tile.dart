@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/features/auth/domain/entities/user_entity.dart';
@@ -107,17 +109,29 @@ class SearchResultTile extends StatelessWidget {
     final photoUrl = foundUser.photoUrl;
     final displayName = foundUser.displayName;
 
-    return ListTile(
-      leading: UserAvatar(
-        name: displayName ?? foundUser.email,
-        photoUrl: photoUrl,
+    return AccentCard(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        children: [
+          UserAvatar(name: displayName ?? foundUser.email, photoUrl: photoUrl),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  displayName ?? foundUser.email,
+                  style: AppTextStyles.cardTitle,
+                ),
+                if (displayName != null)
+                  Text(foundUser.email, style: AppTextStyles.cardSubtitle),
+              ],
+            ),
+          ),
+          _buildActionButton(l10n),
+        ],
       ),
-      title: Text(
-        displayName ?? foundUser.email,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      ),
-      subtitle: displayName != null ? Text(foundUser.email) : null,
-      trailing: _buildActionButton(l10n),
     );
   }
 

@@ -11,6 +11,7 @@ import 'package:play_with_me/features/championships/presentation/bloc/team_regis
 import 'package:play_with_me/features/championships/presentation/bloc/team_registration/team_registration_state.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/create_team_bottom_sheet.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -189,43 +190,34 @@ class _ChampionshipCard extends StatelessWidget {
       championship.registrationDeadline,
     );
 
-    return Card(
+    return AccentCard(
       margin: const EdgeInsets.only(bottom: AppSpacing.lg),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              championship.title,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(l10n.championshipTeamsCount(championship.teamsCount)),
-            Text(l10n.championshipSlotsLeft(championship.availableSlots)),
-            Text(l10n.championshipDeadlineLabel(deadlineFormatted)),
-            const SizedBox(height: AppSpacing.md),
-            if (myTeam != null) ...[
-              Text(
-                l10n.yourTeam,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(myTeam!.name),
-              if (_isRegistrationPhase) ...[
-                const SizedBox(height: AppSpacing.sm),
-                OutlinedButton(
-                  onPressed: () => onLeave(myTeam!.id),
-                  child: Text(l10n.leaveTeam),
-                ),
-              ],
-            ] else if (championship.isOpen) ...[
-              FilledButton(
-                onPressed: onRegister,
-                child: Text(l10n.registerTeam),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            championship.title,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(l10n.championshipTeamsCount(championship.teamsCount)),
+          Text(l10n.championshipSlotsLeft(championship.availableSlots)),
+          Text(l10n.championshipDeadlineLabel(deadlineFormatted)),
+          const SizedBox(height: AppSpacing.md),
+          if (myTeam != null) ...[
+            Text(l10n.yourTeam, style: Theme.of(context).textTheme.titleSmall),
+            Text(myTeam!.name),
+            if (_isRegistrationPhase) ...[
+              const SizedBox(height: AppSpacing.sm),
+              OutlinedButton(
+                onPressed: () => onLeave(myTeam!.id),
+                child: Text(l10n.leaveTeam),
               ),
             ],
+          ] else if (championship.isOpen) ...[
+            FilledButton(onPressed: onRegister, child: Text(l10n.registerTeam)),
           ],
-        ),
+        ],
       ),
     );
   }

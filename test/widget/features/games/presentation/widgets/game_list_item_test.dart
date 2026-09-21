@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:play_with_me/core/data/models/game_model.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_list_item.dart';
@@ -147,7 +148,7 @@ void main() {
 
       // Background tinting was removed (PE-4: all game cards use same cardBackground)
       // The card still exists — just verify it renders correctly
-      expect(find.byType(Card), findsOneWidget);
+      expect(find.byType(AccentCard), findsOneWidget);
     });
 
     testWidgets('displays RSVP badge when not completed/cancelled', (

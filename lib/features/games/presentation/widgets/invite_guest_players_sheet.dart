@@ -6,6 +6,7 @@ import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/data/models/invitable_player_model.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -221,86 +222,76 @@ class _GroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
+    return AccentCard(
+      onTap: isDisabled ? null : onTap,
       margin: const EdgeInsets.only(bottom: 10),
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        side: BorderSide(
-          color: isInvited ? AppColors.success : Colors.grey.shade200,
-        ),
+      accentColor: isInvited ? AppColors.success : AppColors.primary,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: 14,
       ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: isDisabled ? null : onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: 14,
+      child: Row(
+        children: [
+          // Single group avatar
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.primary.withValues(alpha: 0.25),
+            child: Text(
+              groupName.isNotEmpty ? groupName[0].toUpperCase() : '?',
+              style: AppTextStyles.cardTitle,
+            ),
           ),
-          child: Row(
-            children: [
-              // Single group avatar
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: AppColors.primary.withValues(alpha: 0.25),
-                child: Text(
-                  groupName.isNotEmpty ? groupName[0].toUpperCase() : '?',
-                  style: AppTextStyles.cardTitle,
+          const SizedBox(width: 14),
+          // Group name + count
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(groupName, style: AppTextStyles.cardTitle),
+                const SizedBox(height: 2),
+                Text(
+                  l10n.groupMembersCount(members.length),
+                  style: AppTextStyles.cardSubtitle,
                 ),
-              ),
-              const SizedBox(width: 14),
-              // Group name + count
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(groupName, style: AppTextStyles.cardTitle),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.groupMembersCount(members.length),
-                      style: AppTextStyles.cardSubtitle,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              // Trailing state
-              if (isSending)
-                const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else if (isInvited)
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.check_circle,
-                      size: 18,
-                      color: AppColors.success,
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      l10n.invitedLabel,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.success,
-                      ),
-                    ),
-                  ],
-                )
-              else
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          // Trailing state
+          if (isSending)
+            const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          else if (isInvited)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 const Icon(
-                  Icons.chevron_right,
-                  size: AppSpacing.iconMd,
-                  color: AppColors.textMuted,
+                  Icons.check_circle,
+                  size: 18,
+                  color: AppColors.success,
                 ),
-            ],
-          ),
-        ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  l10n.invitedLabel,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.success,
+                  ),
+                ),
+              ],
+            )
+          else
+            const Icon(
+              Icons.chevron_right,
+              size: AppSpacing.iconMd,
+              color: AppColors.textMuted,
+            ),
+        ],
       ),
     );
   }

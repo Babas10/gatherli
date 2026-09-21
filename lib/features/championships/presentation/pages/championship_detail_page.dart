@@ -1166,107 +1166,90 @@ class _MatchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final result = match.result;
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        side: isMyMatch
-            ? const BorderSide(color: AppColors.primary, width: 2)
-            : BorderSide.none,
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isMyMatch) ...[
-                Text(
-                  l10n.championshipMyMatch,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-              ],
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      teamAName,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: result?.winner == 'teamA'
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                    ),
-                    child: Text(
-                      l10n.championshipMatchVs,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      teamBName,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: result?.winner == 'teamB'
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                      ),
-                      textAlign: TextAlign.right,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+      contentPadding: const EdgeInsets.all(AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isMyMatch) ...[
+            Text(
+              l10n.championshipMyMatch,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(height: 6),
-              Row(
-                children: [
-                  if (result != null) ...[
-                    Text(
-                      _setScores(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                    const Spacer(),
-                  ] else if (match.scheduledAt != null) ...[
-                    const Icon(
-                      Icons.schedule,
-                      size: 12,
-                      color: AppColors.secondary,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.secondary,
-                      ),
-                    ),
-                    const Spacer(),
-                  ],
-                  StatusBadge(
-                    label: match.status.label(l10n),
-                    color: match.status.color,
+            ),
+            const SizedBox(height: AppSpacing.xs),
+          ],
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  teamAName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: result?.winner == 'teamA'
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
-                ],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+                child: Text(
+                  l10n.championshipMatchVs,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  teamBName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: result?.winner == 'teamB'
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              if (result != null) ...[
+                Text(
+                  _setScores(),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                ),
+                const Spacer(),
+              ] else if (match.scheduledAt != null) ...[
+                const Icon(Icons.schedule, size: 12, color: AppColors.secondary),
+                const SizedBox(width: 3),
+                Text(
+                  DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.secondary),
+                ),
+                const Spacer(),
+              ],
+              StatusBadge(
+                label: match.status.label(l10n),
+                color: match.status.color,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -1790,57 +1773,53 @@ class _AdminMatchCard extends StatelessWidget {
         : l10n.adminPanelMatchOverdue;
     final badgeColor = isDisputed ? AppColors.warning : AppColors.danger;
 
-    return Card(
+    return AccentCard(
+      onTap: onDecide,
       margin: EdgeInsets.zero,
-      child: InkWell(
-        onTap: onDecide,
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '$teamAName  vs  $teamBName',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      'Round ${match.round}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                  ],
+      contentPadding: const EdgeInsets.all(AppSpacing.md),
+      accentColor: badgeColor,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$teamAName  vs  $teamBName',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: badgeColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: badgeColor.withValues(alpha: 0.4)),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  'Round ${match.round}',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                 ),
-                child: Text(
-                  badgeLabel,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: badgeColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              const Icon(Icons.chevron_right, color: AppColors.textMuted),
-            ],
+              ],
+            ),
           ),
-        ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: badgeColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: badgeColor.withValues(alpha: 0.4)),
+            ),
+            child: Text(
+              badgeLabel,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: badgeColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          const Icon(Icons.chevron_right, color: AppColors.textMuted),
+        ],
       ),
     );
   }
@@ -2126,92 +2105,87 @@ class _MyMatchesTab extends StatelessWidget {
             : match.teamAId;
         final opponentName = _teamName(opponentId);
 
-        return Card(
+        return AccentCard(
           margin: const EdgeInsets.only(bottom: 10),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MatchDetailPage(
-                  championshipId: championshipId,
-                  matchId: match.id,
-                  currentUserId: currentUserId,
-                  currentUserDisplayName: currentUserDisplayName,
+          contentPadding: const EdgeInsets.all(14),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MatchDetailPage(
+                championshipId: championshipId,
+                matchId: match.id,
+                currentUserId: currentUserId,
+                currentUserDisplayName: currentUserDisplayName,
+              ),
+            ),
+          ),
+          child: Row(
+            children: [
+              // Round badge
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'R${match.round}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  // Round badge
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(10),
+              const SizedBox(width: AppSpacing.md),
+              // Opponent + scheduled date
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.championshipMyMatchesVs(opponentName),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                     ),
-                    child: Center(
-                      child: Text(
-                        'R${match.round}',
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(
-                              color: AppColors.secondary,
-                              fontWeight: FontWeight.w700,
-                            ),
+                    if (match.scheduledAt != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        DateFormat('d MMM · HH:mm').format(match.scheduledAt!),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  // Opponent + scheduled date
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.championshipMyMatchesVs(opponentName),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
-                        if (match.scheduledAt != null) ...[
-                          const SizedBox(height: 2),
-                          Text(
-                            DateFormat(
-                              'd MMM · HH:mm',
-                            ).format(match.scheduledAt!),
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: AppColors.textMuted),
-                          ),
-                        ],
-                        if (match.result != null) ...[
-                          const SizedBox(height: 2),
-                          Text(
-                            match.result!.sets
-                                .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
-                                .join('  '),
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: AppColors.textMuted),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  // Status badge
-                  StatusBadge(
-                    label: match.status.label(l10n),
-                    color: match.status.color,
-                  ),
-                  const SizedBox(width: AppSpacing.xs),
-                  const Icon(
-                    Icons.chevron_right,
-                    size: 18,
-                    color: AppColors.textMuted,
-                  ),
-                ],
+                    ],
+                    if (match.result != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        match.result!.sets
+                            .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
+                            .join('  '),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
+              // Status badge
+              StatusBadge(
+                label: match.status.label(l10n),
+                color: match.status.color,
+              ),
+              const SizedBox(width: AppSpacing.xs),
+              const Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+            ],
           ),
         );
       },

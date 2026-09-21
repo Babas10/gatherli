@@ -715,39 +715,58 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                       _requestStatus[member.uid] ?? FriendRequestStatus.none;
 
                   if (_isLoadingFriendships && !isCurrentUser) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: const Color(
-                          0xFFEACE6A,
-                        ).withValues(alpha: 0.25),
-                        backgroundImage: member.photoUrl != null
-                            ? CachedNetworkImageProvider(
-                                member.photoUrl!,
-                                maxWidth: avatarCacheDimension(context, 40),
-                                maxHeight: avatarCacheDimension(context, 40),
-                              )
-                            : null,
-                        child: member.photoUrl == null
-                            ? Text(
-                                _getInitials(member.fullDisplayName),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.secondary,
-                                ),
-                              )
-                            : null,
+                    return AccentCard(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 5,
                       ),
-                      title: Text(
-                        member.fullDisplayName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.secondary,
-                        ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
                       ),
-                      trailing: const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: const Color(
+                              0xFFEACE6A,
+                            ).withValues(alpha: 0.25),
+                            backgroundImage: member.photoUrl != null
+                                ? CachedNetworkImageProvider(
+                                    member.photoUrl!,
+                                    maxWidth: avatarCacheDimension(context, 40),
+                                    maxHeight: avatarCacheDimension(
+                                      context,
+                                      40,
+                                    ),
+                                  )
+                                : null,
+                            child: member.photoUrl == null
+                                ? Text(
+                                    _getInitials(member.fullDisplayName),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.secondary,
+                                    ),
+                                  )
+                                : null,
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: Text(
+                              member.fullDisplayName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.secondary,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ],
                       ),
                     );
                   }

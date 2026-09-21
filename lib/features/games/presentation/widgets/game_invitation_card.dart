@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -39,99 +40,89 @@ class GameInvitationCard extends StatelessWidget {
       Localizations.localeOf(context).languageCode,
     );
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.sm,
       ),
-      elevation: 2,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Game title ──────────────────────────────────────────────────
+          Text(
+            invitation.gameTitle,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+
+          // ── Date & time ─────────────────────────────────────────────────
+          _InfoRow(
+            icon: Icons.calendar_today_outlined,
+            text:
+                '${dateFormat.format(invitation.gameScheduledAt)} · ${timeFormat.format(invitation.gameScheduledAt)}',
+          ),
+
+          // ── Location (if available) ─────────────────────────────────────
+          if (invitation.gameLocationName.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            _InfoRow(
+              icon: Icons.location_on_outlined,
+              text: invitation.gameLocationName,
+            ),
+          ],
+
+          // ── Group ───────────────────────────────────────────────────────
+          if (invitation.groupName.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            _InfoRow(
+              icon: Icons.group_outlined,
+              text: l10n.fromGroup(invitation.groupName),
+            ),
+          ],
+
+          // ── Inviter ─────────────────────────────────────────────────────
+          if (invitation.inviterDisplayName.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            _InfoRow(
+              icon: Icons.person_outline,
+              text: l10n.invitedBy(invitation.inviterDisplayName),
+            ),
+          ],
+
+          const SizedBox(height: AppSpacing.lg),
+
+          // ── Action buttons ──────────────────────────────────────────────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // ── Game title ──────────────────────────────────────────────────
-              Text(
-                invitation.gameTitle,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-
-              // ── Date & time ─────────────────────────────────────────────────
-              _InfoRow(
-                icon: Icons.calendar_today_outlined,
-                text:
-                    '${dateFormat.format(invitation.gameScheduledAt)} · ${timeFormat.format(invitation.gameScheduledAt)}',
-              ),
-
-              // ── Location (if available) ─────────────────────────────────────
-              if (invitation.gameLocationName.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.xs),
-                _InfoRow(
-                  icon: Icons.location_on_outlined,
-                  text: invitation.gameLocationName,
-                ),
-              ],
-
-              // ── Group ───────────────────────────────────────────────────────
-              if (invitation.groupName.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.xs),
-                _InfoRow(
-                  icon: Icons.group_outlined,
-                  text: l10n.fromGroup(invitation.groupName),
-                ),
-              ],
-
-              // ── Inviter ─────────────────────────────────────────────────────
-              if (invitation.inviterDisplayName.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.xs),
-                _InfoRow(
-                  icon: Icons.person_outline,
-                  text: l10n.invitedBy(invitation.inviterDisplayName),
-                ),
-              ],
-
-              const SizedBox(height: AppSpacing.lg),
-
-              // ── Action buttons ──────────────────────────────────────────────
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (isProcessing)
-                    const Padding(
-                      padding: EdgeInsets.only(right: AppSpacing.md),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  OutlinedButton(
-                    onPressed: isProcessing ? null : onDecline,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.danger,
-                      side: const BorderSide(color: AppColors.danger),
-                    ),
-                    child: Text(l10n.decline),
+              if (isProcessing)
+                const Padding(
+                  padding: EdgeInsets.only(right: AppSpacing.md),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  FilledButton(
-                    onPressed: isProcessing ? null : onAccept,
-                    child: Text(l10n.accept),
-                  ),
-                ],
+                ),
+              OutlinedButton(
+                onPressed: isProcessing ? null : onDecline,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.danger,
+                  side: const BorderSide(color: AppColors.danger),
+                ),
+                child: Text(l10n.decline),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              FilledButton(
+                onPressed: isProcessing ? null : onAccept,
+                child: Text(l10n.accept),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
