@@ -1233,7 +1233,11 @@ class _MatchCard extends StatelessWidget {
                 ),
                 const Spacer(),
               ] else if (match.scheduledAt != null) ...[
-                const Icon(Icons.schedule, size: 12, color: AppColors.secondary),
+                const Icon(
+                  Icons.schedule,
+                  size: 12,
+                  color: AppColors.secondary,
+                ),
                 const SizedBox(width: 3),
                 Text(
                   DateFormat.yMMMd().add_Hm().format(match.scheduledAt!),
@@ -2147,17 +2151,17 @@ class _MyMatchesTab extends StatelessWidget {
                   children: [
                     Text(
                       l10n.championshipMyMatchesVs(opponentName),
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     if (match.scheduledAt != null) ...[
                       const SizedBox(height: 2),
                       Text(
                         DateFormat('d MMM · HH:mm').format(match.scheduledAt!),
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
                       ),
                     ],
                     if (match.result != null) ...[
@@ -2166,9 +2170,9 @@ class _MyMatchesTab extends StatelessWidget {
                         match.result!.sets
                             .map((s) => '${s.teamAPoints}–${s.teamBPoints}')
                             .join('  '),
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
                       ),
                     ],
                   ],
