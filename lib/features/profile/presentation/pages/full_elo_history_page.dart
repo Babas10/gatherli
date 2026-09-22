@@ -95,7 +95,7 @@ class FullEloHistoryPage extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.error_outline,
-                      size: 48,
+                      size: AppSpacing.iconXl,
                       color: AppColors.danger,
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -274,7 +274,7 @@ class FullEloHistoryPage extends StatelessWidget {
               children: [
                 Icon(
                   Icons.filter_alt,
-                  size: 16,
+                  size: AppSpacing.iconSm,
                   color: theme.colorScheme.onPrimaryContainer,
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -348,7 +348,7 @@ class FullEloHistoryPage extends StatelessWidget {
       elevation: isLatest ? 4 : 1,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
           border: isLatest
               ? Border.all(color: theme.colorScheme.primary, width: 2)
               : null,
@@ -414,7 +414,7 @@ class FullEloHistoryPage extends StatelessWidget {
                       Icon(
                         entry.isGain ? Icons.trending_up : Icons.trending_down,
                         color: changeColor,
-                        size: 20,
+                        size: AppSpacing.iconMd,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(

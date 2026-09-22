@@ -31,7 +31,7 @@ class EmailVerificationBanner extends StatelessWidget {
           const Icon(
             Icons.warning_amber_rounded,
             color: Colors.white,
-            size: 20,
+            size: AppSpacing.iconMd,
           ),
           const SizedBox(width: 10),
           Expanded(

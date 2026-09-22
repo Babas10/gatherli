@@ -46,7 +46,7 @@ class InvitationTile extends StatelessWidget {
               children: [
                 Icon(
                   Icons.person_outline,
-                  size: 16,
+                  size: AppSpacing.iconSm,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: AppSpacing.xs),
@@ -67,7 +67,7 @@ class InvitationTile extends StatelessWidget {
               children: [
                 Icon(
                   Icons.access_time,
-                  size: 16,
+                  size: AppSpacing.iconSm,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: AppSpacing.xs),

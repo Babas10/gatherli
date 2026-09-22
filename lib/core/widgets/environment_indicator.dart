@@ -43,7 +43,11 @@ class EnvironmentIndicator extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(_getEnvironmentIcon(), size: 16, color: Colors.white),
+        Icon(
+          _getEnvironmentIcon(),
+          size: AppSpacing.iconSm,
+          color: Colors.white,
+        ),
         const SizedBox(width: AppSpacing.xs),
         Text(
           '${EnvironmentConfig.environmentName} Environment',
@@ -56,7 +60,7 @@ class EnvironmentIndicator extends StatelessWidget {
         const SizedBox(width: AppSpacing.sm),
         Icon(
           FirebaseService.isInitialized ? Icons.cloud_done : Icons.cloud_off,
-          size: 16,
+          size: AppSpacing.iconSm,
           color: Colors.white,
         ),
       ],
@@ -71,7 +75,11 @@ class EnvironmentIndicator extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(_getEnvironmentIcon(), size: 16, color: Colors.white),
+            Icon(
+              _getEnvironmentIcon(),
+              size: AppSpacing.iconSm,
+              color: Colors.white,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Text(
               '${EnvironmentConfig.environmentName} Environment',
@@ -86,7 +94,7 @@ class EnvironmentIndicator extends StatelessWidget {
               FirebaseService.isInitialized
                   ? Icons.cloud_done
                   : Icons.cloud_off,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: Colors.white,
             ),
             const SizedBox(width: AppSpacing.xs),
@@ -148,11 +156,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
       right: AppSpacing.lg,
       child: Material(
         elevation: 8,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.black87,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
           ),
           child: _isExpanded ? _buildExpandedPanel() : _buildCollapsedPanel(),
         ),
@@ -168,7 +176,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.bug_report, color: Colors.white, size: 20),
+            Icon(
+              Icons.bug_report,
+              color: Colors.white,
+              size: AppSpacing.iconMd,
+            ),
             SizedBox(width: AppSpacing.sm),
             Text('Debug', style: TextStyle(color: Colors.white, fontSize: 12)),
           ],
@@ -189,7 +201,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
         children: [
           Row(
             children: [
-              const Icon(Icons.bug_report, color: Colors.white, size: 16),
+              const Icon(
+                Icons.bug_report,
+                color: Colors.white,
+                size: AppSpacing.iconSm,
+              ),
               const SizedBox(width: AppSpacing.sm),
               const Expanded(
                 child: Text(
@@ -205,7 +221,11 @@ class _FirebaseDebugPanelState extends State<FirebaseDebugPanel> {
               const SizedBox(width: AppSpacing.sm),
               GestureDetector(
                 onTap: () => setState(() => _isExpanded = false),
-                child: const Icon(Icons.close, color: Colors.white, size: 16),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: AppSpacing.iconSm,
+                ),
               ),
             ],
           ),

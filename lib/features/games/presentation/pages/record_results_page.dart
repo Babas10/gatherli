@@ -84,7 +84,7 @@ class _RecordResultsView extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.error_outline,
-                      size: 64,
+                      size: AppSpacing.iconXxl,
                       color: AppColors.danger,
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -321,7 +321,7 @@ class _UnassignedPlayersSection extends StatelessWidget {
                       child: const Icon(
                         Icons.check,
                         color: AppColors.secondary,
-                        size: 16,
+                        size: AppSpacing.iconSm,
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -380,7 +380,7 @@ class _PlayerChip extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
         border: Border.all(color: color),
       ),
       padding: const EdgeInsets.symmetric(
@@ -398,7 +398,7 @@ class _PlayerChip extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close, size: 20),
+            icon: const Icon(Icons.close, size: AppSpacing.iconMd),
             onPressed: onRemove,
             tooltip: AppLocalizations.of(context)!.removeFromTeam,
           ),
@@ -434,7 +434,7 @@ class _UnassignedPlayerItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
         border: Border.all(color: Colors.grey.shade300),
       ),
       padding: const EdgeInsets.all(AppSpacing.md),

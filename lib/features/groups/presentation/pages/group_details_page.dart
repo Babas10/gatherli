@@ -449,7 +449,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                                 isMuted
                                     ? Icons.notifications_active_outlined
                                     : Icons.notifications_off_outlined,
-                                size: 20,
+                                size: AppSpacing.iconMd,
                               ),
                               const SizedBox(width: AppSpacing.md),
                               Flexible(
@@ -468,7 +468,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
                             children: [
                               const Icon(
                                 Icons.exit_to_app,
-                                size: 20,
+                                size: AppSpacing.iconMd,
                                 color: AppColors.danger,
                               ),
                               const SizedBox(width: AppSpacing.md),
@@ -514,7 +514,7 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
           children: [
             Icon(
               Icons.error_outline,
-              size: 64,
+              size: AppSpacing.iconXxl,
               color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -1037,7 +1037,11 @@ class _GroupDetailsPageContentState extends State<_GroupDetailsPageContent>
             ),
           Row(
             children: [
-              const Icon(Icons.people, size: 16, color: AppColors.textMuted),
+              const Icon(
+                Icons.people,
+                size: AppSpacing.iconSm,
+                color: AppColors.textMuted,
+              ),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 '${_group!.memberCount} members',

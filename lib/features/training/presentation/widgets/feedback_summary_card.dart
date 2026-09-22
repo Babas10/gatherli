@@ -125,7 +125,7 @@ class FeedbackSummaryCard extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: AppColors.secondary),
+        Icon(icon, size: AppSpacing.iconMd, color: AppColors.secondary),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Column(

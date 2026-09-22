@@ -50,7 +50,7 @@ class SearchResultTile extends StatelessWidget {
             children: [
               Icon(
                 Icons.info_outline,
-                size: 48,
+                size: AppSpacing.iconXl,
                 color: theme.colorScheme.secondary,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -78,7 +78,7 @@ class SearchResultTile extends StatelessWidget {
             children: [
               Icon(
                 Icons.person_search,
-                size: 48,
+                size: AppSpacing.iconXl,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
               const SizedBox(height: AppSpacing.md),

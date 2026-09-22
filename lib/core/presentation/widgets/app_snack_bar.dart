@@ -2,6 +2,7 @@
 // Use these instead of constructing SnackBar inline in BLoC listeners.
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_spacing.dart';
 
 class AppSnackBar {
   AppSnackBar._();
@@ -27,7 +28,7 @@ class AppSnackBar {
           backgroundColor: color,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
           ),
           duration: const Duration(seconds: 3),
         ),

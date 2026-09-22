@@ -219,7 +219,11 @@ class ChampionshipCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
-              const Icon(Icons.group, size: 14, color: AppColors.textMuted),
+              const Icon(
+                Icons.group,
+                size: AppSpacing.iconXs,
+                color: AppColors.textMuted,
+              ),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 l10n.championshipTeamCountOf(
@@ -238,7 +242,7 @@ class ChampionshipCard extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.location_on_outlined,
-                  size: 14,
+                  size: AppSpacing.iconXs,
                   color: AppColors.textMuted,
                 ),
                 const SizedBox(width: AppSpacing.xs),
@@ -294,7 +298,7 @@ class _DeadlineRow extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(Icons.schedule, size: 14, color: color),
+        Icon(Icons.schedule, size: AppSpacing.iconXs, color: color),
         const SizedBox(width: AppSpacing.xs),
         Text(
           text,

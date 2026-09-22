@@ -166,7 +166,11 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
-            const Icon(Icons.error_outline, color: AppColors.danger, size: 48),
+            const Icon(
+              Icons.error_outline,
+              color: AppColors.danger,
+              size: AppSpacing.iconXl,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               _errorMessage!,
@@ -237,7 +241,7 @@ class _FriendSelectorWidgetState extends State<FriendSelectorWidget> {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
             ),
             child: ListView.separated(
               itemCount: _friends!.length,

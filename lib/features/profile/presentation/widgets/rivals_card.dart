@@ -47,7 +47,7 @@ class RivalsCard extends StatelessWidget {
                       ),
                     )
                   : null,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: nemesis != null
@@ -75,7 +75,7 @@ class RivalsCard extends StatelessWidget {
             Text(nemesis.opponentName, style: AppTextStyles.cardTitle),
             Icon(
               Icons.arrow_forward_ios,
-              size: 14,
+              size: AppSpacing.iconXs,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ],
@@ -86,7 +86,7 @@ class RivalsCard extends StatelessWidget {
           children: [
             Icon(
               Icons.sports_score,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: AppColors.textMuted.withValues(alpha: 0.7),
             ),
             const SizedBox(width: AppSpacing.sm),
@@ -113,7 +113,7 @@ class RivalsCard extends StatelessWidget {
           children: [
             Icon(
               Icons.percent,
-              size: 16,
+              size: AppSpacing.iconSm,
               color: AppColors.textMuted.withValues(alpha: 0.7),
             ),
             const SizedBox(width: AppSpacing.sm),
@@ -142,7 +142,7 @@ class RivalsCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: AppColors.secondary,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
           ),
           child: Text(
             AppLocalizations.of(context)!.tapForFullBreakdown,

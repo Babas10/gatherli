@@ -450,7 +450,7 @@ class _ChampionshipHeader extends StatelessWidget {
                   padding: EdgeInsets.only(left: AppSpacing.sm),
                   child: Icon(
                     Icons.info_outline,
-                    size: 20,
+                    size: AppSpacing.iconMd,
                     color: AppColors.textMuted,
                   ),
                 ),
@@ -492,7 +492,7 @@ class _ChampionshipHeader extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.info_outline,
-                  size: 14,
+                  size: AppSpacing.iconXs,
                   color: AppColors.textMuted,
                 ),
                 const SizedBox(width: AppSpacing.xs),
@@ -699,12 +699,14 @@ class _MyTeamSection extends StatelessWidget {
                       const SizedBox(width: AppSpacing.xs),
                       InkWell(
                         onTap: () => _showRenameDialog(context),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.inputRadius,
+                        ),
                         child: const Padding(
                           padding: EdgeInsets.all(2),
                           child: Icon(
                             Icons.edit_outlined,
-                            size: 14,
+                            size: AppSpacing.iconXs,
                             color: AppColors.primary,
                           ),
                         ),
@@ -729,7 +731,10 @@ class _MyTeamSection extends StatelessWidget {
           if (onLeave != null)
             TextButton.icon(
               onPressed: onLeave,
-              icon: const Icon(Icons.exit_to_app_outlined, size: 16),
+              icon: const Icon(
+                Icons.exit_to_app_outlined,
+                size: AppSpacing.iconSm,
+              ),
               label: Text(l10n.leaveTeam),
               style: TextButton.styleFrom(foregroundColor: AppColors.danger),
             ),
@@ -750,7 +755,7 @@ class _InfoChip extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: AppColors.textMuted),
+        Icon(icon, size: AppSpacing.iconXs, color: AppColors.textMuted),
         const SizedBox(width: AppSpacing.xs),
         Text(
           label,
@@ -988,7 +993,7 @@ class _TeamCard extends StatelessWidget {
           ),
           const Icon(
             Icons.people_outline,
-            size: 16,
+            size: AppSpacing.iconSm,
             color: AppColors.textMuted,
           ),
           const SizedBox(width: AppSpacing.xs),
@@ -1164,14 +1169,14 @@ class _MatchCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         side: isMyMatch
             ? const BorderSide(color: AppColors.primary, width: 2)
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
@@ -1441,7 +1446,10 @@ class _AdminTab extends StatelessWidget {
                     setDialogState(() => selectedDate = picked);
                   }
                 },
-                icon: const Icon(Icons.calendar_today_outlined, size: 16),
+                icon: const Icon(
+                  Icons.calendar_today_outlined,
+                  size: AppSpacing.iconSm,
+                ),
                 label: Text(DateFormat.yMMMd().format(selectedDate)),
               ),
             ],
@@ -1518,7 +1526,10 @@ class _AdminTab extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               OutlinedButton.icon(
-                icon: const Icon(Icons.calendar_today_outlined, size: 16),
+                icon: const Icon(
+                  Icons.calendar_today_outlined,
+                  size: AppSpacing.iconSm,
+                ),
                 label: Text(
                   newDeadline != null
                       ? DateFormat('d MMM yyyy').format(newDeadline!)
@@ -1783,7 +1794,7 @@ class _AdminMatchCard extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: InkWell(
         onTap: onDecide,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
@@ -2118,7 +2129,7 @@ class _MyMatchesTab extends StatelessWidget {
         return Card(
           margin: const EdgeInsets.only(bottom: 10),
           child: InkWell(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(

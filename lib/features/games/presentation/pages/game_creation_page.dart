@@ -103,7 +103,7 @@ class _GameCreationPageState extends State<GameCreationPage> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -336,7 +336,10 @@ class _GameCreationPageState extends State<GameCreationPage> {
                               )
                             : Text(l10n.tapToSelect),
                         leading: const Icon(Icons.calendar_today),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: AppSpacing.iconSm,
+                        ),
                         onTap: isSubmitting
                             ? null
                             : () => _selectDateTime(context),
@@ -344,7 +347,9 @@ class _GameCreationPageState extends State<GameCreationPage> {
                             ? Colors.red.withAlpha(26)
                             : null,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.badgeRadius,
+                          ),
                           side: BorderSide(
                             color: _selectedDateTime == null
                                 ? AppColors.danger

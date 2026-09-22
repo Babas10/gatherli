@@ -42,7 +42,7 @@ class ProfileInfoCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.email_outlined,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -67,7 +67,10 @@ class ProfileInfoCard extends StatelessWidget {
                             const SizedBox(width: AppSpacing.sm),
                             TextButton.icon(
                               onPressed: onVerificationTap,
-                              icon: const Icon(Icons.send, size: 16),
+                              icon: const Icon(
+                                Icons.send,
+                                size: AppSpacing.iconSm,
+                              ),
                               label: Text(l10n.verify),
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
@@ -139,7 +142,7 @@ class _InfoRow extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(icon, size: 20, color: theme.colorScheme.primary),
+        Icon(icon, size: AppSpacing.iconMd, color: theme.colorScheme.primary),
         const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(

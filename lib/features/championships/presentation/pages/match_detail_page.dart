@@ -321,7 +321,11 @@ class _MatchHeaderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.event, size: 14, color: AppColors.textMuted),
+                const Icon(
+                  Icons.event,
+                  size: AppSpacing.iconXs,
+                  color: AppColors.textMuted,
+                ),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
                   l10n.matchDetailScheduledAt(
@@ -340,7 +344,7 @@ class _MatchHeaderCard extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
-                    size: 14,
+                    size: AppSpacing.iconXs,
                     color: AppColors.textMuted,
                   ),
                   const SizedBox(width: AppSpacing.xs),
@@ -359,7 +363,11 @@ class _MatchHeaderCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.schedule, size: 14, color: AppColors.textMuted),
+              const Icon(
+                Icons.schedule,
+                size: AppSpacing.iconXs,
+                color: AppColors.textMuted,
+              ),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 l10n.championshipDeadlineLabel(
@@ -477,7 +485,10 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: isProposing ? null : () => _pickDate(context),
-                    icon: const Icon(Icons.calendar_today, size: 16),
+                    icon: const Icon(
+                      Icons.calendar_today,
+                      size: AppSpacing.iconSm,
+                    ),
                     label: Text(
                       '${l10n.matchDetailProposeDateLabel}: $dateStr',
                     ),
@@ -487,7 +498,10 @@ class _ProposeScheduleSectionState extends State<_ProposeScheduleSection> {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: isProposing ? null : () => _pickTime(context),
-                    icon: const Icon(Icons.access_time, size: 16),
+                    icon: const Icon(
+                      Icons.access_time,
+                      size: AppSpacing.iconSm,
+                    ),
                     label: Text(
                       '${l10n.matchDetailProposeTimeLabel}: $timeStr',
                     ),
@@ -826,7 +840,7 @@ class _ScheduleConfirmationSection extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
-                    size: 14,
+                    size: AppSpacing.iconXs,
                     color: AppColors.textMuted,
                   ),
                   const SizedBox(width: AppSpacing.xs),

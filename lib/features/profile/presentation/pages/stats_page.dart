@@ -36,7 +36,7 @@ class StatsPage extends StatelessWidget {
               children: [
                 Icon(
                   Icons.error_outline,
-                  size: 48,
+                  size: AppSpacing.iconXl,
                   color: Theme.of(context).colorScheme.error,
                 ),
                 const SizedBox(height: AppSpacing.lg),

@@ -322,7 +322,7 @@ class HeadToHeadPage extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: resultColor.withValues(alpha: 0.04),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
         border: Border.all(color: resultColor.withValues(alpha: 0.25)),
       ),
       child: Row(

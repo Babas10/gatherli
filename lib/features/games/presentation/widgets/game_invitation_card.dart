@@ -46,7 +46,9 @@ class GameInvitationCard extends StatelessWidget {
       ),
       elevation: 2,
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
+      ),
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -145,7 +147,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.textMuted),
+        Icon(icon, size: AppSpacing.iconSm, color: AppColors.textMuted),
         const SizedBox(width: 6),
         Expanded(
           child: Text(

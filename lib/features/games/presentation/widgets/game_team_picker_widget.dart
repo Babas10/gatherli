@@ -100,7 +100,7 @@ class GameTeamPickerWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 6),
             child: InkWell(
               onTap: () => onTeamsSelected(combo),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(
@@ -111,7 +111,7 @@ class GameTeamPickerWidget extends StatelessWidget {
                   color: isSelected
                       ? AppColors.primary.withValues(alpha: 0.12)
                       : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
                   border: Border.all(
                     color: isSelected
                         ? AppColors.primary

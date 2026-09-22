@@ -64,7 +64,11 @@ class RestrictedActionGuard {
       builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.block, color: Colors.red.shade700, size: 24),
+            Icon(
+              Icons.block,
+              color: Colors.red.shade700,
+              size: AppSpacing.iconLg,
+            ),
             const SizedBox(width: AppSpacing.sm),
             Text(l10n.featureRestrictedTitle),
           ],
@@ -86,7 +90,11 @@ class RestrictedActionGuard {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.schedule, color: Colors.red.shade700, size: 16),
+                    Icon(
+                      Icons.schedule,
+                      color: Colors.red.shade700,
+                      size: AppSpacing.iconSm,
+                    ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(

@@ -186,7 +186,7 @@ class _PickupGameCreationViewState extends State<_PickupGameCreationView> {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -488,7 +488,7 @@ class _GameDetailsStep extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.secondary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
                   border: Border.all(
                     color: AppColors.secondary.withValues(alpha: 0.3),
                   ),
@@ -499,7 +499,7 @@ class _GameDetailsStep extends StatelessWidget {
                     const Icon(
                       Icons.flash_on,
                       color: AppColors.secondary,
-                      size: 16,
+                      size: AppSpacing.iconSm,
                     ),
                     const SizedBox(width: 6),
                     Text(
@@ -575,10 +575,15 @@ class _GameDetailsStep extends StatelessWidget {
                                 style: const TextStyle(color: AppColors.danger),
                               ),
                         leading: const Icon(Icons.calendar_today),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: AppSpacing.iconSm,
+                        ),
                         onTap: isSubmitting ? null : onSelectDateTime,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.badgeRadius,
+                          ),
                           side: BorderSide(
                             color: selectedDateTime == null
                                 ? AppColors.danger

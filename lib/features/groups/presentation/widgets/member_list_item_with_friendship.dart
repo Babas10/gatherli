@@ -90,7 +90,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
                 ],
                 if (isCreator) ...[
                   const SizedBox(width: AppSpacing.sm),
-                  const Icon(Icons.star, size: 16, color: AppColors.warning),
+                  const Icon(
+                    Icons.star,
+                    size: AppSpacing.iconSm,
+                    color: AppColors.warning,
+                  ),
                 ],
               ],
             ),
@@ -115,7 +119,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
       return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check_circle, size: 16, color: AppColors.success),
+          Icon(
+            Icons.check_circle,
+            size: AppSpacing.iconSm,
+            color: AppColors.success,
+          ),
           SizedBox(width: AppSpacing.xs),
           Text(
             'Friend',
@@ -129,7 +137,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
       return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.schedule, size: 16, color: AppColors.warning),
+          Icon(
+            Icons.schedule,
+            size: AppSpacing.iconSm,
+            color: AppColors.warning,
+          ),
           SizedBox(width: AppSpacing.xs),
           Text(
             'Request Sent',
@@ -143,7 +155,11 @@ class MemberListItemWithFriendship extends StatelessWidget {
       return const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.person_add, size: 16, color: AppColors.info),
+          Icon(
+            Icons.person_add,
+            size: AppSpacing.iconSm,
+            color: AppColors.info,
+          ),
           SizedBox(width: AppSpacing.xs),
           Text(
             'Wants to be friends',

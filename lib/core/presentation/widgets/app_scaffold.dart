@@ -86,7 +86,7 @@ class AppScaffold extends StatelessWidget {
             children: [
               const Icon(
                 Icons.error_outline,
-                size: 48,
+                size: AppSpacing.iconXl,
                 color: AppColors.danger,
               ),
               const SizedBox(height: AppSpacing.lg),

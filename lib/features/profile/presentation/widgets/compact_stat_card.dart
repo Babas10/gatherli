@@ -54,7 +54,7 @@ class CompactStatCard extends StatelessWidget {
                   const SizedBox(width: AppSpacing.xs),
                   Icon(
                     icon,
-                    size: 16,
+                    size: AppSpacing.iconSm,
                     color: iconColor ?? theme.colorScheme.primary,
                   ),
                 ],

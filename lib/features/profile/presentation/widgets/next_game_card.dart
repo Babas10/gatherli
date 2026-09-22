@@ -53,7 +53,7 @@ class NextGameCard extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
               boxShadow: const [
                 BoxShadow(
                   color: AppColors.shadow,
@@ -89,7 +89,7 @@ class NextGameCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
         child: CustomPaint(
           painter: _DashedBorderPainter(),
           child: SizedBox(
@@ -146,7 +146,7 @@ class NextGameCard extends StatelessWidget {
           children: [
             const Icon(
               Icons.calendar_today,
-              size: 14,
+              size: AppSpacing.iconXs,
               color: AppColors.textMuted,
             ),
             const SizedBox(width: AppSpacing.xs),
@@ -162,7 +162,11 @@ class NextGameCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-            const Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
+            const Icon(
+              Icons.location_on,
+              size: AppSpacing.iconXs,
+              color: AppColors.textMuted,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
@@ -205,7 +209,7 @@ class NextGameCard extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
       ),
       child: Row(
         children: [

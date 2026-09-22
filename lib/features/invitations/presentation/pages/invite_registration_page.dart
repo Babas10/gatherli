@@ -310,7 +310,7 @@ class _InviteRegistrationPageState extends State<InviteRegistrationPage> {
               showDuration: const Duration(seconds: 6),
               child: const Icon(
                 Icons.help_outline,
-                size: 16,
+                size: AppSpacing.iconSm,
                 color: AppColors.textMuted,
               ),
             ),
@@ -491,7 +491,11 @@ class _GenderOption extends StatelessWidget {
               ),
             ),
             child: selected
-                ? const Icon(Icons.check, color: Colors.white, size: 14)
+                ? const Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: AppSpacing.iconXs,
+                  )
                 : null,
           ),
           const SizedBox(height: 6),

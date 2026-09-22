@@ -67,7 +67,7 @@ class ELOTrendIndicator extends StatelessWidget {
                     trendData['isPositive']
                         ? Icons.arrow_upward
                         : Icons.arrow_downward,
-                    size: 16,
+                    size: AppSpacing.iconSm,
                     color: trendData['isPositive']
                         ? AppColors.success
                         : AppColors.danger,

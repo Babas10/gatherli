@@ -267,7 +267,7 @@ class _TrainingSessionFeedbackPageState
                     const Icon(
                       Icons.privacy_tip_outlined,
                       color: AppColors.secondary,
-                      size: 20,
+                      size: AppSpacing.iconMd,
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(

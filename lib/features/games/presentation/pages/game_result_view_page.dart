@@ -158,7 +158,7 @@ class _EloUpdatesCard extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.trending_up,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                   color: AppColors.primary,
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -218,7 +218,7 @@ class _EloUpdatesCard extends StatelessWidget {
                           ),
                           child: Icon(
                             Icons.arrow_forward,
-                            size: 16,
+                            size: AppSpacing.iconSm,
                             color: isGain
                                 ? AppColors.success
                                 : (isLoss ? AppColors.danger : Colors.grey),
@@ -328,7 +328,7 @@ class _IndividualGameCard extends StatelessWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
                   ),
                   child: Center(
                     child: Text(
@@ -411,7 +411,9 @@ class _IndividualGameCard extends StatelessWidget {
                               color: teamAWon
                                   ? AppColors.secondary
                                   : AppColors.primary,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(
+                                AppSpacing.badgeRadius,
+                              ),
                               border: Border.all(
                                 color: teamAWon
                                     ? AppColors.secondary
@@ -452,7 +454,9 @@ class _IndividualGameCard extends StatelessWidget {
                               color: teamBWon
                                   ? AppColors.secondary
                                   : AppColors.primary,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(
+                                AppSpacing.badgeRadius,
+                              ),
                               border: Border.all(
                                 color: teamBWon
                                     ? AppColors.secondary

@@ -159,7 +159,7 @@ class EmailVerificationPage extends StatelessWidget {
               ),
               child: Icon(
                 Icons.mark_email_unread_outlined,
-                size: 64,
+                size: AppSpacing.iconXxl,
                 color: theme.colorScheme.secondary,
               ),
             ),
@@ -181,14 +181,14 @@ class EmailVerificationPage extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.email_outlined,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -306,7 +306,7 @@ class EmailVerificationPage extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.errorContainer,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
             ),
             child: Text(
               message,
@@ -349,7 +349,7 @@ class EmailVerificationPage extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         border: Border.all(
           color: onTap != null
               ? theme.colorScheme.primary.withValues(alpha: 0.4)
@@ -366,7 +366,11 @@ class EmailVerificationPage extends StatelessWidget {
               color: theme.colorScheme.primaryContainer,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 24, color: theme.colorScheme.primary),
+            child: Icon(
+              icon,
+              size: AppSpacing.iconLg,
+              color: theme.colorScheme.primary,
+            ),
           ),
           const SizedBox(width: AppSpacing.lg),
           Expanded(
@@ -393,7 +397,7 @@ class EmailVerificationPage extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Icon(
               Icons.chevron_right,
-              size: 20,
+              size: AppSpacing.iconMd,
               color: theme.colorScheme.primary,
             ),
           ],
@@ -405,7 +409,7 @@ class EmailVerificationPage extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
       child: content,
     );
   }
@@ -476,7 +480,7 @@ class EmailVerificationPage extends StatelessWidget {
         children: [
           Icon(
             Icons.check_circle_outline,
-            size: 16,
+            size: AppSpacing.iconSm,
             color: theme.colorScheme.primary,
           ),
           const SizedBox(width: AppSpacing.sm),

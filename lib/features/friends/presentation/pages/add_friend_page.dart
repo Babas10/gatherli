@@ -110,7 +110,9 @@ class _AddFriendPageState extends State<AddFriendPage> {
                           )
                         : null,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(
+                        AppSpacing.inputRadius,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,

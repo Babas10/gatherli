@@ -175,9 +175,15 @@ class AppTheme {
         ),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: AppColors.secondary, size: 24);
+            return const IconThemeData(
+              color: AppColors.secondary,
+              size: AppSpacing.iconLg,
+            );
           }
-          return const IconThemeData(color: AppColors.navLabelColor, size: 24);
+          return const IconThemeData(
+            color: AppColors.navLabelColor,
+            size: AppSpacing.iconLg,
+          );
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -394,7 +400,10 @@ class AppTheme {
       ),
 
       // ── Icon theme ────────────────────────────────────────────────────────────
-      iconTheme: const IconThemeData(color: AppColors.secondary, size: 24),
+      iconTheme: const IconThemeData(
+        color: AppColors.secondary,
+        size: AppSpacing.iconLg,
+      ),
     );
   }
 }

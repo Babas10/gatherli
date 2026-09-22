@@ -75,7 +75,9 @@ class _FriendSearchBarState extends State<FriendSearchBar> {
                           )
                         : null,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(
+                        AppSpacing.inputRadius,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,

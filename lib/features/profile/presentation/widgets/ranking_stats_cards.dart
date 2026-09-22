@@ -170,7 +170,7 @@ class _RankingStatCard extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),

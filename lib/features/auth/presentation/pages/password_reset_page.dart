@@ -65,7 +65,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
               children: [
                 Icon(
                   Icons.lock_reset,
-                  size: 64,
+                  size: AppSpacing.iconXxl,
                   color: Theme.of(context).primaryColor,
                 ),
                 const SizedBox(height: AppSpacing.xl),
@@ -144,7 +144,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           icon: const Icon(
             Icons.check_circle,
             color: AppColors.success,
-            size: 48,
+            size: AppSpacing.iconXl,
           ),
           title: Text(l10n.emailSent),
           content: Column(

@@ -130,7 +130,7 @@ class _MatchChatViewState extends State<_MatchChatView> {
                 const Icon(
                   Icons.chat_bubble_outline,
                   color: AppColors.secondary,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(

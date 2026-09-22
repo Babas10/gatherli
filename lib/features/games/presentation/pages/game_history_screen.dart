@@ -229,7 +229,7 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, size: 48),
+                    const Icon(Icons.error_outline, size: AppSpacing.iconXl),
                     const SizedBox(height: AppSpacing.lg),
                     Text(message),
                     const SizedBox(height: AppSpacing.lg),

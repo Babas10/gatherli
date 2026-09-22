@@ -120,7 +120,7 @@ class InviteLinkSection extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
             color: AppColors.scaffoldBackground,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppSpacing.badgeRadius),
             border: Border.all(color: AppColors.divider),
           ),
           child: SelectableText(

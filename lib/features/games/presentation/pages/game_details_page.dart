@@ -122,7 +122,7 @@ class _GameDetailsView extends StatelessWidget {
             children: [
               Icon(
                 Icons.error_outline,
-                size: 64,
+                size: AppSpacing.iconXxl,
                 color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -160,7 +160,7 @@ class _GameDetailsView extends StatelessWidget {
             children: [
               Icon(
                 Icons.search_off,
-                size: 64,
+                size: AppSpacing.iconXxl,
                 color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -401,7 +401,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: AppColors.primary),
+        Icon(icon, size: AppSpacing.iconMd, color: AppColors.primary),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
@@ -575,7 +575,7 @@ class _PlayersCard extends StatelessWidget {
                                     children: [
                                       const Icon(
                                         Icons.exit_to_app,
-                                        size: 20,
+                                        size: AppSpacing.iconMd,
                                         color: AppColors.danger,
                                       ),
                                       const SizedBox(width: AppSpacing.md),
@@ -634,7 +634,7 @@ class _PlayersCard extends StatelessWidget {
                     children: [
                       const Icon(
                         Icons.exit_to_app,
-                        size: 20,
+                        size: AppSpacing.iconMd,
                         color: AppColors.danger,
                       ),
                       const SizedBox(width: AppSpacing.md),
@@ -672,7 +672,7 @@ class _PlayersCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.exit_to_app,
-                  size: 20,
+                  size: AppSpacing.iconMd,
                   color: Theme.of(context).colorScheme.error,
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -758,7 +758,9 @@ class _RsvpButtons extends StatelessWidget {
                             ),
                           );
                         },
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.badgeRadius,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: AppSpacing.xl,
@@ -770,7 +772,7 @@ class _RsvpButtons extends StatelessWidget {
                               const Icon(
                                 Icons.scoreboard,
                                 color: AppColors.secondary,
-                                size: 24,
+                                size: AppSpacing.iconLg,
                               ),
                               const SizedBox(height: AppSpacing.xs),
                               Text(
@@ -918,7 +920,7 @@ class _ViewResultsCard extends StatelessWidget {
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
@@ -942,7 +944,7 @@ class _ViewResultsCard extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     Icons.arrow_forward_ios,
-                    size: 16,
+                    size: AppSpacing.iconSm,
                     color: AppColors.secondary,
                   ),
                 ],
@@ -1114,7 +1116,7 @@ class _VerificationSection extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             color: bannerColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
             border: Border.all(color: bannerColor),
           ),
           child: Column(

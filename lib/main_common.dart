@@ -84,7 +84,11 @@ Future<void> mainCommon() async {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const Icon(
+                  Icons.error_outline,
+                  size: AppSpacing.iconXxl,
+                  color: Colors.red,
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 const Text(
                   'Failed to initialize app',

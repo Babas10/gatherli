@@ -53,7 +53,7 @@ class NextTrainingSessionCard extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
               boxShadow: const [
                 BoxShadow(
                   color: AppColors.shadow,
@@ -89,7 +89,7 @@ class NextTrainingSessionCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
         child: CustomPaint(
           painter: _DashedBorderPainter(),
           child: SizedBox(
@@ -146,7 +146,7 @@ class NextTrainingSessionCard extends StatelessWidget {
           children: [
             const Icon(
               Icons.calendar_today,
-              size: 14,
+              size: AppSpacing.iconXs,
               color: AppColors.textMuted,
             ),
             const SizedBox(width: AppSpacing.xs),
@@ -162,7 +162,11 @@ class NextTrainingSessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            const Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
+            const Icon(
+              Icons.location_on,
+              size: AppSpacing.iconXs,
+              color: AppColors.textMuted,
+            ),
             const SizedBox(width: 2),
             Expanded(
               child: Text(
@@ -176,7 +180,11 @@ class NextTrainingSessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            const Icon(Icons.access_time, size: 14, color: AppColors.textMuted),
+            const Icon(
+              Icons.access_time,
+              size: AppSpacing.iconXs,
+              color: AppColors.textMuted,
+            ),
             const SizedBox(width: 2),
             Text(
               _formatDuration(context, session!.duration),
@@ -206,7 +214,7 @@ class NextTrainingSessionCard extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
       ),
       child: Row(
         children: [
