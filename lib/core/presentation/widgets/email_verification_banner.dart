@@ -1,6 +1,7 @@
 // Dismissible warning banner for users who have not verified their email.
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
 class EmailVerificationBanner extends StatelessWidget {
@@ -37,11 +38,7 @@ class EmailVerificationBanner extends StatelessWidget {
           Expanded(
             child: Text(
               l10n.verifyEmailWarning(daysRemaining),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.mediumLabel.copyWith(color: Colors.white),
             ),
           ),
           const SizedBox(width: AppSpacing.sm),

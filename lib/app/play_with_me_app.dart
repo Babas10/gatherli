@@ -815,7 +815,7 @@ class _HomeTabState extends State<_HomeTab> {
           return Center(
             child: Text(
               AppLocalizations.of(context)!.welcomeMessage,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: AppTextStyles.headlineBold,
             ),
           );
         }
@@ -997,10 +997,7 @@ class _HomeTabState extends State<_HomeTab> {
             return Center(
               child: Text(
                 AppLocalizations.of(context)!.welcomeMessage,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppTextStyles.headlineBold,
               ),
             );
           },

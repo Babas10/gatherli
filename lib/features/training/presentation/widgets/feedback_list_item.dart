@@ -46,14 +46,7 @@ class FeedbackListItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Anonymous',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.secondary,
-                        ),
-                      ),
+                      const Text('Anonymous', style: AppTextStyles.cardTitle),
                       const SizedBox(height: 3),
                       Row(
                         children: [

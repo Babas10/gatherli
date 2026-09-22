@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -160,13 +161,7 @@ class _GameCountSelector extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: Text(
-                    '$count',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: Text('$count', style: AppTextStyles.headlineBold),
                 ),
               );
             }),
@@ -639,10 +634,7 @@ class _SaveButton extends StatelessWidget {
                   canSave
                       ? l10n.saveScores
                       : l10n.completeGamesToContinue(gamesWon, totalGames),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.emphasisTitle,
                 ),
               ),
             ),

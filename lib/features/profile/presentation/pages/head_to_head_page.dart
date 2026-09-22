@@ -186,9 +186,7 @@ class HeadToHeadPage extends StatelessWidget {
       children: [
         Text(
           stats.rivalryIntensity,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.emphasisTitle.copyWith(
             color: AppColors.secondary,
           ),
           textAlign: TextAlign.center,

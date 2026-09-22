@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/features/championships/data/models/championship_match_model.dart';
 import 'package:play_with_me/features/championships/domain/repositories/championship_repository.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -251,10 +252,7 @@ class _MatchResultEntryViewState extends State<_MatchResultEntryView> {
               // Validation error
               if (_validationError != null) ...[
                 const SizedBox(height: AppSpacing.sm),
-                Text(
-                  _validationError!,
-                  style: const TextStyle(color: AppColors.danger, fontSize: 13),
-                ),
+                Text(_validationError!, style: AppTextStyles.danger),
               ],
               const SizedBox(height: AppSpacing.lg),
               SizedBox(
@@ -333,10 +331,7 @@ class _SetRow extends StatelessWidget {
       children: [
         SizedBox(
           width: 56,
-          child: Text(
-            label,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-          ),
+          child: Text(label, style: AppTextStyles.mediumLabel),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(

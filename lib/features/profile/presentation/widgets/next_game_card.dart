@@ -215,9 +215,7 @@ class NextGameCard extends StatelessWidget {
         children: [
           Text(
             '${game!.currentPlayerCount}/${game!.maxPlayers}',
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.mediumLabel.copyWith(
               color: AppColors.onSurface,
             ),
           ),

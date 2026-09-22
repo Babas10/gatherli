@@ -537,7 +537,9 @@ class _GameDetailsStep extends StatelessWidget {
                         if (value == null || value.trim().isEmpty) {
                           return l10n.pleaseTitleRequired;
                         }
-                        if (value.trim().length < 3) return l10n.titleMinLength;
+                        if (value.trim().length < 3) {
+                          return l10n.titleMinLength;
+                        }
                         if (value.trim().length > 100) {
                           return l10n.titleMaxLength;
                         }

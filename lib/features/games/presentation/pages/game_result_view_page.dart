@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/theme/app_text_styles.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 
@@ -333,10 +334,8 @@ class _IndividualGameCard extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '$gameNumber',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyles.emphasisTitle.copyWith(
                         color: AppColors.secondary,
-                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -423,12 +422,10 @@ class _IndividualGameCard extends StatelessWidget {
                             ),
                             child: Text(
                               set.teamAPoints.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                              style: AppTextStyles.emphasisTitle.copyWith(
                                 color: teamAWon
                                     ? Colors.white
                                     : AppColors.secondary,
-                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -466,12 +463,10 @@ class _IndividualGameCard extends StatelessWidget {
                             ),
                             child: Text(
                               set.teamBPoints.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                              style: AppTextStyles.emphasisTitle.copyWith(
                                 color: teamBWon
                                     ? Colors.white
                                     : AppColors.secondary,
-                                fontSize: 16,
                               ),
                             ),
                           ),
