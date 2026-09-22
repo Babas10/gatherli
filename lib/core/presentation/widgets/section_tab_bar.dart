@@ -10,7 +10,10 @@ class AppTabItem {
   final IconData icon;
   final String label;
 
-  const AppTabItem({required this.icon, required this.label});
+  /// Optional notification count shown as a badge on the icon. 0 or null hides it.
+  final int? badgeCount;
+
+  const AppTabItem({required this.icon, required this.label, this.badgeCount});
 }
 
 /// Drop-in replacement for TabBar across the app.
@@ -36,6 +39,7 @@ class SectionTabBar extends StatelessWidget {
             (e) => _AppTab(
               icon: e.value.icon,
               label: e.value.label,
+              badgeCount: e.value.badgeCount,
               index: e.key,
               controller: ctrl,
             ),
@@ -50,12 +54,14 @@ class SectionTabBar extends StatelessWidget {
 class _AppTab extends StatelessWidget {
   final IconData icon;
   final String label;
+  final int? badgeCount;
   final int index;
   final TabController controller;
 
   const _AppTab({
     required this.icon,
     required this.label,
+    this.badgeCount,
     required this.index,
     required this.controller,
   });
@@ -66,12 +72,18 @@ class _AppTab extends StatelessWidget {
       animation: controller.animation!,
       builder: (context, _) {
         final isSelected = controller.index == index;
+        final iconColor = isSelected
+            ? AppColors.primary
+            : AppColors.navLabelColor;
+        final count = badgeCount ?? 0;
         return Tab(
-          icon: Icon(
-            icon,
+          icon: Badge(
+            isLabelVisible: count > 0,
+            label: Text(count > 9 ? '9+' : '$count'),
+            backgroundColor: AppColors.danger,
             // Selected icon colour = AppColors.primary (gold).
             // Change AppColors.primary to change ALL selected tab icons.
-            color: isSelected ? AppColors.primary : AppColors.navLabelColor,
+            child: Icon(icon, color: iconColor),
           ),
           text: label,
         );

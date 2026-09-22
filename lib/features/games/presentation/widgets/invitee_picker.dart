@@ -7,6 +7,7 @@ import 'package:play_with_me/core/data/models/invitable_user.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/group_avatar.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
@@ -47,10 +48,13 @@ class InviteePicker extends StatelessWidget {
             length: 2,
             child: Column(
               children: [
-                TabBar(
+                SectionTabBar(
                   tabs: [
-                    Tab(text: l10n.myCommunity),
-                    Tab(text: l10n.groups),
+                    AppTabItem(
+                      icon: Icons.people_outline,
+                      label: l10n.myCommunity,
+                    ),
+                    AppTabItem(icon: Icons.group_outlined, label: l10n.groups),
                   ],
                 ),
                 Expanded(

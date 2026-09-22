@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/friends/presentation/bloc/friend_bloc.dart';
@@ -81,67 +82,22 @@ class _MyCommunityPageContentState extends State<_MyCommunityPageContent>
       child: Scaffold(
         body: Column(
           children: [
-            Container(
-              color: AppColors.scaffoldBackground,
-              child: TabBar(
-                controller: _tabController,
-                labelPadding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                ),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: AppColors.primary,
-                labelColor: AppColors.secondary,
-                unselectedLabelColor: AppColors.secondary,
-                tabs: [
-                  Tab(height: 40, text: l10n.friends),
-                  BlocSelector<
-                    FriendRequestCountBloc,
-                    FriendRequestCountState,
-                    int
-                  >(
-                    selector: (state) =>
-                        state is FriendRequestCountLoaded ? state.count : 0,
-                    builder: (context, count) {
-                      return Tab(
-                        height: 40,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(l10n.requests),
-                            if (count > 0) ...[
-                              const SizedBox(width: AppSpacing.sm),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.danger,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                constraints: const BoxConstraints(
-                                  minWidth: 18,
-                                  minHeight: 18,
-                                ),
-                                child: Text(
-                                  count > 9 ? '9+' : '$count',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+            BlocSelector<FriendRequestCountBloc, FriendRequestCountState, int>(
+              selector: (state) =>
+                  state is FriendRequestCountLoaded ? state.count : 0,
+              builder: (context, requestCount) {
+                return SectionTabBar(
+                  controller: _tabController,
+                  tabs: [
+                    AppTabItem(icon: Icons.people_outline, label: l10n.friends),
+                    AppTabItem(
+                      icon: Icons.person_add_outlined,
+                      label: l10n.requests,
+                      badgeCount: requestCount,
+                    ),
+                  ],
+                );
+              },
             ),
             Expanded(
               child: BlocListener<FriendBloc, FriendState>(

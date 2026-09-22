@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
+import 'package:play_with_me/core/presentation/widgets/section_tab_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
@@ -74,18 +75,18 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
     return Column(
       children: [
         // ── Tab bar ──────────────────────────────────────────────────────────
-        Container(
-          color: Colors.white,
-          child: TabBar(
-            controller: _tabController,
-            labelColor: AppColors.secondary,
-            unselectedLabelColor: AppColors.textMuted,
-            indicatorColor: AppColors.secondary,
-            tabs: [
-              Tab(text: l10n.championshipTabActive),
-              Tab(text: l10n.championshipTabCompleted),
-            ],
-          ),
+        SectionTabBar(
+          controller: _tabController,
+          tabs: [
+            AppTabItem(
+              icon: Icons.emoji_events_outlined,
+              label: l10n.championshipTabActive,
+            ),
+            AppTabItem(
+              icon: Icons.check_circle_outline,
+              label: l10n.championshipTabCompleted,
+            ),
+          ],
         ),
         // ── Tab content ──────────────────────────────────────────────────────
         Expanded(
