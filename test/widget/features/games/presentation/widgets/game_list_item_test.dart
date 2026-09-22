@@ -46,9 +46,11 @@ void main() {
     testWidgets('displays game title and location', (tester) async {
       final game = _createGame();
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       expect(find.text('Test Game'), findsOneWidget);
@@ -58,9 +60,11 @@ void main() {
     testWidgets('displays scheduled status color', (tester) async {
       final game = _createGame(status: GameStatus.scheduled);
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.calendar_today));
@@ -70,9 +74,11 @@ void main() {
     testWidgets('displays in progress status color', (tester) async {
       final game = _createGame(status: GameStatus.inProgress);
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.calendar_today));
@@ -84,9 +90,11 @@ void main() {
     ) async {
       final game = _createGame(status: GameStatus.cancelled);
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.calendar_today));
@@ -112,9 +120,11 @@ void main() {
       final game = _createGame(status: GameStatus.completed, result: result);
 
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       expect(find.byType(SetScoresDisplay), findsOneWidget);
@@ -126,9 +136,11 @@ void main() {
     ) async {
       final game = _createGame(status: GameStatus.verification);
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       expect(find.text('Pending Verification'), findsOneWidget);
@@ -141,9 +153,11 @@ void main() {
     ) async {
       final game = _createGame(status: GameStatus.verification);
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       // Background tinting was removed (PE-4: all game cards use same cardBackground)
@@ -156,9 +170,11 @@ void main() {
     ) async {
       final game = _createGame(status: GameStatus.scheduled, userId: 'user-1');
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-          )),
+          ),
+        ),
       );
 
       // Assuming user-1 is in the game from _createGame default
@@ -169,13 +185,15 @@ void main() {
       bool tapped = false;
       final game = _createGame();
       await tester.pumpWidget(
-        testApp(child: Scaffold(
+        testApp(
+          child: Scaffold(
             body: GameListItem(
               game: game,
               userId: 'user-1',
               onTap: () => tapped = true,
             ),
-          )),
+          ),
+        ),
       );
 
       await tester.tap(find.byType(GameListItem));
@@ -185,9 +203,11 @@ void main() {
 
   // Story 26.5: MixGameBadge visibility
   group('MixGameBadge in GameListItem', () {
-    Widget buildItem(GameModel game) => testApp(child: Scaffold(
+    Widget buildItem(GameModel game) => testApp(
+      child: Scaffold(
         body: GameListItem(game: game, userId: 'user-1', onTap: () {}),
-      ));
+      ),
+    );
 
     testWidgets('shows MixGameBadge when gameGenderType is mix', (
       tester,
