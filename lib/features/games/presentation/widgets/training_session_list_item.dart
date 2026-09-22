@@ -1,6 +1,7 @@
 // Widget for displaying a training session in the group activity feed
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
@@ -28,93 +29,82 @@ class TrainingSessionListItem extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final isCancelled = session.status == TrainingStatus.cancelled;
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.xs,
       ),
-      elevation: isPast ? 0 : 1,
-      color: _getCardBackgroundColor(context),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: _getCardBackgroundColor(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title row with training badge
+          Row(
             children: [
-              // Title row with training badge
-              Row(
-                children: [
-                  // Training icon to distinguish from games
-                  Icon(
-                    Icons.fitness_center,
-                    size: AppSpacing.iconMd,
+              // Training icon to distinguish from games
+              Icon(
+                Icons.fitness_center,
+                size: AppSpacing.iconMd,
+                color: isCancelled ? AppColors.textMuted : AppColors.secondary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  session.title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
                     color: isCancelled
                         ? AppColors.textMuted
                         : AppColors.secondary,
+                    decoration: isCancelled ? TextDecoration.lineThrough : null,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(
-                      session.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isCancelled
-                            ? AppColors.textMuted
-                            : AppColors.secondary,
-                        decoration: isCancelled
-                            ? TextDecoration.lineThrough
-                            : null,
-                      ),
-                    ),
-                  ),
-                  _buildTypeBadge(context),
-                ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.md),
-              // Date/Time
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                formatSmartDateTime(context, session.startTime),
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              // Location
-              _buildInfoRow(
-                context,
-                Icons.location_on,
-                session.location.name,
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              // Duration
-              _buildInfoRow(
-                context,
-                Icons.access_time,
-                _formatDuration(context, session.duration),
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              // Min participants
-              _buildInfoRow(
-                context,
-                Icons.people,
-                l10n.minParticipants(session.minParticipants),
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              // Participant count (no scores for training sessions)
-              if (!isCancelled) _buildParticipantCountBarWithBadge(context),
+              _buildTypeBadge(context),
             ],
           ),
-        ),
+          const SizedBox(height: AppSpacing.md),
+          // Date/Time
+          _buildInfoRow(
+            context,
+            Icons.calendar_today,
+            formatSmartDateTime(context, session.startTime),
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          // Location
+          _buildInfoRow(
+            context,
+            Icons.location_on,
+            session.location.name,
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          // Duration
+          _buildInfoRow(
+            context,
+            Icons.access_time,
+            _formatDuration(context, session.duration),
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          // Min participants
+          _buildInfoRow(
+            context,
+            Icons.people,
+            l10n.minParticipants(session.minParticipants),
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Participant count (no scores for training sessions)
+          if (!isCancelled) _buildParticipantCountBarWithBadge(context),
+        ],
       ),
     );
   }
 
-  Color? _getCardBackgroundColor(BuildContext context) {
+  Color _getCardBackgroundColor(BuildContext context) {
     if (session.status == TrainingStatus.cancelled) {
       return Theme.of(
         context,
@@ -125,8 +115,8 @@ class TrainingSessionListItem extends StatelessWidget {
       return AppColors.success.withValues(alpha: 0.05);
     }
 
-    // Default: no special background (same as games)
-    return null;
+    // Default: same as games
+    return AppColors.cardBackground;
   }
 
   Widget _buildTypeBadge(BuildContext context) {

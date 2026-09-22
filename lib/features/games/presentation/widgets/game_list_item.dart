@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:play_with_me/core/presentation/widgets/joined_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/mix_game_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
@@ -30,84 +31,72 @@ class GameListItem extends StatelessWidget {
     final isCancelled = game.status == GameStatus.cancelled;
     final isVerification = game.status == GameStatus.verification;
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.xs,
       ),
-      elevation: 1,
-      color: AppColors.cardBackground,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title row with game badge
+          Row(
             children: [
-              // Title row with game badge
-              Row(
-                children: [
-                  // Game icon to distinguish from training sessions
-                  Icon(
-                    Icons.sports_volleyball,
-                    size: AppSpacing.iconMd,
+              // Game icon to distinguish from training sessions
+              Icon(
+                Icons.sports_volleyball,
+                size: AppSpacing.iconMd,
+                color: isCancelled ? AppColors.textMuted : AppColors.secondary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  game.title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
                     color: isCancelled
                         ? AppColors.textMuted
                         : AppColors.secondary,
+                    decoration: isCancelled ? TextDecoration.lineThrough : null,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(
-                      game.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isCancelled
-                            ? AppColors.textMuted
-                            : AppColors.secondary,
-                        decoration: isCancelled
-                            ? TextDecoration.lineThrough
-                            : null,
-                      ),
-                    ),
-                  ),
-                  if (game.gameGenderType == GameGenderType.mix) ...[
-                    const MixGameBadge(),
-                    const SizedBox(width: 6),
-                  ],
-                  if (isVerification)
-                    _buildVerificationBadge(context)
-                  else if (isCancelled)
-                    _buildCancelledBadge(context)
-                  else
-                    _buildTypeBadge(context),
-                ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.md),
-              _buildInfoRow(
-                context,
-                Icons.calendar_today,
-                formatSmartDateTime(context, game.scheduledAt),
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              _buildInfoRow(
-                context,
-                Icons.location_on,
-                game.location.name,
-                isCancelled ? AppColors.textMuted : AppColors.secondary,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              if (isCompletedWithResult) ...[
-                const Divider(),
-                const SizedBox(height: AppSpacing.sm),
-                SetScoresDisplay(result: game.result!),
-              ] else if (!isCancelled) ...[
-                _buildPlayerCountBarWithBadge(context),
+              if (game.gameGenderType == GameGenderType.mix) ...[
+                const MixGameBadge(),
+                const SizedBox(width: 6),
               ],
+              if (isVerification)
+                _buildVerificationBadge(context)
+              else if (isCancelled)
+                _buildCancelledBadge(context)
+              else
+                _buildTypeBadge(context),
             ],
           ),
-        ),
+          const SizedBox(height: AppSpacing.md),
+          _buildInfoRow(
+            context,
+            Icons.calendar_today,
+            formatSmartDateTime(context, game.scheduledAt),
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _buildInfoRow(
+            context,
+            Icons.location_on,
+            game.location.name,
+            isCancelled ? AppColors.textMuted : AppColors.secondary,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          if (isCompletedWithResult) ...[
+            const Divider(),
+            const SizedBox(height: AppSpacing.sm),
+            SetScoresDisplay(result: game.result!),
+          ] else if (!isCancelled) ...[
+            _buildPlayerCountBarWithBadge(context),
+          ],
+        ],
       ),
     );
   }

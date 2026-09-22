@@ -20,6 +20,14 @@ class AccentCard extends StatelessWidget {
   /// Colour of the left accent bar. Defaults to AppColors.primary (gold).
   final Color accentColor;
 
+  /// Background colour of the card body. Defaults to AppColors.cardBackground.
+  /// Override for status-tinted cards (e.g. cancelled/completed states).
+  final Color backgroundColor;
+
+  /// Material elevation of the card. Defaults to 1 (the standard list-item
+  /// shadow). Use 0 for flat, densely-stacked cards (e.g. a bottom sheet list).
+  final double elevation;
+
   const AccentCard({
     super.key,
     required this.child,
@@ -30,6 +38,8 @@ class AccentCard extends StatelessWidget {
     ),
     this.margin = const EdgeInsets.only(bottom: AppSpacing.md),
     this.accentColor = AppColors.primary,
+    this.backgroundColor = AppColors.cardBackground,
+    this.elevation = 1,
   });
 
   @override
@@ -37,10 +47,10 @@ class AccentCard extends StatelessWidget {
     return Padding(
       padding: margin,
       child: Material(
-        color: AppColors.cardBackground,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
         clipBehavior: Clip.antiAlias,
-        elevation: 1,
+        elevation: elevation,
         shadowColor: AppColors.shadow,
         child: InkWell(
           onTap: onTap,

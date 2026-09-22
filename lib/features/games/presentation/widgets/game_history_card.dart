@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
+import 'package:play_with_me/core/presentation/widgets/accent_card.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/data/models/game_model.dart';
@@ -18,86 +19,80 @@ class GameHistoryCard extends StatelessWidget {
     final dateFormat = DateFormat('MMM d, y');
     final timeFormat = DateFormat('h:mm a');
 
-    return Card(
+    return AccentCard(
+      onTap: onTap,
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.sm,
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.inputRadius),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Date and location header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Date and location header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    game.completedAt != null
-                        ? dateFormat.format(game.completedAt!)
-                        : dateFormat.format(game.scheduledAt),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (game.completedAt != null)
-                    Text(
-                      timeFormat.format(game.completedAt!),
-                      style: theme.textTheme.bodySmall,
-                    ),
-                ],
+              Text(
+                game.completedAt != null
+                    ? dateFormat.format(game.completedAt!)
+                    : dateFormat.format(game.scheduledAt),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              if (game.location.name.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.xs),
+              if (game.completedAt != null)
                 Text(
-                  game.location.name,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  timeFormat.format(game.completedAt!),
+                  style: theme.textTheme.bodySmall,
                 ),
-              ],
-              const SizedBox(height: AppSpacing.lg),
-
-              // Teams and scores
-              if (game.teams != null && game.result != null)
-                _buildTeamsAndScores(context)
-              else
-                Text(
-                  'No scores recorded',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-
-              // ELO changes indicator
-              if (game.eloCalculated) ...[
-                const SizedBox(height: AppSpacing.sm),
-                const Divider(),
-                const SizedBox(height: AppSpacing.sm),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.trending_up,
-                      size: AppSpacing.iconSm,
-                      color: theme.colorScheme.primary,
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      'ELO Updated',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ],
           ),
-        ),
+          if (game.location.name.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              game.location.name,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.lg),
+
+          // Teams and scores
+          if (game.teams != null && game.result != null)
+            _buildTeamsAndScores(context)
+          else
+            Text(
+              'No scores recorded',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontStyle: FontStyle.italic,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+
+          // ELO changes indicator
+          if (game.eloCalculated) ...[
+            const SizedBox(height: AppSpacing.sm),
+            const Divider(),
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                Icon(
+                  Icons.trending_up,
+                  size: AppSpacing.iconSm,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  'ELO Updated',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
       ),
     );
   }
