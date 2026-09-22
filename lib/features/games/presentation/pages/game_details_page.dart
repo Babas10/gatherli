@@ -36,6 +36,7 @@ import '../widgets/game_chat_section.dart';
 import '../widgets/invite_guest_players_sheet.dart';
 import 'score_entry_page.dart';
 import 'game_result_view_page.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class GameDetailsPage extends StatelessWidget {
   final String gameId;
@@ -712,7 +713,7 @@ class _RsvpButtons extends StatelessWidget {
         if (state is GameCompletedSuccessfully) {
           // Navigate to Score Entry
           Navigator.of(context).push(
-            MaterialPageRoute(
+            AppPageRoute.detail(
               builder: (context) => ScoreEntryPage(gameId: state.game.id),
             ),
           );
@@ -753,7 +754,7 @@ class _RsvpButtons extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           Navigator.of(context).push(
-                            MaterialPageRoute(
+                            AppPageRoute.detail(
                               builder: (context) =>
                                   ScoreEntryPage(gameId: game.id),
                             ),
@@ -912,7 +913,7 @@ class _ViewResultsCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
-            MaterialPageRoute(
+            AppPageRoute.detail(
               builder: (context) => GameResultViewPage(
                 game: game,
                 players: players,
@@ -1166,7 +1167,7 @@ class _VerificationSection extends StatelessWidget {
                           : () {
                               // Navigate to ScoreEntryPage to edit
                               Navigator.of(context).push(
-                                MaterialPageRoute(
+                                AppPageRoute.detail(
                                   builder: (context) =>
                                       ScoreEntryPage(gameId: game.id),
                                 ),

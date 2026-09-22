@@ -71,6 +71,7 @@ import 'package:play_with_me/features/championships/presentation/pages/match_det
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_bloc.dart';
 import 'package:play_with_me/features/championships/presentation/bloc/championship_list/championship_list_event.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 /// Builds the detail page for a shareable-activity-link target (game,
 /// training session, or championship match), reusing the exact
@@ -181,7 +182,7 @@ class PlayWithMeApp extends StatelessWidget {
                   final navigator = PlayWithMeApp.navigatorKey.currentState;
                   if (navigator != null) {
                     navigator.pushAndRemoveUntil(
-                      MaterialPageRoute(
+                      AppPageRoute.detail(
                         builder: (_) => MultiBlocProvider(
                           providers: [
                             BlocProvider.value(
@@ -203,7 +204,7 @@ class PlayWithMeApp extends StatelessWidget {
                   final navigator = PlayWithMeApp.navigatorKey.currentState;
                   if (navigator != null) {
                     navigator.pushAndRemoveUntil(
-                      MaterialPageRoute(
+                      AppPageRoute.detail(
                         builder: (_) => _buildActivityLinkTargetPage(
                           deepLinkState.target,
                           state,
@@ -236,7 +237,7 @@ class PlayWithMeApp extends StatelessWidget {
                   if (navigator != null) {
                     // Don't clear — token must survive the login/registration flow
                     navigator.push(
-                      MaterialPageRoute(
+                      AppPageRoute.modal(
                         builder: (_) => MultiBlocProvider(
                           providers: [
                             BlocProvider.value(
@@ -271,7 +272,7 @@ class PlayWithMeApp extends StatelessWidget {
                     ValidateInviteToken(deepLinkState.token),
                   );
                   navigator.push(
-                    MaterialPageRoute(
+                    AppPageRoute.detail(
                       builder: (_) => MultiBlocProvider(
                         providers: [
                           BlocProvider.value(
@@ -287,7 +288,7 @@ class PlayWithMeApp extends StatelessWidget {
                 } else if (authState is AuthenticationUnauthenticated) {
                   // Unauthenticated: show onboarding but keep token for login flow
                   navigator.push(
-                    MaterialPageRoute(
+                    AppPageRoute.modal(
                       builder: (_) => MultiBlocProvider(
                         providers: [
                           BlocProvider.value(
@@ -312,7 +313,7 @@ class PlayWithMeApp extends StatelessWidget {
                     const ClearPendingActivityLink(),
                   );
                   navigator.push(
-                    MaterialPageRoute(
+                    AppPageRoute.detail(
                       builder: (_) => _buildActivityLinkTargetPage(
                         deepLinkState.target,
                         authState,
@@ -461,13 +462,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       case 'invitation':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const PendingInvitationsPage()),
+          AppPageRoute.detail(builder: (_) => const PendingInvitationsPage()),
         );
         break;
       case 'game_invitation':
         Navigator.push(
           context,
-          MaterialPageRoute(
+          AppPageRoute.detail(
             builder: (_) => BlocProvider.value(
               value: context.read<GameInvitationsBloc>(),
               child: const MyGamesPage(),
@@ -478,7 +479,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       case 'game_created':
         Navigator.push(
           context,
-          MaterialPageRoute(
+          AppPageRoute.detail(
             builder: (_) => BlocProvider.value(
               value: context.read<GameInvitationsBloc>(),
               child: const MyGamesPage(),
@@ -493,7 +494,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (groupId != null) {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            AppPageRoute.detail(
               builder: (_) => GroupDetailsPage(groupId: groupId),
             ),
           );
@@ -505,7 +506,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       case 'friend_accepted':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const MyCommunityPage()),
+          AppPageRoute.detail(builder: (_) => const MyCommunityPage()),
         );
         break;
 
@@ -554,7 +555,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => GameDetailsPage(gameId: gameId)),
+      AppPageRoute.detail(builder: (_) => GameDetailsPage(gameId: gameId)),
     );
   }
 
@@ -567,7 +568,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) =>
             TrainingSessionDetailsPage(trainingSessionId: sessionId),
       ),
@@ -589,7 +590,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) => MatchDetailPage(
           championshipId: champId,
           matchId: matchId,
@@ -612,7 +613,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) => ChampionshipDetailPage(championshipId: champId),
       ),
     );
@@ -747,7 +748,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               : <String, String>{};
           Navigator.push(
             context,
-            MaterialPageRoute(
+            AppPageRoute.modal(
               builder: (_) => BlocProvider<AuthenticationBloc>.value(
                 value: context.read<AuthenticationBloc>(),
                 child: PickupGameCreationPage(userGroups: userGroups),
@@ -767,7 +768,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const CreateChampionshipPage()),
+            AppPageRoute.modal(builder: (_) => const CreateChampionshipPage()),
           );
           if (context.mounted) {
             context.read<ChampionshipListBloc>().add(const LoadChampionships());
@@ -912,7 +913,7 @@ class _HomeTabState extends State<_HomeTab> {
                                 ? () {
                                     final gameRepository = sl<GameRepository>();
                                     Navigator.of(context).push(
-                                      MaterialPageRoute(
+                                      AppPageRoute.detail(
                                         builder: (newContext) =>
                                             RepositoryProvider.value(
                                               value: gameRepository,
@@ -971,7 +972,7 @@ class _HomeTabState extends State<_HomeTab> {
                                     final trainingSessionRepository =
                                         sl<TrainingSessionRepository>();
                                     Navigator.of(context).push(
-                                      MaterialPageRoute(
+                                      AppPageRoute.detail(
                                         builder: (newContext) =>
                                             RepositoryProvider.value(
                                               value: trainingSessionRepository,

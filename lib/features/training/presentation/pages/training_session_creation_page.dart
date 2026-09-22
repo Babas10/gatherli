@@ -12,6 +12,7 @@ import 'package:play_with_me/features/training/presentation/bloc/training_sessio
 import 'package:play_with_me/features/training/presentation/bloc/training_session_creation/training_session_creation_state.dart';
 import 'package:play_with_me/features/training/presentation/pages/training_session_details_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class TrainingSessionCreationPage extends StatefulWidget {
   final String groupId;
@@ -428,7 +429,7 @@ class _TrainingSessionCreationPageState
 
           // Navigate to the training session details page
           Navigator.of(context).push(
-            MaterialPageRoute(
+            AppPageRoute.detail(
               builder: (context) => TrainingSessionDetailsPage(
                 trainingSessionId: state.sessionId,
               ),

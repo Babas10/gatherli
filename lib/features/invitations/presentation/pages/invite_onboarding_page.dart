@@ -10,6 +10,7 @@ import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_state.dart';
 import 'package:play_with_me/features/invitations/presentation/pages/invite_registration_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class InviteOnboardingPage extends StatelessWidget {
   final String token;
@@ -105,7 +106,7 @@ class InviteOnboardingPage extends StatelessWidget {
         FilledButton(
           onPressed: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              AppPageRoute.modal(
                 builder: (_) => InviteRegistrationPage(
                   token: token,
                   groupName: state.groupName,

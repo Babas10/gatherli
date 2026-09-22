@@ -11,6 +11,7 @@ import 'package:play_with_me/features/games/presentation/pages/my_games_page.dar
 import 'package:play_with_me/features/invitations/presentation/pages/pending_invitations_page.dart';
 import 'package:play_with_me/features/profile/presentation/pages/profile_page.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class PlayWithMeAppBar {
   PlayWithMeAppBar._();
@@ -104,7 +105,7 @@ class PlayWithMeAppBar {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  AppPageRoute.detail(
                     builder: (_) => const PendingInvitationsPage(),
                   ),
                 );
@@ -154,7 +155,7 @@ class PlayWithMeAppBar {
                     final bloc = gameInvBloc!;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      AppPageRoute.detail(
                         builder: (_) => BlocProvider.value(
                           value: bloc,
                           child: const MyGamesPage(),
@@ -191,7 +192,7 @@ class PlayWithMeAppBar {
 
   static void _navigateToProfile(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (routeContext) => Scaffold(
           appBar: PlayWithMeAppBar.build(
             context: routeContext,

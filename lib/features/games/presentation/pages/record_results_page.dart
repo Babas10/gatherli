@@ -17,6 +17,7 @@ import '../bloc/record_results/record_results_bloc.dart';
 import '../bloc/record_results/record_results_event.dart';
 import '../bloc/record_results/record_results_state.dart';
 import 'score_entry_page.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class RecordResultsPage extends StatelessWidget {
   final String gameId;
@@ -58,7 +59,7 @@ class _RecordResultsView extends StatelessWidget {
           if (state is RecordResultsSaved) {
             // Navigate to score entry page
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
+              AppPageRoute.detail(
                 builder: (context) => ScoreEntryPage(gameId: state.game.id),
               ),
             );

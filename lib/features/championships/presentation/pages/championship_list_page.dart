@@ -14,6 +14,7 @@ import 'package:play_with_me/features/championships/presentation/pages/champions
 import 'package:play_with_me/features/championships/presentation/widgets/championship_gender_badge.dart';
 import 'package:play_with_me/features/championships/presentation/widgets/championship_status_badge.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class ChampionshipListPage extends StatelessWidget {
   const ChampionshipListPage({super.key});
@@ -53,7 +54,7 @@ class _ChampionshipListViewState extends State<_ChampionshipListView>
   ) async {
     final deleted = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(
+      AppPageRoute.detail(
         builder: (_) => ChampionshipDetailPage(championshipId: championship.id),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_event.dart';
 import 'package:play_with_me/features/invitations/presentation/bloc/invite_join/invite_join_state.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class JoinGroupConfirmationPage extends StatelessWidget {
   final String token;
@@ -33,7 +34,7 @@ class JoinGroupConfirmationPage extends StatelessWidget {
                   context,
                 ).showSnackBar(SnackBar(content: Text(message)));
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
+                  AppPageRoute.detail(
                     builder: (_) => GroupDetailsPage(groupId: state.groupId),
                   ),
                   (route) => route.isFirst,

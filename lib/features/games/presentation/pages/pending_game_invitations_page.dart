@@ -12,6 +12,7 @@ import 'package:play_with_me/features/games/presentation/bloc/game_invitations/g
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
 import 'package:play_with_me/features/games/presentation/widgets/game_invitation_card.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class PendingGameInvitationsPage extends StatelessWidget {
   final GameInvitationsBloc? blocOverride;
@@ -82,7 +83,7 @@ class _PendingGameInvitationsViewState
       if (state.accepted && state.gameId != null) {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          AppPageRoute.detail(
             builder: (_) => GameDetailsPage(gameId: state.gameId!),
           ),
         );
@@ -173,7 +174,7 @@ class _PendingGameInvitationsViewState
             ),
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(
+              AppPageRoute.detail(
                 builder: (_) => GameDetailsPage(gameId: inv.gameId),
               ),
             ),
