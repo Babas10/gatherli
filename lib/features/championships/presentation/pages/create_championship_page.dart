@@ -7,6 +7,7 @@ import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/utils/date_picker_helper.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
+import 'package:play_with_me/core/presentation/widgets/form_section.dart';
 import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
 import 'package:play_with_me/features/championships/data/models/championship_model.dart';
@@ -169,40 +170,39 @@ class _CreateChampionshipViewState extends State<_CreateChampionshipView> {
               const SizedBox(height: AppSpacing.lg),
 
               // Gender category (required)
-              Text(
-                l10n.championshipCreateGenderLabel,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  Expanded(
-                    child: _GenderOption(
-                      label: l10n.championshipGenderMale,
-                      icon: Icons.male,
-                      selected:
-                          _genderCategory == ChampionshipGenderCategory.male,
-                      onTap: () => setState(
-                        () => _genderCategory = ChampionshipGenderCategory.male,
+              FormSection(
+                label: l10n.championshipCreateGenderLabel,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _GenderOption(
+                        label: l10n.championshipGenderMale,
+                        icon: Icons.male,
+                        selected:
+                            _genderCategory == ChampionshipGenderCategory.male,
+                        onTap: () => setState(
+                          () =>
+                              _genderCategory = ChampionshipGenderCategory.male,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: _GenderOption(
-                      label: l10n.championshipGenderFemale,
-                      icon: Icons.female,
-                      selected:
-                          _genderCategory == ChampionshipGenderCategory.female,
-                      onTap: () => setState(
-                        () =>
-                            _genderCategory = ChampionshipGenderCategory.female,
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: _GenderOption(
+                        label: l10n.championshipGenderFemale,
+                        icon: Icons.female,
+                        selected:
+                            _genderCategory ==
+                            ChampionshipGenderCategory.female,
+                        onTap: () => setState(
+                          () => _genderCategory =
+                              ChampionshipGenderCategory.female,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.lg),
 
               // Max teams
               const SizedBox(height: AppSpacing.xs),
