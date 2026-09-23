@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
-import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
+import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,81 +46,65 @@ class _ScoreEntryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(context: context, title: l10n.enterScores),
-      body: BlocConsumer<ScoreEntryBloc, ScoreEntryState>(
-        listener: (context, state) {
-          if (state is ScoreEntrySaved) {
-            Navigator.of(context).pop();
-          } else if (state is ScoreEntryError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.danger,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is ScoreEntryLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is ScoreEntryError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: AppSpacing.iconXxl,
-                      color: AppColors.danger,
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    Text(
-                      state.message,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          if (state is ScoreEntryLoaded) {
-            if (state.gameCount == null) {
-              return _GameCountSelector(
-                onGameCountSelected: (count) {
-                  context.read<ScoreEntryBloc>().add(
-                    SetGameCount(count: count),
-                  );
-                },
-              );
-            }
-
-            return _ScoreEntryForm(state: state);
-          }
-
-          if (state is ScoreEntrySaving) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(l10n.savingScores),
-                ],
-              ),
-            );
-          }
-
-          return const SizedBox.shrink();
-        },
-      ),
+    return BlocConsumer<ScoreEntryBloc, ScoreEntryState>(
+      listener: (context, state) {
+        if (state is ScoreEntrySaved) {
+          Navigator.of(context).pop();
+        } else if (state is ScoreEntryError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return AppScaffold(
+          title: l10n.enterScores,
+          appBar: PlayWithMeAppBar.build(
+            context: context,
+            title: l10n.enterScores,
+          ),
+          isLoading: state is ScoreEntryLoading,
+          errorMessage: state is ScoreEntryError ? state.message : null,
+          body: _buildBody(context, state, l10n),
+        );
+      },
     );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    ScoreEntryState state,
+    AppLocalizations l10n,
+  ) {
+    if (state is ScoreEntryLoaded) {
+      if (state.gameCount == null) {
+        return _GameCountSelector(
+          onGameCountSelected: (count) {
+            context.read<ScoreEntryBloc>().add(SetGameCount(count: count));
+          },
+        );
+      }
+
+      return _ScoreEntryForm(state: state);
+    }
+
+    if (state is ScoreEntrySaving) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: AppSpacing.lg),
+            Text(l10n.savingScores),
+          ],
+        ),
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }
 

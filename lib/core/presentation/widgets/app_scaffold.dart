@@ -28,6 +28,14 @@ class AppScaffold extends StatelessWidget {
   final ValueChanged<int>? onBottomNavTap;
   final bool showBottomNav;
 
+  /// Overrides the default bare AppBar — pass PlayWithMeAppBar.build(...)
+  /// for pages that need the shared invitation/profile/logout actions.
+  final PreferredSizeWidget? appBar;
+
+  /// Overrides the default GlobalBottomNavBar (driven by [showBottomNav] /
+  /// [bottomNavIndex]) for pages with a bespoke bottom bar.
+  final Widget? bottomNavigationBar;
+
   const AppScaffold({
     super.key,
     required this.title,
@@ -40,19 +48,23 @@ class AppScaffold extends StatelessWidget {
     this.bottomNavIndex,
     this.onBottomNavTap,
     this.showBottomNav = false,
+    this.appBar,
+    this.bottomNavigationBar,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title), actions: actions),
+      appBar: appBar ?? AppBar(title: Text(title), actions: actions),
       floatingActionButton: floatingActionButton,
-      bottomNavigationBar: showBottomNav && bottomNavIndex != null
-          ? GlobalBottomNavBar(
-              selectedIndex: bottomNavIndex!,
-              onTabSelected: onBottomNavTap ?? (_) {},
-            )
-          : null,
+      bottomNavigationBar:
+          bottomNavigationBar ??
+          (showBottomNav && bottomNavIndex != null
+              ? GlobalBottomNavBar(
+                  selectedIndex: bottomNavIndex!,
+                  onTabSelected: onBottomNavTap ?? (_) {},
+                )
+              : null),
       body: _buildBody(context),
     );
   }

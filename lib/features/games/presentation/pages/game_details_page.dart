@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_spacing.dart';
 import 'package:play_with_me/core/theme/app_text_styles.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/detail_page_header.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/presentation/widgets/status_badge.dart';
 import 'package:play_with_me/core/presentation/widgets/user_avatar.dart';
 import 'package:play_with_me/app/play_with_me_app.dart';
-import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/utils/activity_link_url_builder.dart';
@@ -91,18 +91,24 @@ class _GameDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(context: context, title: l10n.gameDetails),
-      bottomNavigationBar: GlobalBottomNavBar(
-        selectedIndex: 0,
-        onTabSelected: (index) {
-          HomePage.onNavigateToTab?.call(index);
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
-      ),
-      body: BlocBuilder<GameDetailsBloc, GameDetailsState>(
-        builder: (context, state) => _buildBody(context, state, l10n),
-      ),
+    return BlocBuilder<GameDetailsBloc, GameDetailsState>(
+      builder: (context, state) {
+        return AppScaffold(
+          title: l10n.gameDetails,
+          appBar: PlayWithMeAppBar.build(
+            context: context,
+            title: l10n.gameDetails,
+          ),
+          showBottomNav: true,
+          bottomNavIndex: 0,
+          onBottomNavTap: (index) {
+            HomePage.onNavigateToTab?.call(index);
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          isLoading: state is GameDetailsLoading,
+          body: _buildBody(context, state, l10n),
+        );
+      },
     );
   }
 
@@ -112,7 +118,7 @@ class _GameDetailsView extends StatelessWidget {
     AppLocalizations l10n,
   ) {
     if (state is GameDetailsLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const SizedBox.shrink();
     }
 
     if (state is GameDetailsError) {

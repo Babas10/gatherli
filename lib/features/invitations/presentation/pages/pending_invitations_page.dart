@@ -1,6 +1,7 @@
 // Displays a list of pending invitations for the current user with real-time updates
 import 'package:flutter/material.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,8 @@ class PendingInvitationsPage extends StatelessWidget {
       buildWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
       builder: (context, authState) {
         if (authState is! AuthenticationAuthenticated) {
-          return Scaffold(
+          return AppScaffold(
+            title: 'Invitations',
             appBar: PlayWithMeAppBar.build(
               context: context,
               title: 'Invitations',
@@ -51,91 +53,80 @@ class PendingInvitationsPage extends StatelessWidget {
     BuildContext context,
     AuthenticationAuthenticated authState,
   ) {
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(
-        context: context,
-        title: 'Pending Invitations',
-      ),
-      body: BlocConsumer<InvitationBloc, InvitationState>(
-        listener: (context, state) {
-          if (state is InvitationAccepted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.success,
-              ),
-            );
-            // Reload invitations after accepting
-            context.read<InvitationBloc>().add(
-              LoadPendingInvitations(userId: authState.user.uid),
-            );
-          } else if (state is InvitationDeclined) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.warning,
-              ),
-            );
-            // Reload invitations after declining
-            context.read<InvitationBloc>().add(
-              LoadPendingInvitations(userId: authState.user.uid),
-            );
-          } else if (state is InvitationError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.danger,
-              ),
-            );
-            // Reload invitations after error
-            context.read<InvitationBloc>().add(
-              LoadPendingInvitations(userId: authState.user.uid),
-            );
-          }
-        },
-        builder: (context, state) {
-          // Show loading when explicitly loading (not from stream updates)
-          if (state is InvitationLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // Show invitations list
-          if (state is InvitationsLoaded) {
-            if (state.invitations.isEmpty) {
-              return _buildEmptyState(context);
-            }
-
-            return ListView.builder(
-              itemCount: state.invitations.length,
-              itemBuilder: (context, index) {
-                final invitation = state.invitations[index];
-                return InvitationTile(
-                  invitation: invitation,
-                  onAccept: () {
-                    context.read<InvitationBloc>().add(
-                      AcceptInvitation(
-                        userId: authState.user.uid,
-                        invitationId: invitation.id,
-                      ),
+    return BlocConsumer<InvitationBloc, InvitationState>(
+      listener: (context, state) {
+        if (state is InvitationAccepted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.success,
+            ),
+          );
+          // Reload invitations after accepting
+          context.read<InvitationBloc>().add(
+            LoadPendingInvitations(userId: authState.user.uid),
+          );
+        } else if (state is InvitationDeclined) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.warning,
+            ),
+          );
+          // Reload invitations after declining
+          context.read<InvitationBloc>().add(
+            LoadPendingInvitations(userId: authState.user.uid),
+          );
+        } else if (state is InvitationError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.danger,
+            ),
+          );
+          // Reload invitations after error
+          context.read<InvitationBloc>().add(
+            LoadPendingInvitations(userId: authState.user.uid),
+          );
+        }
+      },
+      builder: (context, state) {
+        return AppScaffold(
+          title: 'Pending Invitations',
+          appBar: PlayWithMeAppBar.build(
+            context: context,
+            title: 'Pending Invitations',
+          ),
+          isLoading: state is InvitationLoading,
+          body: state is InvitationsLoaded && state.invitations.isNotEmpty
+              ? ListView.builder(
+                  itemCount: state.invitations.length,
+                  itemBuilder: (context, index) {
+                    final invitation = state.invitations[index];
+                    return InvitationTile(
+                      invitation: invitation,
+                      onAccept: () {
+                        context.read<InvitationBloc>().add(
+                          AcceptInvitation(
+                            userId: authState.user.uid,
+                            invitationId: invitation.id,
+                          ),
+                        );
+                      },
+                      onDecline: () {
+                        context.read<InvitationBloc>().add(
+                          DeclineInvitation(
+                            userId: authState.user.uid,
+                            invitationId: invitation.id,
+                          ),
+                        );
+                      },
                     );
                   },
-                  onDecline: () {
-                    context.read<InvitationBloc>().add(
-                      DeclineInvitation(
-                        userId: authState.user.uid,
-                        invitationId: invitation.id,
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          }
-
-          // Default: show empty state
-          return _buildEmptyState(context);
-        },
-      ),
+                )
+              : _buildEmptyState(context),
+        );
+      },
     );
   }
 

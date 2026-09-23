@@ -13,8 +13,9 @@ import 'package:play_with_me/core/data/models/game_model.dart';
 import 'package:play_with_me/core/data/models/my_game_item.dart';
 import 'package:play_with_me/core/services/service_locator.dart';
 import 'package:play_with_me/core/domain/repositories/game_repository.dart';
+import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
+import 'package:play_with_me/core/presentation/widgets/app_scaffold.dart';
 import 'package:play_with_me/core/presentation/widgets/empty_state.dart';
-import 'package:play_with_me/core/presentation/widgets/global_bottom_nav_bar.dart';
 import 'package:play_with_me/core/theme/app_colors.dart';
 import 'package:play_with_me/core/theme/play_with_me_app_bar.dart';
 import 'package:play_with_me/core/data/models/game_invitation_details.dart';
@@ -22,7 +23,6 @@ import 'package:play_with_me/features/games/presentation/bloc/game_invitations/g
 import 'package:play_with_me/features/games/presentation/pages/game_details_page.dart';
 import 'package:play_with_me/features/games/presentation/widgets/my_game_tile.dart';
 import 'package:play_with_me/l10n/app_localizations.dart';
-import 'package:play_with_me/core/presentation/widgets/app_page_route.dart';
 
 class MyGamesPage extends StatelessWidget {
   const MyGamesPage({super.key});
@@ -82,116 +82,121 @@ class _MyGamesViewState extends State<_MyGamesView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: PlayWithMeAppBar.build(
-        context: context,
-        title: l10n.myGames,
-        showProfileAction: true,
-      ),
-      bottomNavigationBar: GlobalBottomNavBar(
-        selectedIndex: 0,
-        onTabSelected: (index) {
-          HomePage.onNavigateToTab?.call(index);
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
-      ),
-      body: BlocBuilder<GameInvitationsBloc, GameInvitationsState>(
-        builder: (context, invState) {
-          final invitations = _extractInvitations(invState);
+    return BlocBuilder<GameInvitationsBloc, GameInvitationsState>(
+      builder: (context, invState) {
+        final invitations = _extractInvitations(invState);
 
-          return StreamBuilder<List<GameModel>>(
-            stream: _joinedGamesStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData || snapshot.hasError) {
-                _joinedStreamHasEmitted = true;
-              }
-              if (snapshot.hasError) {
-                debugPrint(
-                  '[MyGamesPage] joined stream error: ${snapshot.error}',
-                );
-              }
-              // Keep spinner until joined games and invitations have settled.
-              if (!_joinedStreamHasEmitted ||
-                  invState is GameInvitationsLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasData) _lastJoinedGames = snapshot.data!;
-
-              // Joined games (user is in playerIds)
-              final joinedItems = _lastJoinedGames
-                  .map(MyGameItem.fromGame)
-                  .toList();
-              final joinedGameIds = _lastJoinedGames.map((g) => g.id).toSet();
-
-              // Cross-group invitations — exclude games already joined
-              final invitedGameIds = invitations.map((i) => i.gameId).toSet();
-              final invitedItems = invitations
-                  .where((inv) => !joinedGameIds.contains(inv.gameId))
-                  .map(MyGameItem.fromInvitation)
-                  .toList();
-
-              // Un-joined group games — exclude already joined and already invited
-              final groupGameItems = _lastGroupGames
-                  .where(
-                    (g) =>
-                        !joinedGameIds.contains(g.id) &&
-                        !invitedGameIds.contains(g.id) &&
-                        g.status != GameStatus.cancelled,
-                  )
-                  .map((g) => MyGameItem.fromGroupGame(g, groupName: ''))
-                  .toList();
-
-              // Upcoming: invitations + un-joined group games + joined upcoming
-              final upcoming = [
-                ...invitedItems,
-                ...groupGameItems.where((g) => g.isUpcoming),
-                ...joinedItems.where((g) => g.isUpcoming),
-              ]..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
-
-              // Past: joined completed/verification/overdue games, most recent first
-              final past = joinedItems.where((g) => g.isPast).toList()
-                ..sort((a, b) => b.scheduledAt.compareTo(a.scheduledAt));
-
-              if (upcoming.isEmpty && past.isEmpty) {
-                return _emptyState(context, l10n);
-              }
-
-              final items = <Widget>[
-                if (upcoming.isNotEmpty) ...[
-                  _SectionHeader(title: l10n.upcoming),
-                  ...upcoming.map(
-                    (item) => MyGameTile(
-                      item: item,
-                      onTap: () => _navigateToGame(context, item),
-                    ),
-                  ),
-                ],
-                if (past.isNotEmpty) ...[
-                  if (upcoming.isNotEmpty)
-                    const SizedBox(height: AppSpacing.sm),
-                  _SectionHeader(title: l10n.pastGames),
-                  ...past.map(
-                    (item) => MyGameTile(
-                      item: item,
-                      onTap: () => _navigateToGame(context, item),
-                    ),
-                  ),
-                ],
-              ];
-
-              return RefreshIndicator(
-                onRefresh: () async => context.read<GameInvitationsBloc>().add(
-                  const LoadGameInvitations(),
-                ),
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) => items[index],
-                ),
+        return StreamBuilder<List<GameModel>>(
+          stream: _joinedGamesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData || snapshot.hasError) {
+              _joinedStreamHasEmitted = true;
+            }
+            if (snapshot.hasError) {
+              debugPrint(
+                '[MyGamesPage] joined stream error: ${snapshot.error}',
               );
-            },
-          );
-        },
+            }
+            // Keep spinner until joined games and invitations have settled.
+            final isLoading =
+                !_joinedStreamHasEmitted || invState is GameInvitationsLoading;
+            if (snapshot.hasData) _lastJoinedGames = snapshot.data!;
+
+            return AppScaffold(
+              title: l10n.myGames,
+              appBar: PlayWithMeAppBar.build(
+                context: context,
+                title: l10n.myGames,
+                showProfileAction: true,
+              ),
+              showBottomNav: true,
+              bottomNavIndex: 0,
+              onBottomNavTap: (index) {
+                HomePage.onNavigateToTab?.call(index);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              isLoading: isLoading,
+              body: isLoading
+                  ? const SizedBox.shrink()
+                  : _buildContent(context, l10n, invitations),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    List<GameInvitationDetails> invitations,
+  ) {
+    // Joined games (user is in playerIds)
+    final joinedItems = _lastJoinedGames.map(MyGameItem.fromGame).toList();
+    final joinedGameIds = _lastJoinedGames.map((g) => g.id).toSet();
+
+    // Cross-group invitations — exclude games already joined
+    final invitedGameIds = invitations.map((i) => i.gameId).toSet();
+    final invitedItems = invitations
+        .where((inv) => !joinedGameIds.contains(inv.gameId))
+        .map(MyGameItem.fromInvitation)
+        .toList();
+
+    // Un-joined group games — exclude already joined and already invited
+    final groupGameItems = _lastGroupGames
+        .where(
+          (g) =>
+              !joinedGameIds.contains(g.id) &&
+              !invitedGameIds.contains(g.id) &&
+              g.status != GameStatus.cancelled,
+        )
+        .map((g) => MyGameItem.fromGroupGame(g, groupName: ''))
+        .toList();
+
+    // Upcoming: invitations + un-joined group games + joined upcoming
+    final upcoming = [
+      ...invitedItems,
+      ...groupGameItems.where((g) => g.isUpcoming),
+      ...joinedItems.where((g) => g.isUpcoming),
+    ]..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
+
+    // Past: joined completed/verification/overdue games, most recent first
+    final past = joinedItems.where((g) => g.isPast).toList()
+      ..sort((a, b) => b.scheduledAt.compareTo(a.scheduledAt));
+
+    if (upcoming.isEmpty && past.isEmpty) {
+      return _emptyState(context, l10n);
+    }
+
+    final items = <Widget>[
+      if (upcoming.isNotEmpty) ...[
+        _SectionHeader(title: l10n.upcoming),
+        ...upcoming.map(
+          (item) => MyGameTile(
+            item: item,
+            onTap: () => _navigateToGame(context, item),
+          ),
+        ),
+      ],
+      if (past.isNotEmpty) ...[
+        if (upcoming.isNotEmpty) const SizedBox(height: AppSpacing.sm),
+        _SectionHeader(title: l10n.pastGames),
+        ...past.map(
+          (item) => MyGameTile(
+            item: item,
+            onTap: () => _navigateToGame(context, item),
+          ),
+        ),
+      ],
+    ];
+
+    return RefreshIndicator(
+      onRefresh: () async =>
+          context.read<GameInvitationsBloc>().add(const LoadGameInvitations()),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+        itemCount: items.length,
+        itemBuilder: (context, index) => items[index],
       ),
     );
   }
